@@ -24,11 +24,14 @@ router.get('/', async (req, res) => {
         { model: { $regex: search, $options: 'i' } },
       ];
     }
-    if (make) filter.make = { $regex: `^${make}$`, $options: 'i' };
+    if (make) {
+      const makes = make.split(',');
+      filter.make = { $in: makes.map(m => new RegExp(`^${m}$`, 'i')) };
+    }
     if (condition) filter.condition = condition;
-    if (fuelType) filter.fuelType = fuelType;
+    if (fuelType) filter.fuelType = { $in: fuelType.split(',') };
     if (transmission) filter.transmission = transmission;
-    if (bodyType) filter.bodyType = bodyType;
+    if (bodyType) filter.bodyType = { $in: bodyType.split(',') };
     if (status) filter.status = status;
     else filter.status = { $ne: 'sold' }; // Default: hide sold cars
     if (featured === 'true') filter.isFeatured = true;
@@ -80,13 +83,21 @@ router.get('/filters', async (_req, res) => {
       { $match: activeFilter },
       { $group: { _id: '$make', models: { $addToSet: '$model' } } }
     ]);
+
+    // Aggregate to get min and max price
+    const priceRange = await Car.aggregate([
+      { $match: activeFilter },
+      { $group: { _id: null, minPrice: { $min: '$price' }, maxPrice: { $max: '$price' } } }
+    ]);
     
     res.json({
       data: {
         makes: makes.filter(Boolean).sort(),
         fuelTypes: fuelTypes.filter(Boolean).sort(),
         bodyTypes: bodyTypes.filter(Boolean).sort(),
-        brandModelMap
+        brandModelMap,
+        minPrice: priceRange.length > 0 ? priceRange[0].minPrice : 100000,
+        maxPrice: priceRange.length > 0 ? priceRange[0].maxPrice : 10000000
       }
     });
   } catch (error) {

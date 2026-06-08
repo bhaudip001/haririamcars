@@ -51,8 +51,8 @@ export default function Navbar() {
       <nav 
         className={`sticky top-0 w-full z-40 transition-all duration-500 border-b ${
           scrolled 
-            ? 'bg-white/95 dark:bg-[#0a0a12]/90 backdrop-blur-2xl border-gray-200/60 dark:border-white/10 shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.4)] py-2 md:py-3' 
-            : 'bg-white/80 dark:bg-transparent backdrop-blur-md border-gray-100 dark:border-transparent shadow-none py-4 md:py-5'
+            ? 'bg-[#0a0a12]/90 backdrop-blur-2xl border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)] py-2 md:py-3' 
+            : 'bg-[#0a0a12] backdrop-blur-md border-transparent shadow-none py-4 md:py-5'
         }`}
       >
         <div className="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,7 +64,7 @@ export default function Navbar() {
                 src="/without_background_logo.png"
                 alt="Hariram Motors Logo"
                 fill
-                className="object-contain invert hue-rotate-180 contrast-125 dark:invert-0 dark:hue-rotate-0 dark:contrast-100 dark:mix-blend-lighten transition-all duration-300"
+                className="object-contain mix-blend-lighten transition-all duration-300"
                 sizes="(max-width: 768px) 160px, 224px"
                 priority
               />
@@ -81,15 +81,15 @@ export default function Navbar() {
                   href={link.path}
                   className={`font-['Outfit'] text-[15px] px-4 py-2 rounded-full transition-all duration-300 relative group ${
                     isActive
-                      ? "text-purple-700 dark:text-white font-semibold"
-                      : "text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
+                      ? "text-white font-semibold"
+                      : "text-gray-300 hover:text-white"
                   }`}
                 >
                   <span className="relative z-10">{link.name}</span>
                   {isActive && (
                     <motion.div
                       layoutId="navbar-active-indicator"
-                      className="absolute inset-0 bg-purple-100 dark:bg-white/10 rounded-full"
+                      className="absolute inset-0 bg-white/10 rounded-full"
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                   )}
@@ -105,12 +105,12 @@ export default function Navbar() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="flex items-center justify-center p-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-white hover:shadow-md dark:hover:bg-white/10 dark:hover:text-white transition-all duration-300 group overflow-hidden"
+                className="flex items-center justify-center p-2.5 bg-white/5 border border-white/10 text-gray-300 rounded-full hover:bg-white/10 hover:text-white transition-all duration-300 group overflow-hidden"
                 aria-label="Toggle Theme"
               >
                 <motion.div
                   initial={false}
-                  animate={{ rotate: theme === 'dark' ? 0 : 180, scale: theme === 'dark' ? 1 : 0.8 }}
+                  animate={{ scale: theme === 'dark' ? 1 : 0.8 }}
                   transition={{ type: "spring", stiffness: 200, damping: 10 }}
                 >
                   {theme === 'dark' ? <IconSun size={20} className="group-hover:text-yellow-400 transition-colors" /> : <IconMoon size={20} className="group-hover:text-purple-600 transition-colors" />}
@@ -121,9 +121,9 @@ export default function Navbar() {
             {/* Call Us Button */}
             <a
               href="tel:+919898558222"
-              className="hidden md:flex items-center justify-center gap-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white px-4 h-[44px] rounded-full font-['Outfit'] font-bold text-sm hover:border-blue-400 hover:text-blue-500 dark:hover:border-blue-400/50 dark:hover:bg-blue-500/10 transition-all duration-300 shadow-sm"
+              className="hidden md:flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-4 h-[44px] rounded-full font-['Outfit'] font-bold text-sm hover:border-blue-400/50 hover:bg-blue-500/10 transition-all duration-300 shadow-sm"
             >
-              <IconPhoneCall size={18} className="text-blue-500 dark:text-blue-400" />
+              <IconPhoneCall size={18} className="text-blue-400" />
               <span>Call Us</span>
             </a>
 
@@ -132,7 +132,7 @@ export default function Navbar() {
               href="https://wa.me/919898558222"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white px-4 h-[44px] rounded-full font-['Outfit'] font-bold text-sm hover:border-[#25D366] hover:text-[#25D366] dark:hover:border-[#25D366]/50 dark:hover:bg-[#25D366]/10 transition-all duration-300 shadow-sm"
+              className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white px-4 h-[44px] rounded-full font-['Outfit'] font-bold text-sm hover:border-[#25D366]/50 hover:bg-[#25D366]/10 transition-all duration-300 shadow-sm"
             >
               <IconBrandWhatsapp size={18} className="text-[#25D366]" stroke={2} />
               <span className="hidden sm:inline">WhatsApp</span>
@@ -141,7 +141,7 @@ export default function Navbar() {
             {/* Mobile Menu Toggle (Visible < lg) */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="lg:hidden text-gray-800 dark:text-white p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors flex items-center justify-center h-[44px] w-[44px] border border-transparent dark:hover:border-white/10 hover:border-gray-200"
+              className="lg:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors flex items-center justify-center h-[44px] w-[44px] border border-transparent hover:border-white/10"
               aria-label="Open Menu"
             >
               <IconMenu2 size={24} />
@@ -159,7 +159,7 @@ export default function Navbar() {
               initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
               animate={{ opacity: 1, backdropFilter: 'blur(12px)' }}
               exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-              className="absolute inset-0 bg-white/60 dark:bg-[#050508]/80"
+              className="absolute inset-0 bg-[#050508]/80"
               onClick={() => setIsMobileMenuOpen(false)}
             />
 
@@ -169,12 +169,12 @@ export default function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 bottom-0 w-[85%] max-w-[400px] bg-white/95 dark:bg-[#0a0a12]/95 backdrop-blur-2xl border-l border-gray-200/50 dark:border-white/10 shadow-2xl flex flex-col pt-24 px-6 pb-8"
+              className="absolute right-0 top-0 bottom-0 w-[85%] max-w-[400px] bg-[#0a0a12]/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl flex flex-col pt-24 px-6 pb-8"
             >
               {/* Close Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="absolute top-6 right-6 text-gray-500 dark:text-white/70 p-2.5 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 shadow-sm"
+                className="absolute top-6 right-6 text-white/70 p-2.5 hover:bg-white/10 rounded-full transition-colors bg-white/5 border border-white/10 shadow-sm"
                 aria-label="Close Menu"
               >
                 <IconX size={20} />
@@ -194,8 +194,8 @@ export default function Navbar() {
                       <Link
                         href={link.path}
                         className={`group flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${isActive 
-                          ? "bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/30 text-purple-700 dark:text-white shadow-sm" 
-                          : "bg-gray-50/50 dark:bg-white/5 border-transparent dark:border-white/5 text-gray-700 dark:text-white/70 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-black dark:hover:text-white"
+                          ? "bg-purple-500/10 border-purple-500/30 text-white shadow-sm" 
+                          : "bg-white/5 border-white/5 text-white/70 hover:bg-white/10 hover:text-white"
                         }`}
                       >
                         <span className="font-['Outfit'] font-bold text-lg tracking-wide">{link.name}</span>
@@ -204,7 +204,7 @@ export default function Navbar() {
                           animate={{ x: isActive ? 4 : 0 }}
                           className="transition-transform duration-300 group-hover:translate-x-1"
                         >
-                          <IconChevronRight size={20} className={isActive ? "text-purple-600 dark:text-purple-400" : "text-gray-400 dark:text-white/30 group-hover:text-black dark:group-hover:text-white/60"} />
+                          <IconChevronRight size={20} className={isActive ? "text-purple-400" : "text-white/30 group-hover:text-white/60"} />
                         </motion.div>
                       </Link>
                     </motion.div>
@@ -217,20 +217,20 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="mt-auto flex flex-col gap-4 pt-8 border-t border-gray-200 dark:border-white/10"
+                className="mt-auto flex flex-col gap-4 pt-8 border-t border-white/10"
               >
                 <a
                   href="tel:+919898558222"
-                  className="w-full h-[56px] rounded-2xl flex items-center justify-center gap-3 font-['Outfit'] font-bold text-lg text-gray-800 dark:text-white border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition-colors shadow-sm"
+                  className="w-full h-[56px] rounded-2xl flex items-center justify-center gap-3 font-['Outfit'] font-bold text-lg text-white border border-white/10 bg-white/5 hover:bg-white/10 transition-colors shadow-sm"
                 >
-                  <IconPhoneCall size={22} className="text-blue-500 dark:text-blue-400" />
+                  <IconPhoneCall size={22} className="text-blue-400" />
                   Call +91 98985 58222
                 </a>
                 <a
                   href="https://wa.me/919898558222"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full h-[56px] rounded-2xl flex items-center justify-center gap-3 font-['Outfit'] font-bold text-lg text-gray-800 dark:text-white border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition-colors shadow-sm"
+                  className="w-full h-[56px] rounded-2xl flex items-center justify-center gap-3 font-['Outfit'] font-bold text-lg text-white border border-white/10 bg-white/5 hover:bg-white/10 transition-colors shadow-sm"
                 >
                   <IconBrandWhatsapp size={22} className="text-[#25D366]" stroke={2} />
                   Chat on WhatsApp

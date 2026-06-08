@@ -123,7 +123,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative flex flex-col h-[480px] sm:h-[550px] md:h-auto md:min-h-[70vh] md:flex-row md:items-center font-['Inter',sans-serif] bg-[#050508] z-20">
+    <section className="relative flex flex-col h-[480px] sm:h-[550px] md:h-auto md:min-h-[85vh] md:flex-row md:items-center font-['Inter',sans-serif] bg-[#050508] z-20">
 
       {/* ════════════════════════════════════════════════════════════════
           DESKTOP BACKGROUND (Hidden on mobile)
@@ -430,7 +430,7 @@ export default function HeroSection() {
         initial="hidden"
         animate="visible"
         variants={searchBarVariants}
-        className="hidden md:block absolute -bottom-[6rem] left-0 right-0 px-8 md:px-12 z-40"
+        className="hidden md:block absolute bottom-0 translate-y-1/2 left-0 right-0 px-8 md:px-12 z-40"
       >
         <div className="max-w-6xl mx-auto bg-white/90 dark:bg-[#0a0a12]/40 backdrop-blur-3xl border border-gray-200 dark:border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1),0_0_32px_rgba(147,51,234,0.05)] dark:shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6),0_0_32px_rgba(147,51,234,0.15)] rounded-[2rem] p-4 lg:p-6 transition-colors duration-500">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 items-end">

@@ -8,11 +8,12 @@ import {
   IconArrowLeft, IconMaximize, IconCalendarMonth, IconDashboard, 
   IconGasStation, IconManualGearbox, IconUser, IconMapPin, 
   IconShieldCheck, IconBrandWhatsapp, IconPhoneCall, IconInfoCircle,
-  IconArrowRight
+  IconArrowRight, IconX, IconChevronLeft, IconChevronRight
 } from '@tabler/icons-react';
 import api from '@/lib/api';
 import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink } from '@/lib/utils';
 import CarCard from '@/components/CarCard';
+import EmiCalculator from '@/components/EmiCalculator';
 
 export default function CarDetailPage() {
   const { slug } = useParams();
@@ -22,6 +23,7 @@ export default function CarDetailPage() {
   const [similarCars, setSimilarCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeImageIdx, setActiveImageIdx] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   // Smart Sticky State
   const rightColumnRef = useRef(null);
@@ -92,9 +94,9 @@ export default function CarDetailPage() {
   if (!car) {
     return (
       <main className="flex-grow pt-24 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full text-center">
-        <h1 className="text-3xl font-bold text-white mb-4">Car Not Found</h1>
-        <p className="text-gray-400 mb-8">The vehicle you are looking for may have been sold or removed.</p>
-        <Link href="/catalog" className="px-6 py-3 bg-purple-600 text-white rounded-full font-bold">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Car Not Found</h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-8">The vehicle you are looking for may have been sold or removed.</p>
+        <Link href="/catalog" className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-bold transition-colors">
           Back to Catalog
         </Link>
       </main>
@@ -132,11 +134,36 @@ export default function CarDetailPage() {
     }
   });
 
+  // Categorize features
+  const featureCategories = {
+    EXTERIOR: ['alloy', 'fog', 'sunroof', 'led', 'headlight', 'wiper', 'roof', 'spoiler', 'drl', 'mirror'],
+    INTERIOR: ['leather', 'seat', 'ambient', 'ac', 'cruise', 'steering', 'upholstery', 'wood', 'dashboard', 'trim'],
+    SAFETY: ['abs', 'esc', 'camera', 'sensor', 'airbag', 'ebd', 'brake', 'traction', 'hill', 'isofix', 'security'],
+    CONVENIENCE: ['android', 'apple', 'wireless', 'push', 'keyless', 'bluetooth', 'navigation', 'display', 'touch', 'auto', 'power', 'window']
+  };
+
+  const categorizeFeature = (feature) => {
+    const f = feature.toLowerCase();
+    for (const [cat, keywords] of Object.entries(featureCategories)) {
+      if (keywords.some(kw => f.includes(kw))) {
+        return cat;
+      }
+    }
+    return 'OTHER';
+  };
+
+  const groupedFeatures = {};
+  regularFeatures.forEach(feat => {
+    const cat = categorizeFeature(feat);
+    if (!groupedFeatures[cat]) groupedFeatures[cat] = [];
+    groupedFeatures[cat].push(feat);
+  });
+
   return (
     <main className="flex-grow pt-8 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 mb-8 text-sm font-medium text-gray-400">
-        <button onClick={() => router.back()} className="hover:text-purple-400 transition-colors flex items-center gap-1 group">
+      <nav className="flex items-center gap-2 mb-8 text-sm font-medium text-gray-500 dark:text-gray-400">
+        <button onClick={() => router.back()} className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center gap-1 group">
           <IconArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
           Back to Catalog
         </button>
@@ -146,20 +173,28 @@ export default function CarDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* ════ LEFT COLUMN: Gallery & Description ════ */}
-        <div className="lg:col-span-7 flex flex-col gap-8">
+        <div className="lg:col-span-7 flex flex-col gap-5">
           
           {/* Image Gallery */}
           <div className="flex flex-col gap-4">
             {/* Main Image */}
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#12121f] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] group">
+            <div className="relative aspect-[4/3] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-gray-100 dark:bg-[#12121f] border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] group">
               {images.length > 0 ? (
-                <Image 
-                  src={getOptimizedImage(images[activeImageIdx]?.url, 1200)} 
-                  alt={title} 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                  priority
-                />
+                <>
+                  <Image 
+                    src={getOptimizedImage(images[activeImageIdx]?.url, 1200)} 
+                    alt={title} 
+                    fill 
+                    className="object-contain group-hover:scale-105 transition-transform duration-700" 
+                    priority
+                  />
+                  <button 
+                    onClick={() => setIsLightboxOpen(true)}
+                    className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 shadow-lg border border-white/20"
+                  >
+                    <IconMaximize size={24} />
+                  </button>
+                </>
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-gray-600 bg-white/5">No Image Available</div>
               )}
@@ -177,12 +212,12 @@ export default function CarDetailPage() {
 
             {/* Thumbnail Strip */}
             {images.length > 1 && (
-              <div className="flex gap-4 overflow-x-auto custom-scrollbar pb-2 snap-x">
+              <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-3 rounded-2xl shadow-sm flex gap-3 overflow-x-auto custom-scrollbar snap-x">
                 {images.map((img, idx) => (
                   <button 
                     key={idx} 
                     onClick={() => setActiveImageIdx(idx)}
-                    className={`shrink-0 w-32 aspect-video rounded-xl overflow-hidden border-2 transition-all duration-300 snap-start relative ${activeImageIdx === idx ? 'border-purple-500 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                    className={`shrink-0 w-32 aspect-video rounded-xl overflow-hidden border-2 transition-all duration-300 snap-start relative ${activeImageIdx === idx ? 'border-purple-500 opacity-100 shadow-[0_0_15px_rgba(168,85,247,0.4)] scale-[0.98]' : 'border-transparent opacity-70 hover:opacity-100'}`}
                   >
                     <Image src={getOptimizedImage(img.url, 300)} alt={`${title} ${idx+1}`} fill className="object-cover" />
                   </button>
@@ -192,25 +227,45 @@ export default function CarDetailPage() {
           </div>
 
           {/* Description Section */}
-          <div className="bg-white/5 backdrop-blur-[20px] border border-white/10 rounded-2xl p-6 md:p-8 mt-4">
-            <h2 className="text-2xl font-bold text-white mb-6" style={{ fontFamily: 'var(--font-outfit)' }}>About this Car</h2>
-            <div className="text-gray-300 mb-8 leading-relaxed whitespace-pre-wrap">
+          <div className="bg-white dark:bg-white/5 backdrop-blur-[20px] border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-none rounded-2xl p-6 md:p-8">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6" style={{ fontFamily: 'var(--font-outfit)' }}>About this Car</h2>
+            <div className="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed whitespace-pre-wrap">
               {car.description || `Experience the pinnacle of automotive engineering with this meticulously maintained ${title}. This vehicle blends everyday usability with unparalleled performance.`}
             </div>
 
             {regularFeatures.length > 0 && (
-              <>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Key Features & Highlights</h3>
-                <div className="flex flex-wrap gap-3">
-                  {regularFeatures.map((feat, i) => (
-                    <span key={`feat-${i}`} className="bg-purple-500/10 text-purple-400 border border-purple-500/20 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wider">
-                      {feat}
-                    </span>
+              <div className="mt-8 pt-8 border-t border-gray-100 dark:border-white/10">
+                <div className="flex items-center justify-between cursor-pointer group" onClick={() => {}}>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Features</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8 mt-6">
+                  {Object.entries(groupedFeatures).map(([category, features]) => (
+                    <div key={category}>
+                      <h4 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+                        {category}
+                      </h4>
+                      <ul className="space-y-3">
+                        {features.map((feat, i) => (
+                          <li key={`${category}-${i}`} className="flex items-start gap-3">
+                            <div className="mt-0.5 w-5 h-5 rounded-full bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 flex items-center justify-center shrink-0">
+                              <svg className="w-3 h-3 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                              </svg>
+                            </div>
+                            <span className="text-gray-700 dark:text-gray-300 font-medium">{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
                 </div>
-              </>
+              </div>
             )}
           </div>
+
+          {/* EMI Calculator */}
+          <EmiCalculator carPrice={car.price || 1000000} />
         </div>
 
         {/* ════ RIGHT COLUMN: Info ════ */}
@@ -224,19 +279,19 @@ export default function CarDetailPage() {
             {/* Title & Price */}
             <div>
               <div className="flex items-center gap-3 mb-3">
-                <span className="bg-white/10 text-gray-300 px-2 py-1 rounded text-[10px] font-bold tracking-widest uppercase border border-white/10">
+                <span className="bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300 px-2 py-1 rounded text-[10px] font-bold tracking-widest uppercase border border-gray-200 dark:border-white/10">
                   Pre-Owned
                 </span>
                 {(car.registration || car.registrationState) && (
-                  <span className="text-gray-400 text-xs font-medium uppercase">
+                  <span className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase">
                     RTO: {car.registration || car.registrationState}
                   </span>
                 )}
               </div>
-              <h1 className="text-3xl md:text-4xl lg:text-[40px] text-white font-bold mb-3 leading-tight" style={{ fontFamily: 'var(--font-outfit)' }}>
+              <h1 className="text-3xl md:text-4xl lg:text-[40px] text-gray-900 dark:text-white font-bold mb-3 leading-tight" style={{ fontFamily: 'var(--font-outfit)' }}>
                 {title}
               </h1>
-              <p className="text-3xl font-bold text-purple-400 mb-5">
+              <p className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-5">
                 {formatPrice(car.price)}
               </p>
               
@@ -244,18 +299,18 @@ export default function CarDetailPage() {
               {(photoBadges.length > 0 || isLoanAvailable) && (
                 <div className="flex flex-wrap gap-3">
                   {photoBadges.map((badge, i) => (
-                    <div key={`special-badge-${i}`} className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600/20 to-purple-500/10 border border-purple-500/30 rounded-xl py-2 px-4 shadow-[0_0_15px_rgba(168,85,247,0.15)]">
-                      <IconShieldCheck className="text-purple-400" size={18} />
-                      <span className="text-sm font-bold text-white uppercase tracking-wide">
+                    <div key={`special-badge-${i}`} className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-50 to-white dark:from-purple-600/20 dark:to-purple-500/10 border border-purple-200 dark:border-purple-500/30 rounded-xl py-2 px-4 shadow-sm dark:shadow-[0_0_15px_rgba(168,85,247,0.15)]">
+                      <IconShieldCheck className="text-purple-600 dark:text-purple-400" size={18} />
+                      <span className="text-sm font-bold text-purple-900 dark:text-white uppercase tracking-wide">
                         {badge}
                       </span>
                     </div>
                   ))}
 
                   {isLoanAvailable && (
-                    <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-xl py-2 px-4 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
-                      <IconShieldCheck className="text-emerald-400" size={18} />
-                      <span className="text-sm font-bold text-emerald-400 uppercase tracking-wide">
+                    <div className="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 rounded-xl py-2 px-4 shadow-sm dark:shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                      <IconShieldCheck className="text-emerald-600 dark:text-emerald-400" size={18} />
+                      <span className="text-sm font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide">
                         Loan Available
                       </span>
                     </div>
@@ -265,76 +320,76 @@ export default function CarDetailPage() {
             </div>
 
             {/* Specs Card (Bento Grid) */}
-            <div className="bg-white/[0.03] backdrop-blur-[20px] border border-white/10 rounded-2xl p-6 shadow-[0_0_30px_rgba(124,58,237,0.05)]">
+            <div className="bg-white dark:bg-white/[0.03] backdrop-blur-[20px] border border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-sm dark:shadow-[0_0_30px_rgba(124,58,237,0.05)]">
               <div className="grid grid-cols-2 gap-y-6 gap-x-4">
                 <div className="flex items-start gap-3">
-                  <div className="bg-purple-500/20 p-2.5 rounded-xl text-purple-400">
+                  <div className="bg-purple-100 dark:bg-purple-500/20 p-2.5 rounded-xl text-purple-600 dark:text-purple-400">
                     <IconCalendarMonth size={20} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Mfg. Year</p>
-                    <p className="text-base text-white font-semibold">{car.year || 'N/A'}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 uppercase tracking-wider">Mfg. Year</p>
+                    <p className="text-base text-gray-900 dark:text-white font-semibold">{car.year || 'N/A'}</p>
                   </div>
                 </div>
                 
                 <div className="flex items-start gap-3">
-                  <div className="bg-purple-500/20 p-2.5 rounded-xl text-purple-400">
+                  <div className="bg-purple-100 dark:bg-purple-500/20 p-2.5 rounded-xl text-purple-600 dark:text-purple-400">
                     <IconDashboard size={20} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Kilometers</p>
-                    <p className="text-base text-white font-semibold">{car.kms ? formatKms(car.kms) : 'N/A'}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 uppercase tracking-wider">Kilometers</p>
+                    <p className="text-base text-gray-900 dark:text-white font-semibold">{car.kms ? formatKms(car.kms) : 'N/A'}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="bg-purple-500/20 p-2.5 rounded-xl text-purple-400">
+                  <div className="bg-purple-100 dark:bg-purple-500/20 p-2.5 rounded-xl text-purple-600 dark:text-purple-400">
                     <IconGasStation size={20} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Fuel Type</p>
-                    <p className="text-base text-white font-semibold">{car.fuelType || 'N/A'}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 uppercase tracking-wider">Fuel Type</p>
+                    <p className="text-base text-gray-900 dark:text-white font-semibold">{car.fuelType || 'N/A'}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="bg-purple-500/20 p-2.5 rounded-xl text-purple-400">
+                  <div className="bg-purple-100 dark:bg-purple-500/20 p-2.5 rounded-xl text-purple-600 dark:text-purple-400">
                     <IconManualGearbox size={20} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Transmission</p>
-                    <p className="text-base text-white font-semibold">{car.transmission || 'N/A'}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 uppercase tracking-wider">Transmission</p>
+                    <p className="text-base text-gray-900 dark:text-white font-semibold">{car.transmission || 'N/A'}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="bg-purple-500/20 p-2.5 rounded-xl text-purple-400">
+                  <div className="bg-purple-100 dark:bg-purple-500/20 p-2.5 rounded-xl text-purple-600 dark:text-purple-400">
                     <IconUser size={20} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Owners</p>
-                    <p className="text-base text-white font-semibold">{car.owners || '1st Owner'}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 uppercase tracking-wider">Owners</p>
+                    <p className="text-base text-gray-900 dark:text-white font-semibold">{car.owners || '1st Owner'}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="bg-purple-500/20 p-2.5 rounded-xl text-purple-400">
+                  <div className="bg-purple-100 dark:bg-purple-500/20 p-2.5 rounded-xl text-purple-600 dark:text-purple-400">
                     <IconShieldCheck size={20} />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Insurance</p>
-                    <p className="text-base text-white font-semibold">{car.insurance || 'N/A'}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 uppercase tracking-wider">Insurance</p>
+                    <p className="text-base text-gray-900 dark:text-white font-semibold">{car.insurance || 'N/A'}</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Trust Indicator */}
-            <div className="flex items-center gap-4 bg-[#12121f] border border-purple-500/30 rounded-xl p-5 mt-2 shadow-lg">
-              <IconShieldCheck size={32} className="text-purple-400 shrink-0" />
+            <div className="flex items-center gap-4 bg-purple-50 dark:bg-[#12121f] border border-purple-200 dark:border-purple-500/30 rounded-xl p-5 mt-2 shadow-sm dark:shadow-lg">
+              <IconShieldCheck size={32} className="text-purple-600 dark:text-purple-400 shrink-0" />
               <div>
-                <p className="font-bold text-white">Hariram Certified Pre-Owned</p>
-                <p className="text-sm text-gray-400 mt-0.5">150-Point Inspection Completed</p>
+                <p className="font-bold text-gray-900 dark:text-white">Hariram Certified Pre-Owned</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">150-Point Inspection Completed</p>
               </div>
             </div>
 
@@ -357,7 +412,7 @@ export default function CarDetailPage() {
               
               <a 
                 href="tel:+919373482016"
-                className="w-full bg-white/5 border border-white/10 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-md transform active:scale-[0.98]"
+                className="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-50 dark:hover:bg-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all duration-300 backdrop-blur-md transform active:scale-[0.98] shadow-sm dark:shadow-none"
               >
                 <IconPhoneCall size={22} />
                 Call Us Now
@@ -370,10 +425,10 @@ export default function CarDetailPage() {
 
       {/* ════ Similar Cars Section ════ */}
       {similarCars.length > 0 && (
-        <section className="mt-32 border-t border-white/10 pt-16">
+        <section className="mt-32 border-t border-gray-200 dark:border-white/10 pt-16">
           <div className="flex justify-between items-end mb-10">
-            <h2 className="text-3xl font-bold text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Similar Vehicles</h2>
-            <Link href={`/catalog?make=${car.make}`} className="text-purple-400 font-bold hover:underline flex items-center gap-1 group">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Similar Vehicles</h2>
+            <Link href={`/catalog?make=${car.make}`} className="text-purple-600 dark:text-purple-400 font-bold hover:underline flex items-center gap-1 group">
               View All {car.make} <IconArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -384,6 +439,53 @@ export default function CarDetailPage() {
             ))}
           </div>
         </section>
+      )}
+
+      {/* ════ Lightbox ════ */}
+      {isLightboxOpen && images.length > 0 && (
+        <div className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center backdrop-blur-xl">
+          <button 
+            onClick={() => setIsLightboxOpen(false)}
+            className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-50 p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full backdrop-blur-md"
+          >
+            <IconX size={28} stroke={1.5} />
+          </button>
+          
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
+            }}
+            className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-3 transition-all z-50 backdrop-blur-md"
+          >
+            <IconChevronLeft size={28} stroke={1.5} />
+          </button>
+          
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveImageIdx(prev => (prev === images.length - 1 ? 0 : prev + 1));
+            }}
+            className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-3 transition-all z-50 backdrop-blur-md"
+          >
+            <IconChevronRight size={28} stroke={1.5} />
+          </button>
+
+          <div className="relative w-full h-full max-w-7xl max-h-[85vh] p-4 md:p-12">
+            <Image 
+              src={getOptimizedImage(images[activeImageIdx]?.url, 1920)} 
+              alt={`${title} fullscreen`}
+              fill
+              className="object-contain"
+              quality={95}
+              priority
+            />
+          </div>
+
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/60 text-sm font-medium tracking-wide">
+            {activeImageIdx + 1} / {images.length} — swipe or use arrows
+          </div>
+        </div>
       )}
     </main>
   );
