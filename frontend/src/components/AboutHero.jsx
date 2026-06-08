@@ -280,7 +280,7 @@ export default function AboutHero() {
                   }}
                 >
                   <Image
-                    src="/showroom-hero.png"
+                    src="/hero_bg_real.jpg"
                     alt="Hariram Motors Showroom — Premium used car dealership in Surat"
                     fill
                     className="object-cover"

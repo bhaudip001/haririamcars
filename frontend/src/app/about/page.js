@@ -235,7 +235,7 @@ export default function AboutPage() {
 
                 {/* Description */}
                 <p className="font-['Inter'] text-[15px] text-gray-600 dark:text-[#a0a0b8] leading-7 transition-colors">
-                  We are dedicated to providing the finest quality pre-owned vehicles at the most competitive prices. Complete transparency, zero hidden costs — our customers always win.
+                  We are dedicated to providing the finest quality pre-owned vehicles at the most competitive prices. Complete transparency, zero hidden costs — our customers always win. Unbeatable deals on certified cars.
                 </p>
               </div>
             </div>
