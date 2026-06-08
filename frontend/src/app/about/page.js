@@ -60,74 +60,110 @@ export default function AboutPage() {
       {/* Anchor for "Explore Our Story" CTA */}
       <div id="our-story" />
 
-      {/* OUR STORY — 2 COLUMN */}
-      <section className="py-20 w-full">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-12">
+      {/* OUR STORY — PREMIUM EDITORIAL REDESIGN */}
+      <section className="relative pt-28 pb-12 overflow-hidden bg-white dark:bg-[#0a0a12] transition-colors duration-500">
+        {/* Decorative background */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-purple-600/[0.03] dark:bg-purple-600/[0.05] rounded-full blur-[120px]" />
+          <div className="absolute bottom-20 left-0 w-[400px] h-[400px] bg-purple-600/[0.02] dark:bg-purple-600/[0.03] rounded-full blur-[100px]" />
+        </div>
 
-            {/* Left (48%) */}
-            <div className="lg:w-[48%] flex flex-col justify-center">
-              <div className="text-purple-400 text-[11px] uppercase tracking-[0.15em] mb-4 font-bold">
-                Our Story
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row gap-16 lg:gap-20">
+
+            {/* ── LEFT: Text Content (50%) ── */}
+            <div className="lg:w-[50%] flex flex-col justify-center">
+              {/* Pill badge */}
+              <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6 w-max bg-purple-50 dark:bg-purple-600/10 border border-purple-200 dark:border-purple-500/20 transition-colors">
+                <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                <span className="text-purple-600 dark:text-purple-400 text-[11px] uppercase tracking-[0.15em] font-bold transition-colors">Our Story</span>
               </div>
-              <h2 className="font-['Outfit'] font-bold text-[38px] text-text-primary leading-[1.2] mb-8">
-                A Decade of<br />Honest Deals
+
+              <h2 className="font-['Outfit'] font-bold text-[42px] text-black dark:text-white leading-tight mb-4 transition-colors">
+                A Decade of <span className="bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">Honest Deals</span>
               </h2>
 
-              <div className="space-y-6 mb-12">
-                <p className="font-['Inter'] text-[16px] text-text-secondary leading-8">
-                  What started in 2013 as a small lot with big dreams has evolved into Surat&apos;s most trusted pre-owned car dealership. Our foundation was simple: treat every customer like family.
+              <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-transparent mb-8" />
+
+              <div className="space-y-5 mb-10">
+                <p className="font-['Inter'] text-[16px] text-gray-600 dark:text-[#a0a0b8] leading-8 transition-colors">
+                  What started in 2013 as a small lot with big dreams has evolved into Surat&apos;s most trusted pre-owned car dealership. Our foundation was simple: <strong className="text-black dark:text-white transition-colors">treat every customer like family.</strong>
                 </p>
-                <p className="font-['Inter'] text-[16px] text-text-secondary leading-8">
-                  Through sheer trust and word of mouth, we&apos;ve grown exponentially. We&apos;ve proudly served over 500 families, ensuring each one drives away with a smile and total peace of mind.
+                <p className="font-['Inter'] text-[16px] text-gray-600 dark:text-[#a0a0b8] leading-8 transition-colors">
+                  Through sheer trust and word of mouth, we&apos;ve grown exponentially. We&apos;ve proudly served over <strong className="text-black dark:text-white transition-colors">500 families</strong>, ensuring each one drives away with a smile and total peace of mind.
                 </p>
-                <p className="font-['Inter'] text-[16px] text-text-secondary leading-8">
+                <p className="font-['Inter'] text-[16px] text-gray-600 dark:text-[#a0a0b8] leading-8 transition-colors">
                   Today, with a constantly refreshed inventory of over 150 meticulously inspected cars, full documentation support, and a commitment to transparency, we are Surat&apos;s go-to automotive destination.
                 </p>
               </div>
 
-
+              {/* Feature badges */}
+              <div className="flex flex-wrap gap-3">
+                <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-full px-4 py-2 transition-colors">
+                  <div className="w-2 h-2 rounded-full bg-green-400" />
+                  <span className="text-green-700 dark:text-green-400 text-[13px] font-medium font-['Inter'] transition-colors">100-Point Inspection</span>
+                </div>
+                <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-full px-4 py-2 transition-colors">
+                  <div className="w-2 h-2 rounded-full bg-green-400" />
+                  <span className="text-green-700 dark:text-green-400 text-[13px] font-medium font-['Inter'] transition-colors">RC Transfer Support</span>
+                </div>
+                <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-full px-4 py-2 transition-colors">
+                  <div className="w-2 h-2 rounded-full bg-green-400" />
+                  <span className="text-green-700 dark:text-green-400 text-[13px] font-medium font-['Inter'] transition-colors">Non-Accidental Guarantee</span>
+                </div>
+              </div>
             </div>
 
-            {/* Right (52%) */}
-            <div className="lg:w-[52%]">
-              <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-white/5 mb-6">
-                <img
-                  src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=2000&auto=format&fit=crop"
-                  alt="Hariram Motors Showroom"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-wrap gap-4">
-                <div className="inline-flex items-center gap-2 border border-border-main rounded-lg px-4 py-2 text-[14px] text-text-secondary">
-                  <span className="text-purple-400 font-bold">✓</span> 100-Point Inspection
-                </div>
-                <div className="inline-flex items-center gap-2 border border-border-main rounded-lg px-4 py-2 text-[14px] text-text-secondary">
-                  <span className="text-purple-400 font-bold">✓</span> RC Transfer Support
-                </div>
-              </div>
+            {/* ── RIGHT: Timeline (50%) ── */}
+            <div className="lg:w-[50%] flex flex-col justify-center">
 
-              {/* Horizontal Timeline */}
-              <div className="flex flex-col sm:flex-row flex-wrap sm:items-center gap-6 sm:gap-10 mt-8 pt-6 border-t border-purple-600/20">
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-purple-500 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-bold text-text-primary mr-2">2013</span>
-                    <span className="text-text-secondary">Founded</span>
+              {/* Vertical Timeline */}
+              <div className="relative pl-8">
+                {/* Vertical line */}
+                <div className="absolute left-[11px] top-2 bottom-2 w-px bg-gradient-to-b from-purple-500 via-purple-400 to-transparent" />
+
+                {/* Milestone 1 */}
+                <div className="relative mb-8 group">
+                  <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-white dark:bg-[#0a0a12] border-2 border-purple-500 flex items-center justify-center transition-colors group-hover:shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+                    <div className="w-2 h-2 rounded-full bg-purple-500" />
+                  </div>
+                  <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] rounded-2xl p-5 transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_10px_30px_rgba(124,58,237,0.06)] dark:hover:shadow-[0_10px_30px_rgba(124,58,237,0.1)]">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2013</span>
+                      <div className="h-px flex-grow bg-gradient-to-r from-purple-500/30 to-transparent" />
+                    </div>
+                    <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">The Beginning</h4>
+                    <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Started with a small lot, a big dream, and one promise — honesty above all.</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-purple-500 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-bold text-text-primary mr-2">2018</span>
-                    <span className="text-text-secondary">500 Cars Sold</span>
+
+                {/* Milestone 2 */}
+                <div className="relative mb-8 group">
+                  <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-white dark:bg-[#0a0a12] border-2 border-purple-500 flex items-center justify-center transition-colors group-hover:shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+                    <div className="w-2 h-2 rounded-full bg-purple-500" />
+                  </div>
+                  <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] rounded-2xl p-5 transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_10px_30px_rgba(124,58,237,0.06)] dark:hover:shadow-[0_10px_30px_rgba(124,58,237,0.1)]">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2018</span>
+                      <div className="h-px flex-grow bg-gradient-to-r from-purple-500/30 to-transparent" />
+                    </div>
+                    <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">500 Cars Milestone</h4>
+                    <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Crossed 500 successful sales — entirely through word-of-mouth referrals.</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-purple-500 flex-shrink-0"></div>
-                  <div>
-                    <span className="font-bold text-text-primary mr-2">2024</span>
-                    <span className="text-text-secondary">#1 in Surat</span>
+
+                {/* Milestone 3 */}
+                <div className="relative group">
+                  <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-white dark:bg-[#0a0a12] border-2 border-purple-500 flex items-center justify-center transition-colors group-hover:shadow-[0_0_15px_rgba(124,58,237,0.4)]">
+                    <div className="w-2 h-2 rounded-full bg-purple-500" />
+                  </div>
+                  <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] rounded-2xl p-5 transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_10px_30px_rgba(124,58,237,0.06)] dark:hover:shadow-[0_10px_30px_rgba(124,58,237,0.1)]">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2024</span>
+                      <div className="h-px flex-grow bg-gradient-to-r from-purple-500/30 to-transparent" />
+                    </div>
+                    <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">#1 in Surat</h4>
+                    <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Recognized as Surat&apos;s most trusted pre-owned car destination with 150+ stock.</p>
                   </div>
                 </div>
               </div>
@@ -138,7 +174,7 @@ export default function AboutPage() {
       </section>
 
       {/* MISSION & VISION — PREMIUM REDESIGN */}
-      <section className="relative py-28 overflow-hidden bg-white dark:bg-[#0a0a12] transition-colors duration-500">
+      <section className="relative pt-12 pb-28 overflow-hidden bg-white dark:bg-[#0a0a12] transition-colors duration-500">
         {/* Decorative background */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           {/* Large faint "01 02" watermark numbers */}
@@ -286,24 +322,37 @@ export default function AboutPage() {
                 </li>
               </ul>
 
-              {/* Graphic 1: List with glowing cursor */}
-              <div className="h-40 w-full mt-auto relative rounded-xl border border-border-subtle bg-bg-primary p-4 flex flex-col justify-end overflow-hidden group-hover:border-blue-500/20 transition-colors">
-                <div className="w-full h-4 bg-white/5 rounded mb-3 flex items-center px-2 gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></div>
-                  <div className="w-16 h-1.5 bg-white/10 rounded"></div>
-                </div>
-                <div className="w-full h-4 bg-white/5 rounded mb-3 flex items-center px-2 gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></div>
-                  <div className="w-24 h-1.5 bg-white/10 rounded"></div>
-                </div>
-                <div className="w-full flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]"></div>
-                  <div className="flex-grow h-8 bg-gradient-to-r from-blue-600 to-cyan-500 rounded relative shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                    {/* Fake Cursor */}
-                    <svg className="absolute -bottom-4 -right-2 w-8 h-8 text-text-primary drop-shadow-[0_0_5px_rgba(255,255,255,0.8)] z-10" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2 1-3.2-7.4-4.4 4.8z" />
-                    </svg>
+              {/* Graphic 1: Car Inspection Checklist */}
+              <div className="h-44 w-full mt-auto relative rounded-xl border border-blue-500/15 bg-[#0d0d1a] p-5 flex flex-col overflow-hidden group-hover:border-blue-500/30 transition-colors">
+                <div className="text-[10px] uppercase tracking-widest text-blue-400/60 mb-3 font-bold">Inspection Report</div>
+                {/* Check items */}
+                <div className="space-y-2.5 flex-grow">
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded bg-green-500/20 border border-green-500/40 flex items-center justify-center flex-shrink-0">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                    </div>
+                    <div className="flex-grow h-1.5 bg-white/8 rounded" />
+                    <span className="text-[10px] text-green-400 font-bold">PASS</span>
                   </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded bg-green-500/20 border border-green-500/40 flex items-center justify-center flex-shrink-0">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                    </div>
+                    <div className="flex-grow h-1.5 bg-white/8 rounded" />
+                    <span className="text-[10px] text-green-400 font-bold">PASS</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 rounded bg-green-500/20 border border-green-500/40 flex items-center justify-center flex-shrink-0">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                    </div>
+                    <div className="flex-grow h-1.5 bg-white/8 rounded" />
+                    <span className="text-[10px] text-green-400 font-bold">PASS</span>
+                  </div>
+                </div>
+                {/* Bottom bar */}
+                <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-[10px] text-blue-300/60">100 / 100 points cleared</span>
+                  <div className="px-2.5 py-1 rounded bg-green-500/20 border border-green-500/30 text-[9px] text-green-400 font-bold tracking-wider">CERTIFIED</div>
                 </div>
               </div>
             </div>
@@ -335,24 +384,30 @@ export default function AboutPage() {
                 </li>
               </ul>
 
-              {/* Graphic 2: Forms and Tooltip */}
-              <div className="h-40 w-full mt-auto relative rounded-xl border border-border-subtle bg-bg-primary p-4 flex flex-col justify-end gap-3 overflow-hidden group-hover:border-blue-500/20 transition-colors">
-                <div className="w-3/4 h-6 border border-blue-500/40 rounded flex items-center px-2 relative">
-                  <div className="w-12 h-1.5 bg-blue-500/40 rounded"></div>
-                  {/* Tooltip */}
-                  <div className="absolute -top-6 right-0 w-6 h-6 border border-cyan-400 rounded-md flex items-center justify-center text-cyan-400 text-[10px] font-bold shadow-[0_0_10px_rgba(34,211,238,0.5)] bg-bg-secondary">
-                    ?
+              {/* Graphic 2: Valuation Price Offer */}
+              <div className="h-44 w-full mt-auto relative rounded-xl border border-blue-500/15 bg-[#0d0d1a] p-5 flex flex-col overflow-hidden group-hover:border-blue-500/30 transition-colors">
+                <div className="text-[10px] uppercase tracking-widest text-blue-400/60 mb-3 font-bold">Valuation Result</div>
+                {/* Car Info */}
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                    <IconCar size={20} className="text-blue-400" />
+                  </div>
+                  <div>
+                    <div className="text-white text-[13px] font-bold font-['Outfit']">Hyundai Creta</div>
+                    <div className="text-white/40 text-[10px]">2021 · Petrol · 32,000 km</div>
                   </div>
                 </div>
-                <div className="w-full h-8 border border-blue-400 rounded flex items-center px-2 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                  <div className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_#60a5fa]"></div>
-                  <div className="w-32 h-1.5 bg-blue-400/30 rounded ml-2"></div>
-                </div>
-                <div className="w-2/3 h-6 border border-blue-500/40 rounded flex items-center px-2 relative">
-                  <div className="w-8 h-1.5 bg-blue-500/40 rounded"></div>
-                  <svg className="absolute -bottom-3 -right-3 w-6 h-6 text-cyan-300 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)] z-10" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M7 2l12 11.2-5.8.5 3.3 7.3-2.2 1-3.2-7.4-4.4 4.8z" />
-                  </svg>
+                {/* Price offer */}
+                <div className="flex-grow flex items-center">
+                  <div className="w-full rounded-lg bg-blue-500/10 border border-blue-500/25 p-3 flex items-center justify-between">
+                    <div>
+                      <div className="text-[10px] text-blue-300/50 uppercase tracking-wider mb-0.5">Best Offer</div>
+                      <div className="text-blue-300 text-[22px] font-black font-['Outfit']">₹8,45,000</div>
+                    </div>
+                    <div className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-[11px] font-bold shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                      Accept →
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -384,19 +439,37 @@ export default function AboutPage() {
                 </li>
               </ul>
 
-              {/* Graphic 3: Dashboard Speedometer and Button */}
-              <div className="h-40 w-full mt-auto relative rounded-xl border border-border-subtle bg-bg-primary p-4 flex flex-col justify-end overflow-hidden group-hover:border-blue-500/20 transition-colors">
-                <div className="w-1/2 h-1.5 bg-white/10 rounded mb-2"></div>
-                <div className="w-3/4 h-1.5 bg-white/10 rounded mb-4"></div>
-
-                {/* Fake Speedometer */}
-                <div className="absolute bottom-10 right-4 w-16 h-16 border-[3px] border-cyan-400 rounded-full border-b-transparent border-l-transparent -rotate-45 shadow-[0_0_15px_rgba(34,211,238,0.4)]">
-                  <div className="absolute top-1/2 left-1/2 w-1 h-6 bg-white origin-bottom -translate-x-1/2 -translate-y-full rotate-[60deg] rounded-full drop-shadow-[0_0_3px_#fff]"></div>
+              {/* Graphic 3: Car Exchange Swap */}
+              <div className="h-46 w-full mt-auto relative rounded-xl border border-blue-500/15 bg-[#0d0d1a] p-5 flex flex-col overflow-hidden group-hover:border-blue-500/30 transition-colors">
+                <div className="text-[10px] uppercase tracking-widest text-blue-400/60 mb-3 font-bold">Exchange Summary</div>
+                <div className="flex-grow flex items-center justify-center gap-4">
+                  {/* Old car */}
+                  <div className="flex flex-col items-center">
+                    <div className="w-14 h-14 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-2">
+                      <IconCar size={24} className="text-red-400" />
+                    </div>
+                    <span className="text-[10px] text-white/50 font-medium">Your Car</span>
+                    <span className="text-[9px] text-red-400/70 mt-0.5">Old Model</span>
+                  </div>
+                  {/* Swap Arrows */}
+                  <div className="flex flex-col items-center gap-1">
+                    <IconArrowsExchange size={22} className="text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" />
+                    <span className="text-[8px] text-cyan-400/60 uppercase tracking-widest font-bold">Swap</span>
+                  </div>
+                  {/* New car */}
+                  <div className="flex flex-col items-center">
+                    <div className="w-14 h-14 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center mb-2">
+                      <IconCar size={24} className="text-green-400" />
+                    </div>
+                    <span className="text-[10px] text-white/50 font-medium">Dream Car</span>
+                    <span className="text-[9px] text-green-400/70 mt-0.5">Upgrade</span>
+                  </div>
                 </div>
-
-                <a href="/catalog" className="inline-flex items-center gap-2 mt-auto w-max px-4 py-1.5 bg-gradient-to-r from-blue-700 to-blue-500 text-white text-[12px] font-bold rounded shadow-[0_0_15px_rgba(59,130,246,0.6)] relative z-10">
-                  Explore Options &rarr;
-                </a>
+                {/* Bottom savings */}
+                <div className="mt-2 pt-2.5 border-t border-white/5 flex items-center justify-center gap-2">
+                  <span className="text-[10px] text-blue-300/60">You save upto</span>
+                  <span className="text-[12px] text-cyan-300 font-bold font-['Outfit']">₹1,50,000+</span>
+                </div>
               </div>
             </div>
 
