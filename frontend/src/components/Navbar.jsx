@@ -1,0 +1,245 @@
+"use client";
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { IconPhoneCall, IconBrandWhatsapp, IconMenu2, IconX, IconChevronRight, IconSun, IconMoon } from '@tabler/icons-react';
+import { useTheme } from 'next-themes';
+
+export default function Navbar() {
+  const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMobileMenuOpen]);
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Catalog', path: '/catalog' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Contact', path: '/contact' },
+    { name: 'Sell Your Car', path: '/sell-your-car' }
+  ];
+
+  return (
+    <>
+      <nav 
+        className={`sticky top-0 w-full z-40 transition-all duration-500 border-b ${
+          scrolled 
+            ? 'bg-white/95 dark:bg-[#0a0a12]/90 backdrop-blur-2xl border-gray-200/60 dark:border-white/10 shadow-sm dark:shadow-[0_4px_30px_rgba(0,0,0,0.4)] py-2 md:py-3' 
+            : 'bg-white/80 dark:bg-transparent backdrop-blur-md border-gray-100 dark:border-transparent shadow-none py-4 md:py-5'
+        }`}
+      >
+        <div className="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Real Logo */}
+          <Link className="flex items-center group shrink-0 relative" href="/">
+            <div className="relative w-40 h-10 md:w-56 md:h-12 overflow-hidden flex items-center transition-transform duration-300 group-hover:scale-105">
+              <Image
+                src="/without_background_logo.png"
+                alt="Hariram Motors Logo"
+                fill
+                className="object-contain invert hue-rotate-180 contrast-125 dark:invert-0 dark:hue-rotate-0 dark:contrast-100 dark:mix-blend-lighten transition-all duration-300"
+                sizes="(max-width: 768px) 160px, 224px"
+                priority
+              />
+            </div>
+          </Link>
+
+          {/* Navigation Links (Desktop Only) */}
+          <div className="hidden lg:flex items-center gap-2 xl:gap-4">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.path || (link.path !== '/' && pathname.startsWith(link.path));
+              return (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  className={`font-['Outfit'] text-[15px] px-4 py-2 rounded-full transition-all duration-300 relative group ${
+                    isActive
+                      ? "text-purple-700 dark:text-white font-semibold"
+                      : "text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
+                  }`}
+                >
+                  <span className="relative z-10">{link.name}</span>
+                  {isActive && (
+                    <motion.div
+                      layoutId="navbar-active-indicator"
+                      className="absolute inset-0 bg-purple-100 dark:bg-white/10 rounded-full"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+
+            {/* Theme Toggle Button */}
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="flex items-center justify-center p-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 rounded-full hover:bg-white hover:shadow-md dark:hover:bg-white/10 dark:hover:text-white transition-all duration-300 group overflow-hidden"
+                aria-label="Toggle Theme"
+              >
+                <motion.div
+                  initial={false}
+                  animate={{ rotate: theme === 'dark' ? 0 : 180, scale: theme === 'dark' ? 1 : 0.8 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                >
+                  {theme === 'dark' ? <IconSun size={20} className="group-hover:text-yellow-400 transition-colors" /> : <IconMoon size={20} className="group-hover:text-purple-600 transition-colors" />}
+                </motion.div>
+              </button>
+            )}
+
+            {/* Call Us Button */}
+            <a
+              href="tel:+919898558222"
+              className="hidden md:flex items-center justify-center gap-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white px-4 h-[44px] rounded-full font-['Outfit'] font-bold text-sm hover:border-blue-400 hover:text-blue-500 dark:hover:border-blue-400/50 dark:hover:bg-blue-500/10 transition-all duration-300 shadow-sm"
+            >
+              <IconPhoneCall size={18} className="text-blue-500 dark:text-blue-400" />
+              <span>Call Us</span>
+            </a>
+
+            {/* WhatsApp Button */}
+            <a
+              href="https://wa.me/919898558222"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white px-4 h-[44px] rounded-full font-['Outfit'] font-bold text-sm hover:border-[#25D366] hover:text-[#25D366] dark:hover:border-[#25D366]/50 dark:hover:bg-[#25D366]/10 transition-all duration-300 shadow-sm"
+            >
+              <IconBrandWhatsapp size={18} className="text-[#25D366]" stroke={2} />
+              <span className="hidden sm:inline">WhatsApp</span>
+            </a>
+
+            {/* Mobile Menu Toggle (Visible < lg) */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="lg:hidden text-gray-800 dark:text-white p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors flex items-center justify-center h-[44px] w-[44px] border border-transparent dark:hover:border-white/10 hover:border-gray-200"
+              aria-label="Open Menu"
+            >
+              <IconMenu2 size={24} />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* FULL SCREEN MOBILE DRAWER */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 z-50 flex lg:hidden">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+              animate={{ opacity: 1, backdropFilter: 'blur(12px)' }}
+              exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+              className="absolute inset-0 bg-white/60 dark:bg-[#050508]/80"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            {/* Drawer Content */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="absolute right-0 top-0 bottom-0 w-[85%] max-w-[400px] bg-white/95 dark:bg-[#0a0a12]/95 backdrop-blur-2xl border-l border-gray-200/50 dark:border-white/10 shadow-2xl flex flex-col pt-24 px-6 pb-8"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute top-6 right-6 text-gray-500 dark:text-white/70 p-2.5 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full transition-colors bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 shadow-sm"
+                aria-label="Close Menu"
+              >
+                <IconX size={20} />
+              </button>
+
+              {/* Navigation Links */}
+              <div className="flex flex-col gap-3 mt-4">
+                {navLinks.map((link, i) => {
+                  const isActive = pathname === link.path || (link.path !== '/' && pathname.startsWith(link.path));
+                  return (
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + i * 0.05 }}
+                      key={link.path}
+                    >
+                      <Link
+                        href={link.path}
+                        className={`group flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${isActive 
+                          ? "bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/30 text-purple-700 dark:text-white shadow-sm" 
+                          : "bg-gray-50/50 dark:bg-white/5 border-transparent dark:border-white/5 text-gray-700 dark:text-white/70 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-black dark:hover:text-white"
+                        }`}
+                      >
+                        <span className="font-['Outfit'] font-bold text-lg tracking-wide">{link.name}</span>
+                        <motion.div
+                          initial={false}
+                          animate={{ x: isActive ? 4 : 0 }}
+                          className="transition-transform duration-300 group-hover:translate-x-1"
+                        >
+                          <IconChevronRight size={20} className={isActive ? "text-purple-600 dark:text-purple-400" : "text-gray-400 dark:text-white/30 group-hover:text-black dark:group-hover:text-white/60"} />
+                        </motion.div>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Mobile CTA Buttons */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="mt-auto flex flex-col gap-4 pt-8 border-t border-gray-200 dark:border-white/10"
+              >
+                <a
+                  href="tel:+919898558222"
+                  className="w-full h-[56px] rounded-2xl flex items-center justify-center gap-3 font-['Outfit'] font-bold text-lg text-gray-800 dark:text-white border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition-colors shadow-sm"
+                >
+                  <IconPhoneCall size={22} className="text-blue-500 dark:text-blue-400" />
+                  Call +91 98985 58222
+                </a>
+                <a
+                  href="https://wa.me/919898558222"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-[56px] rounded-2xl flex items-center justify-center gap-3 font-['Outfit'] font-bold text-lg text-gray-800 dark:text-white border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition-colors shadow-sm"
+                >
+                  <IconBrandWhatsapp size={22} className="text-[#25D366]" stroke={2} />
+                  Chat on WhatsApp
+                </a>
+              </motion.div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
