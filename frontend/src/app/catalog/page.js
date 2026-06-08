@@ -94,19 +94,19 @@ function CatalogContent() {
   };
 
   const FiltersContent = () => (
-    <div className="space-y-8 pb-20 md:pb-0">
+    <div className="space-y-8 pb-20 md:pb-0 transition-colors duration-500">
       <div className="hidden md:block">
-        <h3 className="text-xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h3>
+        <h3 className="text-xl font-bold text-black dark:text-white mb-4 transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h3>
       </div>
 
       {/* Brand Filter */}
       {makes.length > 0 && (
-        <div className="border-t border-white/10 pt-6">
-          <h4 className="font-bold text-white mb-3">Brand</h4>
+        <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Brand</h4>
           <div className="flex flex-wrap gap-2">
             <button 
               onClick={() => setSelectedMake('')}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMake === '' ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white'}`}
+              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMake === '' ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
             >
               All Brands
             </button>
@@ -114,7 +114,7 @@ function CatalogContent() {
               <button 
                 key={make}
                 onClick={() => setSelectedMake(make)}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMake === make ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white'}`}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMake === make ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
               >
                 {make}
               </button>
@@ -125,12 +125,12 @@ function CatalogContent() {
 
       {/* Body Type Filter */}
       {bodyTypes.length > 0 && (
-        <div className="border-t border-white/10 pt-6">
-          <h4 className="font-bold text-white mb-3">Body Type</h4>
+        <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Body Type</h4>
           <div className="flex flex-wrap gap-2">
             <button 
               onClick={() => setSelectedBodyType('')}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyType === '' ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white'}`}
+              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyType === '' ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
             >
               All Types
             </button>
@@ -138,7 +138,7 @@ function CatalogContent() {
               <button 
                 key={type}
                 onClick={() => setSelectedBodyType(type)}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyType === type ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white'}`}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyType === type ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
               >
                 {type}
               </button>
@@ -148,12 +148,12 @@ function CatalogContent() {
       )}
 
       {/* Fuel Type */}
-      <div className="border-t border-white/10 pt-6">
-        <h4 className="font-bold text-white mb-3">Fuel Type</h4>
+      <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+        <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Fuel Type</h4>
         <div className="flex flex-wrap gap-2">
           <button 
             onClick={() => setSelectedFuel('')}
-            className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuel === '' ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white'}`}
+            className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuel === '' ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
           >
             All
           </button>
@@ -161,7 +161,7 @@ function CatalogContent() {
             <button 
               key={fuel}
               onClick={() => setSelectedFuel(fuel)}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuel === fuel ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10 hover:text-white'}`}
+              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuel === fuel ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
             >
               {fuel}
             </button>
@@ -170,8 +170,8 @@ function CatalogContent() {
       </div>
 
       {/* Price Range */}
-      <div className="border-t border-white/10 pt-6">
-        <h4 className="font-bold text-white mb-4">Price Range</h4>
+      <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+        <h4 className="font-bold text-black dark:text-white mb-4 transition-colors">Price Range</h4>
         <div className="flex flex-col gap-5">
           {/* Min Price Slider */}
           <div>
@@ -192,7 +192,7 @@ function CatalogContent() {
                   setMinPrice(val === 100000 ? "" : val);
                 }
               }}
-              className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500" 
+              className="w-full h-1.5 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500 transition-colors" 
             />
           </div>
 
@@ -215,7 +215,7 @@ function CatalogContent() {
                   setMaxPrice(val === 20000000 ? "" : val);
                 }
               }}
-              className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500" 
+              className="w-full h-1.5 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-purple-500 transition-colors" 
             />
           </div>
 
@@ -229,9 +229,10 @@ function CatalogContent() {
   );
 
   return (
-    <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-16 flex flex-col md:flex-row gap-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-transparent transition-colors duration-500 w-full flex flex-col">
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 flex flex-col md:flex-row gap-8">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-64 flex-shrink-0 sticky top-24 self-start">
+      <aside className="hidden md:block w-64 flex-shrink-0 sticky top-24 self-start bg-white dark:bg-transparent p-6 dark:p-0 rounded-2xl border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none transition-all duration-500">
         <FiltersContent />
       </aside>
 
@@ -251,17 +252,17 @@ function CatalogContent() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="md:hidden fixed inset-x-0 bottom-0 z-50 max-h-[85vh] bg-[#0f0f1e]/95 backdrop-blur-xl rounded-t-3xl border-t border-white/20 shadow-2xl flex flex-col"
+              className="md:hidden fixed inset-x-0 bottom-0 z-50 max-h-[85vh] bg-white/95 dark:bg-[#0f0f1e]/95 backdrop-blur-xl rounded-t-3xl border-t border-gray-200 dark:border-white/20 shadow-2xl flex flex-col transition-colors duration-500"
             >
               <div className="flex justify-center pt-3 pb-2">
-                <div className="w-12 h-1.5 bg-white/20 rounded-full" />
+                <div className="w-12 h-1.5 bg-gray-300 dark:bg-white/20 rounded-full transition-colors" />
               </div>
               
-              <div className="px-6 pb-4 flex items-center justify-between border-b border-white/10">
-                <h2 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h2>
+              <div className="px-6 pb-4 flex items-center justify-between border-b border-gray-200 dark:border-white/10 transition-colors">
+                <h2 className="text-xl font-bold text-black dark:text-white tracking-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h2>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="p-2 bg-white/5 rounded-full text-white/70 hover:text-white transition-colors"
+                  className="p-2 bg-gray-100 dark:bg-white/5 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
                 >
                   <IconX className="w-5 h-5" />
                 </button>
@@ -271,7 +272,7 @@ function CatalogContent() {
                 <FiltersContent />
               </div>
 
-              <div className="p-6 border-t border-white/10 bg-[#0f0f1e] sticky bottom-0">
+              <div className="p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f0f1e] sticky bottom-0 transition-colors duration-500">
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
                   className="w-full h-[52px] bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all"
@@ -290,15 +291,15 @@ function CatalogContent() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-6 gap-4">
           <div className="w-full flex items-center justify-between lg:w-auto lg:block">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight" style={{ fontFamily: 'var(--font-outfit)' }}>Premium Inventory</h1>
+              <h1 className="text-3xl md:text-4xl font-bold text-black dark:text-white leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Premium Inventory</h1>
               <p className="text-purple-400 mt-2 font-medium">Showing {total} available vehicles</p>
             </div>
             {/* Mobile Filter Button */}
             <button 
               onClick={() => setIsMobileFilterOpen(true)}
-              className="md:hidden flex items-center justify-center w-12 h-12 bg-white/10 border border-white/20 rounded-xl active:bg-white/20 transition-colors"
+              className="md:hidden flex items-center justify-center w-12 h-12 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/20 rounded-xl active:bg-gray-100 dark:active:bg-white/20 transition-colors shadow-sm dark:shadow-none"
             >
-              <IconFilter className="text-white" size={24} />
+              <IconFilter className="text-black dark:text-white transition-colors" size={24} />
             </button>
           </div>
           
@@ -309,7 +310,7 @@ function CatalogContent() {
               <input 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-[14px] md:py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-base md:text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-colors" 
+                className="w-full pl-10 pr-4 py-[14px] md:py-2.5 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-base md:text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-colors shadow-sm dark:shadow-none" 
                 placeholder="Search models..." 
                 type="text"
               />
@@ -322,7 +323,7 @@ function CatalogContent() {
                 <select 
                   value={sortParam}
                 onChange={(e) => setSortParam(e.target.value)}
-                className="w-full appearance-none h-[52px] md:h-auto bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white font-medium focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 cursor-pointer text-base md:text-sm"
+                className="w-full appearance-none h-[52px] md:h-auto bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-black dark:text-white font-medium focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 cursor-pointer text-base md:text-sm transition-colors shadow-sm dark:shadow-none"
               >
                 <option value="-createdAt" className="text-black">Recently Added</option>
                 <option value="price" className="text-black">Price: Low to High</option>
@@ -340,11 +341,11 @@ function CatalogContent() {
         {loading && page === 1 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-[#12121f] border border-white/10 rounded-2xl overflow-hidden animate-pulse h-[360px]">
-                <div className="aspect-[4/3] bg-white/5" />
+              <div key={i} className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden animate-pulse h-[360px] transition-colors">
+                <div className="aspect-[4/3] bg-gray-100 dark:bg-white/5 transition-colors" />
                 <div className="p-4 space-y-3">
-                  <div className="h-6 bg-white/5 rounded w-3/4" />
-                  <div className="h-4 bg-white/5 rounded w-full" />
+                  <div className="h-6 bg-gray-200 dark:bg-white/5 rounded w-3/4 transition-colors" />
+                  <div className="h-4 bg-gray-200 dark:bg-white/5 rounded w-full transition-colors" />
                 </div>
               </div>
             ))}
@@ -356,10 +357,10 @@ function CatalogContent() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 bg-white/5 border border-white/10 rounded-2xl">
-            <IconSearch size={48} className="text-gray-500 mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">No vehicles found</h3>
-            <p className="text-gray-400 text-center max-w-md">Try adjusting your filters or search criteria to find what you're looking for.</p>
+          <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl transition-colors shadow-sm dark:shadow-none">
+            <IconSearch size={48} className="text-gray-400 dark:text-gray-500 mb-4 transition-colors" />
+            <h3 className="text-xl font-bold text-black dark:text-white mb-2 transition-colors">No vehicles found</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-center max-w-md transition-colors">Try adjusting your filters or search criteria to find what you're looking for.</p>
             <button 
               onClick={() => {
                 setSelectedMake('');
@@ -382,14 +383,15 @@ function CatalogContent() {
             <button 
               onClick={handleLoadMore}
               disabled={loading}
-              className="bg-transparent border border-purple-500 text-purple-400 px-8 py-3 rounded-full hover:bg-purple-600 hover:text-white transition-colors duration-300 font-bold tracking-wide disabled:opacity-50"
+              className="bg-transparent border border-purple-600 dark:border-purple-500 text-purple-600 dark:text-purple-400 px-8 py-3 rounded-full hover:bg-purple-600 hover:text-white transition-colors duration-300 font-bold tracking-wide disabled:opacity-50"
             >
               {loading ? 'Loading...' : 'Load More Vehicles'}
             </button>
           </div>
         )}
-      </div>
-    </main>
+        </div>
+      </main>
+    </div>
   );
 }
 

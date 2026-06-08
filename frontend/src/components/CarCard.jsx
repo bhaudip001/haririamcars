@@ -34,7 +34,7 @@ export default function CarCard({ car, index = 0 }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
-      className="group relative flex flex-col w-full h-full bg-[rgba(18,18,31,0.95)] rounded-2xl border border-border-subtle hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-900/20 hover:scale-[1.02] transition-all duration-300"
+      className="group relative flex flex-col w-full h-full bg-white dark:bg-[rgba(18,18,31,0.95)] rounded-2xl border border-gray-200 dark:border-white/10 hover:border-purple-300 dark:hover:border-purple-500/50 shadow-md dark:shadow-none hover:shadow-xl dark:hover:shadow-purple-900/20 hover:scale-[1.02] transition-all duration-300"
     >
       <Link href={`/catalog/${car.slug}`} className="absolute inset-0 z-10" aria-label={`View details of ${title}`} />
 
@@ -52,7 +52,7 @@ export default function CarCard({ car, index = 0 }) {
           {/* Top Left Badge */}
           <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
             {car.status === 'sold' ? (
-              <span className="bg-red-600/90 text-text-primary text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">
+              <span className="bg-red-600/90 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">
                 Sold
               </span>
             ) : (
@@ -67,25 +67,25 @@ export default function CarCard({ car, index = 0 }) {
 
         {/* Card Body */}
         <div className="p-4 md:p-5 flex flex-col flex-grow">
-          <h3 className="font-['Outfit'] font-bold text-base md:text-lg text-text-primary truncate mb-3 md:mb-4">
+          <h3 className="font-['Outfit'] font-bold text-base md:text-lg text-black dark:text-white truncate mb-3 md:mb-4 transition-colors">
             {title}
           </h3>
 
           {/* Specs Row */}
-          <div className="flex items-center gap-1.5 md:gap-2 text-text-secondary text-xs md:text-sm mt-auto whitespace-nowrap overflow-hidden text-ellipsis font-medium">
+          <div className="flex items-center gap-1.5 md:gap-2 text-gray-600 dark:text-gray-400 text-xs md:text-sm mt-auto whitespace-nowrap overflow-hidden text-ellipsis font-medium transition-colors">
             <span>{car.fuelType || 'N/A'}</span>
-            <span className="text-gray-600">•</span>
+            <span className="text-gray-400 dark:text-gray-600">•</span>
             <span>{car.transmission || 'N/A'}</span>
-            <span className="text-gray-600">•</span>
+            <span className="text-gray-400 dark:text-gray-600">•</span>
             <span>{car.kms ? formatKms(car.kms) : 'N/A'}</span>
           </div>
 
-          <hr className="border-border-main mt-3 mb-3" />
+          <hr className="border-gray-200 dark:border-white/10 mt-3 mb-3 transition-colors" />
 
           {/* Price & Action */}
           <div className="flex items-center justify-between mb-4">
             <div>
-              <div className="text-purple-400 font-bold text-xl md:text-2xl tracking-wide">
+              <div className="text-purple-600 dark:text-purple-400 font-bold text-xl md:text-2xl tracking-wide transition-colors">
                 {formatPrice(car.price)}
               </div>
             </div>
@@ -93,7 +93,7 @@ export default function CarCard({ car, index = 0 }) {
 
           {/* Buttons Row */}
           <div className="flex flex-col sm:flex-row items-center gap-2.5 md:gap-3 relative z-20 mt-auto">
-            <div className="w-full sm:flex-1 text-center border border-purple-600 text-purple-400 bg-transparent rounded-xl py-3 md:py-2.5 text-sm md:text-base font-bold group-hover:bg-purple-600 group-hover:text-white transition-all duration-200 cursor-pointer flex items-center justify-center min-h-[44px]">
+            <div className="w-full sm:flex-1 text-center border border-purple-600 dark:border-purple-600 text-purple-600 dark:text-purple-400 bg-transparent rounded-xl py-3 md:py-2.5 text-sm md:text-base font-bold group-hover:bg-purple-600 group-hover:text-white transition-all duration-200 cursor-pointer flex items-center justify-center min-h-[44px]">
               View Details
             </div>
             {car.status !== 'sold' && (
@@ -101,7 +101,7 @@ export default function CarCard({ car, index = 0 }) {
                 href={getCarInquiryLink(car, process.env.NEXT_PUBLIC_WHATSAPP || '+919898558222')}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:flex-1 flex items-center justify-center gap-1.5 bg-[#25D366] hover:bg-[#1ebe57] text-text-primary rounded-xl py-3 md:py-2.5 text-sm md:text-base font-bold shadow-[0_0_15px_rgba(37,211,102,0.3)] transition-all duration-200 cursor-pointer min-h-[44px]"
+                className="w-full sm:flex-1 flex items-center justify-center gap-1.5 bg-[#25D366] hover:bg-[#1ebe57] text-white dark:text-black rounded-xl py-3 md:py-2.5 text-sm md:text-base font-bold shadow-[0_0_15px_rgba(37,211,102,0.3)] transition-all duration-200 cursor-pointer min-h-[44px]"
                 onClick={(e) => e.stopPropagation()}
                 title="Chat on WhatsApp"
               >

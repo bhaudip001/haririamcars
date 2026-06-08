@@ -80,7 +80,7 @@ export default function GoogleReviews() {
   const currentReview = REVIEWS[currentIndex];
 
   return (
-    <section className="py-24 px-4 relative overflow-hidden">
+    <section className="py-24 px-4 relative overflow-hidden bg-gray-50 dark:bg-transparent transition-colors duration-500">
       {/* Premium Background Glows */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
@@ -97,13 +97,13 @@ export default function GoogleReviews() {
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
               </svg>
-              <h2 className="font-['Outfit'] font-extrabold text-3xl md:text-4xl text-text-primary tracking-wide">
+              <h2 className="font-['Outfit'] font-extrabold text-3xl md:text-4xl text-black dark:text-white tracking-wide transition-colors">
                 Google
               </h2>
             </div>
 
             <div className="mb-2">
-              <span className="font-['Outfit'] text-[64px] font-bold text-text-primary leading-none">4.3</span>
+              <span className="font-['Outfit'] text-[64px] font-bold text-black dark:text-white leading-none transition-colors">4.3</span>
             </div>
 
             <div className="flex items-center gap-1 text-yellow-400 mb-4">
@@ -112,15 +112,15 @@ export default function GoogleReviews() {
               ))}
             </div>
 
-            <p className="font-medium text-text-secondary text-lg mb-8">
-              Based on <strong className="text-text-primary">60 reviews</strong> from our satisfied customers.
+            <p className="font-medium text-gray-600 dark:text-gray-400 text-lg mb-8 transition-colors">
+              Based on <strong className="text-black dark:text-white">60 reviews</strong> from our satisfied customers.
             </p>
 
             <a
               href="https://www.google.com/maps/search/Hariram+Motors,+Simada+Canal,+BRTS+Rd,+Surat,+Gujarat/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 w-full lg:w-auto rounded-full bg-white/5 border border-border-main text-text-primary font-['Outfit'] font-bold hover:bg-white/10 hover:border-white/20 transition-all shadow-lg backdrop-blur-md group"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 w-full lg:w-auto rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-black dark:text-white font-['Outfit'] font-bold hover:bg-gray-50 dark:hover:bg-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all shadow-lg backdrop-blur-md group"
             >
               View All Reviews on Google
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -139,24 +139,24 @@ export default function GoogleReviews() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -30, scale: 0.95 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-0 bg-[#12121c] border border-border-main rounded-[40px] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex flex-col justify-center"
+                  className="absolute inset-0 bg-white dark:bg-[#12121c] border border-gray-200 dark:border-white/10 rounded-[40px] p-8 md:p-12 shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex flex-col justify-center transition-colors"
                 >
-                  <IconQuote size={60} className="text-purple-500/20 absolute top-8 left-8" />
+                  <IconQuote size={60} className="text-purple-600/10 dark:text-purple-500/20 absolute top-8 left-8" />
 
                   <div className="relative z-10 flex-grow flex items-center">
-                    <p className="font-medium text-[20px] md:text-[24px] text-text-primary leading-relaxed text-center lg:text-left w-full">
+                    <p className="font-medium text-[20px] md:text-[24px] text-black dark:text-white leading-relaxed text-center lg:text-left w-full transition-colors">
                       "{currentReview.text}"
                     </p>
                   </div>
 
-                  <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 mt-8 pt-8 border-t border-border-subtle">
+                  <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 mt-8 pt-8 border-t border-gray-200 dark:border-white/10 transition-colors">
                     <div className="flex items-center gap-4">
                       <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 flex items-center justify-center font-['Outfit'] font-bold text-white text-xl shadow-lg">
                         {currentReview.author_name.charAt(0)}
                       </div>
                       <div className="text-center md:text-left">
-                        <h4 className="font-['Outfit'] font-bold text-lg text-text-primary">{currentReview.author_name}</h4>
-                        <span className="text-sm text-text-secondary">{currentReview.relative_time_description}</span>
+                        <h4 className="font-['Outfit'] font-bold text-lg text-black dark:text-white transition-colors">{currentReview.author_name}</h4>
+                        <span className="text-sm text-gray-600 dark:text-gray-400 transition-colors">{currentReview.relative_time_description}</span>
                       </div>
                     </div>
 
@@ -180,7 +180,7 @@ export default function GoogleReviews() {
                 <button
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
-                  className={`h-2 rounded-full transition-all duration-500 ${currentIndex === idx ? 'w-10 bg-purple-500' : 'w-2 bg-white/20 hover:bg-white/40'
+                  className={`h-2 rounded-full transition-all duration-500 ${currentIndex === idx ? 'w-10 bg-purple-600 dark:bg-purple-500' : 'w-2 bg-gray-300 hover:bg-gray-400 dark:bg-white/20 dark:hover:bg-white/40'
                     }`}
                   aria-label={`Go to review ${idx + 1}`}
                 />

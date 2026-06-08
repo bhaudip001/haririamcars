@@ -123,12 +123,12 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative flex flex-col h-[480px] sm:h-[550px] md:h-auto md:min-h-[70vh] md:flex-row md:items-center font-['Inter',sans-serif] bg-white dark:bg-[#050508] z-20 transition-colors duration-500">
+    <section className="relative flex flex-col h-[480px] sm:h-[550px] md:h-auto md:min-h-[70vh] md:flex-row md:items-center font-['Inter',sans-serif] bg-[#050508] z-20">
 
       {/* ════════════════════════════════════════════════════════════════
           DESKTOP BACKGROUND (Hidden on mobile)
       ════════════════════════════════════════════════════════════════ */}
-      <div className="hidden md:block absolute inset-0 z-0 overflow-hidden bg-white dark:bg-[#050508] transition-colors duration-500">
+      <div className="hidden md:block absolute inset-0 z-0 overflow-hidden bg-[#050508]">
         <motion.img
           initial="hidden"
           animate="visible"
@@ -137,13 +137,13 @@ export default function HeroSection() {
           alt="Premium Car"
           className="w-full h-full object-cover object-[center_60%] origin-[center_60%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-white/40 to-transparent dark:from-[#0a0a12]/95 dark:via-[#0a0a12]/40 dark:to-transparent transition-colors duration-500"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a12]/95 via-[#0a0a12]/40 to-transparent"></div>
       </div>
 
       {/* ════════════════════════════════════════════════════════════════
           MOBILE 100DVH LUXURY POSTER (Hidden on desktop)
       ════════════════════════════════════════════════════════════════ */}
-      <div className="md:hidden absolute inset-0 w-full h-full z-0 overflow-hidden bg-white dark:bg-[#050508] transition-colors duration-500">
+      <div className="md:hidden absolute inset-0 w-full h-full z-0 overflow-hidden bg-[#050508]">
         <motion.img
           initial={{ scale: 1.1, opacity: 0, y: -40 }}
           animate={{ scale: 1.05, opacity: 1, y: -40 }}
@@ -156,19 +156,19 @@ export default function HeroSection() {
           className="absolute inset-0 w-full h-full object-cover object-bottom z-0 origin-bottom"
         />
         {/* Deep cinematic vignette gradient */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-white/90 via-white/30 to-white/50 dark:from-[#0a0a12] dark:via-[#0a0a12]/30 dark:to-[#0a0a12]/70 transition-colors duration-500"></div>
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0a0a12] via-[#0a0a12]/30 to-[#0a0a12]/70"></div>
 
         {/* Mobile Content Overlay */}
-        <div className="absolute inset-x-0 top-[12%] z-10 px-6 flex flex-col items-start text-left">
+        <div className="absolute inset-x-0 top-[10%] z-10 px-6 flex flex-col items-start text-left">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="text-4xl sm:text-5xl text-black dark:text-white font-medium tracking-wide leading-tight drop-shadow-lg" style={{ fontFamily: 'var(--font-outfit)' }}
+            className="text-4xl sm:text-5xl text-white font-medium tracking-wide leading-tight drop-shadow-lg" style={{ fontFamily: 'var(--font-outfit)' }}
           >
             Your <span className="relative inline-block font-bold">
-              <span className="absolute left-0 top-0 text-black dark:text-white [-webkit-text-stroke:2px_black] dark:[-webkit-text-stroke:2px_white] drop-shadow-[0_0_20px_rgba(168,85,247,0.4)] dark:drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]" aria-hidden="true">Dream Car,</span>
-              <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-500">Dream Car,</span>
+              <span className="absolute left-0 top-0 text-white [-webkit-text-stroke:2px_white] drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]" aria-hidden="true">Dream Car,</span>
+              <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Dream Car,</span>
             </span> Now Within Reach!
           </motion.h1>
 
@@ -176,7 +176,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="mt-4 text-gray-700 dark:text-white/95 text-sm font-semibold tracking-wide max-w-[320px] drop-shadow-md"
+            className="mt-4 text-white/95 text-sm font-semibold tracking-wide max-w-[320px] drop-shadow-md"
           >
             Surat&apos;s premier destination for curated luxury and certified pre-owned vehicles. Built on trust, driven by quality.
           </motion.p>
@@ -188,34 +188,34 @@ export default function HeroSection() {
             className="mt-4 flex flex-col items-start gap-3 w-full"
           >
             {/* Mobile Trust Badge with Google Reviews */}
-            <div className="flex items-center gap-2 bg-black/5 dark:bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-black/10 dark:border-white/20 transition-colors duration-500">
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 transition-colors duration-500">
               <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <div key={i} className="relative">
-                    <svg className="w-3 h-3 text-gray-300 dark:text-white/30 fill-current" viewBox="0 0 20 20">
+                    <svg className="w-3 h-3 text-white/30 fill-current" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                     <div className="absolute top-0 left-0 overflow-hidden" style={{ width: i < 4 ? '100%' : i === 4 ? '30%' : '0%' }}>
-                      <svg className="w-3 h-3 text-yellow-500 dark:text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      <svg className="w-3 h-3 text-yellow-400 fill-current" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     </div>
                   </div>
                 ))}
               </div>
-              <span className="text-black dark:text-white font-bold text-xs mt-0.5">4.3</span>
-              <div className="h-3 w-[1px] bg-black/20 dark:bg-white/40 mx-0.5"></div>
-              <span className="text-gray-600 dark:text-slate-200 text-[10px] uppercase tracking-wider font-semibold mt-0.5">Google Reviews</span>
+              <span className="text-white font-bold text-xs mt-0.5">4.3</span>
+              <div className="h-3 w-[1px] bg-white/40 mx-0.5"></div>
+              <span className="text-slate-200 text-[10px] uppercase tracking-wider font-semibold mt-0.5">Google Reviews</span>
             </div>
 
             {/* Mobile Location Badge */}
             <button
               onClick={() => router.push('/contact')}
-              className="flex items-center gap-1.5 bg-black/5 dark:bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-black/10 dark:border-white/10 active:bg-black/10 dark:active:bg-white/20 transition-colors shadow-lg"
+              className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 active:bg-white/20 transition-colors shadow-lg"
             >
-              <MapPin className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-              <span className="text-black dark:text-white font-medium text-sm tracking-wide">Varachha, Surat</span>
-              <ChevronRight className="w-4 h-4 text-gray-500 dark:text-white/60" />
+              <MapPin className="w-4 h-4 text-purple-400" />
+              <span className="text-white font-medium text-sm tracking-wide">Varachha, Surat</span>
+              <ChevronRight className="w-4 h-4 text-white/60" />
             </button>
           </motion.div>
         </div>
@@ -355,7 +355,7 @@ export default function HeroSection() {
           DESKTOP CONTENT (Hidden on mobile)
       ════════════════════════════════════════════════════════════════ */}
       <motion.div
-        className="hidden md:flex flex-col items-start justify-center relative z-10 w-full max-w-7xl mx-auto px-8 md:px-12 mt-4"
+        className="hidden md:flex flex-col items-start justify-center relative z-10 w-full max-w-7xl mx-auto px-8 md:px-12 mb-7"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -363,16 +363,16 @@ export default function HeroSection() {
         <div className="max-w-3xl text-left flex flex-col items-start">
           <motion.h1
             variants={itemVariants}
-            className="text-5xl sm:text-6xl md:text-7xl text-black dark:text-white font-medium tracking-wide leading-[1.15] drop-shadow-xl" style={{ fontFamily: 'var(--font-outfit)' }}
+            className="text-5xl sm:text-6xl md:text-7xl text-white font-medium tracking-wide leading-[1.15] drop-shadow-xl" style={{ fontFamily: 'var(--font-outfit)' }}
           >
             Your <span className="relative inline-block font-bold">
-              <span className="absolute left-0 top-0 text-black dark:text-white [-webkit-text-stroke:4px_black] dark:[-webkit-text-stroke:4px_white] drop-shadow-[0_0_30px_rgba(168,85,247,0.4)] dark:drop-shadow-[0_0_30px_rgba(168,85,247,0.8)]" aria-hidden="true">Dream Car,</span>
-              <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 dark:from-purple-400 dark:via-purple-500 dark:to-blue-500">Dream Car,</span>
+              <span className="absolute left-0 top-0 text-white [-webkit-text-stroke:4px_white] drop-shadow-[0_0_30px_rgba(168,85,247,0.8)]" aria-hidden="true">Dream Car,</span>
+              <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-purple-500 to-blue-500">Dream Car,</span>
             </span> Now Within Your Reach!
           </motion.h1>
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl text-gray-700 dark:text-slate-200 mt-6 max-w-2xl font-medium leading-relaxed drop-shadow-md"
+            className="text-lg md:text-xl text-slate-200 mt-6 max-w-2xl font-medium leading-relaxed drop-shadow-md"
           >
             Surat&apos;s premier destination for curated luxury and certified pre-owned vehicles. Built on trust, driven by quality.
           </motion.p>
@@ -382,7 +382,7 @@ export default function HeroSection() {
             variants={itemVariants}
             className="mt-5 flex flex-row items-center justify-start gap-6"
           >
-            <div className="flex items-center gap-3 bg-white/60 dark:bg-black/40 backdrop-blur-md px-5 py-2.5 rounded-full border border-gray-200 dark:border-white/10 group hover:bg-white/80 dark:hover:bg-black/60 transition-all duration-300 shadow-xl cursor-default">
+            <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/10 group hover:bg-black/60 transition-all duration-300 shadow-xl cursor-default">
               <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <motion.div
@@ -392,11 +392,11 @@ export default function HeroSection() {
                     transition={{ delay: 0.8 + (i * 0.1) }}
                     className="relative"
                   >
-                    <svg className="w-4 h-4 text-gray-300 dark:text-white/30 fill-current" viewBox="0 0 20 20">
+                    <svg className="w-4 h-4 text-white/30 fill-current" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                     <div className="absolute top-0 left-0 overflow-hidden" style={{ width: i < 4 ? '100%' : i === 4 ? '30%' : '0%' }}>
-                      <svg className="w-4 h-4 text-yellow-500 dark:text-yellow-400 fill-current drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]" viewBox="0 0 20 20">
+                      <svg className="w-4 h-4 text-yellow-400 fill-current drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     </div>
@@ -404,20 +404,20 @@ export default function HeroSection() {
                 ))}
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-black dark:text-white font-bold text-sm tracking-wide">4.3 Rating</span>
-                <div className="h-4 w-[1px] bg-gray-300 dark:bg-white/30"></div>
-                <span className="text-gray-600 dark:text-slate-300 text-xs uppercase tracking-widest font-semibold">Google Reviews</span>
+                <span className="text-white font-bold text-sm tracking-wide">4.3 Rating</span>
+                <div className="h-4 w-[1px] bg-white/30"></div>
+                <span className="text-slate-300 text-xs uppercase tracking-widest font-semibold">Google Reviews</span>
               </div>
             </div>
 
             <motion.button
               onClick={() => router.push('/contact')}
               whileHover={{ x: 5 }}
-              className="flex items-center gap-2.5 px-5 py-2.5 bg-purple-50 dark:bg-purple-600/20 backdrop-blur-md rounded-full border border-purple-200 dark:border-purple-500/30 hover:bg-purple-100 dark:hover:bg-purple-600/40 hover:border-purple-300 dark:hover:border-purple-500/50 transition-all duration-300 cursor-pointer group shadow-xl"
+              className="flex items-center gap-2.5 px-5 py-2.5 bg-purple-600/20 backdrop-blur-md rounded-full border border-purple-500/30 hover:bg-purple-600/40 hover:border-purple-500/50 transition-all duration-300 cursor-pointer group shadow-xl"
             >
-              <MapPin className="w-5 h-5 text-purple-600 dark:text-purple-400 shrink-0" />
-              <span className="text-black dark:text-white font-semibold text-sm tracking-wide transition-colors">Varachha, Surat</span>
-              <ChevronRight className="w-4 h-4 text-gray-500 dark:text-white/50 group-hover:text-black dark:group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
+              <MapPin className="w-5 h-5 text-purple-400 shrink-0" />
+              <span className="text-white font-semibold text-sm tracking-wide transition-colors">Varachha, Surat</span>
+              <ChevronRight className="w-4 h-4 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
             </motion.button>
           </motion.div>
         </div>
@@ -430,7 +430,7 @@ export default function HeroSection() {
         initial="hidden"
         animate="visible"
         variants={searchBarVariants}
-        className="hidden md:block absolute -bottom-[4.5rem] left-0 right-0 px-8 md:px-12 z-40"
+        className="hidden md:block absolute -bottom-[6rem] left-0 right-0 px-8 md:px-12 z-40"
       >
         <div className="max-w-6xl mx-auto bg-white/90 dark:bg-[#0a0a12]/40 backdrop-blur-3xl border border-gray-200 dark:border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1),0_0_32px_rgba(147,51,234,0.05)] dark:shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6),0_0_32px_rgba(147,51,234,0.15)] rounded-[2rem] p-4 lg:p-6 transition-colors duration-500">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 items-end">
