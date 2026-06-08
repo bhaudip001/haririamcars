@@ -54,9 +54,24 @@ export default function AdminLayout({ children }) {
     return <>{children}</>;
   }
 
+  const adminThemeStyles = `
+    .admin-theme {
+      --color-bg-dark: #0a0a12;
+      --color-bg-card: #15121b;
+      --color-bg-card-hover: rgba(255, 255, 255, 0.04);
+      --color-border: rgba(255, 255, 255, 0.08);
+      --color-text-primary: #ffffff;
+      --color-text-secondary: #a1a1aa;
+      --color-text-muted: #71717a;
+      --color-primary: #7c3aed;
+      --color-accent-red: #ef4444;
+    }
+  `;
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-dark)]">
+      <div className="dark admin-theme min-h-screen flex items-center justify-center bg-[var(--color-bg-dark)]">
+        <style>{adminThemeStyles}</style>
         <div className="animate-spin w-8 h-8 border-2 border-[var(--color-primary)] border-t-transparent rounded-full" />
       </div>
     );
@@ -65,7 +80,8 @@ export default function AdminLayout({ children }) {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-dark)] flex">
+    <div className="dark admin-theme min-h-screen bg-[var(--color-bg-dark)] text-[var(--color-text-primary)] flex">
+      <style>{adminThemeStyles}</style>
       {/* Sidebar */}
       <aside className={`fixed lg:sticky lg:top-0 h-screen shrink-0 inset-y-0 left-0 z-50 w-64 bg-[var(--color-bg-card)] border-r border-[var(--color-border)] transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="flex flex-col h-full">
