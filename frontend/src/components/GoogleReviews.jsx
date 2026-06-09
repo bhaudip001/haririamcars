@@ -131,7 +131,7 @@ export default function GoogleReviews() {
 
           {/* Right Side: Animated Spotlight Review */}
           <div className="lg:col-span-8 relative">
-            <div className="relative min-h-[350px] w-full flex items-center justify-center">
+            <div className="relative min-h-[420px] md:min-h-[380px] w-full flex items-stretch justify-center">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
@@ -139,28 +139,28 @@ export default function GoogleReviews() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -30, scale: 0.95 }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-0 bg-white dark:bg-[#12121c] border border-gray-200 dark:border-white/10 rounded-[40px] p-8 md:p-12 shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex flex-col justify-center transition-colors"
+                  className="w-full bg-white dark:bg-[#12121c] border border-gray-200 dark:border-white/10 rounded-[40px] p-8 md:p-10 shadow-xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex flex-col justify-between transition-colors"
                 >
-                  <IconQuote size={60} className="text-purple-600/10 dark:text-purple-500/20 absolute top-8 left-8" />
+                  <IconQuote size={60} className="text-purple-600/10 dark:text-purple-500/20 absolute top-8 left-8 pointer-events-none" />
 
-                  <div className="relative z-10 flex-grow flex items-center">
-                    <p className="font-medium text-[20px] md:text-[24px] text-black dark:text-white leading-relaxed text-center lg:text-left w-full transition-colors">
+                  <div className="relative z-10 flex-grow flex items-center justify-center my-4">
+                    <p className="font-medium text-[18px] md:text-[22px] text-black dark:text-white leading-relaxed text-center lg:text-left w-full transition-colors">
                       "{currentReview.text}"
                     </p>
                   </div>
 
-                  <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 mt-8 pt-8 border-t border-gray-200 dark:border-white/10 transition-colors">
+                  <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-white/10 transition-colors">
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 flex items-center justify-center font-['Outfit'] font-bold text-white text-xl shadow-lg">
+                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 flex items-center justify-center font-['Outfit'] font-bold text-white text-xl shadow-lg shrink-0">
                         {currentReview.author_name.charAt(0)}
                       </div>
-                      <div className="text-center md:text-left">
-                        <h4 className="font-['Outfit'] font-bold text-lg text-black dark:text-white transition-colors">{currentReview.author_name}</h4>
+                      <div className="text-center sm:text-left">
+                        <h4 className="font-['Outfit'] font-bold text-base md:text-lg text-black dark:text-white transition-colors">{currentReview.author_name}</h4>
                         <span className="text-sm text-gray-600 dark:text-gray-400 transition-colors">{currentReview.relative_time_description}</span>
                       </div>
                     </div>
 
-                    <div className="flex gap-1 text-yellow-500">
+                    <div className="flex gap-1 text-yellow-500 shrink-0 mt-2 sm:mt-0">
                       {[...Array(5)].map((_, i) => (
                         <IconStarFilled
                           key={i}
