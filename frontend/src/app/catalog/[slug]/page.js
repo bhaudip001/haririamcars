@@ -470,7 +470,7 @@ export default function CarDetailPage() {
 
       {/* ════ Similar Cars Section ════ */}
       {similarCars.length > 0 && (
-        <section className="mt-32 border-t border-gray-200 dark:border-white/10 pt-16">
+        <section className="mt-12 border-t border-gray-200 dark:border-white/10 pt-8">
           <div className="flex justify-between items-end mb-10">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Similar Vehicles</h2>
             <Link href={`/catalog?make=${car.make}`} className="text-purple-600 dark:text-purple-400 font-bold hover:underline flex items-center gap-1 group">
