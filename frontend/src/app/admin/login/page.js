@@ -25,7 +25,9 @@ export default function AdminLoginPage() {
       toast.success('Login successful!');
       router.push('/admin/dashboard');
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Invalid credentials');
+      let errorMsg = err.response?.data?.error;
+      if (typeof errorMsg === 'object') errorMsg = errorMsg.message || 'Server crashed';
+      toast.error(errorMsg || 'Invalid credentials');
     } finally {
       setLoading(false);
     }
