@@ -179,7 +179,7 @@ export default function CatalogClient() {
           {/* Car Grid */}
           <div className="flex-1">
             {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6">
                 {[...Array(6)].map((_, i) => (
                   <div key={i} className="glass-card overflow-hidden">
                     <div className="skeleton aspect-[4/3]" />
@@ -192,7 +192,7 @@ export default function CatalogClient() {
               </div>
             ) : cars.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6">
                   {cars.map((car, i) => (
                     <CarCard key={car._id} car={car} index={i} />
                   ))}

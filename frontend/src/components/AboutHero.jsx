@@ -253,7 +253,7 @@ export default function AboutHero() {
             </div>
 
             {/* ━━━━━━━━━━━ RIGHT COLUMN (45%) — VISUAL ━━━━━━━━━━━ */}
-            <div className="lg:w-[45%] w-full hidden lg:block">
+            <div className="lg:w-[45%] w-full mt-12 lg:mt-0 mb-16 lg:mb-0 relative z-10">
               <div className="relative" style={{ maxWidth: '520px', margin: '0 auto' }}>
 
                 {/* Dashed decorative border behind card */}
@@ -312,8 +312,8 @@ export default function AboutHero() {
                 <div
                   className="hero-enter-float1 animate-float-card absolute"
                   style={{
-                    top: '-50px',
-                    left: '-24px',
+                    top: '-72px',
+                    left: '-34px',
                     width: '180px',
                     zIndex: 5,
                   }}
@@ -331,7 +331,7 @@ export default function AboutHero() {
                       <StarIcon size={16} />
                       <span className="text-white font-bold text-sm font-['Outfit']">4.3 Rating</span>
                     </div>
-                    <div className="text-[#6b6b80] text-xs mt-1 font-['Inter']">
+                    <div className="text-slate-300 text-xs mt-1 font-['Inter']">
                       from 500+ Google reviews
                     </div>
                     <div className="flex items-center gap-1 mt-2">
@@ -365,7 +365,7 @@ export default function AboutHero() {
                   >
                     <VerifiedIcon />
                     <div className="text-white font-bold text-sm font-['Outfit']">100% Verified</div>
-                    <div className="text-[#6b6b80] text-xs font-['Inter']">Every car inspected</div>
+                    <div className="text-slate-300 text-xs font-['Inter']">Every car inspected</div>
                   </div>
                 </div>
               </div>

@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Car, Eye, EyeOff, Lock, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { Car, Eye, EyeOff, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
 import Image from 'next/image';
@@ -32,6 +33,14 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4 sm:p-8 overflow-hidden bg-black text-white selection:bg-white/30">
+      
+      {/* Back to Home Button */}
+      <div className="absolute top-6 left-4 sm:left-8 z-20">
+        <Link href="/" className="flex items-center gap-2 text-white/70 hover:text-white transition-all bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full backdrop-blur-md border border-white/10 text-sm font-medium hover:-translate-x-1 shadow-lg">
+          <ArrowLeft size={16} />
+          Back to Home
+        </Link>
+      </div>
       
       {/* Background Image */}
       <div className="absolute inset-0 z-0">

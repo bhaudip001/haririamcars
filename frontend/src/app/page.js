@@ -128,7 +128,7 @@ export default function HomePage() {
       {/* ════ SECTION 4: FEATURED CARS (The Collection) ════ */}
       <section className="py-10 md:py-14 lg:py-20 bg-white dark:bg-transparent transition-colors duration-500">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row justify-between items-end mb-8 md:mb-12 gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 gap-4">
             <div>
               <p className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">OUR INVENTORY</p>
               <h2 className="text-3xl md:text-[40px] text-black dark:text-white font-bold leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
@@ -142,7 +142,7 @@ export default function HomePage() {
           </div>
 
           {loadingCars ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
               {[...Array(8)].map((_, i) => (
                 <div key={i} className="bg-gray-50 dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden animate-pulse transition-colors duration-500">
                   <div className="aspect-[4/3] bg-gray-200 dark:bg-white/5 transition-colors" />
@@ -155,7 +155,7 @@ export default function HomePage() {
               ))}
             </div>
           ) : cars.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
               {cars.map((car, i) => (
                 <CarCard key={car._id} car={car} index={i} />
               ))}

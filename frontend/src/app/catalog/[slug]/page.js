@@ -170,10 +170,10 @@ export default function CarDetailPage() {
       </nav>
 
       {/* 2 Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="flex flex-col lg:grid lg:grid-cols-12 gap-5 lg:gap-8">
         
-        {/* ════ LEFT COLUMN: Gallery & Description ════ */}
-        <div className="lg:col-span-7 flex flex-col gap-5">
+        {/* ════ 1. GALLERY (Mobile: Top, Desktop: Top-Left) ════ */}
+        <div className="order-1 lg:col-span-7 lg:row-start-1 flex flex-col gap-5">
           
           {/* Image Gallery */}
           <div className="flex flex-col gap-4">
@@ -225,7 +225,10 @@ export default function CarDetailPage() {
               </div>
             )}
           </div>
+        </div>
 
+        {/* ════ 3. DESCRIPTION & EMI (Mobile: Bottom, Desktop: Bottom-Left) ════ */}
+        <div className="order-3 lg:col-span-7 lg:row-start-2 flex flex-col gap-5">
           {/* Description Section */}
           <div className="bg-white dark:bg-white/5 backdrop-blur-[20px] border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-none rounded-2xl p-6 md:p-8">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6" style={{ fontFamily: 'var(--font-outfit)' }}>About this Car</h2>
@@ -248,8 +251,8 @@ export default function CarDetailPage() {
                       <ul className="space-y-3">
                         {features.map((feat, i) => (
                           <li key={`${category}-${i}`} className="flex items-start gap-3">
-                            <div className="mt-0.5 w-5 h-5 rounded-full bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 flex items-center justify-center shrink-0">
-                              <svg className="w-3 h-3 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <div className="mt-0.5 w-5 h-5 rounded-full bg-purple-50 dark:bg-purple-500/10 border border-purple-200 dark:border-purple-500/20 flex items-center justify-center shrink-0">
+                              <svg className="w-3 h-3 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                               </svg>
                             </div>
@@ -268,8 +271,8 @@ export default function CarDetailPage() {
           <EmiCalculator carPrice={car.price || 1000000} />
         </div>
 
-        {/* ════ RIGHT COLUMN: Info ════ */}
-        <div className="lg:col-span-5 relative">
+        {/* ════ 2. INFO (Mobile: Middle, Desktop: Right column spanning full height) ════ */}
+        <div className="order-2 lg:col-span-5 lg:row-start-1 lg:row-span-2 relative">
           <div 
             ref={rightColumnRef}
             className="lg:sticky flex flex-col gap-6"
@@ -433,7 +436,7 @@ export default function CarDetailPage() {
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {similarCars.map((similarCar, i) => (
               <CarCard key={similarCar._id} car={similarCar} index={i} />
             ))}

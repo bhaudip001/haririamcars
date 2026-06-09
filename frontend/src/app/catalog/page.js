@@ -137,7 +137,7 @@ function CatalogContent() {
 
         <div className="relative h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full mt-2 px-2">
           <div 
-            className="absolute h-full bg-orange-500 rounded-full" 
+            className="absolute h-full bg-purple-500 rounded-full" 
             style={{ left: `${minPercent}%`, right: `${100 - maxPercent}%` }}
           ></div>
           <input 
@@ -349,7 +349,7 @@ function CatalogContent() {
 
         {/* Grid */}
         {loading && page === 1 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden animate-pulse h-[360px] transition-colors">
                 <div className="aspect-[4/3] bg-gray-100 dark:bg-white/5 transition-colors" />
@@ -361,7 +361,7 @@ function CatalogContent() {
             ))}
           </div>
         ) : cars.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
             {cars.map((car, i) => (
               <CarCard key={car._id} car={car} index={i} />
             ))}

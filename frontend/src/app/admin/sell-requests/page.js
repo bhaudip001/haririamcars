@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Trash2, Phone, Mail, Eye, Calendar, Fuel, MapPin, Search, ExternalLink, CheckCircle2, Clock, XCircle, MessageCircle } from 'lucide-react';
+import { Trash2, Phone, Mail, Eye, Calendar, Fuel, MapPin, Search, ExternalLink, CheckCircle2, Clock, XCircle, MessageCircle, ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
@@ -80,7 +80,7 @@ export default function AdminSellRequestsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-180px)] min-h-[600px]">
         
         {/* LEFT PANE: List */}
-        <div className="lg:col-span-5 flex flex-col glass-panel rounded-2xl border border-white/10 overflow-hidden bg-[#12121f]/80 backdrop-blur-xl relative">
+        <div className={`lg:col-span-5 flex flex-col glass-panel rounded-2xl border border-white/10 overflow-hidden bg-[#12121f]/80 backdrop-blur-xl relative ${selectedReq ? 'hidden lg:flex' : 'flex'}`}>
           
           {/* Header & Filters */}
           <div className="p-4 border-b border-white/10 bg-white/[0.02]">
@@ -166,11 +166,16 @@ export default function AdminSellRequestsPage() {
         </div>
 
         {/* RIGHT PANE: Details */}
-        <div className="lg:col-span-7 h-full">
+        <div className={`lg:col-span-7 h-full ${!selectedReq ? 'hidden lg:block' : 'block'}`}>
           {selectedReq ? (
             <div className="glass-panel rounded-2xl border border-white/10 h-full flex flex-col bg-[#12121f]/80 backdrop-blur-xl overflow-hidden relative">
               
               {/* Header Actions */}
+              <div className="absolute top-4 left-4 flex gap-2 z-10 lg:hidden">
+                <button onClick={() => setSelectedReq(null)} className="p-2 rounded-xl bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10 transition-colors flex items-center gap-1">
+                  <ChevronLeft size={18} />
+                </button>
+              </div>
               <div className="absolute top-4 right-4 flex gap-2 z-10">
                 <button onClick={() => handleDelete(selectedReq._id)} className="p-2.5 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white transition-colors" title="Delete Request">
                   <Trash2 size={18} />
@@ -180,7 +185,7 @@ export default function AdminSellRequestsPage() {
               {/* Scrollable Content */}
               <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-8">
                 
-                <div className="mb-8 pr-12">
+                <div className="mb-8 pr-12 lg:pr-12 pl-12 lg:pl-0">
                   <h2 className="text-3xl font-extrabold text-white font-['Outfit'] mb-2">{selectedReq.carBrand} {selectedReq.carModel}</h2>
                   <p className="text-purple-400 font-bold text-xl">{selectedReq.expectedPrice ? formatPrice(selectedReq.expectedPrice) : 'Price Not Specified'}</p>
                 </div>

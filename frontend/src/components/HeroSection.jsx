@@ -251,7 +251,7 @@ export default function HeroSection() {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="md:hidden fixed inset-x-0 bottom-0 z-50 h-[75dvh] bg-white/95 dark:bg-[#0a0a12]/80 backdrop-blur-3xl rounded-t-[2.5rem] border-t border-gray-200 dark:border-white/20 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_-10px_40px_rgba(0,0,0,0.5)] flex flex-col transition-colors duration-500"
+            className="md:hidden fixed inset-x-0 bottom-0 z-50 h-auto max-h-[90dvh] bg-white/95 dark:bg-[#0a0a12]/80 backdrop-blur-3xl rounded-t-[2.5rem] border-t border-gray-200 dark:border-white/20 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_-10px_40px_rgba(0,0,0,0.5)] flex flex-col transition-colors duration-500"
           >
             <div className="flex justify-center pt-4 pb-2">
               <div className="w-12 h-1.5 bg-gray-300 dark:bg-white/20 rounded-full" />
@@ -279,7 +279,7 @@ export default function HeroSection() {
                     value={selectedBrand}
                     onChange={handleBrandChange}
                     disabled={isLoading}
-                    className="w-full h-[52px] pl-14 pr-10 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-black dark:text-white font-semibold appearance-none focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all disabled:opacity-50 text-base"
+                    className="w-full h-[52px] pl-14 pr-10 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-black dark:text-white font-semibold appearance-none focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all disabled:opacity-50 text-base truncate"
                   >
                     <option value="" className="text-black">{isLoading ? 'Loading...' : 'Any Brand'}</option>
                     {availableBrands.map(brand => (
@@ -301,7 +301,7 @@ export default function HeroSection() {
                     value={selectedModel}
                     onChange={(e) => setSelectedModel(e.target.value)}
                     disabled={isLoading || availableModels.length === 0}
-                    className="w-full h-[52px] pl-14 pr-10 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-black dark:text-white font-semibold appearance-none focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all disabled:opacity-50 text-base"
+                    className="w-full h-[52px] pl-14 pr-10 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-black dark:text-white font-semibold appearance-none focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all disabled:opacity-50 text-base truncate"
                   >
                     <option value="" className="text-black">{isLoading ? 'Loading...' : 'Any Model'}</option>
                     {availableModels.map(model => (
@@ -322,7 +322,7 @@ export default function HeroSection() {
                   <select
                     value={selectedBudget}
                     onChange={(e) => setSelectedBudget(e.target.value)}
-                    className="w-full h-[52px] pl-14 pr-10 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-black dark:text-white font-semibold appearance-none focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-base"
+                    className="w-full h-[52px] pl-14 pr-10 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-black dark:text-white font-semibold appearance-none focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-base truncate"
                   >
                     <option value="" className="text-black">No Limit</option>
                     <option value="0-500000" className="text-black">Under ₹5 Lakh</option>
@@ -335,7 +335,7 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="pt-6 pb-48 px-6 border-t border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20">
+            <div className="pt-6 pb-8 px-6 border-t border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20">
               <button
                 onClick={() => {
                   setIsMobileSearchOpen(false);
@@ -445,7 +445,7 @@ export default function HeroSection() {
                 value={selectedBrand}
                 onChange={handleBrandChange}
                 disabled={isLoading}
-                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border-2 border-gray-200 dark:border-white/10 bg-gray-50/80 dark:bg-[#12121f]/80 text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white dark:focus:bg-[#12121f] outline-none transition-all duration-300 disabled:opacity-50 cursor-pointer text-base"
+                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border-2 border-gray-200 dark:border-white/10 bg-gray-50/80 dark:bg-[#12121f]/80 text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white dark:focus:bg-[#12121f] outline-none transition-all duration-300 disabled:opacity-50 cursor-pointer text-base truncate"
               >
                 <option value="">{isLoading ? 'Loading...' : 'Select Brand'}</option>
                 {availableBrands.map(brand => (
@@ -466,7 +466,7 @@ export default function HeroSection() {
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
                 disabled={isLoading || availableModels.length === 0}
-                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border-2 border-gray-200 dark:border-white/10 bg-gray-50/80 dark:bg-[#12121f]/80 text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white dark:focus:bg-[#12121f] outline-none transition-all duration-300 disabled:opacity-50 cursor-pointer text-base"
+                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border-2 border-gray-200 dark:border-white/10 bg-gray-50/80 dark:bg-[#12121f]/80 text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white dark:focus:bg-[#12121f] outline-none transition-all duration-300 disabled:opacity-50 cursor-pointer text-base truncate"
               >
                 <option value="">{isLoading ? 'Loading...' : 'Select Model'}</option>
                 {availableModels.map(model => (
@@ -486,7 +486,7 @@ export default function HeroSection() {
               <select
                 value={selectedBudget}
                 onChange={(e) => setSelectedBudget(e.target.value)}
-                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border-2 border-gray-200 dark:border-white/10 bg-gray-50/80 dark:bg-[#12121f]/80 text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white dark:focus:bg-[#12121f] outline-none transition-all duration-300 cursor-pointer text-base"
+                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border-2 border-gray-200 dark:border-white/10 bg-gray-50/80 dark:bg-[#12121f]/80 text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white dark:focus:bg-[#12121f] outline-none transition-all duration-300 cursor-pointer text-base truncate"
               >
                 <option value="">Any Budget</option>
                 <option value="0-500000">Under ₹5 Lakh</option>

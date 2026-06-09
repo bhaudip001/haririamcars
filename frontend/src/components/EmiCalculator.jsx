@@ -68,10 +68,10 @@ export default function EmiCalculator({ carPrice = 1000000 }) {
             </span>
           </div>
         </div>
-        <div className="bg-orange-50 dark:bg-orange-500/10 px-6 py-4 rounded-xl border border-orange-100 dark:border-orange-500/20 text-right shrink-0">
-          <p className="text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-widest mb-1">Estimated EMI</p>
-          <p className="text-3xl font-bold text-orange-500">
-            {formatPrice(emi)}<span className="text-sm font-medium text-orange-600/70 dark:text-orange-400/70">/mo</span>
+        <div className="bg-purple-50 dark:bg-purple-500/10 px-6 py-4 rounded-xl border border-purple-100 dark:border-purple-500/20 text-right shrink-0">
+          <p className="text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase tracking-widest mb-1">Estimated EMI</p>
+          <p className="text-3xl font-bold text-purple-500">
+            {formatPrice(emi)}<span className="text-sm font-medium text-purple-600/70 dark:text-purple-400/70">/mo</span>
           </p>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function EmiCalculator({ carPrice = 1000000 }) {
             step="5"
             value={downPaymentPercent}
             onChange={(e) => setDownPaymentPercent(Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+            className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
           />
         </div>
 
@@ -111,7 +111,7 @@ export default function EmiCalculator({ carPrice = 1000000 }) {
               step="0.1"
               value={interestRate}
               onChange={(e) => setInterestRate(Number(e.target.value))}
-              className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+              className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
             />
           </div>
 
@@ -128,7 +128,7 @@ export default function EmiCalculator({ carPrice = 1000000 }) {
               step="1"
               value={tenureYears}
               onChange={(e) => setTenureYears(Number(e.target.value))}
-              className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+              className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
             />
           </div>
         </div>

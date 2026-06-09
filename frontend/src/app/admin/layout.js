@@ -9,11 +9,11 @@ import api from '@/lib/api';
 const adminNav = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/inventory', label: 'Inventory', icon: Car },
-  // { href: '/admin/sell-requests', label: 'Sell Requests', icon: HandCoins },
-  // { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
+  { href: '/admin/sell-requests', label: 'Sell Requests', icon: HandCoins },
+  { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
   { href: '/admin/happy-customers', label: 'Testimonials', icon: Users },
   { href: '/admin/banners', label: 'Banners', icon: Image },
-  // { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function AdminLayout({ children }) {
@@ -106,8 +106,8 @@ export default function AdminLayout({ children }) {
                 href={item.href}
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${pathname === item.href || (item.href !== '/admin/dashboard' && pathname?.startsWith(item.href))
-                    ? 'bg-[rgba(226,176,74,0.1)] text-[var(--color-primary)]'
-                    : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[rgba(255,255,255,0.04)]'
+                  ? 'bg-[rgba(226,176,74,0.1)] text-[var(--color-primary)]'
+                  : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[rgba(255,255,255,0.04)]'
                   }`}
               >
                 <item.icon size={18} />
