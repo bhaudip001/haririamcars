@@ -9,11 +9,11 @@ import api from '@/lib/api';
 const adminNav = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/inventory', label: 'Inventory', icon: Car },
-  { href: '/admin/sell-requests', label: 'Sell Requests', icon: HandCoins },
+  // { href: '/admin/sell-requests', label: 'Sell Requests', icon: HandCoins },
   { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
   { href: '/admin/happy-customers', label: 'Testimonials', icon: Users },
   { href: '/admin/banners', label: 'Banners', icon: Image },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+  // { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function AdminLayout({ children }) {

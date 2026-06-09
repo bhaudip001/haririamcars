@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
-      <body className="bg-gray-50 dark:bg-background text-black dark:text-on-background font-body-md text-body-md antialiased selection:bg-primary-container selection:text-on-primary-container transition-colors duration-500">
+      <body className="bg-[#f5f5f7] dark:bg-background text-black dark:text-on-background font-body-md text-body-md antialiased selection:bg-primary-container selection:text-on-primary-container transition-colors duration-500">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Toaster
             position="top-right"

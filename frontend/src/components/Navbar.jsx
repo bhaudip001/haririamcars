@@ -41,17 +41,17 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Catalog', path: '/catalog' },
-    { name: 'About Us', path: '/about' },
+    // { name: 'About Us', path: '/about' },
     { name: 'Contact', path: '/contact' },
-    { name: 'Sell Your Car', path: '/sell-your-car' }
+    // { name: 'Sell Your Car', path: '/sell-your-car' }
   ];
 
   return (
     <>
       <nav
         className={`sticky top-0 w-full z-40 transition-all duration-500 border-b ${scrolled
-            ? 'bg-[#0a0a12]/90 backdrop-blur-2xl border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)] py-2 md:py-3'
-            : 'bg-[#0a0a12] backdrop-blur-md border-transparent shadow-none py-4 md:py-5'
+          ? 'bg-[#0a0a12]/90 backdrop-blur-2xl border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)] py-2 md:py-3'
+          : 'bg-[#0a0a12] backdrop-blur-md border-transparent shadow-none py-4 md:py-5'
           }`}
       >
         <div className="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,8 +79,8 @@ export default function Navbar() {
                   key={link.path}
                   href={link.path}
                   className={`font-['Outfit'] text-[15px] px-4 py-2 rounded-full transition-all duration-300 relative group ${isActive
-                      ? "text-white font-semibold"
-                      : "text-gray-300 hover:text-white"
+                    ? "text-white font-semibold"
+                    : "text-gray-300 hover:text-white"
                     }`}
                 >
                   <span className="relative z-10">{link.name}</span>

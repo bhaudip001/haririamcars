@@ -41,11 +41,25 @@ export default function ContactPage() {
   const inputClassName = "w-full bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 rounded-2xl pl-12 pr-4 py-4 text-sm text-black dark:text-white font-['Inter'] outline-none focus:border-purple-500 focus:bg-white dark:focus:bg-white/[0.08] focus:ring-4 focus:ring-purple-600/20 transition-all placeholder-gray-400 dark:placeholder-gray-500 hover:border-purple-300 dark:hover:border-white/20 shadow-sm dark:shadow-inner";
 
   return (
-    <div className="bg-gray-50 dark:bg-[#05050A] min-h-screen pt-20 pb-16 selection:bg-purple-500/30 relative overflow-clip transition-colors duration-500">
+    <div className="bg-[#f4f4f8] dark:bg-[#05050A] min-h-screen pt-20 pb-16 selection:bg-purple-500/30 relative overflow-clip transition-colors duration-500 flex flex-col w-full">
       
-      {/* Deep Atmospheric Backgrounds */}
-      <div className="absolute top-0 right-1/4 w-[800px] h-[800px] bg-purple-600/20 dark:bg-purple-600/10 blur-[150px] rounded-full pointer-events-none transition-colors duration-500"></div>
-      <div className="absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-blue-600/20 dark:bg-blue-600/10 blur-[150px] rounded-full pointer-events-none transition-colors duration-500"></div>
+      {/* Light Mode: Massive Unified Premium Background */}
+      <div className="fixed inset-0 dark:hidden pointer-events-none z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
+        <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
+        
+        {/* Sweeping Showroom Lights */}
+        <div className="absolute top-[10%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent rotate-[35deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90"></div>
+        <div className="absolute top-[60%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent -rotate-[15deg] transform-gpu blur-[30px] opacity-70"></div>
+
+        {/* Majestic Glow Orbs */}
+        <div className="absolute top-[5%] right-[10%] w-[600px] h-[600px] bg-purple-200/30 rounded-full blur-[140px] mix-blend-multiply animate-pulse-ring"></div>
+        <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-pink-100/40 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
+      </div>
+
+      {/* Dark Mode: Deep Atmospheric Backgrounds */}
+      <div className="hidden dark:block absolute top-0 right-1/4 w-[800px] h-[800px] bg-purple-600/10 blur-[150px] rounded-full pointer-events-none transition-colors duration-500"></div>
+      <div className="hidden dark:block absolute bottom-0 left-1/4 w-[600px] h-[600px] bg-blue-600/10 blur-[150px] rounded-full pointer-events-none transition-colors duration-500"></div>
       
       <div className="max-w-[1200px] mx-auto px-6 relative z-10">
         

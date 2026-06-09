@@ -62,11 +62,50 @@ export default function HomePage() {
     <>
       <HeroSection />
 
+      {/* ════ UNIFIED SHOWROOM BACKGROUND (SECTIONS 3 & 4) ════ */}
+      <div className="relative w-full overflow-hidden bg-[#f4f4f8] dark:bg-transparent transition-colors duration-500">
+        
+        {/* Light Mode: Massive Unified Premium Background (Hidden in Dark Mode) */}
+        <div className="absolute inset-0 dark:hidden pointer-events-none z-0">
+          {/* Subtle Base Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
+          
+          {/* Continuous Blueprint Grid */}
+          <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
+          
+          {/* Giant Showroom Floor Reflection (Sweeping Diagonal Light) */}
+          <div className="absolute -top-[20%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent rotate-[35deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90 z-0"></div>
+          
+          {/* Secondary Sweeping Light */}
+          <div className="absolute top-[40%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent -rotate-[15deg] transform-gpu blur-[30px] opacity-70 z-0"></div>
+
+          {/* Majestic Glow Orbs */}
+          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-purple-200/30 rounded-full blur-[140px] mix-blend-multiply animate-pulse-ring"></div>
+          <div className="absolute bottom-[10%] right-[-10%] w-[700px] h-[700px] bg-pink-100/40 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
+        </div>
+
+        {/* Dark Mode: Massive Unified Premium Background */}
+        <div className="hidden dark:block absolute inset-0 pointer-events-none z-0">
+          {/* Deep Space Base */}
+          <div className="absolute inset-0 bg-[#0a0a12]"></div>
+          
+          {/* Neon Blueprint Grid */}
+          <div className="absolute inset-0 opacity-[0.05] blueprint-grid"></div>
+          
+          {/* Sweeping Showroom Lights (Dark) */}
+          <div className="absolute -top-[20%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-purple-600/10 to-transparent rotate-[35deg] transform-gpu blur-[30px] shadow-[0_0_120px_rgba(168,85,247,0.15)] z-0"></div>
+          <div className="absolute top-[40%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-blue-600/10 to-transparent -rotate-[15deg] transform-gpu blur-[40px] z-0"></div>
+
+          {/* Majestic Glow Orbs */}
+          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-purple-600/10 rounded-full blur-[140px] mix-blend-screen animate-pulse-ring"></div>
+          <div className="absolute bottom-[10%] right-[-10%] w-[700px] h-[700px] bg-blue-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
+        </div>
+
       {/* ════ SECTION 3: PREMIUM DEALERSHIP SERVICES ════ */}
-      <section className="pt-24 md:pt-44 pb-20 bg-gray-50 dark:bg-[#0a0a12] relative z-10 overflow-hidden transition-colors duration-500">
+      <section className="pt-24 md:pt-44 pb-20 relative z-10 overflow-hidden transition-colors duration-500 dark:bg-transparent">
         {/* Decorative elements */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-30 dark:opacity-50 shadow-[0_0_20px_rgba(168,85,247,0.8)]"></div>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-20 bg-purple-600/10 dark:bg-purple-600/20 blur-[80px]"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-30 dark:opacity-50 shadow-[0_0_20px_rgba(168,85,247,0.8)] z-10"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-20 bg-purple-600/10 dark:bg-purple-600/20 blur-[80px] z-10"></div>
 
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -126,8 +165,9 @@ export default function HomePage() {
       </section>
 
       {/* ════ SECTION 4: FEATURED CARS (The Collection) ════ */}
-      <section className="py-10 md:py-14 lg:py-20 bg-white dark:bg-transparent transition-colors duration-500">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-10 md:py-14 lg:py-20 relative z-10 transition-colors duration-500 dark:bg-transparent">
+
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 gap-4">
             <div>
               <p className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">OUR INVENTORY</p>
@@ -167,6 +207,8 @@ export default function HomePage() {
           )}
         </div>
       </section>
+
+      </div> {/* END OF UNIFIED SHOWROOM BACKGROUND */}
 
       {/* ════ SECTION 5: WHY CHOOSE US (The Hariram Standard) ════ */}
       <section className="py-10 md:py-14 lg:py-20 bg-[#0f0f1e]">
@@ -242,9 +284,44 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ════ UNIFIED SHOWROOM BACKGROUND (SECTIONS 6, 7 & 8) ════ */}
+      <div className="relative w-full overflow-hidden bg-[#f4f4f8] dark:bg-transparent transition-colors duration-500">
+        
+        {/* Light Mode: Massive Unified Premium Background */}
+        <div className="absolute inset-0 dark:hidden pointer-events-none z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
+          <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
+          
+          {/* Sweeping Showroom Lights */}
+          <div className="absolute top-[10%] -right-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent -rotate-[25deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90 z-0"></div>
+          
+          <div className="absolute top-[60%] -left-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent rotate-[15deg] transform-gpu blur-[30px] opacity-70 z-0"></div>
+
+          {/* Majestic Glow Orbs */}
+          <div className="absolute top-[20%] right-[10%] w-[600px] h-[600px] bg-blue-200/30 rounded-full blur-[140px] mix-blend-multiply animate-pulse-ring"></div>
+          <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-purple-200/30 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
+        </div>
+
+        {/* Dark Mode: Massive Unified Premium Background */}
+        <div className="hidden dark:block absolute inset-0 pointer-events-none z-0">
+          {/* Deep Space Base */}
+          <div className="absolute inset-0 bg-[#0a0a12]"></div>
+          
+          {/* Neon Blueprint Grid */}
+          <div className="absolute inset-0 opacity-[0.05] blueprint-grid"></div>
+          
+          {/* Sweeping Showroom Lights (Dark) */}
+          <div className="absolute top-[10%] -right-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-blue-600/10 to-transparent -rotate-[25deg] transform-gpu blur-[30px] shadow-[0_0_120px_rgba(59,130,246,0.15)] z-0"></div>
+          <div className="absolute top-[60%] -left-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-purple-600/10 to-transparent rotate-[15deg] transform-gpu blur-[40px] z-0"></div>
+
+          {/* Majestic Glow Orbs */}
+          <div className="absolute top-[20%] right-[10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px] mix-blend-screen animate-pulse-ring"></div>
+          <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-purple-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
+        </div>
+
       {/* ════ SECTION 6: ADVERTISEMENT BANNERS ════ */}
       {banners.length > 0 && (
-        <section className="py-10 md:py-14 lg:py-20 bg-white dark:bg-[#0a0a12] transition-colors duration-500">
+        <section className="py-10 md:py-14 lg:py-20 relative z-10 transition-colors duration-500 dark:bg-transparent">
           <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <p className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 text-center transition-colors">OFFERS & PROMOTIONS</p>
             <h2 className="text-3xl md:text-[36px] text-black dark:text-white font-bold leading-tight mb-10 text-center transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
@@ -319,11 +396,13 @@ export default function HomePage() {
       )}
 
       {/* ════ SECTION 7: GOOGLE REVIEWS ════ */}
-      <GoogleReviews />
+      <div className="relative z-10 dark:bg-transparent">
+        <GoogleReviews />
+      </div>
 
       {/* ════ SECTION 8: HAPPY CUSTOMERS (Delivery Photos) ════ */}
       {testimonials.length > 0 && (
-        <section className="py-10 md:py-14 lg:py-20 overflow-hidden bg-white dark:bg-[#0f0f1e] transition-colors duration-500">
+        <section className="py-10 md:py-14 lg:py-20 overflow-hidden relative z-10 transition-colors duration-500 dark:bg-transparent">
           <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-end mb-8 md:mb-12">
               <div>
@@ -387,6 +466,8 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      </div> {/* END OF UNIFIED BACKGROUND FOR 6, 7 & 8 */}
     </>
   );
 }

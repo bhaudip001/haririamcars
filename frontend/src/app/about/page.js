@@ -52,16 +52,48 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="bg-bg-primary min-h-screen pb-0" style={{ paddingTop: 0 }}>
+    <div className="bg-[#f4f4f8] dark:bg-transparent min-h-screen pb-0 relative transition-colors duration-500 w-full flex flex-col" style={{ paddingTop: 0 }}>
+      {/* Light Mode: Massive Unified Premium Background */}
+      <div className="fixed inset-0 dark:hidden pointer-events-none z-0">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
+        <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
+        
+        {/* Sweeping Showroom Lights */}
+        <div className="absolute top-[10%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent rotate-[35deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90"></div>
+        <div className="absolute top-[60%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent -rotate-[15deg] transform-gpu blur-[30px] opacity-70"></div>
+
+        {/* Majestic Glow Orbs */}
+        <div className="absolute top-[5%] right-[10%] w-[600px] h-[600px] bg-purple-200/30 rounded-full blur-[140px] mix-blend-multiply animate-pulse-ring"></div>
+        <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-pink-100/40 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
+      </div>
+
+      {/* Dark Mode: Massive Unified Premium Background */}
+      <div className="hidden dark:block fixed inset-0 pointer-events-none z-0">
+        {/* Deep Space Base */}
+        <div className="absolute inset-0 bg-[#0a0a12]"></div>
+        
+        {/* Neon Blueprint Grid */}
+        <div className="absolute inset-0 opacity-[0.05] blueprint-grid"></div>
+        
+        {/* Sweeping Showroom Lights (Dark) */}
+        <div className="absolute top-[10%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-purple-600/10 to-transparent rotate-[35deg] transform-gpu blur-[30px] shadow-[0_0_120px_rgba(168,85,247,0.15)] z-0"></div>
+        <div className="absolute top-[60%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-blue-600/10 to-transparent -rotate-[15deg] transform-gpu blur-[40px] z-0"></div>
+
+        {/* Majestic Glow Orbs */}
+        <div className="absolute top-[5%] right-[10%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[140px] mix-blend-screen animate-pulse-ring"></div>
+        <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
+      </div>
 
       {/* ═══ THE WALL OF TRUST — HERO ═══ */}
-      <AboutHero />
+      <div className="relative z-10">
+        <AboutHero />
+      </div>
 
       {/* Anchor for "Explore Our Story" CTA */}
       <div id="our-story" />
 
       {/* OUR STORY — PREMIUM EDITORIAL REDESIGN */}
-      <section className="relative pt-28 pb-12 overflow-hidden bg-white dark:bg-[#0a0a12] transition-colors duration-500">
+      <section className="relative pt-28 pb-12 overflow-hidden transition-colors duration-500 z-10 dark:bg-[#0a0a12]">
         {/* Decorative background */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-purple-600/[0.03] dark:bg-purple-600/[0.05] rounded-full blur-[120px]" />
@@ -174,7 +206,7 @@ export default function AboutPage() {
       </section>
 
       {/* MISSION & VISION — PREMIUM REDESIGN */}
-      <section className="relative pt-12 pb-28 overflow-hidden bg-white dark:bg-[#0a0a12] transition-colors duration-500">
+      <section className="relative pt-12 pb-28 overflow-hidden transition-colors duration-500 z-10 dark:bg-[#0a0a12]">
         {/* Decorative background */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           {/* Large faint "01 02" watermark numbers */}
@@ -478,7 +510,7 @@ export default function AboutPage() {
       </section>
 
       {/* OUR PROMISE — PREMIUM REDESIGN */}
-      <section className="relative py-28 overflow-hidden bg-gray-50 dark:bg-[#0c0c18] transition-colors duration-500">
+      <section className="relative py-28 overflow-hidden transition-colors duration-500 z-10 dark:bg-[#0c0c18]">
         {/* Decorative elements */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-purple-600/[0.03] dark:bg-purple-600/[0.05] rounded-full blur-[100px]" />
@@ -610,7 +642,7 @@ export default function AboutPage() {
 
       {/* ═══ HAPPY CUSTOMERS (Delivery Photos) ═══ */}
       {testimonials.length > 0 && (
-        <section className="py-10 md:py-14 lg:py-20 overflow-hidden bg-white dark:bg-[#0f0f1e] transition-colors duration-500">
+        <section className="py-10 md:py-14 lg:py-20 overflow-hidden transition-colors duration-500 z-10 dark:bg-[#0a0a12]">
           <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-end mb-8 md:mb-12">
               <div>
@@ -664,7 +696,9 @@ export default function AboutPage() {
       )}
 
       {/* ═══ GOOGLE REVIEWS ═══ */}
-      <GoogleReviews />
+      <div className="relative z-10 dark:bg-[#0a0a12]">
+        <GoogleReviews />
+      </div>
 
     </div>
   );
