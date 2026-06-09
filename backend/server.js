@@ -64,11 +64,21 @@ const allowedOrigins = [
 ];
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    // allow requests with no origin
+    if (!origin) return callback(null, true);
+    
+    // Allow localhost
+    if (origin.includes('localhost')) return callback(null, true);
+    
+    // Allow any Vercel domain for this project
+    if (origin.includes('vercel.app')) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
+    
+    console.error(`CORS Blocked: ${origin}`);
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
 }));
