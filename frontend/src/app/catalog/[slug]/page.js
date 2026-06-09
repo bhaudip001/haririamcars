@@ -68,12 +68,22 @@ export default function CarDetailPage() {
         const fetchedCar = res.data;
         setCar(fetchedCar);
         
-        // Fetch similar cars
-        const similarRes = await api.get(`/cars?make=${fetchedCar.make}&status=available&limit=4`);
-        if (similarRes.data?.cars) {
-          // Filter out the current car and limit to 3
-          setSimilarCars(similarRes.data.cars.filter(c => c._id !== fetchedCar._id).slice(0, 3));
+        // Fetch similar cars (same make)
+        let similarRes = await api.get('/cars', {
+          params: { make: fetchedCar.make, status: 'available', limit: 4 }
+        });
+        
+        let filtered = (similarRes.data?.cars || []).filter(c => c._id !== fetchedCar._id);
+        
+        // Fallback: If no similar cars of the same make, just fetch any available cars
+        if (filtered.length === 0) {
+          similarRes = await api.get('/cars', {
+            params: { status: 'available', limit: 4 }
+          });
+          filtered = (similarRes.data?.cars || []).filter(c => c._id !== fetchedCar._id);
         }
+        
+        setSimilarCars(filtered.slice(0, 3));
       } catch (error) {
         console.error('Failed to fetch car details:', error);
       } finally {
@@ -301,20 +311,6 @@ export default function CarDetailPage() {
 
           {/* EMI Calculator */}
           <EmiCalculator carPrice={car.price || 1000000} />
-
-          {/* Similar Cars */}
-          {similarCars.length > 0 && (
-            <div className="mt-4">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6" style={{ fontFamily: 'var(--font-outfit)' }}>
-                Similar Cars You Might Like
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {similarCars.map((similarCar) => (
-                  <CarCard key={similarCar._id} car={similarCar} />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* ════ 2. INFO (Mobile: Middle, Desktop: Right column spanning full height) ════ */}
