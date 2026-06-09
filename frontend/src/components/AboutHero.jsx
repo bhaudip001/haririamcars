@@ -284,7 +284,7 @@ export default function AboutHero() {
                     alt="Hariram Motors Showroom — Premium used car dealership in Surat"
                     fill
                     className="object-cover"
-                    sizes="(max-width: 1024px) 0vw, 45vw"
+                    sizes="(max-width: 1024px) 100vw, 45vw"
                     priority
                   />
                   {/* Gradient overlay at bottom */}
@@ -310,10 +310,8 @@ export default function AboutHero() {
 
                 {/* ── Floating Card 1: Google Rating (top-left) ── */}
                 <div
-                  className="hero-enter-float1 animate-float-card absolute"
+                  className="hero-enter-float1 animate-float-card absolute -top-12 -left-2 sm:-top-16 sm:-left-8"
                   style={{
-                    top: '-72px',
-                    left: '-34px',
                     width: '180px',
                     zIndex: 5,
                   }}
@@ -346,10 +344,8 @@ export default function AboutHero() {
 
                 {/* ── Floating Card 2: 100% Verified (bottom-right) ── */}
                 <div
-                  className="hero-enter-float2 animate-float-card-delayed absolute"
+                  className="hero-enter-float2 animate-float-card-delayed absolute -bottom-16 -right-2 sm:-bottom-20 sm:-right-6"
                   style={{
-                    bottom: '-80px',
-                    right: '-24px',
                     width: '160px',
                     zIndex: 5,
                   }}
