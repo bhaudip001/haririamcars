@@ -46,6 +46,7 @@ connectDB();
 
 // ── Initialize Express ──
 const app = express();
+app.set('trust proxy', 1);
 
 // ── Global Middleware ──
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
