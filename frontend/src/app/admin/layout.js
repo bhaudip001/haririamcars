@@ -9,11 +9,11 @@ import api from '@/lib/api';
 const adminNav = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/inventory', label: 'Inventory', icon: Car },
-  { href: '/admin/sell-requests', label: 'Sell Requests', icon: HandCoins },
-  { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
+  // { href: '/admin/sell-requests', label: 'Sell Requests', icon: HandCoins },
+  // { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
   { href: '/admin/happy-customers', label: 'Testimonials', icon: Users },
   { href: '/admin/banners', label: 'Banners', icon: Image },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+  // { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function AdminLayout({ children }) {
@@ -44,7 +44,7 @@ export default function AdminLayout({ children }) {
   const handleLogout = async () => {
     try {
       await api.post('/auth/logout');
-    } catch {}
+    } catch { }
     localStorage.removeItem('token');
     router.push('/admin/login');
   };
@@ -105,11 +105,10 @@ export default function AdminLayout({ children }) {
                 key={item.href}
                 href={item.href}
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  pathname === item.href || (item.href !== '/admin/dashboard' && pathname?.startsWith(item.href))
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${pathname === item.href || (item.href !== '/admin/dashboard' && pathname?.startsWith(item.href))
                     ? 'bg-[rgba(226,176,74,0.1)] text-[var(--color-primary)]'
                     : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[rgba(255,255,255,0.04)]'
-                }`}
+                  }`}
               >
                 <item.icon size={18} />
                 {item.label}
@@ -122,7 +121,7 @@ export default function AdminLayout({ children }) {
             <div className="bg-[#12121a] border border-white/5 rounded-2xl p-3 shadow-inner relative overflow-hidden group/profile">
               {/* Subtle animated background glow */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-purple-500/5 blur-3xl opacity-0 group-hover/profile:opacity-100 transition-opacity duration-700"></div>
-              
+
               <div className="flex items-center gap-3 relative z-10">
                 <div className="relative">
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur opacity-60"></div>
@@ -135,12 +134,12 @@ export default function AdminLayout({ children }) {
                   <p className="text-xs text-purple-400/70 truncate font-medium">{user.email}</p>
                 </div>
               </div>
-              
-              <button 
-                onClick={handleLogout} 
+
+              <button
+                onClick={handleLogout}
                 className="relative z-10 group flex items-center justify-center gap-2 w-full py-2.5 mt-4 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-xl transition-all duration-300 border border-red-500/10 hover:border-red-500/30"
               >
-                <LogOut size={16} className="group-hover:-translate-x-1 transition-transform" /> 
+                <LogOut size={16} className="group-hover:-translate-x-1 transition-transform" />
                 <span className="font-semibold text-sm">Secure Logout</span>
               </button>
             </div>

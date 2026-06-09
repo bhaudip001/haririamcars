@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Car, Eye, EyeOff } from 'lucide-react';
+import { Car, Eye, EyeOff, Lock, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
+import Image from 'next/image';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -30,43 +31,96 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0f1a] via-[#16213e] to-[#0f0f1a] px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-4">
-            <Car size={32} className="text-[#0f0f1a]" />
-          </div>
-          <h1 className="text-2xl font-bold" style={{ fontFamily: 'var(--font-outfit)' }}>
-            Hariram <span className="gradient-text">Motors</span>
-          </h1>
-          <p className="text-sm text-[var(--color-text-muted)] mt-1">Admin Panel</p>
-        </div>
+    <div className="min-h-screen relative flex items-center justify-center p-4 sm:p-8 overflow-hidden bg-black text-white selection:bg-white/30">
+      
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image 
+          src="/login-bg.png" 
+          alt="Luxury Car Showroom" 
+          fill 
+          className="object-cover opacity-60"
+          priority
+        />
+        {/* Deep vignette gradient for focus */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20" />
+      </div>
 
-        <form onSubmit={handleLogin} className="glass-card p-8 space-y-5">
-          <div>
-            <label className="input-label">Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="admin@harimotors.com" className="input-field" required />
-          </div>
-          <div>
-            <label className="input-label">Password</label>
-            <div className="relative">
-              <input
-                type={showPass ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                className="input-field !pr-12"
-                required
-              />
-              <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]">
-                {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+      {/* Main Glass Card */}
+      <div className="relative z-10 w-full max-w-md hero-enter">
+        <div className="bg-black/40 backdrop-blur-[40px] border border-white/10 p-8 sm:p-10 rounded-[2rem] shadow-2xl">
+          
+          {/* Header */}
+          <div className="flex flex-col items-center text-center mb-10">
+            <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-5 backdrop-blur-md shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+              <Lock size={28} className="text-white" strokeWidth={1.5} />
             </div>
+            <h1 className="text-3xl font-bold tracking-tight mb-2" style={{ fontFamily: 'var(--font-outfit)' }}>
+              Administrator
+            </h1>
+            <p className="text-white/60 text-sm tracking-wide">
+              Hariram Motors Secure Access
+            </p>
           </div>
-          <button type="submit" disabled={loading} className="btn-primary w-full justify-center !py-3.5">
-            {loading ? 'Signing in...' : 'Sign In'}
-          </button>
-        </form>
+
+          {/* Form */}
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-white/70 uppercase tracking-widest pl-1">Email</label>
+              <input 
+                type="email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                placeholder="admin@hariramcars.com" 
+                className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 focus:bg-white/10 transition-all backdrop-blur-sm"
+                required 
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-white/70 uppercase tracking-widest pl-1">Password</label>
+              <div className="relative">
+                <input
+                  type={showPass ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 focus:bg-white/10 transition-all backdrop-blur-sm !pr-14"
+                  required
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setShowPass(!showPass)} 
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
+                >
+                  {showPass ? <EyeOff size={20} strokeWidth={1.5} /> : <Eye size={20} strokeWidth={1.5} />}
+                </button>
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={loading} 
+              className="w-full bg-white text-black hover:bg-gray-200 font-semibold rounded-2xl px-5 py-4 mt-4 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-1 shadow-[0_10px_40px_rgba(255,255,255,0.15)] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
+            >
+              {loading ? 'Authenticating...' : (
+                <>
+                  Sign In
+                  <ArrowRight size={18} strokeWidth={2} />
+                </>
+              )}
+            </button>
+          </form>
+
+        </div>
+        
+        {/* Footer */}
+        <div className="text-center mt-8">
+          <p className="text-white/40 text-xs flex items-center justify-center gap-2">
+            <Car size={14} />
+            &copy; {new Date().getFullYear()} Hariram Motors
+          </p>
+        </div>
       </div>
     </div>
   );

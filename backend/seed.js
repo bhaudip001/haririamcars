@@ -14,11 +14,11 @@ const seed = async () => {
   await connectDB();
 
   // Create admin user
-  const existingAdmin = await User.findOne({ email: process.env.ADMIN_EMAIL || 'admin@harimotors.com' });
+  const existingAdmin = await User.findOne({ email: process.env.ADMIN_EMAIL || 'admin@hariramcars.com' });
   if (!existingAdmin) {
     await User.create({
       name: 'Admin',
-      email: process.env.ADMIN_EMAIL || 'admin@harimotors.com',
+      email: process.env.ADMIN_EMAIL || 'admin@hariramcars.com',
       password: process.env.ADMIN_PASSWORD || 'admin123456',
       role: 'admin',
     });

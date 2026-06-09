@@ -48,12 +48,11 @@ export default function Navbar() {
 
   return (
     <>
-      <nav 
-        className={`sticky top-0 w-full z-40 transition-all duration-500 border-b ${
-          scrolled 
-            ? 'bg-[#0a0a12]/90 backdrop-blur-2xl border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)] py-2 md:py-3' 
+      <nav
+        className={`sticky top-0 w-full z-40 transition-all duration-500 border-b ${scrolled
+            ? 'bg-[#0a0a12]/90 backdrop-blur-2xl border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)] py-2 md:py-3'
             : 'bg-[#0a0a12] backdrop-blur-md border-transparent shadow-none py-4 md:py-5'
-        }`}
+          }`}
       >
         <div className="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -79,11 +78,10 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   href={link.path}
-                  className={`font-['Outfit'] text-[15px] px-4 py-2 rounded-full transition-all duration-300 relative group ${
-                    isActive
+                  className={`font-['Outfit'] text-[15px] px-4 py-2 rounded-full transition-all duration-300 relative group ${isActive
                       ? "text-white font-semibold"
                       : "text-gray-300 hover:text-white"
-                  }`}
+                    }`}
                 >
                   <span className="relative z-10">{link.name}</span>
                   {isActive && (
@@ -193,10 +191,10 @@ export default function Navbar() {
                     >
                       <Link
                         href={link.path}
-                        className={`group flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${isActive 
-                          ? "bg-purple-500/10 border-purple-500/30 text-white shadow-sm" 
+                        className={`group flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${isActive
+                          ? "bg-purple-500/10 border-purple-500/30 text-white shadow-sm"
                           : "bg-white/5 border-white/5 text-white/70 hover:bg-white/10 hover:text-white"
-                        }`}
+                          }`}
                       >
                         <span className="font-['Outfit'] font-bold text-lg tracking-wide">{link.name}</span>
                         <motion.div
@@ -213,7 +211,7 @@ export default function Navbar() {
               </div>
 
               {/* Mobile CTA Buttons */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
