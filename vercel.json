@@ -1,11 +1,13 @@
 {
-  "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/.next",
-  "framework": "nextjs",
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://your-backend-url.onrender.com/api/:path*"
+    "experimentalServices": {
+        "frontend": {
+            "root": "frontend",
+            "routePrefix": "/",
+            "framework": "nextjs"
+        },
+        "backend": {
+            "root": "backend",
+            "routePrefix": "/_/backend"
+        }
     }
-  ]
 }
