@@ -4,6 +4,26 @@ import { protect, adminOnly, generateToken } from '../middleware/authMiddleware.
 
 const router = express.Router();
 
+// ── TEMPORARY SEED ROUTE ──
+router.get('/seed', async (req, res) => {
+  try {
+    const existingAdmin = await User.findOne({ email: 'admin@hariramcars.com' });
+    if (!existingAdmin) {
+      await User.create({
+        name: 'Admin',
+        email: 'admin@hariramcars.com',
+        password: 'admin123456',
+        role: 'admin',
+      });
+      return res.json({ message: 'Admin created successfully! You can now login.' });
+    }
+    res.json({ message: 'Admin already exists! You can login.' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 // ── POST /api/auth/login ──
 router.post('/login', async (req, res) => {
   try {
