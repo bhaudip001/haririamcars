@@ -125,7 +125,7 @@ carSchema.index({ price: 1 });
 carSchema.index({ fuelType: 1 });
 carSchema.index({ year: 1 });
 carSchema.index({ status: 1 });
-carSchema.index({ slug: 1 });
+// carSchema.index({ slug: 1 }); // Removed to prevent duplicate index warning
 carSchema.index({ createdAt: -1 });
 
 const Car = mongoose.model('Car', carSchema);

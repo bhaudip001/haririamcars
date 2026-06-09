@@ -433,7 +433,7 @@ export default function HomePage() {
                     {/* Full Card Photo */}
                     <div className="absolute inset-0 w-full h-full overflow-hidden">
                       {t.photo?.url ? (
-                        <Image src={t.photo.url} alt={t.customerName} fill className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                        <Image src={t.photo.url} alt={t.customerName} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-purple-500/30">No Photo</div>
                       )}

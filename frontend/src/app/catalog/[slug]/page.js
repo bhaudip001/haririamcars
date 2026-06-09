@@ -251,7 +251,7 @@ export default function CarDetailPage() {
                     onClick={() => setActiveImageIdx(idx)}
                     className={`shrink-0 w-32 aspect-video rounded-xl overflow-hidden border-2 transition-all duration-300 snap-start relative ${activeImageIdx === idx ? 'border-purple-500 opacity-100 shadow-[0_0_15px_rgba(168,85,247,0.4)] scale-[0.98]' : 'border-transparent opacity-70 hover:opacity-100'}`}
                   >
-                    <Image src={getOptimizedImage(img.url, 300)} alt={`${title} ${idx+1}`} fill className="object-cover" />
+                    <Image src={getOptimizedImage(img.url, 300)} alt={`${title} ${idx+1}`} fill sizes="(max-width: 768px) 33vw, 20vw" className="object-cover" />
                   </button>
                 ))}
               </div>

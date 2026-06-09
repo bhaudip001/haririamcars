@@ -230,7 +230,7 @@ export default function AdminHappyCustomersPage() {
                     <div key={c._id} className="group bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl overflow-hidden hover:border-[var(--color-primary)]/50 transition-all duration-300">
                       <div className="relative aspect-square w-full bg-black/20">
                         {c.photo?.url ? (
-                          <Image src={c.photo.url} alt={c.customerName} fill className="object-cover" />
+                          <Image src={c.photo.url} alt={c.customerName} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover" />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center text-[var(--color-text-muted)]"><ImageIcon size={32} /></div>
                         )}
