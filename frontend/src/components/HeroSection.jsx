@@ -167,7 +167,7 @@ export default function HeroSection() {
             className="text-4xl sm:text-5xl text-white font-medium tracking-wide leading-tight drop-shadow-lg" style={{ fontFamily: 'var(--font-outfit)' }}
           >
             Your <span className="relative inline-block font-bold">
-              <span className="absolute left-0 top-0 text-white [-webkit-text-stroke:2px_white] drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]" aria-hidden="true">Dream Car,</span>
+              <span className="absolute left-0 top-0 text-white [-webkit-text-stroke:1px_white] drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]" aria-hidden="true">Dream Car,</span>
               <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Dream Car,</span>
             </span> Now Within Reach!
           </motion.h1>
@@ -366,7 +366,7 @@ export default function HeroSection() {
             className="text-5xl sm:text-6xl md:text-7xl text-white font-medium tracking-wide leading-[1.15] drop-shadow-xl" style={{ fontFamily: 'var(--font-outfit)' }}
           >
             Your <span className="relative inline-block font-bold">
-              <span className="absolute left-0 top-0 text-white [-webkit-text-stroke:4px_white] drop-shadow-[0_0_30px_rgba(168,85,247,0.8)]" aria-hidden="true">Dream Car,</span>
+              <span className="absolute left-0 top-0 text-white [-webkit-text-stroke:2px_white] drop-shadow-[0_0_30px_rgba(168,85,247,0.8)]" aria-hidden="true">Dream Car,</span>
               <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-purple-500 to-blue-500">Dream Car,</span>
             </span> Now Within Your Reach!
           </motion.h1>
