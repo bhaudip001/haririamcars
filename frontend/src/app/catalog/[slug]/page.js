@@ -301,6 +301,20 @@ export default function CarDetailPage() {
 
           {/* EMI Calculator */}
           <EmiCalculator carPrice={car.price || 1000000} />
+
+          {/* Similar Cars */}
+          {similarCars.length > 0 && (
+            <div className="mt-4">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6" style={{ fontFamily: 'var(--font-outfit)' }}>
+                Similar Cars You Might Like
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {similarCars.map((similarCar) => (
+                  <CarCard key={similarCar._id} car={similarCar} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ════ 2. INFO (Mobile: Middle, Desktop: Right column spanning full height) ════ */}
