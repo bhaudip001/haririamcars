@@ -429,15 +429,6 @@ export default function CarDetailPage() {
               </div>
             </div>
 
-            {/* Trust Indicator */}
-            <div className="flex items-center gap-4 bg-purple-50 dark:bg-[#12121f] border border-purple-200 dark:border-purple-500/30 rounded-xl p-5 mt-2 shadow-sm dark:shadow-lg">
-              <IconShieldCheck size={32} className="text-purple-600 dark:text-purple-400 shrink-0" />
-              <div>
-                <p className="font-bold text-gray-900 dark:text-white">Hariram Certified Pre-Owned</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">150-Point Inspection Completed</p>
-              </div>
-            </div>
-
             {/* CTAs */}
             <div className="flex flex-col gap-4 mt-2">
               <a 
@@ -462,6 +453,15 @@ export default function CarDetailPage() {
                 <IconPhoneCall size={22} />
                 Call Us Now
               </a>
+            </div>
+
+            {/* Trust Indicator */}
+            <div className="flex items-center gap-4 bg-purple-50 dark:bg-[#12121f] border border-purple-200 dark:border-purple-500/30 rounded-xl p-5 mt-2 shadow-sm dark:shadow-lg">
+              <IconShieldCheck size={32} className="text-purple-600 dark:text-purple-400 shrink-0" />
+              <div>
+                <p className="font-bold text-gray-900 dark:text-white">Hariram Certified Pre-Owned</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">150-Point Inspection Completed</p>
+              </div>
             </div>
             
           </div>
