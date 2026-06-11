@@ -107,7 +107,7 @@ export default function GoogleReviews() {
               <span className="font-['Outfit'] text-[64px] font-bold text-black dark:text-white leading-none transition-colors">4.3</span>
             </div>
 
-            <motion.div 
+            <motion.div
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
@@ -160,7 +160,7 @@ export default function GoogleReviews() {
 
                   <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-white/10 transition-colors">
                     <div className="flex items-center gap-4">
-                      <motion.div 
+                      <motion.div
                         whileHover={{ scale: 1.1 }}
                         className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 flex items-center justify-center font-['Outfit'] font-bold text-white text-xl shadow-lg shrink-0"
                       >
@@ -172,7 +172,7 @@ export default function GoogleReviews() {
                       </div>
                     </div>
 
-                    <motion.div 
+                    <motion.div
                       variants={staggerContainer}
                       initial="hidden"
                       animate="visible"
