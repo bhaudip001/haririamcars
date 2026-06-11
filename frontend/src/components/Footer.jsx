@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { 
   IconBrandFacebook, 
   IconBrandInstagram, 
@@ -14,7 +15,13 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#05050a] text-gray-400 border-t border-white/10 pt-20 pb-8 relative z-10 overflow-hidden">
+    <motion.footer 
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="bg-[#05050a] text-gray-400 border-t border-white/10 pt-20 pb-8 relative z-10 overflow-hidden"
+    >
       {/* Premium Background Accents */}
       <div className="absolute top-0 left-1/4 w-1/2 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
       <div className="absolute -bottom-48 -left-48 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
@@ -40,15 +47,15 @@ export default function Footer() {
               Surat&apos;s premier destination for curated luxury and certified pre-owned vehicles. Built on trust, driven by absolute quality.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-purple-600 hover:border-purple-600 hover:text-white transition-all duration-300 text-white shadow-sm">
+              <motion.a whileHover={{ scale: 1.2, y: -3 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }} href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-purple-600 hover:border-purple-600 hover:text-white transition-colors duration-300 text-white shadow-sm">
                 <IconBrandFacebook size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-purple-600 hover:border-purple-600 hover:text-white transition-all duration-300 text-white shadow-sm">
+              </motion.a>
+              <motion.a whileHover={{ scale: 1.2, y: -3 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }} href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-purple-600 hover:border-purple-600 hover:text-white transition-colors duration-300 text-white shadow-sm">
                 <IconBrandInstagram size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-purple-600 hover:border-purple-600 hover:text-white transition-all duration-300 text-white shadow-sm">
+              </motion.a>
+              <motion.a whileHover={{ scale: 1.2, y: -3 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }} href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-purple-600 hover:border-purple-600 hover:text-white transition-colors duration-300 text-white shadow-sm">
                 <IconBrandYoutube size={18} />
-              </a>
+              </motion.a>
             </div>
           </div>
 
@@ -59,16 +66,18 @@ export default function Footer() {
               <span className="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-purple-500 rounded-full"></span>
             </h4>
             <ul className="flex flex-col gap-3 text-sm">
-              <li><Link href="/" className="hover:text-white hover:translate-x-1 transition-all inline-block">Home</Link></li>
-              <li><Link href="/catalog" className="hover:text-white hover:translate-x-1 transition-all inline-block">Our Inventory</Link></li>
-              <li><Link href="/about" className="hover:text-white hover:translate-x-1 transition-all inline-block">About Us</Link></li>
-              <li><Link href="/sell-your-car" className="hover:text-white hover:translate-x-1 transition-all inline-block">Sell Your Car</Link></li>
-              <li><Link href="/contact" className="hover:text-white hover:translate-x-1 transition-all inline-block">Contact</Link></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/" className="hover:text-white transition-colors inline-block">Home</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog" className="hover:text-white transition-colors inline-block">Our Inventory</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/about" className="hover:text-white transition-colors inline-block">About Us</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car" className="hover:text-white transition-colors inline-block">Sell Your Car</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/contact" className="hover:text-white transition-colors inline-block">Contact</Link></motion.div></li>
               <li className="pt-2">
-                <Link href="/admin/login" className="hover:text-purple-400 hover:translate-x-1 transition-all inline-flex items-center gap-1.5 text-purple-500/80 font-medium">
+                <motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}>
+                  <Link href="/admin/login" className="hover:text-purple-400 transition-colors inline-flex items-center gap-1.5 text-purple-500/80 font-medium">
                   <IconShieldLock size={14} />
                   Admin Login
-                </Link>
+                  </Link>
+                </motion.div>
               </li>
             </ul>
           </div>
@@ -80,10 +89,10 @@ export default function Footer() {
               <span className="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-purple-500 rounded-full"></span>
             </h4>
             <ul className="flex flex-col gap-3 text-sm">
-              <li><Link href="/catalog?bodyType=SUV" className="hover:text-white hover:translate-x-1 transition-all inline-block">Buy SUVs</Link></li>
-              <li><Link href="/catalog?bodyType=Sedan" className="hover:text-white hover:translate-x-1 transition-all inline-block">Buy Sedans</Link></li>
-              <li><Link href="/sell-your-car?mode=exchange" className="hover:text-white hover:translate-x-1 transition-all inline-block">Car Exchange</Link></li>
-              <li><Link href="/contact" className="hover:text-white hover:translate-x-1 transition-all inline-block">Test Drive Booking</Link></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog?bodyType=SUV" className="hover:text-white transition-colors inline-block">Buy SUVs</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog?bodyType=Sedan" className="hover:text-white transition-colors inline-block">Buy Sedans</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car?mode=exchange" className="hover:text-white transition-colors inline-block">Car Exchange</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/contact" className="hover:text-white transition-colors inline-block">Test Drive Booking</Link></motion.div></li>
             </ul>
           </div>
 
@@ -125,6 +134,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

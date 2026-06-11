@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Car, Settings2, Wallet, Search, MapPin, ChevronDown, ChevronRight, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import api from '@/lib/api';
 
 export default function HeroSection() {
@@ -122,22 +122,27 @@ export default function HeroSection() {
     }
   };
 
+  const { scrollY } = useScroll();
+  const backgroundY = useTransform(scrollY, [0, 500], [0, 150]);
+
   return (
-    <section className="relative flex flex-col h-[480px] sm:h-[550px] md:h-auto md:min-h-[85vh] md:flex-row md:items-center font-['Inter',sans-serif] bg-[#050508] z-20">
+    <section className="relative flex flex-col h-[480px] sm:h-[550px] md:h-auto md:min-h-[85vh] md:flex-row md:items-center font-['Inter',sans-serif] bg-[#050508] z-20 overflow-visible">
 
       {/* ════════════════════════════════════════════════════════════════
           DESKTOP BACKGROUND (Hidden on mobile)
       ════════════════════════════════════════════════════════════════ */}
       <div className="hidden md:block absolute inset-0 z-0 overflow-hidden bg-[#050508]">
-        <motion.img
-          initial="hidden"
-          animate="visible"
-          variants={imageVariants}
-          src="/images/hero_bg_desktop.png"
-          alt="Premium Car"
-          className="w-full h-full object-cover object-[center_60%] origin-[center_60%]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a12]/95 via-[#0a0a12]/40 to-transparent"></div>
+        <motion.div style={{ y: backgroundY }} className="absolute inset-0 w-full h-full">
+          <motion.img
+            initial={{ scale: 1.08, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            src="/images/hero_bg_desktop.png"
+            alt="Premium Car"
+            className="w-full h-full object-cover object-[center_60%] origin-[center_60%]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a12]/95 via-[#0a0a12]/40 to-transparent"></div>
+        </motion.div>
       </div>
 
       {/* ════════════════════════════════════════════════════════════════
@@ -423,13 +428,29 @@ export default function HeroSection() {
         </div>
       </motion.div>
 
+      {/* Scroll Indicator */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 0.8 }}
+        className="hidden md:flex absolute bottom-[100px] left-1/2 -translate-x-1/2 z-30 flex-col items-center gap-2 pointer-events-none"
+      >
+        <span className="text-white/40 text-xs font-semibold tracking-[0.2em] uppercase">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+        >
+          <ChevronDown className="w-5 h-5 text-white/50" />
+        </motion.div>
+      </motion.div>
+
       {/* ════════════════════════════════════════════════════════════════
           DESKTOP SEARCH BAR (Hidden on Mobile)
       ════════════════════════════════════════════════════════════════ */}
       <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={searchBarVariants}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 1.2 }}
         className="hidden md:block absolute bottom-0 translate-y-1/2 left-0 right-0 px-8 md:px-12 z-40"
       >
         <div className="max-w-6xl mx-auto bg-white/90 dark:bg-[#0a0a12]/40 backdrop-blur-3xl border border-gray-200 dark:border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1),0_0_32px_rgba(147,51,234,0.05)] dark:shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6),0_0_32px_rgba(147,51,234,0.15)] rounded-[2rem] p-4 lg:p-6 transition-colors duration-500">

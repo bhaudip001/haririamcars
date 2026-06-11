@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IconStarFilled, IconQuote } from '@tabler/icons-react';
+import { staggerContainer, scaleIn } from '@/lib/animations';
 
 const REVIEWS = [
   {
@@ -106,11 +107,19 @@ export default function GoogleReviews() {
               <span className="font-['Outfit'] text-[64px] font-bold text-black dark:text-white leading-none transition-colors">4.3</span>
             </div>
 
-            <div className="flex items-center gap-1 text-yellow-400 mb-4">
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="flex items-center gap-1 text-yellow-400 mb-4"
+            >
               {[...Array(5)].map((_, i) => (
-                <IconStarFilled key={i} size={24} className="drop-shadow-[0_0_10px_rgba(250,204,21,0.4)]" />
+                <motion.div key={i} variants={scaleIn}>
+                  <IconStarFilled size={24} className="drop-shadow-[0_0_10px_rgba(250,204,21,0.4)]" />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             <p className="font-medium text-gray-600 dark:text-gray-400 text-lg mb-8 transition-colors">
               Based on <strong className="text-black dark:text-white">60 reviews</strong> from our satisfied customers.
@@ -151,24 +160,33 @@ export default function GoogleReviews() {
 
                   <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-6 border-t border-gray-200 dark:border-white/10 transition-colors">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 flex items-center justify-center font-['Outfit'] font-bold text-white text-xl shadow-lg shrink-0">
+                      <motion.div 
+                        whileHover={{ scale: 1.1 }}
+                        className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-tr from-purple-600 to-blue-600 flex items-center justify-center font-['Outfit'] font-bold text-white text-xl shadow-lg shrink-0"
+                      >
                         {currentReview.author_name.charAt(0)}
-                      </div>
+                      </motion.div>
                       <div className="text-center sm:text-left">
                         <h4 className="font-['Outfit'] font-bold text-base md:text-lg text-black dark:text-white transition-colors">{currentReview.author_name}</h4>
                         <span className="text-sm text-gray-600 dark:text-gray-400 transition-colors">{currentReview.relative_time_description}</span>
                       </div>
                     </div>
 
-                    <div className="flex gap-1 text-yellow-500 shrink-0 mt-2 sm:mt-0">
+                    <motion.div 
+                      variants={staggerContainer}
+                      initial="hidden"
+                      animate="visible"
+                      className="flex gap-1 text-yellow-500 shrink-0 mt-2 sm:mt-0"
+                    >
                       {[...Array(5)].map((_, i) => (
-                        <IconStarFilled
-                          key={i}
-                          size={18}
-                          className={i < currentReview.rating ? 'opacity-100' : 'opacity-20'}
-                        />
+                        <motion.div key={i} variants={scaleIn}>
+                          <IconStarFilled
+                            size={18}
+                            className={i < currentReview.rating ? 'opacity-100' : 'opacity-20'}
+                          />
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
                   </div>
                 </motion.div>
               </AnimatePresence>

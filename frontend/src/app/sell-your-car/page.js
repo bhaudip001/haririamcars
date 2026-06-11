@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { staggerContainer, fadeInUp, floatAnimation, shimmer } from '@/lib/animations';
 import { IconUpload, IconX, IconCheck, IconCar, IconCurrencyRupee, IconUser, IconPhone, IconMail, IconCalendar, IconDashboard } from '@tabler/icons-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
@@ -185,7 +186,13 @@ export default function SellYourCarPage() {
 
                 <h1 className="font-['Outfit'] font-bold text-[36px] md:text-[48px] text-black dark:text-white leading-[1.05] tracking-tight md:tracking-tighter mb-6 transition-colors">
                   Get the Best Price<br />
-                  <span className="bg-gradient-to-r from-purple-600 dark:from-purple-400 to-purple-700 dark:to-purple-600 bg-clip-text text-transparent drop-shadow-sm dark:drop-shadow-none pb-2">Guaranteed.</span>
+                  <motion.span 
+                    variants={shimmer}
+                    animate="animate"
+                    className="bg-gradient-to-r from-purple-600 dark:from-purple-400 to-purple-700 dark:to-purple-600 bg-[length:200%_auto] bg-clip-text text-transparent drop-shadow-sm dark:drop-shadow-none pb-2 inline-block"
+                  >
+                    Guaranteed.
+                  </motion.span>
                 </h1>
 
                 <p className="font-['Inter'] text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-10 max-w-md transition-colors font-medium">
@@ -193,7 +200,13 @@ export default function SellYourCarPage() {
                 </p>
 
                 {/* Features List */}
-                <div className="flex flex-col gap-4 mb-10">
+                <motion.div 
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="flex flex-col gap-4 mb-10"
+                >
                   {[
                     { icon: <IconCurrencyRupee size={24} className="text-purple-400" />, title: 'Instant Quote', desc: 'Get an estimated value instantly based on current market trends.' },
                     { icon: <IconDashboard size={24} className="text-blue-400" />, title: 'Best Market Price', desc: 'We guarantee to match or beat market valuations for your car.' },
@@ -201,9 +214,7 @@ export default function SellYourCarPage() {
                   ].map((feat, i) => (
                     <motion.div
                       key={i}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: i * 0.1 + 0.3 }}
+                      variants={fadeInUp}
                       className="flex items-center gap-5 p-4 rounded-2xl bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/[0.04] hover:border-purple-300 dark:hover:border-white/10 transition-all group shadow-md dark:shadow-none"
                     >
                       <div className="w-14 h-14 rounded-2xl bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/5 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-sm dark:shadow-lg">
@@ -215,7 +226,7 @@ export default function SellYourCarPage() {
                       </div>
                     </motion.div>
                   ))}
-                </div>
+                </motion.div>
 
                 {/* Progress Bar (Desktop) */}
                 <div className="hidden lg:block bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 rounded-2xl p-6 backdrop-blur-sm mb-12 shadow-xl relative overflow-hidden group transition-all duration-500">
@@ -239,9 +250,14 @@ export default function SellYourCarPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
-                  className="bg-purple-50 dark:bg-transparent dark:bg-gradient-to-br dark:from-purple-900/40 dark:to-blue-900/20 border border-purple-200 dark:border-purple-500/20 rounded-3xl p-6 relative overflow-hidden mb-12 lg:mb-0 shadow-xl dark:shadow-2xl transition-all duration-500"
+                  className="mb-12 lg:mb-0"
                 >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 dark:bg-purple-500/20 blur-[50px] rounded-full transition-colors"></div>
+                  <motion.div
+                    variants={floatAnimation}
+                    animate="animate"
+                    className="bg-purple-50 dark:bg-transparent dark:bg-gradient-to-br dark:from-purple-900/40 dark:to-blue-900/20 border border-purple-200 dark:border-purple-500/20 rounded-3xl p-6 relative overflow-hidden shadow-xl dark:shadow-2xl transition-all duration-500"
+                  >
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 dark:bg-purple-500/20 blur-[50px] rounded-full transition-colors"></div>
                   <div className="flex items-center gap-4 relative z-10">
                     <div className="flex -space-x-4">
                       {[
@@ -262,6 +278,7 @@ export default function SellYourCarPage() {
                       <p className="text-sm text-purple-700 dark:text-gray-300 font-medium transition-colors">Trusted by <span className="text-purple-900 dark:text-white font-bold transition-colors">500+</span> verified sellers</p>
                     </div>
                   </div>
+                  </motion.div>
                 </motion.div>
 
               </motion.div>

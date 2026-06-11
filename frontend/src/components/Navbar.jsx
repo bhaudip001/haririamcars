@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { staggerContainer, fadeInLeft } from '@/lib/animations';
 import { IconPhoneCall, IconBrandWhatsapp, IconMenu2, IconX, IconChevronRight, IconSun, IconMoon } from '@tabler/icons-react';
 import { useTheme } from 'next-themes';
 
@@ -58,7 +59,7 @@ export default function Navbar() {
 
           {/* Real Logo */}
           <Link className="flex items-center group shrink-0 relative" href="/">
-            <div className="relative w-40 h-10 md:w-56 md:h-12 overflow-hidden flex items-center transition-transform duration-300 group-hover:scale-105">
+            <div className={`relative w-40 h-10 md:w-56 md:h-12 overflow-hidden flex items-center transition-transform duration-300 ${scrolled ? 'scale-95' : 'scale-100'} group-hover:scale-105`}>
               <Image
                 src="/without_background_logo.png"
                 alt="Hariram Motors Logo"
@@ -78,12 +79,13 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   href={link.path}
-                  className={`font-['Outfit'] text-[15px] px-4 py-2 rounded-full transition-all duration-300 relative group ${isActive
+                  className={`font-['Outfit'] text-[15px] px-4 py-2 rounded-full transition-all duration-300 relative group overflow-hidden ${isActive
                     ? "text-white font-semibold"
                     : "text-gray-300 hover:text-white"
                     }`}
                 >
                   <span className="relative z-10">{link.name}</span>
+                  {!isActive && <span className="absolute bottom-0 left-0 w-full h-[2px] bg-purple-500 transform origin-left scale-x-0 transition-transform duration-250 ease-out group-hover:scale-x-100"></span>}
                   {isActive && (
                     <motion.div
                       layoutId="navbar-active-indicator"
@@ -179,16 +181,11 @@ export default function Navbar() {
               </button>
 
               {/* Navigation Links */}
-              <div className="flex flex-col gap-3 mt-4">
+              <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="flex flex-col gap-3 mt-4">
                 {navLinks.map((link, i) => {
                   const isActive = pathname === link.path || (link.path !== '/' && pathname.startsWith(link.path));
                   return (
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + i * 0.05 }}
-                      key={link.path}
-                    >
+                    <motion.div variants={fadeInLeft} key={link.path}>
                       <Link
                         href={link.path}
                         className={`group flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 ${isActive
@@ -208,7 +205,7 @@ export default function Navbar() {
                     </motion.div>
                   );
                 })}
-              </div>
+              </motion.div>
 
               {/* Mobile CTA Buttons */}
               <motion.div

@@ -3,7 +3,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { staggerContainer, fadeInUp, fadeInDown, fadeInLeft, scaleIn } from '@/lib/animations';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import {
@@ -108,15 +109,15 @@ export default function HomePage() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-20 bg-purple-600/10 dark:bg-purple-600/20 blur-[80px] z-10"></div>
 
           <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-purple-600 dark:text-purple-400 text-sm font-bold tracking-widest uppercase mb-3 transition-colors">Premium Dealership Services</p>
-              <h2 className="text-3xl md:text-[40px] text-black dark:text-white font-bold mb-6 leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
+            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="text-center max-w-3xl mx-auto mb-16">
+              <motion.p variants={fadeInDown} className="text-purple-600 dark:text-purple-400 text-sm font-bold tracking-widest uppercase mb-3 transition-colors">Premium Dealership Services</motion.p>
+              <motion.h2 variants={fadeInUp} className="text-3xl md:text-[40px] text-black dark:text-white font-bold mb-6 leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
                 Surat's Complete Automotive Solution for <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-500">Buy, Sell & Exchange</span>
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-[16px] leading-relaxed transition-colors">
+              </motion.h2>
+              <motion.p variants={fadeInUp} className="text-gray-600 dark:text-gray-400 text-[16px] leading-relaxed transition-colors">
                 We are dedicated to elevating your car experience through transparent and reliable services. As Surat's premier automotive destination, our goal is to provide you with the finest facilities built on unwavering trust and customer satisfaction.
-              </p>
-            </div>
+              </motion.p>
+            </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Buy Card */}
@@ -168,18 +169,20 @@ export default function HomePage() {
         <section className="py-10 md:py-14 lg:py-20 relative z-10 transition-colors duration-500 dark:bg-transparent">
 
           <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 gap-4">
+            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 gap-4">
               <div>
-                <p className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">OUR INVENTORY</p>
-                <h2 className="text-3xl md:text-[40px] text-black dark:text-white font-bold leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
+                <motion.p variants={fadeInDown} className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">OUR INVENTORY</motion.p>
+                <motion.h2 variants={fadeInUp} className="text-3xl md:text-[40px] text-black dark:text-white font-bold leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
                   Featured Cars
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 mt-2 transition-colors">Handpicked vehicles at unbeatable prices</p>
+                </motion.h2>
+                <motion.p variants={fadeInUp} className="text-gray-600 dark:text-gray-400 mt-2 transition-colors">Handpicked vehicles at unbeatable prices</motion.p>
               </div>
-              <Link href="/catalog" className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 text-sm font-medium flex items-center gap-1 group transition-colors">
-                View All Cars <IconArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+              <motion.div variants={fadeInUp}>
+                <Link href="/catalog" className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 text-sm font-medium flex items-center gap-1 group transition-colors">
+                  View All Cars <IconArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
+            </motion.div>
 
             {loadingCars ? (
               <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
@@ -215,7 +218,7 @@ export default function HomePage() {
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
-            <div className="lg:col-span-5">
+            <motion.div variants={fadeInLeft} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-5">
               <p className="text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">WHY HARIRAM MOTORS</p>
               <h2 className="text-3xl md:text-[40px] text-white font-bold leading-tight mb-6 transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
                 Why Thousands <br /> Trust Us
@@ -226,12 +229,12 @@ export default function HomePage() {
               <Link href="/about" className="inline-flex items-center gap-2 border border-purple-500 text-purple-400 hover:bg-purple-600 hover:text-white rounded-full px-6 py-3 transition-colors font-medium">
                 Meet Our Team <IconArrowRight size={18} />
               </Link>
-            </div>
+            </motion.div>
 
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8 relative">
+            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8 relative">
 
               {/* CARD 1 (01) - Top Left */}
-              <div className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] hover:shadow-xl dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] transition-shadow group">
+              <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 hover:border-purple-500/40 dark:hover:border-purple-500/40 hover:bg-purple-500/5 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group">
                 {/* Outward Right Arrow */}
                 <div className="hidden sm:block absolute top-1/2 -right-[16px] w-8 h-8 bg-white dark:bg-[#1a0e2e] rotate-45 transform -translate-y-1/2 z-30 border-t border-r border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
 
@@ -239,10 +242,10 @@ export default function HomePage() {
                 <h4 className="font-['Outfit'] font-bold text-xl text-black dark:text-white mb-4 transition-colors">Verified Cars</h4>
                 <div className="w-12 border-b-2 border-dashed border-gray-300 dark:border-white/20 mb-5 transition-colors"></div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-['Inter'] transition-colors">Every car undergoes a 100-point inspection before listing.</p>
-              </div>
+              </motion.div>
 
               {/* CARD 2 (02) - Top Right */}
-              <div className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] hover:shadow-xl dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] transition-shadow group">
+              <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 hover:border-purple-500/40 dark:hover:border-purple-500/40 hover:bg-purple-500/5 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group">
                 {/* Inward Left Cutout */}
                 <div className="hidden sm:block absolute top-1/2 -left-[17px] w-[34px] h-[34px] bg-[#0f0f1e] rotate-45 transform -translate-y-1/2 z-20 border-t border-r border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
                 {/* Outward Bottom Arrow */}
@@ -252,10 +255,10 @@ export default function HomePage() {
                 <h4 className="font-['Outfit'] font-bold text-xl text-black dark:text-white mb-4 transition-colors">Transparent Pricing</h4>
                 <div className="w-12 border-b-2 border-dashed border-gray-300 dark:border-white/20 mb-5 transition-colors"></div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-['Inter'] transition-colors">No hidden charges. Price you see is price you pay.</p>
-              </div>
+              </motion.div>
 
               {/* CARD 4 (04) - Bottom Left */}
-              <div className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] hover:shadow-xl dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] transition-shadow group order-4 sm:order-3">
+              <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 hover:border-purple-500/40 dark:hover:border-purple-500/40 hover:bg-purple-500/5 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group order-4 sm:order-3">
                 {/* Inward Right Cutout */}
                 <div className="hidden sm:block absolute top-1/2 -right-[17px] w-[34px] h-[34px] bg-[#0f0f1e] rotate-45 transform -translate-y-1/2 z-20 border-b border-l border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
 
@@ -263,10 +266,10 @@ export default function HomePage() {
                 <h4 className="font-['Outfit'] font-bold text-xl text-black dark:text-white mb-4 transition-colors">After-Sale Support</h4>
                 <div className="w-12 border-b-2 border-dashed border-gray-300 dark:border-white/20 mb-5 transition-colors"></div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-['Inter'] transition-colors">We're here even after the deal is done. 3 months support.</p>
-              </div>
+              </motion.div>
 
               {/* CARD 3 (03) - Bottom Right */}
-              <div className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] hover:shadow-xl dark:hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] transition-shadow group order-3 sm:order-4">
+              <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 hover:border-purple-500/40 dark:hover:border-purple-500/40 hover:bg-purple-500/5 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group order-3 sm:order-4">
                 {/* Inward Top Cutout */}
                 <div className="hidden sm:block absolute -top-[17px] left-1/2 w-[34px] h-[34px] bg-[#0f0f1e] rotate-45 transform -translate-x-1/2 z-20 border-r border-b border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
                 {/* Outward Left Arrow */}
@@ -276,9 +279,9 @@ export default function HomePage() {
                 <h4 className="font-['Outfit'] font-bold text-xl text-black dark:text-white mb-4 transition-colors">Full Documentation</h4>
                 <div className="w-12 border-b-2 border-dashed border-gray-300 dark:border-white/20 mb-5 transition-colors"></div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-['Inter'] transition-colors">RC transfer, insurance, NOC — we handle everything.</p>
-              </div>
+              </motion.div>
 
-            </div>
+            </motion.div>
 
           </div>
         </div>
@@ -404,25 +407,25 @@ export default function HomePage() {
         {testimonials.length > 0 && (
           <section className="py-10 md:py-14 lg:py-20 overflow-hidden relative z-10 transition-colors duration-500 dark:bg-transparent">
             <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-end mb-8 md:mb-12">
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="flex justify-between items-end mb-8 md:mb-12">
                 <div>
-                  <p className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">OUR FAMILY</p>
-                  <h2 className="text-3xl md:text-[40px] text-black dark:text-white font-bold leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
+                  <motion.p variants={fadeInDown} className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">OUR FAMILY</motion.p>
+                  <motion.h2 variants={fadeInUp} className="text-3xl md:text-[40px] text-black dark:text-white font-bold leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
                     Happy Customers
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm transition-colors">
+                  </motion.h2>
+                  <motion.p variants={fadeInUp} className="text-gray-600 dark:text-gray-400 mt-2 text-sm transition-colors">
                     Seeing our customers drive away with a smile is our greatest reward.
-                  </p>
+                  </motion.p>
                 </div>
-                <div className="hidden md:flex gap-3">
+                <motion.div variants={fadeInUp} className="hidden md:flex gap-3">
                   <button onClick={scrollTestiPrev} className="w-10 h-10 rounded-full border border-gray-200 dark:border-white/20 flex items-center justify-center text-black dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
                     <IconChevronLeft size={20} />
                   </button>
                   <button onClick={scrollTestiNext} className="w-10 h-10 rounded-full border border-gray-200 dark:border-white/20 flex items-center justify-center text-black dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
                     <IconChevronRight size={20} />
                   </button>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
               <div className="overflow-visible w-full pt-4" ref={testiRef}>
                 <div className="flex gap-4 sm:gap-6 -ml-4 pl-4 pr-4 sm:pr-0">

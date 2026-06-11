@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import CarCard from '@/components/CarCard';
 import api from '@/lib/api';
 
@@ -117,7 +118,12 @@ export default function CatalogClient() {
 
         <div className="flex gap-8">
           {/* Filter Sidebar */}
-          <div className={`${showFilters ? 'fixed inset-0 z-50 bg-[var(--color-bg-dark)] p-6 overflow-y-auto' : 'hidden'} md:block md:relative md:w-64 flex-shrink-0`}>
+          <motion.div 
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className={`${showFilters ? 'fixed inset-0 z-50 bg-[var(--color-bg-dark)] p-6 overflow-y-auto' : 'hidden'} md:block md:relative md:w-64 flex-shrink-0`}
+          >
             {showFilters && (
               <div className="flex justify-between items-center mb-6 md:hidden">
                 <h3 className="text-lg font-semibold">Filters</h3>
@@ -174,7 +180,7 @@ export default function CatalogClient() {
                 </button>
               )}
             </div>
-          </div>
+          </motion.div>
 
           {/* Car Grid */}
           <div className="flex-1">
@@ -192,11 +198,22 @@ export default function CatalogClient() {
               </div>
             ) : cars.length > 0 ? (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6">
-                  {cars.map((car, i) => (
-                    <CarCard key={car._id} car={car} index={i} />
-                  ))}
-                </div>
+                <motion.div layout className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6">
+                  <AnimatePresence mode="popLayout">
+                    {cars.map((car, i) => (
+                      <motion.div
+                        key={car._id}
+                        layout
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <CarCard car={car} index={i} />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
 
                 {totalPages > 1 && (
                   <div className="flex justify-center gap-2 mt-10">

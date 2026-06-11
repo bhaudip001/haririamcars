@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { staggerContainer, scaleIn, fadeInUp } from '@/lib/animations';
 import {
   IconPhoneCall, IconMail, IconMapPin, IconBrandWhatsapp,
   IconCheck, IconUser, IconMessageCircle, IconArrowRight
@@ -88,13 +89,17 @@ export default function ContactPage() {
         </motion.div>
 
         {/* THE BENTO GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-[auto_auto] gap-6">
+        <motion.div 
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 lg:grid-cols-3 lg:grid-rows-[auto_auto] gap-6"
+        >
 
           {/* TILE 1: The Main Hub (Contact Form) - Spans 2 Cols, 2 Rows */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            variants={scaleIn}
             className="lg:col-span-2 lg:row-span-2 bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/5 hover:border-purple-300 dark:hover:border-white/10 rounded-[2rem] p-8 sm:p-10 backdrop-blur-2xl shadow-xl dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden group transition-all duration-500 hover:shadow-[0_16px_64px_rgba(168,85,247,0.15)] flex flex-col"
           >
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-blue-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
@@ -188,8 +193,7 @@ export default function ContactPage() {
 
           {/* TILE 2: The Instant Connect Cube */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            variants={scaleIn}
             className="lg:col-span-1 lg:row-span-1 bg-[#25D366]/5 dark:bg-[#25D366]/10 border border-[#25D366]/20 hover:border-[#25D366]/40 rounded-[2rem] p-8 backdrop-blur-2xl relative overflow-hidden group transition-all duration-500 flex flex-col justify-center"
           >
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#25D366]/20 blur-[50px] rounded-full group-hover:bg-[#25D366]/30 transition-colors pointer-events-none"></div>
@@ -216,15 +220,16 @@ export default function ContactPage() {
 
           {/* TILE 3: The Details Cube (Vertical) */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            variants={fadeInUp}
             className="lg:col-span-1 lg:row-span-1 bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/5 hover:border-purple-300 dark:hover:border-white/10 rounded-[2rem] p-8 backdrop-blur-2xl shadow-xl flex flex-col justify-center gap-8 transition-all duration-500"
           >
-            <div className="flex items-center gap-4 w-full">
-              <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 shrink-0 shadow-inner">
+            <div className="flex items-center gap-4 w-full group/info">
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 shrink-0 shadow-inner group-hover/info:text-purple-500 group-hover/info:bg-purple-50 dark:group-hover/info:bg-purple-500/10 transition-colors"
+              >
                 <IconPhoneCall size={20} />
-              </div>
+              </motion.div>
               <div>
                 <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Direct Line</div>
                 <a href="tel:+919898558222" className="font-['Outfit'] font-bold text-lg text-black dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
@@ -233,10 +238,13 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 w-full">
-              <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 shrink-0 shadow-inner">
+            <div className="flex items-center gap-4 w-full group/info">
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 shrink-0 shadow-inner group-hover/info:text-purple-500 group-hover/info:bg-purple-50 dark:group-hover/info:bg-purple-500/10 transition-colors"
+              >
                 <IconMail size={20} />
-              </div>
+              </motion.div>
               <div className="overflow-hidden">
                 <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Email Us</div>
                 <a href="mailto:info@harirammotors.com" className="font-['Outfit'] font-bold text-base text-black dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors truncate block">
@@ -245,10 +253,13 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 w-full">
-              <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 shrink-0 shadow-inner">
+            <div className="flex items-center gap-4 w-full group/info">
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 shrink-0 shadow-inner group-hover/info:text-purple-500 group-hover/info:bg-purple-50 dark:group-hover/info:bg-purple-500/10 transition-colors"
+              >
                 <IconMapPin size={20} />
-              </div>
+              </motion.div>
               <div>
                 <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Working Hours</div>
                 <div className="font-['Outfit'] font-bold text-base text-black dark:text-white transition-colors">Mon – Sat: 9AM – 8PM</div>
@@ -258,9 +269,7 @@ export default function ContactPage() {
 
           {/* TILE 4: The Massive Map Cube */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            variants={scaleIn}
             className="lg:col-span-3 lg:row-span-2 bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/5 hover:border-purple-300 dark:hover:border-white/10 rounded-[2rem] p-2 backdrop-blur-2xl overflow-hidden group transition-all duration-500 relative flex flex-col h-[400px] sm:h-[500px] shadow-xl"
           >
             <div className="absolute inset-0 z-10 pointer-events-none border-[6px] border-white dark:border-[#05050A] rounded-[2rem] opacity-50 dark:mix-blend-overlay mix-blend-normal shadow-inner"></div>
@@ -298,7 +307,7 @@ export default function ContactPage() {
             </div>
           </motion.div>
 
-        </div>
+        </motion.div>
       </div>
     </div>
   );

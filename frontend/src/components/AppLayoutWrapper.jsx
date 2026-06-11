@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import PageTransition from './PageTransition';
 
 export default function AppLayoutWrapper({ children }) {
   const pathname = usePathname();
@@ -11,7 +12,9 @@ export default function AppLayoutWrapper({ children }) {
   return (
     <>
       {!isAdmin && <Navbar />}
-      <main className={isAdmin ? "" : "min-h-screen"}>{children}</main>
+      <main className={isAdmin ? "" : "min-h-screen"}>
+        <PageTransition>{children}</PageTransition>
+      </main>
       {!isAdmin && <Footer />}
     </>
   );

@@ -11,7 +11,9 @@ import {
   IconArrowRight, IconX, IconChevronLeft, IconChevronRight
 } from '@tabler/icons-react';
 import api from '@/lib/api';
+import { motion } from 'framer-motion';
 import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink } from '@/lib/utils';
+import { staggerContainer, fadeInLeft } from '@/lib/animations';
 import CarCard from '@/components/CarCard';
 import EmiCalculator from '@/components/EmiCalculator';
 
@@ -220,7 +222,12 @@ export default function CarDetailPage() {
           {/* Image Gallery */}
           <div className="flex flex-col gap-4">
             {/* Main Image */}
-            <div className="relative aspect-[4/3] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-gray-100 dark:bg-[#12121f] border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] group">
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }} 
+              animate={{ scale: 1, opacity: 1 }} 
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+              className="relative aspect-[4/3] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-gray-100 dark:bg-[#12121f] border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] group"
+            >
               {images.length > 0 ? (
                 <>
                   <Image 
@@ -250,7 +257,7 @@ export default function CarDetailPage() {
                   </div>
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {/* Thumbnail Strip */}
             {images.length > 1 && (
@@ -290,18 +297,24 @@ export default function CarDetailPage() {
                       <h4 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
                         {category}
                       </h4>
-                      <ul className="space-y-3">
+                      <motion.ul 
+                        variants={staggerContainer} 
+                        initial="hidden" 
+                        whileInView="visible" 
+                        viewport={{ once: true, margin: '-50px' }} 
+                        className="space-y-3"
+                      >
                         {features.map((feat, i) => (
-                          <li key={`${category}-${i}`} className="flex items-start gap-3">
+                          <motion.li variants={fadeInLeft} key={`${category}-${i}`} className="flex items-start gap-3">
                             <div className="mt-0.5 w-5 h-5 rounded-full bg-purple-50 dark:bg-purple-500/10 border border-purple-200 dark:border-purple-500/20 flex items-center justify-center shrink-0">
                               <svg className="w-3 h-3 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                               </svg>
                             </div>
                             <span className="text-gray-700 dark:text-gray-300 font-medium">{feat}</span>
-                          </li>
+                          </motion.li>
                         ))}
-                      </ul>
+                      </motion.ul>
                     </div>
                   ))}
                 </div>

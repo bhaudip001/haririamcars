@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { staggerContainer, fadeInUp } from '@/lib/animations';
 import Image from 'next/image';
 import { IconShieldCheck, IconReceipt, IconFileText, IconCar, IconCurrencyRupee, IconArrowsExchange, IconCheck, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -150,12 +151,18 @@ export default function AboutPage() {
             <div className="lg:w-[50%] flex flex-col justify-center">
 
               {/* Vertical Timeline */}
-              <div className="relative pl-8">
+              <motion.div 
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                className="relative pl-8"
+              >
                 {/* Vertical line */}
                 <div className="absolute left-[11px] top-2 bottom-2 w-px bg-gradient-to-b from-purple-500 via-purple-400 to-transparent" />
 
                 {/* Milestone 1 */}
-                <div className="relative mb-8 group">
+                <motion.div variants={fadeInUp} className="relative mb-8 group">
                   <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-white dark:bg-[#0a0a12] border-2 border-purple-500 flex items-center justify-center transition-colors group-hover:shadow-[0_0_15px_rgba(124,58,237,0.4)]">
                     <div className="w-2 h-2 rounded-full bg-purple-500" />
                   </div>
@@ -167,10 +174,10 @@ export default function AboutPage() {
                     <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">The Beginning</h4>
                     <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Started with a small lot, a big dream, and one promise — honesty above all.</p>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Milestone 2 */}
-                <div className="relative mb-8 group">
+                <motion.div variants={fadeInUp} className="relative mb-8 group">
                   <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-white dark:bg-[#0a0a12] border-2 border-purple-500 flex items-center justify-center transition-colors group-hover:shadow-[0_0_15px_rgba(124,58,237,0.4)]">
                     <div className="w-2 h-2 rounded-full bg-purple-500" />
                   </div>
@@ -182,10 +189,10 @@ export default function AboutPage() {
                     <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">500 Cars Milestone</h4>
                     <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Crossed 500 successful sales — entirely through word-of-mouth referrals.</p>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Milestone 3 */}
-                <div className="relative group">
+                <motion.div variants={fadeInUp} className="relative group">
                   <div className="absolute -left-8 top-1 w-6 h-6 rounded-full bg-white dark:bg-[#0a0a12] border-2 border-purple-500 flex items-center justify-center transition-colors group-hover:shadow-[0_0_15px_rgba(124,58,237,0.4)]">
                     <div className="w-2 h-2 rounded-full bg-purple-500" />
                   </div>
@@ -197,8 +204,8 @@ export default function AboutPage() {
                     <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">#1 in Surat</h4>
                     <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Recognized as Surat&apos;s most trusted pre-owned car destination with 150+ stock.</p>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </div>
 
           </div>
@@ -232,10 +239,16 @@ export default function AboutPage() {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          >
 
             {/* MISSION Card */}
-            <div className="group relative">
+            <motion.div variants={fadeInUp} className="group relative">
               {/* Dashed decorative border behind */}
               <div className="absolute inset-0 rounded-3xl border-2 border-dashed border-purple-300/30 dark:border-purple-500/15 translate-x-3 translate-y-3 transition-colors" aria-hidden="true" />
               <div className="relative rounded-3xl p-10 bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] backdrop-blur-sm transition-all duration-500 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_20px_60px_rgba(124,58,237,0.08)] dark:hover:shadow-[0_20px_60px_rgba(124,58,237,0.12)]">
@@ -270,10 +283,10 @@ export default function AboutPage() {
                   We are dedicated to providing the finest quality pre-owned vehicles at the most competitive prices. Complete transparency, zero hidden costs — our customers always win. Unbeatable deals on certified cars.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
             {/* VISION Card */}
-            <div className="group relative">
+            <motion.div variants={fadeInUp} className="group relative">
               {/* Dashed decorative border behind */}
               <div className="absolute inset-0 rounded-3xl border-2 border-dashed border-purple-300/30 dark:border-purple-500/15 translate-x-3 translate-y-3 transition-colors" aria-hidden="true" />
               <div className="relative rounded-3xl p-10 bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] backdrop-blur-sm transition-all duration-500 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_20px_60px_rgba(124,58,237,0.08)] dark:hover:shadow-[0_20px_60px_rgba(124,58,237,0.12)]">
@@ -306,9 +319,9 @@ export default function AboutPage() {
                   To expand our footprint across Gujarat while maintaining the intimacy and trust of a family business. We aim to set the gold standard in the pre-owned automobile industry through uncompromised integrity.
                 </p>
               </div>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -325,10 +338,16 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
 
             {/* CARD 1: BUY */}
-            <div className="bg-bg-secondary rounded-2xl p-8 border border-blue-500/20 flex flex-col group hover:border-blue-400/60 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all duration-500">
+            <motion.div variants={fadeInUp} className="bg-bg-secondary rounded-2xl p-8 border border-blue-500/20 flex flex-col group hover:border-blue-400/60 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all duration-500">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-9 h-9 rounded-full border-2 border-blue-400 text-blue-400 flex items-center justify-center font-['Outfit'] font-bold text-lg flex-shrink-0 group-hover:shadow-[0_0_15px_rgba(96,165,250,0.6)] transition-all">
                   1
@@ -387,10 +406,10 @@ export default function AboutPage() {
                   <div className="px-2.5 py-1 rounded bg-green-500/20 border border-green-500/30 text-[9px] text-green-400 font-bold tracking-wider">CERTIFIED</div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* CARD 2: SELL */}
-            <div className="bg-bg-secondary rounded-2xl p-8 border border-blue-500/20 flex flex-col group hover:border-blue-400/60 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all duration-500">
+            <motion.div variants={fadeInUp} className="bg-bg-secondary rounded-2xl p-8 border border-blue-500/20 flex flex-col group hover:border-blue-400/60 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all duration-500">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-9 h-9 rounded-full border-2 border-blue-400 text-blue-400 flex items-center justify-center font-['Outfit'] font-bold text-lg flex-shrink-0 group-hover:shadow-[0_0_15px_rgba(96,165,250,0.6)] transition-all">
                   2
@@ -442,10 +461,10 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* CARD 3: EXCHANGE */}
-            <div className="bg-bg-secondary rounded-2xl p-8 border border-blue-500/20 flex flex-col group hover:border-blue-400/60 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all duration-500">
+            <motion.div variants={fadeInUp} className="bg-bg-secondary rounded-2xl p-8 border border-blue-500/20 flex flex-col group hover:border-blue-400/60 hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all duration-500">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-9 h-9 rounded-full border-2 border-blue-400 text-blue-400 flex items-center justify-center font-['Outfit'] font-bold text-lg flex-shrink-0 group-hover:shadow-[0_0_15px_rgba(96,165,250,0.6)] transition-all">
                   3
@@ -503,9 +522,9 @@ export default function AboutPage() {
                   <span className="text-[12px] text-cyan-300 font-bold font-['Outfit']">₹1,50,000+</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -537,10 +556,16 @@ export default function AboutPage() {
           </div>
 
           {/* 3 Premium Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
 
             {/* Card 1: Verified Stock */}
-            <div className="group relative">
+            <motion.div variants={fadeInUp} className="group relative">
               <div className="relative rounded-3xl overflow-hidden bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] transition-all duration-500 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_20px_60px_rgba(124,58,237,0.08)] dark:hover:shadow-[0_20px_60px_rgba(124,58,237,0.15)]">
                 {/* Gradient top border accent */}
                 <div className="h-1 w-full bg-gradient-to-r from-purple-500 via-purple-600 to-pink-500" />
@@ -572,10 +597,10 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 2: Honest Pricing */}
-            <div className="group relative">
+            <motion.div variants={fadeInUp} className="group relative">
               <div className="relative rounded-3xl overflow-hidden bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] transition-all duration-500 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_20px_60px_rgba(124,58,237,0.08)] dark:hover:shadow-[0_20px_60px_rgba(124,58,237,0.15)]">
                 <div className="h-1 w-full bg-gradient-to-r from-pink-500 via-purple-600 to-purple-500" />
 
@@ -603,10 +628,10 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Card 3: Full Paperwork */}
-            <div className="group relative">
+            <motion.div variants={fadeInUp} className="group relative">
               <div className="relative rounded-3xl overflow-hidden bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] transition-all duration-500 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_20px_60px_rgba(124,58,237,0.08)] dark:hover:shadow-[0_20px_60px_rgba(124,58,237,0.15)]">
                 <div className="h-1 w-full bg-gradient-to-r from-purple-600 via-pink-500 to-purple-500" />
 
@@ -634,9 +659,9 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   IconCalendarEvent,
@@ -14,6 +15,8 @@ import {
 import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink } from '@/lib/utils';
 
 export default function CarCard({ car, index = 0 }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   if (!car) return null;
 
   const title = `${car.make} ${car.model}${car.year ? ` (${car.year})` : ''}`.trim();
@@ -32,6 +35,7 @@ export default function CarCard({ car, index = 0 }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
       className="group relative flex flex-col w-full h-full bg-white dark:bg-[rgba(18,18,31,0.95)] rounded-2xl border border-gray-200 dark:border-white/10 hover:border-purple-300 dark:hover:border-purple-500/50 shadow-md dark:shadow-none hover:shadow-xl dark:hover:shadow-purple-900/20 hover:scale-[1.02] transition-all duration-300"
@@ -40,13 +44,17 @@ export default function CarCard({ car, index = 0 }) {
 
       <div className="flex flex-col h-full relative z-0">
         {/* Image Area */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl">
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl bg-gray-100 dark:bg-[#1a1a2e]">
+          {!isLoaded && (
+            <div className="absolute inset-0 z-10 animate-pulse bg-gray-200 dark:bg-white/10" />
+          )}
           <Image
             src={getOptimizedImage(imageUrl, 600)}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover group-hover:scale-110 transition-transform duration-700"
+            onLoad={() => setIsLoaded(true)}
+            className={`object-cover group-hover:scale-110 transition-all duration-700 ${isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}
           />
 
           {/* Top Left Badge */}
