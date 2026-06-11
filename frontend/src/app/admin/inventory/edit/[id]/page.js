@@ -346,9 +346,13 @@ export default function EditCarPage() {
       }
 
       if (photos.length > 0) {
-        photos.forEach(photo => {
-          formData.append('images', photo);
-        });
+        const { default: imageCompression } = await import('browser-image-compression');
+        const options = { maxSizeMB: 0.4, maxWidthOrHeight: 1280, useWebWorker: true };
+        
+        for (const photo of photos) {
+          const compressed = await imageCompression(photo, options);
+          formData.append('images', compressed);
+        }
       }
 
       if (existingImages.length === 0 && photos.length === 0) {

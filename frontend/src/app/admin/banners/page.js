@@ -31,11 +31,18 @@ export default function AdminBannersPage() {
     if (!desktopImage || !mobileImage) return toast.error('Both images required');
     setSaving(true);
     try {
+      const { default: imageCompression } = await import('browser-image-compression');
+      const options = { maxSizeMB: 1.5, maxWidthOrHeight: 1920, useWebWorker: true };
+      
+      const compressedDesktop = await imageCompression(desktopImage, options);
+      const compressedMobile = await imageCompression(mobileImage, options);
+
       const fd = new FormData();
       fd.append('title', title);
       if (link) fd.append('link', link);
-      fd.append('desktopImage', desktopImage);
-      fd.append('mobileImage', mobileImage);
+      fd.append('desktopImage', compressedDesktop);
+      fd.append('mobileImage', compressedMobile);
+      
       await api.post('/promo-banners', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
       toast.success('Banner added successfully!');
       setTitle(''); setLink(''); setDesktopImage(null); setMobileImage(null);

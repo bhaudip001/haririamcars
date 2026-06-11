@@ -321,7 +321,7 @@ export default function AdminSellRequestsPage() {
           ) : (
             <div className="glass-panel rounded-2xl border border-white/10 h-full flex flex-col items-center justify-center text-center p-8 bg-[#12121f]/40">
               <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mb-6 text-gray-600">
-                <Image src="/logo.png" alt="Logo" width={40} height={40} className="opacity-20 grayscale" />
+                <Image src="/without_background_logo.png" alt="Logo" width={40} height={40} className="opacity-20 grayscale" />
               </div>
               <h3 className="text-xl font-bold text-white mb-2 font-['Outfit']">No Request Selected</h3>
               <p className="text-gray-400 max-w-sm">Select a valuation request from the list to view its complete details, contact the owner, or update its status.</p>
