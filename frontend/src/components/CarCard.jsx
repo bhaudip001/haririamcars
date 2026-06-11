@@ -58,14 +58,14 @@ export default function CarCard({ car, index = 0 }) {
           />
 
           {/* Top Left Badge */}
-          <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+          <div className="absolute top-2 left-2 md:top-3 md:left-3 right-2 md:right-auto z-10 flex flex-wrap gap-1.5 md:gap-2">
             {car.status === 'sold' ? (
-              <span className="bg-red-600/90 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm shadow-sm">
+              <span className="bg-red-600/90 text-white text-[10px] md:text-xs font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full backdrop-blur-sm shadow-sm">
                 Sold
               </span>
             ) : (
               photoBadges.map((badge, i) => (
-                <span key={i} className="bg-purple-600/90 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm shadow-sm border border-purple-500/30">
+                <span key={i} className="bg-purple-600/90 text-white text-[10px] md:text-xs font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full backdrop-blur-sm shadow-sm border border-purple-500/30 whitespace-nowrap">
                   {badge}
                 </span>
               ))
