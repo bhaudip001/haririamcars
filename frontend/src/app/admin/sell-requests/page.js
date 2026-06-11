@@ -35,8 +35,8 @@ export default function AdminSellRequestsPage() {
       if (selectedReq && selectedReq._id === id) {
         setSelectedReq({ ...selectedReq, status });
       }
-    } catch { 
-      toast.error('Failed to update status'); 
+    } catch {
+      toast.error('Failed to update status');
     }
   };
 
@@ -59,7 +59,7 @@ export default function AdminSellRequestsPage() {
   });
 
   const getStatusConfig = (status) => {
-    switch(status) {
+    switch (status) {
       case 'pending': return { icon: Clock, color: 'text-yellow-400', bg: 'bg-yellow-400/10', border: 'border-yellow-400/20' };
       case 'reviewed': return { icon: Eye, color: 'text-blue-400', bg: 'bg-blue-400/10', border: 'border-blue-400/20' };
       case 'contacted': return { icon: CheckCircle2, color: 'text-green-400', bg: 'bg-green-400/10', border: 'border-green-400/20' };
@@ -78,17 +78,17 @@ export default function AdminSellRequestsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-180px)] min-h-[600px]">
-        
+
         {/* LEFT PANE: List */}
         <div className={`lg:col-span-5 flex flex-col glass-panel rounded-2xl border border-white/10 overflow-hidden bg-[#12121f]/80 backdrop-blur-xl relative ${selectedReq ? 'hidden lg:flex' : 'flex'}`}>
-          
+
           {/* Header & Filters */}
           <div className="p-4 border-b border-white/10 bg-white/[0.02]">
             <div className="relative mb-3">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-              <input 
-                type="text" 
-                placeholder="Search by name, car, or phone..." 
+              <input
+                type="text"
+                placeholder="Search by name, car, or phone..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full bg-black/20 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all placeholder-gray-600"
@@ -99,11 +99,10 @@ export default function AdminSellRequestsPage() {
                 <button
                   key={status}
                   onClick={() => setFilterStatus(status)}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${
-                    filterStatus === status 
-                      ? 'bg-purple-600 border-purple-500 text-white' 
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${filterStatus === status
+                      ? 'bg-purple-600 border-purple-500 text-white'
                       : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10'
-                  }`}
+                    }`}
                 >
                   {status}
                 </button>
@@ -122,14 +121,13 @@ export default function AdminSellRequestsPage() {
                 const conf = getStatusConfig(req.status);
                 const isSelected = selectedReq?._id === req._id;
                 return (
-                  <div 
-                    key={req._id} 
+                  <div
+                    key={req._id}
                     onClick={() => setSelectedReq(req)}
-                    className={`p-4 rounded-xl cursor-pointer transition-all border ${
-                      isSelected 
-                        ? 'bg-purple-600/10 border-purple-500/50 shadow-[0_0_20px_rgba(147,51,234,0.1)]' 
+                    className={`p-4 rounded-xl cursor-pointer transition-all border ${isSelected
+                        ? 'bg-purple-600/10 border-purple-500/50 shadow-[0_0_20px_rgba(147,51,234,0.1)]'
                         : 'bg-white/[0.02] border-white/5 hover:bg-white/[0.05] hover:border-white/10'
-                    }`}
+                      }`}
                   >
                     <div className="flex justify-between items-start mb-2">
                       <h3 className={`font-bold text-base ${isSelected ? 'text-white' : 'text-gray-200'} line-clamp-1 font-['Outfit']`}>
@@ -169,7 +167,7 @@ export default function AdminSellRequestsPage() {
         <div className={`lg:col-span-7 h-full ${!selectedReq ? 'hidden lg:block' : 'block'}`}>
           {selectedReq ? (
             <div className="glass-panel rounded-2xl border border-white/10 h-full flex flex-col bg-[#12121f]/80 backdrop-blur-xl overflow-hidden relative">
-              
+
               {/* Header Actions */}
               <div className="absolute top-4 left-4 flex gap-2 z-10 lg:hidden">
                 <button onClick={() => setSelectedReq(null)} className="p-2 rounded-xl bg-white/5 text-gray-300 border border-white/10 hover:bg-white/10 transition-colors flex items-center gap-1">
@@ -184,9 +182,9 @@ export default function AdminSellRequestsPage() {
 
               {/* Scrollable Content */}
               <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-8">
-                
+
                 <div className="mb-8 pr-12 lg:pr-12 pl-12 lg:pl-0">
-                  <h2 className="text-3xl font-extrabold text-white font-['Outfit'] mb-2">{selectedReq.carBrand} {selectedReq.carModel}</h2>
+                  <h2 className="text-3xl font-bold text-white font-['Outfit'] mb-2">{selectedReq.carBrand} {selectedReq.carModel}</h2>
                   <p className="text-purple-400 font-bold text-xl">{selectedReq.expectedPrice ? formatPrice(selectedReq.expectedPrice) : 'Price Not Specified'}</p>
                 </div>
 
@@ -201,11 +199,10 @@ export default function AdminSellRequestsPage() {
                         <button
                           key={status}
                           onClick={() => updateStatus(selectedReq._id, status)}
-                          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-wider transition-all border ${
-                            isActive 
+                          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-wider transition-all border ${isActive
                               ? `${conf.bg} ${conf.border} ${conf.color} shadow-lg ring-1 ring-inset ${conf.color.replace('text-', 'ring-')}`
                               : 'bg-black/20 border-white/10 text-gray-500 hover:bg-white/5 hover:text-gray-300'
-                          }`}
+                            }`}
                         >
                           <conf.icon size={16} />
                           {status}
@@ -216,7 +213,7 @@ export default function AdminSellRequestsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                  
+
                   {/* Contact Block */}
                   <div>
                     <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b border-white/10 pb-2">Contact Info</h4>
@@ -238,17 +235,17 @@ export default function AdminSellRequestsPage() {
 
                       {/* Quick Actions */}
                       <div className="flex gap-3 pt-2">
-                        <a 
-                          href={`https://wa.me/${selectedReq.phone.replace(/[^0-9]/g, '')}`} 
-                          target="_blank" 
+                        <a
+                          href={`https://wa.me/${selectedReq.phone.replace(/[^0-9]/g, '')}`}
+                          target="_blank"
                           rel="noopener noreferrer"
                           className="flex-1 flex items-center justify-center gap-2 bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/30 hover:bg-[#25D366] hover:text-white rounded-xl py-2.5 font-bold text-sm transition-colors"
                         >
                           <MessageCircle size={18} />
                           WhatsApp
                         </a>
-                        <a 
-                          href={`tel:${selectedReq.phone}`} 
+                        <a
+                          href={`tel:${selectedReq.phone}`}
                           className="flex-1 flex items-center justify-center gap-2 bg-blue-500/10 text-blue-400 border border-blue-500/30 hover:bg-blue-500 hover:text-white rounded-xl py-2.5 font-bold text-sm transition-colors"
                         >
                           <Phone size={18} />
@@ -294,19 +291,19 @@ export default function AdminSellRequestsPage() {
                 {selectedReq.photos?.length > 0 && (
                   <div>
                     <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b border-white/10 pb-2 flex items-center justify-between">
-                      Uploaded Photos 
+                      Uploaded Photos
                       <span className="bg-white/10 text-white px-2 py-0.5 rounded text-[10px]">{selectedReq.photos.length}</span>
                     </h4>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                       {selectedReq.photos.map((p, i) => (
-                        <a 
-                          key={i} 
-                          href={p.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
+                        <a
+                          key={i}
+                          href={p.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="relative aspect-[4/3] rounded-xl overflow-hidden group border border-white/10"
                         >
-                          <Image src={p.url} alt={`Photo ${i+1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                          <Image src={p.url} alt={`Photo ${i + 1}`} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                             <ExternalLink className="text-white drop-shadow-md" size={24} />
                           </div>

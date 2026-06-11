@@ -25,7 +25,7 @@ export default function SellYourCarPage() {
       if (!leftColumnRef.current) return;
       const elementHeight = leftColumnRef.current.offsetHeight;
       const windowHeight = window.innerHeight;
-      
+
       // If element is taller than available window space
       if (elementHeight > windowHeight - 128) {
         // Stick to the bottom (negative top offset)
@@ -40,13 +40,13 @@ export default function SellYourCarPage() {
     // Delay slightly to ensure fonts/images are fully rendered
     setTimeout(handleResize, 100);
     window.addEventListener('resize', handleResize);
-    
+
     let observer;
     if (window.ResizeObserver && leftColumnRef.current) {
       observer = new ResizeObserver(handleResize);
       observer.observe(leftColumnRef.current);
     }
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
       if (observer) observer.disconnect();
@@ -114,17 +114,17 @@ export default function SellYourCarPage() {
   // Success State View
   if (status === 'success') {
     return (
-    <div className="bg-gray-50 dark:bg-[#0a0a12] min-h-screen pt-[120px] pb-20 flex items-center justify-center relative overflow-hidden transition-colors duration-500">
+      <div className="bg-gray-50 dark:bg-[#0a0a12] min-h-screen pt-[120px] pb-20 flex items-center justify-center relative overflow-hidden transition-colors duration-500">
         {/* Background Gradients */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/20 blur-[120px] rounded-full pointer-events-none"></div>
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-center py-20 px-6 w-full max-w-2xl relative z-10 bg-white dark:bg-white/[0.02] backdrop-blur-3xl border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl transition-all duration-500"
         >
-          <motion.div 
+          <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 20 }}
@@ -138,7 +138,7 @@ export default function SellYourCarPage() {
           <p className="font-['Inter'] text-lg text-gray-600 dark:text-gray-300 max-w-md mx-auto leading-relaxed mb-10 transition-colors">
             Thank you for choosing Hariram Motors. Our experts are evaluating your car's details and will contact you within <strong className="text-black dark:text-white transition-colors">24 hours</strong> with the best possible valuation.
           </p>
-          <button 
+          <button
             onClick={resetForm}
             className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-black dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 hover:border-purple-400 dark:hover:border-purple-500/50 rounded-xl px-8 py-4 font-['Outfit'] font-bold text-lg transition-all transform hover:-translate-y-1 shadow-sm dark:shadow-none"
           >
@@ -158,23 +158,23 @@ export default function SellYourCarPage() {
 
   return (
     <div className="bg-gray-50 dark:bg-[#0a0a12] min-h-screen pt-28 pb-10 selection:bg-purple-500/30 relative overflow-clip transition-colors duration-500">
-      
+
       {/* Background Ambience */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-purple-600/20 dark:bg-purple-600/10 blur-[150px] rounded-full pointer-events-none transition-colors duration-500"></div>
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-600/20 dark:bg-blue-600/10 blur-[150px] rounded-full pointer-events-none transition-colors duration-500"></div>
-      
+
       <div className="max-w-[1400px] mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          
+
           {/* LEFT COLUMN: Sticky Hero & Progress */}
           <div className="lg:col-span-5 relative">
-            <div 
+            <div
               ref={leftColumnRef}
               className="lg:sticky flex flex-col pt-4"
               style={{ top: stickyTop }}
             >
-              
-              <motion.div 
+
+              <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
@@ -182,12 +182,12 @@ export default function SellYourCarPage() {
                 <div className="inline-block border border-purple-300 dark:border-purple-500/30 bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 px-4 py-1.5 rounded-full text-xs uppercase tracking-widest mb-6 font-bold backdrop-blur-md transition-colors shadow-sm dark:shadow-none">
                   Sell Your Car
                 </div>
-                
-                <h1 className="font-['Outfit'] font-extrabold text-[36px] md:text-[48px] text-black dark:text-white leading-[1.05] tracking-tight md:tracking-tighter mb-6 transition-colors">
+
+                <h1 className="font-['Outfit'] font-bold text-[36px] md:text-[48px] text-black dark:text-white leading-[1.05] tracking-tight md:tracking-tighter mb-6 transition-colors">
                   Get the Best Price<br />
                   <span className="bg-gradient-to-r from-purple-600 dark:from-purple-400 to-purple-700 dark:to-purple-600 bg-clip-text text-transparent drop-shadow-sm dark:drop-shadow-none pb-2">Guaranteed.</span>
                 </h1>
-                
+
                 <p className="font-['Inter'] text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-10 max-w-md transition-colors font-medium">
                   Free inspection. Instant quote. Payment within 24 hours. We handle all the paperwork. You just hand over the keys and get paid.
                 </p>
@@ -199,8 +199,8 @@ export default function SellYourCarPage() {
                     { icon: <IconDashboard size={24} className="text-blue-400" />, title: 'Best Market Price', desc: 'We guarantee to match or beat market valuations for your car.' },
                     { icon: <IconCheck size={24} className="text-green-400" />, title: 'Zero Paperwork', desc: 'We handle RTO, title transfers, and all legal documentation completely.' }
                   ].map((feat, i) => (
-                    <motion.div 
-                      key={i} 
+                    <motion.div
+                      key={i}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.5, delay: i * 0.1 + 0.3 }}
@@ -225,8 +225,8 @@ export default function SellYourCarPage() {
                     <span className="text-purple-600 dark:text-purple-400 text-sm">{Math.round(progressPercent)}%</span>
                   </div>
                   <div className="w-full h-2.5 bg-gray-100 dark:bg-white/5 rounded-full overflow-hidden shadow-inner border border-gray-200 dark:border-white/5 relative z-10">
-                    <motion.div 
-                      className="h-full bg-gradient-to-r from-purple-600 to-blue-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]" 
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-purple-600 to-blue-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]"
                       initial={{ width: '0%' }}
                       animate={{ width: `${Math.max(5, progressPercent)}%` }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
@@ -235,7 +235,7 @@ export default function SellYourCarPage() {
                 </div>
 
                 {/* Trust Badge / Info Card */}
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.6 }}
@@ -263,14 +263,14 @@ export default function SellYourCarPage() {
                     </div>
                   </div>
                 </motion.div>
-                
+
               </motion.div>
             </div>
           </div>
 
           {/* RIGHT COLUMN: The Form */}
           <div className="lg:col-span-7 pb-32 lg:pb-16">
-            
+
             {/* Progress Bar (Mobile) */}
             <div className="lg:hidden sticky top-20 z-40 bg-white/90 dark:bg-[#0a0a12]/80 backdrop-blur-xl py-4 mb-5 -mx-6 px-6 shadow-md dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] border-b border-gray-200 dark:border-none transition-colors duration-500">
               <div className="flex justify-between text-[10px] text-gray-600 dark:text-gray-400 font-bold uppercase tracking-wider mb-2 transition-colors">
@@ -278,8 +278,8 @@ export default function SellYourCarPage() {
                 <span className="text-purple-600 dark:text-purple-400">{Math.round(progressPercent)}%</span>
               </div>
               <div className="w-full h-1.5 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
-                <motion.div 
-                  className="h-full bg-purple-500" 
+                <motion.div
+                  className="h-full bg-purple-500"
                   initial={{ width: '0%' }}
                   animate={{ width: `${Math.max(5, progressPercent)}%` }}
                   transition={{ duration: 0.5 }}
@@ -288,16 +288,16 @@ export default function SellYourCarPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="flex flex-col space-y-5">
-              
+
               {/* PART 1: Contact Info */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 className="bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 rounded-3xl p-4 sm:p-6 backdrop-blur-xl shadow-xl dark:shadow-2xl relative overflow-hidden group transition-all duration-500"
               >
                 <div className="absolute top-0 left-0 w-1.5 h-full bg-purple-500/50 group-hover:bg-purple-500 transition-colors"></div>
-                
+
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-600 dark:text-purple-400 shrink-0">
                     <span className="font-['Outfit'] font-bold text-lg">01</span>
@@ -307,7 +307,7 @@ export default function SellYourCarPage() {
                     <p className="text-gray-600 dark:text-gray-400 text-sm transition-colors">Where can we reach you?</p>
                   </div>
                 </div>
-                
+
                 <div className="space-y-6">
                   <div className="relative">
                     <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">
@@ -316,7 +316,7 @@ export default function SellYourCarPage() {
                     <IconUser className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
                     <input type="text" name="ownerName" value={form.ownerName} onChange={handleChange} className={inputClassName} placeholder="John Doe" required />
                   </div>
-                  
+
                   <div className="relative">
                     <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">
                       Phone Number <span className="text-purple-600 dark:text-purple-400">*</span>
@@ -324,7 +324,7 @@ export default function SellYourCarPage() {
                     <IconPhone className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
                     <input type="tel" name="phone" value={form.phone} onChange={handleChange} className={inputClassName} placeholder="+91 98765 43210" required />
                   </div>
-                  
+
                   <div className="relative">
                     <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">
                       Email Address <span className="text-gray-500 dark:text-gray-600 normal-case tracking-normal">(optional)</span>
@@ -336,14 +336,14 @@ export default function SellYourCarPage() {
               </motion.div>
 
               {/* PART 2: Car Details */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 className="bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 rounded-3xl p-4 sm:p-6 backdrop-blur-xl shadow-xl dark:shadow-2xl relative overflow-hidden group transition-all duration-500"
               >
                 <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-500/50 group-hover:bg-blue-500 transition-colors"></div>
-                
+
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0">
                     <span className="font-['Outfit'] font-bold text-lg">02</span>
@@ -353,7 +353,7 @@ export default function SellYourCarPage() {
                     <p className="text-gray-600 dark:text-gray-400 text-sm transition-colors">Tell us what you're selling</p>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div className="relative">
                     <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Car Brand <span className="text-purple-600 dark:text-purple-400">*</span></label>
@@ -384,12 +384,11 @@ export default function SellYourCarPage() {
                       <button
                         key={type}
                         type="button"
-                        onClick={() => setForm({...form, fuelType: type})}
-                        className={`px-6 py-3 rounded-xl text-sm font-bold font-['Inter'] transition-all border ${
-                          form.fuelType === type 
-                            ? 'bg-purple-600 border-purple-500 text-white shadow-[0_4px_15px_rgba(147,51,234,0.4)]' 
+                        onClick={() => setForm({ ...form, fuelType: type })}
+                        className={`px-6 py-3 rounded-xl text-sm font-bold font-['Inter'] transition-all border ${form.fuelType === type
+                            ? 'bg-purple-600 border-purple-500 text-white shadow-[0_4px_15px_rgba(147,51,234,0.4)]'
                             : 'bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 hover:border-purple-400 dark:hover:border-purple-500/50 hover:bg-white dark:hover:bg-white/10 hover:text-purple-600 dark:hover:text-white shadow-sm dark:shadow-none'
-                        }`}
+                          }`}
                       >
                         {type}
                       </button>
@@ -405,14 +404,14 @@ export default function SellYourCarPage() {
               </motion.div>
 
               {/* PART 3: Photos & Notes */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 className="bg-white dark:bg-white/[0.02] border border-gray-200 dark:border-white/10 rounded-3xl p-4 sm:p-6 backdrop-blur-xl shadow-xl dark:shadow-2xl relative overflow-hidden group transition-all duration-500"
               >
                 <div className="absolute top-0 left-0 w-1.5 h-full bg-green-500/50 group-hover:bg-green-500 transition-colors"></div>
-                
+
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-10 h-10 rounded-xl bg-green-500/10 dark:bg-green-500/20 flex items-center justify-center text-green-600 dark:text-green-400 shrink-0">
                     <span className="font-['Outfit'] font-bold text-lg">03</span>
@@ -422,8 +421,8 @@ export default function SellYourCarPage() {
                     <p className="text-gray-600 dark:text-gray-400 text-sm transition-colors">A picture is worth a thousand bucks</p>
                   </div>
                 </div>
-                
-                <div 
+
+                <div
                   className="w-full rounded-2xl border-2 border-dashed border-gray-300 dark:border-white/20 bg-gray-50 dark:bg-white/5 py-6 text-center hover:border-purple-400 dark:hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/5 transition-all cursor-pointer group mb-6"
                   onClick={() => document.getElementById('photo-upload').click()}
                 >
@@ -440,11 +439,11 @@ export default function SellYourCarPage() {
                   <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4 mb-6">
                     <AnimatePresence>
                       {previews.map((src, i) => (
-                        <motion.div 
+                        <motion.div
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.8 }}
-                          key={src} 
+                          key={src}
                           className="aspect-square rounded-xl overflow-hidden relative group border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-none"
                         >
                           <Image src={src} alt={`Preview ${i + 1}`} fill className="object-cover" />
@@ -465,12 +464,12 @@ export default function SellYourCarPage() {
 
                 <div>
                   <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Additional Notes</label>
-                  <textarea 
-                    name="notes" 
-                    value={form.notes} 
-                    onChange={handleChange} 
-                    placeholder="Modifications, damage, service history, reason for selling..." 
-                    rows={4} 
+                  <textarea
+                    name="notes"
+                    value={form.notes}
+                    onChange={handleChange}
+                    placeholder="Modifications, damage, service history, reason for selling..."
+                    rows={4}
                     className={`${inputClassName} !px-5 !py-4 resize-y`}
                   />
                 </div>
@@ -478,8 +477,8 @@ export default function SellYourCarPage() {
 
               {/* SUBMIT BUTTON */}
               <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-[#0a0a12]/90 backdrop-blur-2xl border-t border-gray-200 dark:border-white/10 md:relative md:bg-transparent md:border-0 md:p-0 md:mt-4 z-50 transition-colors duration-500">
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={status === 'loading'}
                   className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white rounded-2xl font-['Outfit'] font-bold text-lg transition-all hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] disabled:opacity-70 disabled:hover:shadow-none flex items-center justify-center gap-3 transform hover:-translate-y-1 active:translate-y-0 disabled:transform-none"
                 >
