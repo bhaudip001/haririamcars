@@ -74,47 +74,50 @@ export default function CarCard({ car, index = 0 }) {
         </div>
 
         {/* Card Body */}
-        <div className="p-4 md:p-5 flex flex-col flex-grow">
-          <h3 className="font-['Outfit'] font-bold text-base md:text-lg text-black dark:text-white truncate mb-3 md:mb-4 transition-colors">
+        <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-grow">
+          <h3 className="font-['Outfit'] font-bold text-sm sm:text-base md:text-lg text-black dark:text-white truncate mb-1.5 sm:mb-3 md:mb-4 transition-colors" title={title}>
             {title}
           </h3>
 
           {/* Specs Row */}
-          <div className="flex items-center gap-1.5 md:gap-2 text-gray-600 dark:text-gray-400 text-xs md:text-sm mt-auto whitespace-nowrap overflow-hidden text-ellipsis font-medium transition-colors">
-            <span>{car.fuelType || 'N/A'}</span>
-            <span className="text-gray-400 dark:text-gray-600">•</span>
-            <span>{car.transmission || 'N/A'}</span>
-            <span className="text-gray-400 dark:text-gray-600">•</span>
-            <span>{car.kms ? formatKms(car.kms) : 'N/A'}</span>
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-x-1 gap-y-0.5 sm:gap-1.5 md:gap-2 text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm mt-auto font-medium transition-colors">
+            <span className="whitespace-nowrap">{car.fuelType || 'N/A'}</span>
+            <span className="text-gray-300 dark:text-gray-600 sm:hidden">|</span>
+            <span className="text-gray-400 dark:text-gray-600 hidden sm:inline">•</span>
+            <span className="whitespace-nowrap">{car.transmission || 'N/A'}</span>
+            <span className="text-gray-300 dark:text-gray-600 sm:hidden">|</span>
+            <span className="text-gray-400 dark:text-gray-600 hidden sm:inline">•</span>
+            <span className="whitespace-nowrap">{car.kms ? formatKms(car.kms) : 'N/A'}</span>
           </div>
 
-          <hr className="border-gray-200 dark:border-white/10 mt-3 mb-3 transition-colors" />
+          <hr className="border-gray-200 dark:border-white/10 mt-2 mb-2 sm:mt-3 sm:mb-3 transition-colors" />
 
           {/* Price & Action */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
             <div>
-              <div className="text-purple-600 dark:text-purple-400 font-bold text-xl md:text-2xl tracking-wide transition-colors">
+              <div className="text-purple-600 dark:text-purple-400 font-bold text-lg sm:text-xl md:text-2xl tracking-wide transition-colors">
                 {formatPrice(car.price)}
               </div>
             </div>
           </div>
 
           {/* Buttons Row */}
-          <div className="flex flex-col sm:flex-row items-center gap-2.5 md:gap-3 relative z-20 mt-auto">
-            <div className="w-full sm:flex-1 text-center border border-purple-600 dark:border-purple-600 text-purple-600 dark:text-purple-400 bg-transparent rounded-xl py-3 md:py-2.5 text-sm md:text-base font-bold group-hover:bg-purple-600 group-hover:text-white transition-all duration-200 cursor-pointer flex items-center justify-center min-h-[44px]">
-              View Details
+          <div className="flex flex-row items-center gap-1.5 sm:gap-2.5 md:gap-3 relative z-20 mt-auto">
+            <div className="flex-1 text-center border border-purple-600 dark:border-purple-600 text-purple-600 dark:text-purple-400 bg-transparent rounded-lg sm:rounded-xl py-1.5 sm:py-3 md:py-2.5 text-[11px] sm:text-sm md:text-base font-bold group-hover:bg-purple-600 group-hover:text-white transition-all duration-200 cursor-pointer flex items-center justify-center min-h-[34px] sm:min-h-[44px]">
+              <span className="sm:hidden">View</span>
+              <span className="hidden sm:inline">View Details</span>
             </div>
             {car.status !== 'sold' && (
               <a
                 href={getCarInquiryLink(car, process.env.NEXT_PUBLIC_WHATSAPP || '+919898558222')}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:flex-1 flex items-center justify-center gap-1.5 bg-[#25D366] hover:bg-[#1ebe57] text-white dark:text-black rounded-xl py-3 md:py-2.5 text-sm md:text-base font-bold shadow-[0_0_15px_rgba(37,211,102,0.3)] transition-all duration-200 cursor-pointer min-h-[44px]"
+                className="flex-[1.5] sm:flex-1 flex items-center justify-center gap-1 sm:gap-1.5 bg-[#25D366] hover:bg-[#1ebe57] text-white dark:text-black rounded-lg sm:rounded-xl py-1.5 sm:py-3 md:py-2.5 text-[11px] sm:text-sm md:text-base font-bold shadow-[0_0_15px_rgba(37,211,102,0.3)] transition-all duration-200 cursor-pointer min-h-[34px] sm:min-h-[44px]"
                 onClick={(e) => e.stopPropagation()}
                 title="Chat on WhatsApp"
               >
-                <IconBrandWhatsapp size={18} stroke={2} />
-                WhatsApp
+                <IconBrandWhatsapp size={14} className="sm:w-[18px] sm:h-[18px]" stroke={2} />
+                <span>WhatsApp</span>
               </a>
             )}
           </div>
