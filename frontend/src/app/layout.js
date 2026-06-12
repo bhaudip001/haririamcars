@@ -24,6 +24,19 @@ export const metadata = {
   },
   description: 'Hariram Motors — Your trusted partner for premium pre-owned and new cars in Surat, Gujarat. Browse our curated collection of certified vehicles at the best prices.',
   keywords: ['used cars surat', 'new cars surat', 'second hand cars surat', 'pre-owned cars', 'hariram motors', 'buy car surat', 'sell car surat'],
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/logo-32.jpg', sizes: '32x32', type: 'image/jpeg' },
+      { url: '/logo-48.jpg', sizes: '48x48', type: 'image/jpeg' },
+      { url: '/logo-96.jpg', sizes: '96x96', type: 'image/jpeg' },
+      { url: '/logo-192.jpg', sizes: '192x192', type: 'image/jpeg' },
+      { url: '/logo-512.jpg', sizes: '512x512', type: 'image/jpeg' },
+    ],
+    apple: [
+      { url: '/logo-192.jpg', sizes: '192x192', type: 'image/jpeg' },
+    ],
+  },
   openGraph: {
     title: 'Hariram Motors | Premium Cars in Surat',
     description: 'Your trusted partner for premium cars in Surat, Gujarat. Shop our wide selection of vehicles.',
