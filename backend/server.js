@@ -61,6 +61,8 @@ const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
   'http://localhost:3000',
   'http://localhost:3001',
+  'https://www.hariramcars.com',
+  'https://hariramcars.com',
 ];
 app.use(cors({
   origin: (origin, callback) => {
