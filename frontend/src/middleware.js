@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
 
-export function middleware(request) {
+export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
   // Protect all admin routes except login
@@ -10,10 +11,28 @@ export function middleware(request) {
   ) {
     const token = request.cookies.get('token')?.value;
 
-    if (!token) {
+    const redirectToLogin = () => {
       const loginUrl = new URL('/admin/login', request.url);
       loginUrl.searchParams.set('from', pathname);
       return NextResponse.redirect(loginUrl);
+    };
+
+    if (!token) {
+      return redirectToLogin();
+    }
+
+    try {
+      const secret = new TextEncoder().encode(
+        process.env.JWT_SECRET || 'your_super_secret_key_change_me_in_production'
+      );
+      
+      await jwtVerify(token, secret, {
+        issuer: 'hariram-motors',
+        audience: 'hariram-motors-admin',
+      });
+    } catch (err) {
+      console.error('Middleware JWT verification failed:', err.message);
+      return redirectToLogin();
     }
   }
 

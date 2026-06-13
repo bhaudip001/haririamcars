@@ -111,5 +111,53 @@ export default async function CarDetailPageServer({ params }) {
     notFound();
   }
 
-  return <CarDetailPageClient initialCar={car} initialSimilarCars={similarCars} />;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Vehicle',
+    name: car.title || `${car.year} ${car.make} ${car.model}`,
+    image: car.images?.[0]?.url || 'https://www.hariramcars.com/logo.jpeg',
+    description: car.description || `Buy ${car.year} ${car.make} ${car.model} at Hariram Motors.`,
+    brand: {
+      '@type': 'Brand',
+      name: car.make,
+    },
+    model: car.model,
+    vehicleConfiguration: car.variant,
+    modelDate: car.year,
+    mileageFromOdometer: {
+      '@type': 'QuantitativeValue',
+      value: car.kms,
+      unitCode: 'KMT'
+    },
+    fuelType: car.fuelType,
+    vehicleEngine: car.engineCC ? {
+      '@type': 'EngineSpecification',
+      engineDisplacement: {
+        '@type': 'QuantitativeValue',
+        value: car.engineCC,
+        unitCode: 'CMQ'
+      }
+    } : undefined,
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'INR',
+      price: car.price,
+      itemCondition: 'https://schema.org/UsedCondition',
+      availability: car.status === 'available' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      seller: {
+        '@type': 'AutoDealer',
+        name: 'Hariram Motors',
+      }
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <CarDetailPageClient initialCar={car} initialSimilarCars={similarCars} />
+    </>
+  );
 }

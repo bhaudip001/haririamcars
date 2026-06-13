@@ -7,8 +7,10 @@ import Image from 'next/image';
 import { IconShieldCheck, IconReceipt, IconFileText, IconCar, IconCurrencyRupee, IconArrowsExchange, IconCheck, IconChevronLeft, IconChevronRight, IconChevronDown } from '@tabler/icons-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
+import dynamic from 'next/dynamic';
 import AboutHero from '@/components/AboutHero';
-import GoogleReviews from '@/components/GoogleReviews';
+
+const GoogleReviews = dynamic(() => import('@/components/GoogleReviews'), { ssr: false });
 import api from '@/lib/api';
 
 function AnimatedCounter({ value, suffix = '' }) {
