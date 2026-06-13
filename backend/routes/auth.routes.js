@@ -1,6 +1,6 @@
 import express from 'express';
 import User from '../models/User.js';
-import { protect, adminOnly, generateToken } from '../middleware/authMiddleware.js';
+import { protect, adminOnly, generateToken, blacklistToken } from '../middleware/authMiddleware.js';
 import { validateLogin } from '../middleware/validate.js';
 
 const router = express.Router();
@@ -45,8 +45,9 @@ router.post('/login', validateLogin, async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/',
     });
 
     res.json({
@@ -101,11 +102,15 @@ router.get('/verify', protect, (req, res) => {
 });
 
 // ── POST /api/auth/logout ──
-router.post('/logout', (_req, res) => {
+router.post('/logout', protect, (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1] || req.cookies?.token;
+  if (token) blacklistToken(token);
+  
   res.cookie('token', '', { 
     httpOnly: true, 
     secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    sameSite: 'strict',
+    path: '/',
     expires: new Date(0) 
   });
   res.json({ message: 'Logged out successfully' });
