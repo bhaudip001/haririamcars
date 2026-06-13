@@ -21,7 +21,18 @@ async function getTestimonials() {
 }
 
 export default async function TestimonialsServer() {
-  const testimonials = await getTestimonials();
+  let testimonials = await getTestimonials();
+
+  // Defensive check: ensure it's an array
+  if (!Array.isArray(testimonials)) {
+    if (testimonials && Array.isArray(testimonials.data)) {
+      testimonials = testimonials.data;
+    } else if (testimonials && Array.isArray(testimonials.customers)) {
+      testimonials = testimonials.customers;
+    } else {
+      testimonials = [];
+    }
+  }
 
   if (!testimonials || testimonials.length === 0) return null;
 

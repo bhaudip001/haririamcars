@@ -20,7 +20,18 @@ async function getBanners() {
 }
 
 export default async function PromoBannersServer() {
-  const banners = await getBanners();
+  let banners = await getBanners();
+
+  // Defensive check: ensure it's an array
+  if (!Array.isArray(banners)) {
+    if (banners && Array.isArray(banners.data)) {
+      banners = banners.data;
+    } else if (banners && Array.isArray(banners.banners)) {
+      banners = banners.banners;
+    } else {
+      banners = [];
+    }
+  }
 
   if (!banners || banners.length === 0) return null;
 

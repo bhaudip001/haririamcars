@@ -23,7 +23,18 @@ async function getFeaturedCars() {
 }
 
 export default async function FeaturedCarsServer() {
-  const cars = await getFeaturedCars();
+  let cars = await getFeaturedCars();
+
+  // Defensive check: ensure it's an array
+  if (!Array.isArray(cars)) {
+    if (cars && Array.isArray(cars.data)) {
+      cars = cars.data;
+    } else if (cars && Array.isArray(cars.cars)) {
+      cars = cars.cars;
+    } else {
+      cars = [];
+    }
+  }
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
