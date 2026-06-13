@@ -111,6 +111,16 @@ const nextConfig = {
       },
     ];
   },
+
+  // Proxy API requests to Vercel Serverless Function
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/backend/server.js',
+      },
+    ];
+  },
 };
 
 import bundleAnalyzer from '@next/bundle-analyzer';
