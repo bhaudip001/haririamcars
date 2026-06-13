@@ -43,28 +43,10 @@ const REVIEWS = [
     "relative_time_description": "5 years ago"
   },
   {
-    "author_name": "Samjibhai Kapadi",
-    "rating": 3,
-    "text": "Ok",
-    "relative_time_description": "2 years ago"
-  },
-  {
-    "author_name": "Nikhil Sharma",
-    "rating": 1,
-    "text": "ALERT ALERT ALERT ‼️ As i was buying a Audi Q3, the owner or someone else i didn’t know he told that...",
-    "relative_time_description": "9 months ago"
-  },
-  {
     "author_name": "Abhay Kothiya",
     "rating": 4,
     "text": "Good collection and offer",
     "relative_time_description": "3 years ago"
-  },
-  {
-    "author_name": "Shashank Ojha",
-    "rating": 2,
-    "text": "Not good",
-    "relative_time_description": "5 years ago"
   }
 ];
 
