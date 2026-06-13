@@ -12,8 +12,7 @@ import CarGridSkeleton from '@/components/skeletons/CarGridSkeleton';
 import BannerSkeleton from '@/components/skeletons/BannerSkeleton';
 import TestimonialSkeleton from '@/components/skeletons/TestimonialSkeleton';
 import GoogleReviewsSkeleton from '@/components/skeletons/GoogleReviewsSkeleton';
-
-const GoogleReviews = dynamic(() => import('@/components/GoogleReviews'), { ssr: false });
+import DynamicGoogleReviews from '@/components/client/DynamicGoogleReviews';
 
 export const metadata = {
   title: 'Hariram Motors | Used & New Cars in Surat',
@@ -104,7 +103,7 @@ export default function HomePage() {
 
         <div className="relative z-10 dark:bg-transparent">
           <Suspense fallback={<GoogleReviewsSkeleton />}>
-            <GoogleReviews />
+            <DynamicGoogleReviews />
           </Suspense>
         </div>
 

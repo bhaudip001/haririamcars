@@ -3,8 +3,7 @@ import './globals.css';
 import AppLayoutWrapper from '@/components/AppLayoutWrapper';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from 'react-hot-toast';
-import dynamic from 'next/dynamic';
-const LeadPopup = dynamic(() => import('@/components/LeadPopup'), { ssr: false });
+import DynamicLeadPopup from '@/components/client/DynamicLeadPopup';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({
@@ -177,7 +176,7 @@ export default function RootLayout({ children }) {
               },
             }}
           />
-          <LeadPopup />
+          <DynamicLeadPopup />
           <AppLayoutWrapper>{children}</AppLayoutWrapper>
         </ThemeProvider>
       </body>
