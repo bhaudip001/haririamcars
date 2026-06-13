@@ -89,7 +89,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        <link rel="preload" href="/logo.jpeg" as="image" type="image/jpeg" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

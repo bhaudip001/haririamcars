@@ -64,7 +64,7 @@ app.use(async (req, res, next) => {
     next();
   } catch (error) {
     console.error('Database connection failed:', error.message);
-    res.status(500).json({ error: 'Database connection failed. Please check your configuration.' });
+    res.status(502).json({ error: 'Database connection failed. Please check your configuration.' });
   }
 });
 
@@ -153,7 +153,9 @@ app.use(
       // Removed Vercel dynamic deployment origin
       
       console.warn(`CORS blocked request from: ${origin}`);
-      return callback(new Error(`CORS blocked: ${origin} not allowed`));
+      const error = new Error(`CORS blocked: ${origin} not allowed`);
+      error.statusCode = 403;
+      return callback(error);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
