@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
 import Image from 'next/image';
-import { IconShieldCheck, IconReceipt, IconFileText, IconCar, IconCurrencyRupee, IconArrowsExchange, IconCheck, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { IconShieldCheck, IconReceipt, IconFileText, IconCar, IconCurrencyRupee, IconArrowsExchange, IconCheck, IconChevronLeft, IconChevronRight, IconChevronDown } from '@tabler/icons-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import AboutHero from '@/components/AboutHero';
@@ -35,6 +35,7 @@ function AnimatedCounter({ value, suffix = '' }) {
 }
 
 export default function AboutPage() {
+  const [activeFaq, setActiveFaq] = useState(0);
   const [testimonials, setTestimonials] = useState([]);
   const [testiRef, testiApi] = useEmblaCarousel({ loop: true, align: 'center' }, [Autoplay({ delay: 3500, stopOnInteraction: false })]);
   const scrollTestiPrev = useCallback(() => testiApi && testiApi.scrollPrev(), [testiApi]);
@@ -725,38 +726,83 @@ export default function AboutPage() {
         <GoogleReviews />
       </div>
 
-      {/* ═══ FREQUENTLY ASKED QUESTIONS (GEO & AEO OPTIMIZED) ═══ */}
-      <section className="relative py-24 z-10 bg-white dark:bg-[#06060c] border-t border-gray-100 dark:border-white/[0.05]">
-        <div className="max-w-4xl mx-auto px-6">
+      {/* ═══ FREQUENTLY ASKED QUESTIONS (PREMIUM REDESIGN) ═══ */}
+      <section className="relative py-28 z-10 bg-[#f4f4f8] dark:bg-[#0a0a12] overflow-hidden transition-colors duration-500">
+        {/* Background Decorative Glows */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-purple-600/[0.04] dark:bg-purple-600/[0.08] rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-blue-600/[0.03] dark:bg-blue-600/[0.06] rounded-full blur-[100px]" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-400/20 dark:via-purple-500/15 to-transparent" />
+        </div>
+
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="font-['Outfit'] font-bold text-[36px] text-black dark:text-white leading-tight">
-              Frequently Asked Questions
+            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6 bg-purple-50 dark:bg-purple-600/10 border border-purple-200 dark:border-purple-500/20 transition-colors">
+              <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+              <span className="text-purple-600 dark:text-purple-400 text-[11px] uppercase tracking-[0.15em] font-bold transition-colors">Got Questions?</span>
+            </div>
+            <h2 className="font-['Outfit'] font-bold text-[42px] text-black dark:text-white leading-tight">
+              Frequently Asked <span className="bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">Questions</span>
             </h2>
-            <p className="text-gray-500 dark:text-gray-400 mt-4 font-medium">Learn more about our services, processes, and policies.</p>
+            <p className="text-gray-500 dark:text-[#a0a0b8] mt-5 font-['Inter'] text-[16px] max-w-xl mx-auto">
+              Everything you need to know about buying, selling, or financing a pre-owned car with Hariram Motors.
+            </p>
           </div>
           
-          <div className="space-y-8">
-            <div className="bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/[0.05] rounded-2xl p-8">
-              <h3 className="text-[20px] font-bold text-black dark:text-white mb-4">Why should I buy a used car from Hariram Motors?</h3>
-              <p className="text-gray-600 dark:text-[#a0a0b8] leading-relaxed">
-                Hariram Motors offers a premium buying experience with our "Hariram Certified" guarantee. Every vehicle undergoes a strict 150-point mechanical and structural inspection to ensure the highest quality standards before it reaches our showroom. We provide a 100% non-accidental history guarantee, verify genuine odometer readings, and ensure clear legal titles without any pending challans or hypothecation issues. Our comprehensive service includes handling all RTO transfers on your behalf and providing on-the-spot finance options through leading banking partners. By prioritizing transparency, competitive pricing, and total customer satisfaction, we make the process of buying a pre-owned car in Surat seamless and completely trustworthy.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/[0.05] rounded-2xl p-8">
-              <h3 className="text-[20px] font-bold text-black dark:text-white mb-4">Does Hariram Motors provide loans on used cars?</h3>
-              <p className="text-gray-600 dark:text-[#a0a0b8] leading-relaxed">
-                Yes, Hariram Motors has established direct tie-ups with leading private and nationalized banks, as well as premium NBFCs, to provide quick and hassle-free car loans for pre-owned vehicles. Our dedicated in-house finance team works to secure the lowest possible interest rates and highly flexible EMI options tailored precisely to your financial profile. We require minimal documentation and manage the entire loan processing workflow, ensuring that loan approvals are often available within just a few hours. This seamless financing integration means you can finalize your vehicle purchase and drive home the very same day without visiting a bank branch.
-              </p>
-            </div>
-
-            <div className="bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/[0.05] rounded-2xl p-8">
-              <h3 className="text-[20px] font-bold text-black dark:text-white mb-4">Can I sell or exchange my current car at Hariram Motors?</h3>
-              <p className="text-gray-600 dark:text-[#a0a0b8] leading-relaxed">
-                Absolutely. Hariram Motors offers immediate, transparent, and highly competitive market valuations for your old car through a free doorstep or showroom evaluation process. You have the total flexibility to either sell your car directly to us for instant, secure payment within 24 hours, or you can use its highest market value as an upfront down payment for seamlessly upgrading to another premium vehicle from our extensive inventory. We take complete responsibility for all paperwork, including the 100% free RC transfer process, ensuring you face absolutely zero legal liabilities after handing over your vehicle to our team.
-              </p>
-            </div>
-          </div>
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="space-y-4"
+          >
+            {[
+              {
+                question: "Why should I buy a used car from Hariram Motors?",
+                answer: "Hariram Motors offers a premium buying experience with our \"Hariram Certified\" guarantee. Every vehicle undergoes a strict 150-point mechanical and structural inspection to ensure the highest quality standards before it reaches our showroom. We provide a 100% non-accidental history guarantee, verify genuine odometer readings, and ensure clear legal titles without any pending challans or hypothecation issues. Our comprehensive service includes handling all RTO transfers on your behalf and providing on-the-spot finance options through leading banking partners. By prioritizing transparency, competitive pricing, and total customer satisfaction, we make the process of buying a pre-owned car in Surat seamless and completely trustworthy."
+              },
+              {
+                question: "Does Hariram Motors provide loans on used cars?",
+                answer: "Yes, Hariram Motors has established direct tie-ups with leading private and nationalized banks, as well as premium NBFCs, to provide quick and hassle-free car loans for pre-owned vehicles. Our dedicated in-house finance team works to secure the lowest possible interest rates and highly flexible EMI options tailored precisely to your financial profile. We require minimal documentation and manage the entire loan processing workflow, ensuring that loan approvals are often available within just a few hours. This seamless financing integration means you can finalize your vehicle purchase and drive home the very same day without visiting a bank branch."
+              },
+              {
+                question: "Can I sell or exchange my current car at Hariram Motors?",
+                answer: "Absolutely. Hariram Motors offers immediate, transparent, and highly competitive market valuations for your old car through a free doorstep or showroom evaluation process. You have the total flexibility to either sell your car directly to us for instant, secure payment within 24 hours, or you can use its highest market value as an upfront down payment for seamlessly upgrading to another premium vehicle from our extensive inventory. We take complete responsibility for all paperwork, including the 100% free RC transfer process, ensuring you face absolutely zero legal liabilities after handing over your vehicle to our team."
+              }
+            ].map((faq, index) => (
+              <motion.div variants={fadeInUp} key={index}>
+                <button
+                  onClick={() => setActiveFaq(activeFaq === index ? null : index)}
+                  className={`w-full text-left p-6 rounded-2xl transition-all duration-300 border ${activeFaq === index ? 'bg-white dark:bg-white/[0.05] border-purple-400 dark:border-purple-500/50 shadow-[0_10px_30px_rgba(124,58,237,0.1)]' : 'bg-gray-50 dark:bg-white/[0.02] border-gray-200 dark:border-white/[0.05] hover:border-purple-300 dark:hover:border-purple-500/30'}`}
+                >
+                  <div className="flex justify-between items-center gap-4">
+                    <h3 className={`text-[18px] md:text-[20px] font-bold font-['Outfit'] transition-colors ${activeFaq === index ? 'text-purple-600 dark:text-purple-400' : 'text-black dark:text-white'}`}>
+                      {faq.question}
+                    </h3>
+                    <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center transition-all duration-300 ${activeFaq === index ? 'bg-purple-100 dark:bg-purple-600/20 text-purple-600 dark:text-purple-400 rotate-180' : 'bg-gray-200 dark:bg-white/5 text-gray-500 dark:text-gray-400'}`}>
+                      <IconChevronDown size={20} />
+                    </div>
+                  </div>
+                  <AnimatePresence>
+                    {activeFaq === index && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                        animate={{ height: "auto", opacity: 1, marginTop: 16 }}
+                        exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="w-12 h-[2px] bg-gradient-to-r from-purple-500 to-transparent mb-4" />
+                        <p className="text-gray-600 dark:text-[#a0a0b8] font-['Inter'] text-[15px] leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </button>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
     </div>
