@@ -75,8 +75,13 @@ export default function LeadPopup() {
         setIsOpen(false);
       }, 1200);
     } catch (error) {
-      console.error('Failed to submit lead', error);
-      alert('Something went wrong. Please try again.');
+      console.error('Failed to submit lead.');
+      console.error('Error details:', error.response?.data || error.message);
+      if (error.code === 'ERR_NETWORK') {
+         alert('Network Error: The backend API is unreachable or blocking the request (CORS).');
+      } else {
+         alert('Something went wrong. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
