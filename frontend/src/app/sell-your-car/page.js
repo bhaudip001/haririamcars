@@ -16,6 +16,17 @@ export default function SellYourCarPage() {
   const [photos, setPhotos] = useState([]);
   const [previews, setPreviews] = useState([]);
   const [status, setStatus] = useState('idle'); // idle, loading, success
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validatePhone = (phone) => {
+    const cleaned = phone.replace(/\s+/g, '');
+    return /^[6-9]\d{9}$/.test(cleaned);
+  };
+
+  const validateEmail = (email) => {
+    if (!email) return true; // optional in this form
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   // Smart Sticky State for Left Column
   const leftColumnRef = useRef(null);
@@ -81,10 +92,24 @@ export default function SellYourCarPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     if (!form.ownerName || !form.phone || !form.carBrand || !form.carModel) {
       toast.error('Please fill all required fields');
       return;
     }
+
+    if (!validatePhone(form.phone)) {
+      toast.error('Please enter a valid 10-digit Indian phone number');
+      return;
+    }
+
+    if (form.email && !validateEmail(form.email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    setIsSubmitting(true);
     setStatus('loading');
     try {
       const formData = new FormData();
@@ -102,6 +127,8 @@ export default function SellYourCarPage() {
     } catch (err) {
       toast.error('Failed to submit. Please try again.');
       setStatus('idle');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -266,8 +293,8 @@ export default function SellYourCarPage() {
                         'https://randomuser.me/api/portraits/men/41.jpg',
                         'https://randomuser.me/api/portraits/women/45.jpg'
                       ].map((src, i) => (
-                        <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-[#1a1a2e] bg-gray-100 dark:bg-gray-800 overflow-hidden relative shadow-sm transition-colors">
-                          <img src={src} alt="User" className="w-full h-full object-cover" />
+                        <div key={i} className={`w-12 h-12 rounded-full border-2 border-white dark:border-gray-800 overflow-hidden bg-gray-200 ${i !== 0 ? '-ml-4' : ''}`}>
+                          <Image src={src} alt="User" width={48} height={48} className="w-full h-full object-cover" />
                         </div>
                       ))}
                     </div>
@@ -496,10 +523,10 @@ export default function SellYourCarPage() {
               <div className="fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-[#0a0a12]/90 backdrop-blur-2xl border-t border-gray-200 dark:border-white/10 md:relative md:bg-transparent md:border-0 md:p-0 md:mt-4 z-50 transition-colors duration-500">
                 <button
                   type="submit"
-                  disabled={status === 'loading'}
+                  disabled={isSubmitting || status === 'loading'}
                   className="w-full py-3.5 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white rounded-2xl font-['Outfit'] font-bold text-lg transition-all hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] disabled:opacity-70 disabled:hover:shadow-none flex items-center justify-center gap-3 transform hover:-translate-y-1 active:translate-y-0 disabled:transform-none"
                 >
-                  {status === 'loading' ? (
+                  {status === 'loading' || isSubmitting ? (
                     <>
                       <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
                       <span>Submitting Request...</span>

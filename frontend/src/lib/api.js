@@ -1,37 +1,78 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+  || 'http://localhost:5000/api';
+
+// Validate API URL is not empty
+if (!API_URL) {
+  throw new Error('NEXT_PUBLIC_API_URL is not set');
+}
 
 const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
+  timeout: 15000,        // 15s timeout
   headers: {
     'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
   },
 });
 
-// Add auth token to requests
-api.interceptors.request.use((config) => {
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+// Request interceptor
+api.interceptors.request.use(
+  (config) => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Validate token is not obviously malformed
+        if (token.split('.').length === 3) {
+          config.headers.Authorization = `Bearer ${token}`;
+        } else {
+          // Clear invalid token
+          localStorage.removeItem('token');
+        }
+      }
     }
-  }
-  return config;
-});
 
-// Handle 401 errors
+    // Add CSRF protection header
+    config.headers['X-CSRF-Token'] =
+      document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrf='))
+        ?.split('=')[1] || '';
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && typeof window !== 'undefined') {
-      // Only redirect if on admin pages
-      if (window.location.pathname.startsWith('/admin') && window.location.pathname !== '/admin/login') {
+    // Handle specific error codes
+    if (error.response?.status === 401) {
+      if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
-        window.location.href = '/admin/login';
+        if (
+          window.location.pathname.startsWith('/admin') &&
+          window.location.pathname !== '/admin/login'
+        ) {
+          window.location.href = '/admin/login';
+        }
       }
     }
+
+    // Handle network errors
+    if (!error.response) {
+      console.error('Network error — check your connection');
+    }
+
+    // Handle timeout
+    if (error.code === 'ECONNABORTED') {
+      console.error('Request timeout');
+    }
+
     return Promise.reject(error);
   }
 );

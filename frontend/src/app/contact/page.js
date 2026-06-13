@@ -14,6 +14,17 @@ import { getWhatsAppLink } from '@/lib/utils';
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' });
   const [status, setStatus] = useState('idle'); // idle, loading, success
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validatePhone = (phone) => {
+    const cleaned = phone.replace(/\s+/g, '');
+    return /^[6-9]\d{9}$/.test(cleaned);
+  };
+
+  const validateEmail = (email) => {
+    if (!email) return true; // optional in this form
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,10 +32,24 @@ export default function ContactPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     if (!form.name || !form.phone || !form.message) {
       toast.error('Please fill all required fields');
       return;
     }
+
+    if (!validatePhone(form.phone)) {
+      toast.error('Please enter a valid 10-digit Indian phone number');
+      return;
+    }
+
+    if (form.email && !validateEmail(form.email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    setIsSubmitting(true);
     setStatus('loading');
     try {
       await api.post('/messages', form);
@@ -36,6 +61,8 @@ export default function ContactPage() {
     } catch (err) {
       toast.error('Failed to send message. Please try again.');
       setStatus('idle');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -172,10 +199,10 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
-                  disabled={status === 'loading'}
+                  disabled={isSubmitting || status === 'loading'}
                   className="w-full mt-6 py-4 bg-purple-600 hover:bg-purple-700 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-[#05050A] rounded-2xl font-['Outfit'] font-bold text-lg transition-all shadow-lg dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-xl dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] disabled:opacity-70 flex items-center justify-center gap-3 transform hover:-translate-y-1 active:translate-y-0"
                 >
-                  {status === 'loading' ? (
+                  {status === 'loading' || isSubmitting ? (
                     <>
                       <div className="w-5 h-5 border-3 border-[#05050A]/30 border-t-[#05050A] rounded-full animate-spin"></div>
                       <span>Sending...</span>
