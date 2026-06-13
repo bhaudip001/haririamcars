@@ -133,41 +133,39 @@ app.use(mongoSanitize());
 app.use(sanitizeInputs);
 
 // CORS
-const allowedOrigins =
-  process.env.NODE_ENV === 'production'
-    ? [
-        process.env.FRONTEND_URL,
-        'https://haririamcars.vercel.app',
-        'https://harirammotors.com',
-        'https://www.harirammotors.com',
-        'https://hariramcars.com',
-        'https://www.hariramcars.com',
-      ].filter(Boolean)
-    : [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'http://127.0.0.1:3000',
-      ];
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'https://harirammotors.com',
+  'https://www.harirammotors.com',
+  'https://hariramcars.com',
+  'https://www.hariramcars.com',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://127.0.0.1:3000',
+].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
       // Allow server-to-server (no origin)
       if (!origin) return callback(null, true);
+      
+      // Allow exact matches
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-      return callback(
-        new Error(`CORS blocked: ${origin} not allowed`)
-      );
+      
+      // Allow any Vercel deployment dynamically
+      if (origin.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+      
+      console.warn(`CORS blocked request from: ${origin}`);
+      return callback(new Error(`CORS blocked: ${origin} not allowed`));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Requested-With',
-    ],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
     exposedHeaders: ['X-Total-Count'],
     maxAge: 86400, // Cache preflight for 24h
   })

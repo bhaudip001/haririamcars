@@ -34,12 +34,21 @@ api.interceptors.request.use(
       }
     }
 
-    // Add CSRF protection header
-    config.headers['X-CSRF-Token'] =
-      document.cookie
-        .split('; ')
-        .find(row => row.startsWith('csrf='))
-        ?.split('=')[1] || '';
+    // Add CSRF protection header safely
+    if (typeof document !== 'undefined') {
+      try {
+        const csrfToken = document.cookie
+          .split('; ')
+          .find(row => row.startsWith('csrf='))
+          ?.split('=')[1];
+          
+        if (csrfToken) {
+          config.headers['X-CSRF-Token'] = csrfToken;
+        }
+      } catch (err) {
+        console.warn('Could not read CSRF cookie');
+      }
+    }
 
     return config;
   },

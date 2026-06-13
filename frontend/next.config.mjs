@@ -1,3 +1,12 @@
+// Extract the origin domain from your API URL dynamically
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+let apiDomain = 'http://localhost:5000';
+try {
+  apiDomain = new URL(apiUrl).origin;
+} catch (e) {
+  console.warn('Invalid NEXT_PUBLIC_API_URL format, defaulting to localhost');
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Compress responses
@@ -77,7 +86,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://res.cloudinary.com https://images.unsplash.com https://lh3.googleusercontent.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://maps.googleapis.com http://localhost:5000 https://hariramcars.vercel.app https://hariram-motors-api.vercel.app https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net;",
+            value: `default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://res.cloudinary.com https://images.unsplash.com https://lh3.googleusercontent.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://maps.googleapis.com ${apiDomain} https://hariramcars.vercel.app https://hariram-motors-api.vercel.app https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net;`,
           },
         ],
       },
