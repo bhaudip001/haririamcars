@@ -86,6 +86,16 @@ export const metadata = {
   alternates: {
     canonical: 'https://www.hariramcars.com/',
   },
+  icons: {
+    icon: [
+      { url: '/logo-32.jpg', sizes: '32x32', type: 'image/jpeg' },
+      { url: '/logo-48.jpg', sizes: '48x48', type: 'image/jpeg' },
+      { url: '/logo-96.jpg', sizes: '96x96', type: 'image/jpeg' },
+      { url: '/logo-192.jpg', sizes: '192x192', type: 'image/jpeg' },
+    ],
+    shortcut: '/logo-48.jpg',
+    apple: '/logo-192.jpg',
+  },
 };
 
 export default function RootLayout({ children }) {
