@@ -112,23 +112,13 @@ const nextConfig = {
     ];
   },
 
-  // Proxy API requests to Vercel Serverless Function via absolute URL
+  // Proxy API requests to Vercel Serverless Function
   async rewrites() {
     const isVercel = process.env.VERCEL === '1';
-    let baseUrl = 'http://localhost:5000';
-    
-    if (isVercel) {
-      if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
-        baseUrl = 'https://www.hariramcars.com';
-      } else {
-        baseUrl = `https://${process.env.VERCEL_URL}`;
-      }
-    }
-      
     return [
       {
         source: '/api/:path*',
-        destination: `${baseUrl}/backend/server.js`,
+        destination: isVercel ? '/backend/server.js?path=:path*' : 'http://localhost:5000/api/:path*',
       },
     ];
   },

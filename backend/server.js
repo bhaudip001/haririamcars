@@ -81,18 +81,30 @@ app.use((req, res, next) => {
 
 // Fix req.url for Vercel using frontend custom header
 app.use((req, res, next) => {
-  if (req.url.startsWith('/backend/server.js')) {
-    const originalPath = req.headers['x-original-path'];
-    if (originalPath) {
-      req.url = originalPath.startsWith('/api') ? originalPath : '/api' + (originalPath.startsWith('/') ? '' : '/') + originalPath;
+  if (process.env.VERCEL === '1') {
+    const urlObj = new URL(req.url, `http://${req.headers.host}`);
+    const queryPath = urlObj.searchParams.get('path');
+    
+    if (queryPath) {
+      req.url = '/api/' + queryPath;
+      urlObj.searchParams.delete('path');
+      const remainingSearch = urlObj.searchParams.toString();
+      if (remainingSearch) {
+        req.url += '?' + remainingSearch;
+      }
     } else {
-      // Try to recover from Vercel's x-now-route-matches if available
-      const routeMatches = req.headers['x-now-route-matches'];
-      if (routeMatches) {
-        // usually format is 1=auth/login
-        const match = routeMatches.match(/1=([^&]+)/);
-        if (match) {
-          req.url = '/api/' + match[1];
+      const originalPath = req.headers['x-original-path'];
+      if (originalPath) {
+        req.url = originalPath.startsWith('/api') ? originalPath : '/api' + (originalPath.startsWith('/') ? '' : '/') + originalPath;
+      } else {
+        const routeMatches = req.headers['x-now-route-matches'];
+        if (routeMatches) {
+          const match = routeMatches.match(/1=([^&]+)/);
+          if (match) {
+            req.url = '/api/' + match[1];
+          }
+        } else if (!req.url.startsWith('/api')) {
+          req.url = '/api' + (req.url.startsWith('/') ? '' : '/') + req.url;
         }
       }
     }
