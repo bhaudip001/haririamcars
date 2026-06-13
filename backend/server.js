@@ -9,8 +9,18 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import compression from 'compression';
+import morgan from 'morgan';
 import connectDB from './config/db.js';
 import { sanitizeInputs } from './middleware/validate.js';
+
+// ── Environment Validation ──
+const requiredEnvs = ['MONGODB_URI', 'JWT_SECRET', 'CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
+requiredEnvs.forEach((envName) => {
+  if (!process.env[envName]) {
+    console.error(`❌ CRITICAL: ${envName} is missing in environment variables.`);
+    process.exit(1);
+  }
+});
 
 // ── Custom Mongo Sanitizer ──
 function sanitizeObject(obj) {
@@ -50,6 +60,7 @@ const app = express();
 app.set('trust proxy', 1);
 
 // ── Global Middleware ──
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -215,20 +226,41 @@ app.use((_req, res) => {
 
 // ── Global Error Handler ──
 app.use((err, _req, res, _next) => {
-  console.error('❌ Error:', err.message);
+  console.error(`[Error] ${err.name}: ${err.message}`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.error(err.stack);
+  }
+
   const statusCode = err.statusCode || 500;
   res.status(statusCode).json({
     error: process.env.NODE_ENV === 'production'
-      ? 'Something went wrong'
+      ? 'Something went wrong on our end. Please try again later.'
       : err.message,
   });
 });
 
 // ── Start Server ──
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚗 Hariram Motors API running on port ${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
+
+// ── Graceful Shutdown ──
+const gracefulShutdown = () => {
+  console.log('Received kill signal, shutting down gracefully...');
+  server.close(() => {
+    console.log('Closed out remaining connections.');
+    process.exit(0);
+  });
+
+  setTimeout(() => {
+    console.error('Could not close connections in time, forcefully shutting down');
+    process.exit(1);
+  }, 10000);
+};
+
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
 
 export default app;
