@@ -1,5 +1,6 @@
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   let baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
   if (process.env.NODE_ENV === 'production') {
     baseUrl = 'https://www.hariramcars.com/backend/server.js?path=api';
@@ -67,7 +68,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CarDetailLayout({ children, params }) {
-  const { slug } = params;
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   let baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
   if (process.env.NODE_ENV === 'production') {
     baseUrl = 'https://www.hariramcars.com/backend/server.js?path=api';

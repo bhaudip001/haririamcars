@@ -34,7 +34,8 @@ async function getCarData(slug) {
 }
 
 export default async function CarDetailPageServer({ params }) {
-  const { slug } = params;
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   const { car, similarCars } = await getCarData(slug);
   
   if (!car) {

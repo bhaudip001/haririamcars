@@ -19,7 +19,9 @@ export const cache = (durationMinutes) => {
       res.setHeader('X-Cache', 'MISS');
       res.sendResponse = res.json;
       res.json = (body) => {
-        mcache.put(key, JSON.stringify(body), durationMinutes * 60 * 1000);
+        if (res.statusCode === 200) {
+          mcache.put(key, JSON.stringify(body), durationMinutes * 60 * 1000);
+        }
         res.sendResponse(body);
       };
       next();
