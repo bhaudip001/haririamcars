@@ -1,13 +1,14 @@
 export const metadata = {
-  title: 'About Us | Our Story & Mission',
-  description: "Learn about Hariram Motors, our history, our mission, and why we are Surat's most trusted dealership for new and pre-owned cars.",
+  title: 'About Us — Trusted Car Dealer in Surat Since 2013',
+  description: 'Learn about Hariram Motors — Surat\'s most trusted pre-owned car dealership since 2013. 500+ happy customers, transparent pricing, full documentation support.',
+  alternates: { canonical: 'https://www.hariramcars.com/about' },
   openGraph: {
-    title: 'About Hariram Motors',
-    description: "Surat's most trusted dealership for new and pre-owned cars.",
-    url: '/about',
+    title: 'About Hariram Motors | Trusted Since 2013',
+    description: '500+ happy customers. Surat\'s most trusted car dealer.',
+    url: 'https://www.hariramcars.com/about',
   },
 };
 
 export default function AboutLayout({ children }) {
-  return children;
+  return <>{children}</>;
 }

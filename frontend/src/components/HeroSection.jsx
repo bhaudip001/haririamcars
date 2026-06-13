@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Car, Settings2, Wallet, Search, MapPin, ChevronDown, ChevronRight, X } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
 import api from '@/lib/api';
 
 export default function HeroSection() {
@@ -133,14 +134,20 @@ export default function HeroSection() {
       ════════════════════════════════════════════════════════════════ */}
       <div className="hidden md:block absolute inset-0 z-0 overflow-hidden bg-[#050508]">
         <motion.div style={{ y: backgroundY }} className="absolute inset-0 w-full h-full">
-          <motion.img
+          <motion.div
             initial={{ scale: 1.08, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
-            src="/images/hero_bg_desktop.png"
-            alt="Premium Car"
-            className="w-full h-full object-cover object-[center_60%] origin-[center_60%]"
-          />
+            className="w-full h-full relative"
+          >
+            <Image
+              src="/images/hero_bg_desktop.png"
+              alt="Premium Car"
+              fill
+              priority
+              className="object-cover object-[center_60%] origin-[center_60%]"
+            />
+          </motion.div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a12]/95 via-[#0a0a12]/40 to-transparent"></div>
         </motion.div>
       </div>
@@ -149,17 +156,23 @@ export default function HeroSection() {
           MOBILE 100DVH LUXURY POSTER (Hidden on desktop)
       ════════════════════════════════════════════════════════════════ */}
       <div className="md:hidden absolute inset-0 w-full h-full z-0 overflow-hidden bg-[#050508]">
-        <motion.img
+        <motion.div
           initial={{ scale: 1.1, opacity: 0, y: -40 }}
           animate={{ scale: 1.05, opacity: 1, y: -40 }}
           transition={{
             opacity: { duration: 1.8, ease: "easeOut" },
             scale: { duration: 30, repeat: Infinity, repeatType: "reverse", ease: "linear" }
           }}
-          src="/images/hero_bg_mobile.png"
-          alt="Premium Car"
-          className="absolute inset-0 w-full h-full object-cover object-bottom z-0 origin-bottom"
-        />
+          className="absolute inset-0 w-full h-full z-0 origin-bottom"
+        >
+          <Image
+            src="/images/hero_bg_mobile.png"
+            alt="Premium Car"
+            fill
+            priority
+            className="object-cover object-bottom"
+          />
+        </motion.div>
         {/* Deep cinematic vignette gradient */}
         <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0a0a12] via-[#0a0a12]/30 to-[#0a0a12]/70"></div>
 
@@ -265,6 +278,7 @@ export default function HeroSection() {
             <div className="px-6 pb-4 flex items-center justify-between border-b border-gray-200 dark:border-white/10">
               <h2 className="text-2xl font-bold text-black dark:text-white tracking-tight" style={{ fontFamily: 'var(--font-outfit)' }}>Search Inventory</h2>
               <button
+                aria-label="Close Search"
                 onClick={() => setIsMobileSearchOpen(false)}
                 className="p-2 bg-gray-100 dark:bg-white/10 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
               >
@@ -428,21 +442,7 @@ export default function HeroSection() {
         </div>
       </motion.div>
 
-      {/* Scroll Indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-        className="hidden md:flex absolute bottom-[100px] left-1/2 -translate-x-1/2 z-30 flex-col items-center gap-2 pointer-events-none"
-      >
-        <span className="text-white/40 text-xs font-semibold tracking-[0.2em] uppercase">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-        >
-          <ChevronDown className="w-5 h-5 text-white/50" />
-        </motion.div>
-      </motion.div>
+
 
       {/* ════════════════════════════════════════════════════════════════
           DESKTOP SEARCH BAR (Hidden on Mobile)

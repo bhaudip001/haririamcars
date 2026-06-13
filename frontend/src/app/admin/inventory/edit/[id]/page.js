@@ -373,7 +373,17 @@ export default function EditCarPage() {
     }
   };
 
-  const addPhotos = (newFiles) => setPhotos((prev) => [...prev, ...newFiles]);
+  const addPhotos = (newFiles) => {
+    if (existingImages.length + photos.length + newFiles.length > 25) {
+      toast.error('You can only upload a maximum of 25 photos in total');
+      const allowedCount = 25 - (existingImages.length + photos.length);
+      if (allowedCount > 0) {
+        setPhotos((prev) => [...prev, ...newFiles.slice(0, allowedCount)]);
+      }
+      return;
+    }
+    setPhotos((prev) => [...prev, ...newFiles]);
+  };
   const removePhoto = (index) => setPhotos((prev) => prev.filter((_, i) => i !== index));
   
   const removeExistingPhoto = (index) => {

@@ -473,7 +473,17 @@ export default function AddCar() {
     }
   };
 
-  const addPhotos = (newFiles) => setPhotos((prev) => [...prev, ...newFiles]);
+  const addPhotos = (newFiles) => {
+    if (photos.length + newFiles.length > 25) {
+      toast.error('You can only upload a maximum of 25 photos');
+      const allowedCount = 25 - photos.length;
+      if (allowedCount > 0) {
+        setPhotos((prev) => [...prev, ...newFiles.slice(0, allowedCount)]);
+      }
+      return;
+    }
+    setPhotos((prev) => [...prev, ...newFiles]);
+  };
   const removePhoto = (index) => {
     setPhotos((prev) => prev.filter((_, i) => i !== index));
     if (mainPhoto === index) {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Plus, Search, Trash2, Edit, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
@@ -106,10 +107,10 @@ export default function AdminInventoryPage() {
                   <td className="py-4 px-4">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-12 rounded-lg bg-[var(--color-bg-dark)] overflow-hidden relative border border-[var(--color-border)]">
-                        {car.images?.[0] ? (
-                          <img src={car.images[0].url || car.images[0]} alt={car.model} className="w-full h-full object-cover" />
+                        {car.images && car.images.length > 0 ? (
+                          <Image src={car.images[0].url || car.images[0]} alt={car.model} fill className="object-cover" unoptimized={true} />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-[var(--color-text-muted)]">
+                          <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-white/5 text-gray-400">
                             <span className="text-xs">No img</span>
                           </div>
                         )}

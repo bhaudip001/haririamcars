@@ -1,0 +1,479 @@
+'use client';
+
+import { useEffect, useState, useCallback } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { staggerContainer, fadeInUp, fadeInDown, fadeInLeft, scaleIn } from '@/lib/animations';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
+import {
+  IconCar, IconUsers, IconCalendarEvent, IconShieldCheck, IconArrowRight,
+  IconCurrencyRupee, IconCertificate, IconHeadset, IconStarFilled, IconChevronLeft, IconChevronRight, IconArrowsExchange, IconMessageCircle
+} from '@tabler/icons-react';
+
+import dynamic from 'next/dynamic';
+import CarCard from '@/components/CarCard';
+import HeroSection from '@/components/HeroSection';
+import api from '@/lib/api';
+
+const GoogleReviews = dynamic(() => import('@/components/GoogleReviews'), { ssr: false });
+
+// --- Main Page Component --- //
+
+export default function HomePage({ initialData }) {
+  const [cars, setCars] = useState(initialData?.initialCars || []);
+  const [testimonials, setTestimonials] = useState(initialData?.initialTestimonials || []);
+  const [banners, setBanners] = useState(initialData?.initialBanners || []);
+  const [loadingCars, setLoadingCars] = useState(!initialData?.initialCars?.length);
+
+  // Embla Carousels
+  const [bannerRef, bannerApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000, stopOnInteraction: false })]);
+  const [testiRef, testiApi] = useEmblaCarousel({ loop: true, align: 'center' }, [Autoplay({ delay: 3500, stopOnInteraction: false })]);
+
+  // Carousel Controls
+  const scrollTestiPrev = useCallback(() => testiApi && testiApi.scrollPrev(), [testiApi]);
+  const scrollTestiNext = useCallback(() => testiApi && testiApi.scrollNext(), [testiApi]);
+
+  const scrollBannerPrev = useCallback(() => bannerApi && bannerApi.scrollPrev(), [bannerApi]);
+  const scrollBannerNext = useCallback(() => bannerApi && bannerApi.scrollNext(), [bannerApi]);
+
+  // Fetch Data only if initialData is missing
+  useEffect(() => {
+    if (initialData?.initialCars?.length > 0) return;
+    const fetchData = async () => {
+      try {
+        const [carsRes, testRes, bannerRes] = await Promise.allSettled([
+          api.get('/cars?limit=8&status=available&featured=true'),
+          api.get('/happy-customers?limit=6'),
+          api.get('/promo-banners?active=true'),
+        ]);
+
+        if (carsRes.status === 'fulfilled') setCars(carsRes.value.data.cars || []);
+        if (testRes.status === 'fulfilled') setTestimonials(testRes.value.data || []);
+        if (bannerRes.status === 'fulfilled') setBanners(bannerRes.value.data || []);
+
+      } catch (error) {
+        console.error('Error fetching home data');
+      } finally {
+        setLoadingCars(false);
+      }
+    };
+    fetchData();
+  }, [initialData]);
+
+  return (
+    <>
+      <HeroSection />
+
+      {/* ════ UNIFIED SHOWROOM BACKGROUND (SECTIONS 3 & 4) ════ */}
+      <div className="relative w-full overflow-hidden bg-[#f4f4f8] dark:bg-transparent transition-colors duration-500">
+
+        {/* Light Mode: Massive Unified Premium Background (Hidden in Dark Mode) */}
+        <div className="absolute inset-0 dark:hidden pointer-events-none z-0">
+          {/* Subtle Base Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
+
+          {/* Continuous Blueprint Grid */}
+          <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
+
+          {/* Giant Showroom Floor Reflection (Sweeping Diagonal Light) */}
+          <div className="absolute -top-[20%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent rotate-[35deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90 z-0"></div>
+
+          {/* Secondary Sweeping Light */}
+          <div className="absolute top-[40%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent -rotate-[15deg] transform-gpu blur-[30px] opacity-70 z-0"></div>
+
+          {/* Majestic Glow Orbs */}
+          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-purple-200/30 rounded-full blur-[140px] mix-blend-multiply animate-pulse-ring"></div>
+          <div className="absolute bottom-[10%] right-[-10%] w-[700px] h-[700px] bg-pink-100/40 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
+        </div>
+
+        {/* Dark Mode: Massive Unified Premium Background */}
+        <div className="hidden dark:block absolute inset-0 pointer-events-none z-0">
+          {/* Deep Space Base */}
+          <div className="absolute inset-0 bg-[#0a0a12]"></div>
+
+          {/* Neon Blueprint Grid */}
+          <div className="absolute inset-0 opacity-[0.05] blueprint-grid"></div>
+
+          {/* Sweeping Showroom Lights (Dark) */}
+          <div className="absolute -top-[20%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-purple-600/10 to-transparent rotate-[35deg] transform-gpu blur-[30px] shadow-[0_0_120px_rgba(168,85,247,0.15)] z-0"></div>
+          <div className="absolute top-[40%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-blue-600/10 to-transparent -rotate-[15deg] transform-gpu blur-[40px] z-0"></div>
+
+          {/* Majestic Glow Orbs */}
+          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-purple-600/10 rounded-full blur-[140px] mix-blend-screen animate-pulse-ring"></div>
+          <div className="absolute bottom-[10%] right-[-10%] w-[700px] h-[700px] bg-blue-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
+        </div>
+
+        {/* ════ SECTION 3: PREMIUM DEALERSHIP SERVICES ════ */}
+        <section className="pt-24 md:pt-44 pb-20 relative z-10 overflow-hidden transition-colors duration-500 dark:bg-transparent">
+          {/* Decorative elements */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-30 dark:opacity-50 shadow-[0_0_20px_rgba(168,85,247,0.8)] z-10"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-20 bg-purple-600/10 dark:bg-purple-600/20 blur-[80px] z-10"></div>
+
+          <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="text-center max-w-3xl mx-auto mb-16">
+              <motion.p variants={fadeInDown} className="text-purple-600 dark:text-purple-400 text-sm font-bold tracking-widest uppercase mb-3 transition-colors">Premium Dealership Services</motion.p>
+              <motion.h2 variants={fadeInUp} className="text-3xl md:text-[40px] text-black dark:text-white font-bold mb-6 leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
+                Surat's Complete Automotive Solution for <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-500">Buy, Sell & Exchange</span>
+              </motion.h2>
+              <motion.p variants={fadeInUp} className="text-gray-600 dark:text-gray-400 text-[16px] leading-relaxed transition-colors">
+                We are dedicated to elevating your car experience through transparent and reliable services. As Surat's premier automotive destination, our goal is to provide you with the finest facilities built on unwavering trust and customer satisfaction.
+              </motion.p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Buy Card */}
+              <div className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl p-8 hover:border-purple-300 dark:hover:border-purple-500/50 shadow-xl dark:shadow-none hover:shadow-[0_10px_40px_rgba(168,85,247,0.15)] dark:hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-500 flex flex-col group">
+                <div className="w-14 h-14 rounded-full bg-purple-100 dark:bg-purple-600/20 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+                  <IconCar size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-black dark:text-white mb-4 transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Buy Certified Cars</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8 flex-grow transition-colors">
+                  150+ premium certified cars you can trust. Every car undergoes rigorous inspection for your complete security and peace of mind.
+                </p>
+                <Link href="/catalog" className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
+                  More info <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+
+              {/* Sell Card */}
+              <div className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl p-8 hover:border-purple-300 dark:hover:border-purple-500/50 shadow-xl dark:shadow-none hover:shadow-[0_10px_40px_rgba(168,85,247,0.15)] dark:hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-500 flex flex-col group">
+                <div className="w-14 h-14 rounded-full bg-purple-100 dark:bg-purple-600/20 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+                  <IconCurrencyRupee size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-black dark:text-white mb-4 transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Sell Your Car Instantly</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8 flex-grow transition-colors">
+                  Get the best market value for your car through our transparent evaluation process and receive secure, instant payment.
+                </p>
+                <Link href="/sell-your-car" className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
+                  More info <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+
+              {/* Exchange Card */}
+              <div className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl p-8 hover:border-purple-300 dark:hover:border-purple-500/50 shadow-xl dark:shadow-none hover:shadow-[0_10px_40px_rgba(168,85,247,0.15)] dark:hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-500 flex flex-col group">
+                <div className="w-14 h-14 rounded-full bg-purple-100 dark:bg-purple-600/20 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+                  <IconArrowsExchange size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-black dark:text-white mb-4 transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Best Exchange Value</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8 flex-grow transition-colors">
+                  Upgrade effortlessly! Get your favorite car with the absolute best exchange value for your old vehicle along with attractive benefits.
+                </p>
+                <Link href="/sell-your-car?mode=exchange" className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
+                  More info <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ════ SECTION 4: FEATURED CARS (The Collection) ════ */}
+        <section className="py-10 md:py-14 lg:py-20 relative z-10 transition-colors duration-500 dark:bg-transparent">
+
+          <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 gap-4">
+              <div>
+                <motion.p variants={fadeInDown} className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">OUR INVENTORY</motion.p>
+                <motion.h2 variants={fadeInUp} className="text-3xl md:text-[40px] text-black dark:text-white font-bold leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
+                  Featured Cars
+                </motion.h2>
+                <motion.p variants={fadeInUp} className="text-gray-600 dark:text-gray-400 mt-2 transition-colors">Handpicked vehicles at unbeatable prices</motion.p>
+              </div>
+              <motion.div variants={fadeInUp}>
+                <Link href="/catalog" className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 text-sm font-medium flex items-center gap-1 group transition-colors">
+                  View All Cars <IconArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
+            </motion.div>
+
+            {loadingCars ? (
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="bg-gray-50 dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden animate-pulse transition-colors duration-500">
+                    <div className="aspect-[4/3] bg-gray-200 dark:bg-white/5 transition-colors" />
+                    <div className="p-4 space-y-3">
+                      <div className="h-6 bg-gray-200 dark:bg-white/5 rounded w-3/4 transition-colors" />
+                      <div className="h-4 bg-gray-200 dark:bg-white/5 rounded w-full transition-colors" />
+                      <div className="h-10 bg-gray-200 dark:bg-white/5 rounded w-full mt-4 transition-colors" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : cars.length > 0 ? (
+              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+                {cars.map((car, i) => (
+                  <CarCard key={car._id} car={car} index={i} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-500 bg-gray-50 dark:bg-[#12121f] rounded-2xl border border-gray-200 dark:border-white/10 transition-colors duration-500">
+                No cars currently featured. Browse our catalog for more.
+              </div>
+            )}
+          </div>
+        </section>
+
+      </div> {/* END OF UNIFIED SHOWROOM BACKGROUND */}
+
+      {/* ════ SECTION 5: WHY CHOOSE US (The Hariram Standard) ════ */}
+      <section className="py-10 md:py-14 lg:py-20 bg-[#0f0f1e]">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+
+            <motion.div variants={fadeInLeft} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-5">
+              <p className="text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">WHY HARIRAM MOTORS</p>
+              <h2 className="text-3xl md:text-[40px] text-white font-bold leading-tight mb-6 transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
+                Why Thousands <br /> Trust Us
+              </h2>
+              <p className="text-gray-300 mb-8 leading-relaxed transition-colors">
+                We've been serving Surat for over 10 years with honest pricing, genuine cars, and a no-pressure buying experience. Our commitment is to quality and customer satisfaction.
+              </p>
+              <Link href="/about" className="inline-flex items-center gap-2 border border-purple-500 text-purple-400 hover:bg-purple-600 hover:text-white rounded-full px-6 py-3 transition-colors font-medium">
+                Meet Our Team <IconArrowRight size={18} />
+              </Link>
+            </motion.div>
+
+            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8 relative">
+
+              {/* CARD 1 (01) - Top Left */}
+              <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group">
+                {/* Outward Right Arrow */}
+                <div className="hidden sm:block absolute top-1/2 -right-[16px] w-8 h-8 bg-white dark:bg-[#1a0e2e] rotate-45 transform -translate-y-1/2 z-30 border-t border-r border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
+
+                <h3 className="font-['Outfit'] font-bold text-4xl text-purple-600 dark:text-white mb-3 transition-colors">01</h3>
+                <h4 className="font-['Outfit'] font-bold text-xl text-black dark:text-white mb-4 transition-colors">Verified Cars</h4>
+                <div className="w-12 border-b-2 border-dashed border-gray-300 dark:border-white/20 mb-5 transition-colors"></div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-['Inter'] transition-colors">Every car undergoes a 100-point inspection before listing.</p>
+              </motion.div>
+
+              {/* CARD 2 (02) - Top Right */}
+              <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group">
+                {/* Inward Left Cutout */}
+                <div className="hidden sm:block absolute top-1/2 -left-[17px] w-[34px] h-[34px] bg-[#0f0f1e] rotate-45 transform -translate-y-1/2 z-20 border-t border-r border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
+                {/* Outward Bottom Arrow */}
+                <div className="hidden sm:block absolute -bottom-[16px] left-1/2 w-8 h-8 bg-white dark:bg-[#1a0e2e] rotate-45 transform -translate-x-1/2 z-30 border-r border-b border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
+
+                <h3 className="font-['Outfit'] font-bold text-4xl text-purple-600 dark:text-white mb-3 transition-colors">02</h3>
+                <h4 className="font-['Outfit'] font-bold text-xl text-black dark:text-white mb-4 transition-colors">Transparent Pricing</h4>
+                <div className="w-12 border-b-2 border-dashed border-gray-300 dark:border-white/20 mb-5 transition-colors"></div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-['Inter'] transition-colors">No hidden charges. Price you see is price you pay.</p>
+              </motion.div>
+
+              {/* CARD 4 (04) - Bottom Left */}
+              <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group order-4 sm:order-3">
+                {/* Inward Right Cutout */}
+                <div className="hidden sm:block absolute top-1/2 -right-[17px] w-[34px] h-[34px] bg-[#0f0f1e] rotate-45 transform -translate-y-1/2 z-20 border-b border-l border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
+
+                <h3 className="font-['Outfit'] font-bold text-4xl text-purple-600 dark:text-white mb-3 transition-colors">04</h3>
+                <h4 className="font-['Outfit'] font-bold text-xl text-black dark:text-white mb-4 transition-colors">Extended Warranty</h4>
+                <div className="w-12 border-b-2 border-dashed border-gray-300 dark:border-white/20 mb-5 transition-colors"></div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-['Inter'] transition-colors">Exclusive 1-2 years extended warranty available on our certified pre-owned cars.</p>
+              </motion.div>
+
+              {/* CARD 3 (03) - Bottom Right */}
+              <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group order-3 sm:order-4">
+                {/* Inward Top Cutout */}
+                <div className="hidden sm:block absolute -top-[17px] left-1/2 w-[34px] h-[34px] bg-[#0f0f1e] rotate-45 transform -translate-x-1/2 z-20 border-r border-b border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
+                {/* Outward Left Arrow */}
+                <div className="hidden sm:block absolute top-1/2 -left-[16px] w-8 h-8 bg-white dark:bg-[#1a0e2e] rotate-45 transform -translate-y-1/2 z-30 border-b border-l border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
+
+                <h3 className="font-['Outfit'] font-bold text-4xl text-purple-600 dark:text-white mb-3 transition-colors">03</h3>
+                <h4 className="font-['Outfit'] font-bold text-xl text-black dark:text-white mb-4 transition-colors">Full Documentation</h4>
+                <div className="w-12 border-b-2 border-dashed border-gray-300 dark:border-white/20 mb-5 transition-colors"></div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-['Inter'] transition-colors">RC transfer, insurance, NOC — we handle everything.</p>
+              </motion.div>
+
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ════ UNIFIED SHOWROOM BACKGROUND (SECTIONS 6, 7 & 8) ════ */}
+      <div className="relative w-full overflow-hidden bg-[#f4f4f8] dark:bg-transparent transition-colors duration-500">
+
+        {/* Light Mode: Massive Unified Premium Background */}
+        <div className="absolute inset-0 dark:hidden pointer-events-none z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
+          <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
+
+          {/* Sweeping Showroom Lights */}
+          <div className="absolute top-[10%] -right-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent -rotate-[25deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90 z-0"></div>
+
+          <div className="absolute top-[60%] -left-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent rotate-[15deg] transform-gpu blur-[30px] opacity-70 z-0"></div>
+
+          {/* Majestic Glow Orbs */}
+          <div className="absolute top-[20%] right-[10%] w-[600px] h-[600px] bg-blue-200/30 rounded-full blur-[140px] mix-blend-multiply animate-pulse-ring"></div>
+          <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-purple-200/30 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
+        </div>
+
+        {/* Dark Mode: Massive Unified Premium Background */}
+        <div className="hidden dark:block absolute inset-0 pointer-events-none z-0">
+          {/* Deep Space Base */}
+          <div className="absolute inset-0 bg-[#0a0a12]"></div>
+
+          {/* Neon Blueprint Grid */}
+          <div className="absolute inset-0 opacity-[0.05] blueprint-grid"></div>
+
+          {/* Sweeping Showroom Lights (Dark) */}
+          <div className="absolute top-[10%] -right-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-blue-600/10 to-transparent -rotate-[25deg] transform-gpu blur-[30px] shadow-[0_0_120px_rgba(59,130,246,0.15)] z-0"></div>
+          <div className="absolute top-[60%] -left-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-purple-600/10 to-transparent rotate-[15deg] transform-gpu blur-[40px] z-0"></div>
+
+          {/* Majestic Glow Orbs */}
+          <div className="absolute top-[20%] right-[10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px] mix-blend-screen animate-pulse-ring"></div>
+          <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-purple-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
+        </div>
+
+        {/* ════ SECTION 6: ADVERTISEMENT BANNERS ════ */}
+        {banners.length > 0 && (
+          <section className="py-10 md:py-14 lg:py-20 relative z-10 transition-colors duration-500 dark:bg-transparent">
+            <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+              <p className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 text-center transition-colors">OFFERS & PROMOTIONS</p>
+              <h2 className="text-3xl md:text-[36px] text-black dark:text-white font-bold leading-tight mb-10 text-center transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
+                Latest Deals
+              </h2>
+
+              {banners.length === 1 ? (
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl w-full group">
+                  {banners[0].link ? (
+                    <a href={banners[0].link} className="block w-full h-full">
+                      <Image src={banners[0].desktopImageUrl} alt="Promo" width={1920} height={800} className="w-full h-auto hidden sm:block transition-transform duration-700 group-hover:scale-105" />
+                      <Image src={banners[0].mobileImageUrl} alt="Promo" width={800} height={800} className="w-full h-auto sm:hidden transition-transform duration-700 group-hover:scale-105" />
+                    </a>
+                  ) : (
+                    <>
+                      <Image src={banners[0].desktopImageUrl} alt="Promo" width={1920} height={800} className="w-full h-auto hidden sm:block" />
+                      <Image src={banners[0].mobileImageUrl} alt="Promo" width={800} height={800} className="w-full h-auto sm:hidden" />
+                    </>
+                  )}
+                </div>
+              ) : banners.length === 2 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {banners.map((b) => (
+                    <div key={b._id} className="relative rounded-2xl overflow-hidden shadow-xl w-full group">
+                      {b.link ? (
+                        <a href={b.link} className="block w-full h-full">
+                          <Image src={b.desktopImageUrl} alt="Promo" width={1200} height={500} className="w-full h-auto hidden sm:block transition-transform duration-700 group-hover:scale-[1.02]" />
+                          <Image src={b.mobileImageUrl} alt="Promo" width={600} height={600} className="w-full h-auto sm:hidden transition-transform duration-700 group-hover:scale-[1.02]" />
+                        </a>
+                      ) : (
+                        <>
+                          <Image src={b.desktopImageUrl} alt="Promo" width={1200} height={500} className="w-full h-auto hidden sm:block" />
+                          <Image src={b.mobileImageUrl} alt="Promo" width={600} height={600} className="w-full h-auto sm:hidden" />
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="relative group/carousel">
+                  <div className="overflow-hidden rounded-2xl" ref={bannerRef}>
+                    <div className="flex">
+                      {banners.map((b) => (
+                        <div key={b._id} className="flex-[0_0_100%] min-w-0 relative w-full group">
+                          {b.link ? (
+                            <a href={b.link} className="block w-full h-full">
+                              <Image src={b.desktopImageUrl} alt="Promo" width={1200} height={500} className="w-full h-auto hidden sm:block transition-transform duration-700 group-hover:scale-[1.02]" />
+                              <Image src={b.mobileImageUrl} alt="Promo" width={600} height={600} className="w-full h-auto sm:hidden transition-transform duration-700 group-hover:scale-[1.02]" />
+                            </a>
+                          ) : (
+                            <>
+                              <Image src={b.desktopImageUrl} alt="Promo" width={1200} height={500} className="w-full h-auto hidden sm:block" />
+                              <Image src={b.mobileImageUrl} alt="Promo" width={600} height={600} className="w-full h-auto sm:hidden" />
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Carousel Navigation Arrows */}
+                  <button aria-label="Previous Banner" onClick={scrollBannerPrev} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 dark:bg-black/50 backdrop-blur border border-gray-200 dark:border-white/10 flex items-center justify-center text-black dark:text-white opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-white dark:hover:bg-black/80 shadow-md dark:shadow-none">
+                    <IconChevronLeft size={20} />
+                  </button>
+                  <button aria-label="Next Banner" onClick={scrollBannerNext} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 dark:bg-black/50 backdrop-blur border border-gray-200 dark:border-white/10 flex items-center justify-center text-black dark:text-white opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-white dark:hover:bg-black/80 shadow-md dark:shadow-none">
+                    <IconChevronRight size={20} />
+                  </button>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* ════ SECTION 7: GOOGLE REVIEWS ════ */}
+        <div className="relative z-10 dark:bg-transparent">
+          <GoogleReviews />
+        </div>
+
+        {/* ════ SECTION 8: HAPPY CUSTOMERS (Delivery Photos) ════ */}
+        {testimonials.length > 0 && (
+          <section className="py-10 md:py-14 lg:py-20 overflow-hidden relative z-10 transition-colors duration-500 dark:bg-transparent">
+            <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="flex justify-between items-end mb-8 md:mb-12">
+                <div>
+                  <motion.p variants={fadeInDown} className="text-purple-600 dark:text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 transition-colors">OUR FAMILY</motion.p>
+                  <motion.h2 variants={fadeInUp} className="text-3xl md:text-[40px] text-black dark:text-white font-bold leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
+                    Happy Customers
+                  </motion.h2>
+                  <motion.p variants={fadeInUp} className="text-gray-600 dark:text-gray-400 mt-2 text-sm transition-colors">
+                    Seeing our customers drive away with a smile is our greatest reward.
+                  </motion.p>
+                </div>
+                <motion.div variants={fadeInUp} className="hidden md:flex gap-3">
+                  <button aria-label="Previous Testimonial" onClick={scrollTestiPrev} className="w-10 h-10 rounded-full border border-gray-200 dark:border-white/20 flex items-center justify-center text-black dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
+                    <IconChevronLeft size={20} />
+                  </button>
+                  <button aria-label="Next Testimonial" onClick={scrollTestiNext} className="w-10 h-10 rounded-full border border-gray-200 dark:border-white/20 flex items-center justify-center text-black dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
+                    <IconChevronRight size={20} />
+                  </button>
+                </motion.div>
+              </motion.div>
+
+              <div className="overflow-visible w-full pt-4" ref={testiRef}>
+                <div className="flex gap-4 sm:gap-6 -ml-4 pl-4 pr-4 sm:pr-0">
+                  {/* Duplicate items to ensure Embla can loop seamlessly even with very few testimonials */}
+                  {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, index) => (
+                    <div key={`${t._id}-${index}`} className="relative w-[280px] sm:w-[320px] h-[380px] sm:h-[420px] shrink-0 rounded-2xl overflow-hidden group shadow-xl dark:shadow-[0_15px_40px_rgba(0,0,0,0.5)] transition-all duration-500 cursor-grab active:cursor-grabbing border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#12121f]">
+
+                      {/* Full Card Photo */}
+                      <div className="absolute inset-0 w-full h-full overflow-hidden">
+                        {t.photo?.url ? (
+                          <Image src={t.photo.url} alt={t.customerName} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-purple-500/30">No Photo</div>
+                        )}
+                      </div>
+
+                      {/* Protective Dark Gradient Overlay */}
+                      {/* Smooth permanent gradient so the button is always perfectly readable over any photo */}
+                      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/80 to-transparent pointer-events-none z-10 transition-all duration-500 group-hover:h-[60%]"></div>
+
+                      {/* Hover Content Section (Review Text) */}
+                      <div className="absolute inset-x-0 bottom-[60px] px-6 pb-2 pt-10 flex flex-col justify-end translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-20 pointer-events-none">
+                        <p className="text-white text-[14px] leading-relaxed font-medium line-clamp-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                          "{t.review || t.description || "Had a fantastic experience purchasing my dream car. Highly recommended!"}"
+                        </p>
+                      </div>
+
+                      {/* Customer Name Area (Matches Reference Image) */}
+                      <div className="absolute bottom-5 left-6 right-6 z-30 pointer-events-auto flex flex-col items-start">
+                        <span className="text-white font-black text-[14px] sm:text-[16px] tracking-wide uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] line-clamp-1" style={{ fontFamily: 'var(--font-outfit)' }}>
+                          {t.customerName}
+                        </span>
+                        {/* Small decorative underline from reference image */}
+                        <div className="w-8 h-[3px] bg-gradient-to-r from-purple-600 to-red-600 rounded-full mt-1"></div>
+                      </div>
+
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+      </div> {/* END OF UNIFIED BACKGROUND FOR 6, 7 & 8 */}
+    </>
+  );
+}

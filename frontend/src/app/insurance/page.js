@@ -71,7 +71,7 @@ export default function InsurancePage() {
                 <span className="text-blue-700 dark:text-blue-300 text-xs uppercase tracking-widest font-bold">Hariram Insurance Services</span>
               </motion.div>
               
-              <motion.h1 variants={fadeInLeft} className="font-['Outfit'] font-black text-5xl sm:text-6xl lg:text-7xl text-black dark:text-white leading-[1.1] mb-6">
+              <motion.h1 variants={fadeInLeft} className="font-['Outfit'] font-black text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-black dark:text-white leading-[1.1] mb-6">
                 Protect Your Drive with <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 dark:from-blue-400 dark:via-cyan-300 dark:to-blue-400 bg-300% animate-gradient">
                   Absolute Trust.
@@ -117,47 +117,47 @@ export default function InsurancePage() {
               transition={{ duration: 1, delay: 0.2, type: "spring", stiffness: 100 }}
               className="lg:w-1/2 relative perspective-1000"
             >
-              <div className="relative w-full max-w-md mx-auto aspect-[4/5] rounded-[2.5rem] bg-gradient-to-br from-white/80 to-white/30 dark:from-white/10 dark:to-white/5 backdrop-blur-2xl border border-white/40 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] p-8 flex flex-col overflow-hidden group">
+              <div className="relative w-full max-w-sm sm:max-w-md mx-auto min-h-[420px] sm:min-h-0 sm:aspect-[4/5] h-auto rounded-[2.5rem] bg-gradient-to-br from-white/80 to-white/30 dark:from-white/10 dark:to-white/5 backdrop-blur-2xl border border-white/40 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] p-6 sm:p-8 flex flex-col overflow-hidden group">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 group-hover:bg-cyan-500/30 transition-colors duration-700"></div>
                 
-                <div className="flex items-center justify-between mb-8 z-10">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
-                    <IconShieldCheck size={28} className="text-blue-600 dark:text-blue-400" />
+                <div className="flex items-center justify-between mb-6 sm:mb-8 z-10">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center shrink-0">
+                    <IconShieldCheck size={24} className="text-blue-600 dark:text-blue-400 sm:w-7 sm:h-7" />
                   </div>
-                  <div className="px-4 py-1.5 rounded-full bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 text-xs font-bold tracking-wider uppercase border border-green-200 dark:border-green-500/30 flex items-center gap-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                  <div className="px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 text-[10px] sm:text-xs font-bold tracking-wider uppercase border border-green-200 dark:border-green-500/30 flex items-center gap-1.5 whitespace-nowrap ml-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shrink-0" />
                     Active Cover
                   </div>
                 </div>
 
                 <div className="z-10 mb-auto">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-widest font-bold mb-1">Comprehensive Plan</div>
-                  <div className="font-['Outfit'] font-black text-4xl text-black dark:text-white mb-6">₹18,50,000</div>
+                  <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 uppercase tracking-widest font-bold mb-1">Comprehensive Plan</div>
+                  <div className="font-['Outfit'] font-black text-3xl sm:text-4xl text-black dark:text-white mb-5 sm:mb-6">₹18,50,000</div>
                   
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/5">
-                      <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300 font-medium">
-                        <IconCircleCheckFilled size={20} className="text-blue-500" /> Zero Dep Cover
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center justify-between p-3 sm:p-4 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/5">
+                      <div className="flex items-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base">
+                        <IconCircleCheckFilled size={18} className="text-blue-500 shrink-0 sm:w-5 sm:h-5" /> Zero Dep Cover
                       </div>
-                      <div className="text-sm font-bold text-black dark:text-white">Included</div>
+                      <div className="text-xs sm:text-sm font-bold text-black dark:text-white shrink-0">Included</div>
                     </div>
-                    <div className="flex items-center justify-between p-4 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/5">
-                      <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300 font-medium">
-                        <IconCircleCheckFilled size={20} className="text-blue-500" /> Cashless Garage
+                    <div className="flex items-center justify-between p-3 sm:p-4 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/5">
+                      <div className="flex items-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base">
+                        <IconCircleCheckFilled size={18} className="text-blue-500 shrink-0 sm:w-5 sm:h-5" /> Cashless Garage
                       </div>
-                      <div className="text-sm font-bold text-black dark:text-white">5000+</div>
+                      <div className="text-xs sm:text-sm font-bold text-black dark:text-white shrink-0">5000+</div>
                     </div>
-                    <div className="flex items-center justify-between p-4 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/5">
-                      <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300 font-medium">
-                        <IconCircleCheckFilled size={20} className="text-blue-500" /> Roadside Assist
+                    <div className="flex items-center justify-between p-3 sm:p-4 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/5">
+                      <div className="flex items-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base">
+                        <IconCircleCheckFilled size={18} className="text-blue-500 shrink-0 sm:w-5 sm:h-5" /> Roadside Assist
                       </div>
-                      <div className="text-sm font-bold text-black dark:text-white">24x7</div>
+                      <div className="text-xs sm:text-sm font-bold text-black dark:text-white shrink-0">24x7</div>
                     </div>
                   </div>
                 </div>
 
-                <div className="z-10 w-full mt-6 flex justify-center">
-                  <div className="w-16 h-1.5 rounded-full bg-gray-200 dark:bg-white/10"></div>
+                <div className="z-10 w-full mt-5 sm:mt-6 flex justify-center">
+                  <div className="w-12 sm:w-16 h-1.5 rounded-full bg-gray-200 dark:bg-white/10"></div>
                 </div>
               </div>
             </motion.div>
@@ -190,7 +190,7 @@ export default function InsurancePage() {
       <section className="relative py-32 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20 max-w-3xl mx-auto">
-            <h2 className="font-['Outfit'] font-black text-4xl md:text-5xl text-black dark:text-white mb-6">
+            <h2 className="font-['Outfit'] font-black text-3xl sm:text-4xl md:text-5xl text-black dark:text-white mb-6">
               Why Compromise on <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Coverage?</span>
             </h2>
             <p className="font-['Inter'] text-gray-600 dark:text-gray-400 text-lg">
@@ -234,7 +234,7 @@ export default function InsurancePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/3">
-              <h2 className="font-['Outfit'] font-black text-4xl text-black dark:text-white mb-6">
+              <h2 className="font-['Outfit'] font-black text-3xl sm:text-4xl text-black dark:text-white mb-6">
                 Simple <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">3-Step</span> Process
               </h2>
               <p className="font-['Inter'] text-gray-600 dark:text-gray-400 text-lg mb-8">
@@ -270,7 +270,7 @@ export default function InsurancePage() {
       <section className="py-32 relative z-10">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="font-['Outfit'] font-black text-4xl text-black dark:text-white mb-4">Frequently Asked Questions</h2>
+            <h2 className="font-['Outfit'] font-black text-3xl sm:text-4xl text-black dark:text-white mb-4">Frequently Asked Questions</h2>
             <div className="w-20 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
           </div>
 
@@ -307,18 +307,18 @@ export default function InsurancePage() {
       {/* CTA SECTION */}
       <section className="relative py-24 z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-[3rem] overflow-hidden relative p-12 md:p-20 bg-black dark:bg-white text-white dark:text-black shadow-2xl">
+          <div className="rounded-[2rem] sm:rounded-[3rem] overflow-hidden relative p-8 sm:p-12 md:p-20 bg-gradient-to-br from-gray-900 to-black text-white shadow-2xl border border-white/10">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent mix-blend-overlay"></div>
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3"></div>
             
             <div className="relative z-10 flex flex-col items-center text-center">
-              <div className="w-20 h-20 bg-white/10 dark:bg-black/5 rounded-full flex items-center justify-center backdrop-blur-md mb-8">
-                <IconShieldCheck size={40} className="text-white dark:text-blue-600" />
+              <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-md mb-8 border border-white/20">
+                <IconShieldCheck size={40} className="text-blue-400" />
               </div>
-              <h2 className="font-['Outfit'] font-black text-4xl md:text-5xl mb-6 leading-tight max-w-2xl">
+              <h2 className="font-['Outfit'] font-black text-3xl sm:text-4xl md:text-5xl mb-6 leading-tight max-w-2xl">
                 Don't Wait for an Accident to Value Your Insurance.
               </h2>
-              <p className="font-['Inter'] text-gray-300 dark:text-gray-600 text-lg mb-10 max-w-xl">
+              <p className="font-['Inter'] text-gray-300 text-lg mb-10 max-w-xl">
                 Get the best comprehensive quotes from top insurers tailored for your car through Hariram Motors today.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
@@ -326,7 +326,7 @@ export default function InsurancePage() {
                   <IconPhoneCall size={20} />
                   Call Experts
                 </a>
-                <a href="https://wa.me/919898558222" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-white/10 dark:bg-black/5 border border-white/20 dark:border-black/10 px-10 py-4 rounded-full font-['Outfit'] font-bold text-lg hover:bg-white/20 dark:hover:bg-black/10 transition-colors hover:-translate-y-1">
+                <a href="https://wa.me/919898558222" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-white/10 border border-white/20 px-10 py-4 rounded-full font-['Outfit'] font-bold text-lg hover:bg-white/20 transition-colors hover:-translate-y-1">
                   <IconBrandWhatsapp size={20} className="text-[#25D366]" />
                   WhatsApp Us
                 </a>

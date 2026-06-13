@@ -45,7 +45,8 @@ export default function Navbar() {
     { name: 'About Us', path: '/about' },
     { name: 'Contact', path: '/contact' },
     { name: 'Sell Your Car', path: '/sell-your-car' },
-    // { name: 'Insurance', path: '/insurance' }
+    { name: 'Insurance', path: '/insurance' }
+    // { name: 'Warranty', path: '/warranty' }
   ];
 
   return (
@@ -58,18 +59,21 @@ export default function Navbar() {
       >
         <div className="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Real Logo */}
-          <Link className="flex items-center group shrink-0 relative" href="/">
-            <div className={`relative w-40 h-10 md:w-56 md:h-12 overflow-hidden flex items-center transition-transform duration-300 ${scrolled ? 'scale-95' : 'scale-100'} group-hover:scale-105`}>
+          {/* Real Logo & Tagline */}
+          <Link className="flex flex-col justify-center group shrink-0 relative" href="/">
+            <div className={`relative w-40 h-10 md:w-52 md:h-11 overflow-hidden flex items-center transition-transform duration-300 ${scrolled ? 'scale-95' : 'scale-100'} group-hover:scale-105`}>
               <Image
                 src="/without_background_logo.png"
                 alt="Hariram Motors Logo"
                 fill
-                className="object-contain mix-blend-lighten transition-all duration-300"
-                sizes="(max-width: 768px) 160px, 224px"
+                className="object-contain object-left mix-blend-lighten transition-all duration-300"
+                sizes="(max-width: 768px) 160px, 208px"
                 priority
               />
             </div>
+            <span className={`text-[7px] md:text-[8px] uppercase tracking-wide text-gray-500 dark:text-gray-400 mt-0.5 ml-5 transition-opacity duration-300 font-medium ${scrolled ? 'opacity-80' : 'opacity-100'}`}>
+              Drive Your Own Dreams
+            </span>
           </Link>
 
           {/* Navigation Links (Desktop Only) */}

@@ -3,55 +3,83 @@ import './globals.css';
 import AppLayoutWrapper from '@/components/AppLayoutWrapper';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from 'react-hot-toast';
+import LeadPopup from '@/components/LeadPopup';
+import Script from 'next/script';
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
+  preload: true,
 });
 
 const outfit = Outfit({
   subsets: ['latin'],
   variable: '--font-outfit',
   display: 'swap',
+  preload: true,
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://harirammotors.com'),
+  metadataBase: new URL('https://www.hariramcars.com/'),
   title: {
     default: 'Hariram Motors | Premium Pre-Owned & New Cars in Surat',
     template: '%s | Hariram Motors',
   },
-  description: 'Hariram Motors — Your trusted partner for premium pre-owned and new cars in Surat, Gujarat. Browse our curated collection of certified vehicles at the best prices.',
-  keywords: ['used cars surat', 'new cars surat', 'second hand cars surat', 'pre-owned cars', 'hariram motors', 'buy car surat', 'sell car surat'],
-  manifest: '/manifest.json',
-  icons: {
-    icon: [
-      { url: '/logo-32.jpg', sizes: '32x32', type: 'image/jpeg' },
-      { url: '/logo-48.jpg', sizes: '48x48', type: 'image/jpeg' },
-      { url: '/logo-96.jpg', sizes: '96x96', type: 'image/jpeg' },
-      { url: '/logo-192.jpg', sizes: '192x192', type: 'image/jpeg' },
-      { url: '/logo-512.jpg', sizes: '512x512', type: 'image/jpeg' },
-    ],
-    apple: [
-      { url: '/logo-192.jpg', sizes: '192x192', type: 'image/jpeg' },
-    ],
-  },
+  description: 'Buy or sell certified pre-owned and new cars at Hariram Motors, Surat. 150+ verified vehicles, transparent pricing, trusted since 2013.',
+  keywords: [
+    'used cars surat',
+    'second hand cars surat',
+    'pre-owned cars surat',
+    'buy used car surat',
+    'sell car surat',
+    'hariram motors',
+    'car dealership surat',
+    'varachha used cars',
+    'certified pre-owned surat',
+    'new cars surat',
+  ],
+  authors: [{ name: 'Hariram Motors' }],
+  creator: 'Hariram Motors',
+  publisher: 'Hariram Motors',
+  formatDetection: { telephone: true, email: true },
   openGraph: {
-    title: 'Hariram Motors | Premium Cars in Surat',
-    description: 'Your trusted partner for premium cars in Surat, Gujarat. Shop our wide selection of vehicles.',
-    url: '/',
-    siteName: 'Hariram Motors',
-    images: [
-      {
-        url: '/logo.jpeg',
-        width: 1200,
-        height: 630,
-        alt: 'Hariram Motors Showcase',
-      },
-    ],
-    locale: 'en_IN',
     type: 'website',
+    locale: 'en_IN',
+    url: 'https://www.hariramcars.com/',
+    siteName: 'Hariram Motors',
+    title: 'Hariram Motors | Premium Cars in Surat',
+    description: 'Surat\'s most trusted destination for pre-owned and new cars.',
+    images: [{
+      url: '/og-image.jpg',
+      width: 1200,
+      height: 630,
+      alt: 'Hariram Motors — Premium Cars in Surat',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Hariram Motors | Premium Cars in Surat',
+    description: 'Buy or sell certified pre-owned cars in Surat.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
+  },
+  alternates: {
+    canonical: 'https://www.hariramcars.com/',
   },
 };
 
@@ -59,12 +87,98 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${outfit.variable}`} suppressHydrationWarning>
       <head>
-        <link href="https://fonts.googleapis.com" rel="preconnect" />
-        <link crossOrigin="anonymous" href="https://fonts.gstatic.com" rel="preconnect" />
-        <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preload" href="/logo.jpeg" as="image" type="image/jpeg" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "@id": "https://www.hariramcars.com/#organization",
+                "name": "Hariram Motors",
+                "url": "https://www.hariramcars.com/",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://www.hariramcars.com/logo.jpeg"
+                },
+                "contactPoint": {
+                  "@type": "ContactPoint",
+                  "telephone": "+919898558222",
+                  "contactType": "sales"
+                },
+                "sameAs": [
+                  "https://www.instagram.com/hariram_motors?igsh=MTljZmdmOXFvbHRncQ%3D%3D&utm_source=qr",
+                  "https://www.facebook.com/share/192ndW3BAW/?mibextid=wwXIfr",
+                  "https://youtube.com/@harirammotors?si=QgG9YbGyDO2HbCGS"
+                ]
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "AutoDealer",
+                "@id": "https://www.hariramcars.com/#localbusiness",
+                "name": "Hariram Motors",
+                "description": "Premium pre-owned and new car dealership in Surat, Gujarat.",
+                "url": "https://www.hariramcars.com/",
+                "telephone": "+919898558222",
+                "email": "info@harimotors.com",
+                "foundingDate": "2020",
+                "priceRange": "₹₹",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "Simada to, Canal, BRTS Rd, near Setubandh Hills",
+                  "addressLocality": "Surat",
+                  "addressRegion": "Gujarat",
+                  "postalCode": "395006",
+                  "addressCountry": "IN"
+                },
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": "21.2091",
+                  "longitude": "72.8873"
+                },
+                "openingHoursSpecification": [
+                  {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": [
+                      "Monday","Tuesday","Wednesday",
+                      "Thursday","Friday","Saturday"
+                    ],
+                    "opens": "09:00",
+                    "closes": "20:00"
+                  }
+                ],
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "4.9",
+                  "reviewCount": "500"
+                }
+              }
+            ])
+          }}
+        />
       </head>
       <body className="bg-[#f5f5f7] dark:bg-background text-black dark:text-on-background font-body-md text-body-md antialiased selection:bg-primary-container selection:text-on-primary-container transition-colors duration-500">
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
+        )}
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <Toaster
             position="top-right"
@@ -77,6 +191,7 @@ export default function RootLayout({ children }) {
               },
             }}
           />
+          <LeadPopup />
           <AppLayoutWrapper>{children}</AppLayoutWrapper>
         </ThemeProvider>
       </body>

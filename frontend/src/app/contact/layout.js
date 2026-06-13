@@ -1,13 +1,14 @@
 export const metadata = {
-  title: 'Contact Us | Get in Touch',
-  description: 'Contact Hariram Motors in Surat. We are here to answer your questions, schedule test drives, and help you find your dream car.',
+  title: 'Contact Us — Hariram Motors Surat',
+  description: 'Contact Hariram Motors in Surat. Visit our showroom at Simada to, Canal, BRTS Rd, near Setubandh Hills. Call +91 93734 82016.',
+  alternates: { canonical: 'https://www.hariramcars.com/contact' },
   openGraph: {
-    title: 'Contact Hariram Motors',
-    description: 'Get in touch with us to find your dream car.',
-    url: '/contact',
+    title: 'Contact Hariram Motors | Surat',
+    description: 'Call, WhatsApp or visit us in Surat.',
+    url: 'https://www.hariramcars.com/contact',
   },
 };
 
 export default function ContactLayout({ children }) {
-  return children;
+  return <>{children}</>;
 }

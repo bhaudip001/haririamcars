@@ -113,14 +113,14 @@ export default function AboutPage() {
               </div>
 
               <h2 className="font-['Outfit'] font-bold text-[42px] text-black dark:text-white leading-tight mb-4 transition-colors">
-                A Decade of <span className="bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">Honest Deals</span>
+                A Legacy of <span className="bg-gradient-to-r from-purple-600 to-pink-500 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">Honest Deals</span>
               </h2>
 
               <div className="w-16 h-[2px] bg-gradient-to-r from-purple-500 to-transparent mb-8" />
 
               <div className="space-y-5 mb-10">
                 <p className="font-['Inter'] text-[16px] text-gray-600 dark:text-[#a0a0b8] leading-8 transition-colors">
-                  What started in 2013 as a small lot with big dreams has evolved into Surat&apos;s most trusted pre-owned car dealership. Our foundation was simple: <strong className="text-black dark:text-white transition-colors">treat every customer like family.</strong>
+                  What started in 2020 as a small lot with big dreams has evolved into Surat&apos;s most trusted pre-owned car dealership. Our foundation was simple: <strong className="text-black dark:text-white transition-colors">treat every customer like family.</strong>
                 </p>
                 <p className="font-['Inter'] text-[16px] text-gray-600 dark:text-[#a0a0b8] leading-8 transition-colors">
                   Through sheer trust and word of mouth, we&apos;ve grown exponentially. We&apos;ve proudly served over <strong className="text-black dark:text-white transition-colors">500 families</strong>, ensuring each one drives away with a smile and total peace of mind.
@@ -168,7 +168,7 @@ export default function AboutPage() {
                   </div>
                   <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] rounded-2xl p-5 transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_10px_30px_rgba(124,58,237,0.06)] dark:hover:shadow-[0_10px_30px_rgba(124,58,237,0.1)]">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2013</span>
+                      <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2020</span>
                       <div className="h-px flex-grow bg-gradient-to-r from-purple-500/30 to-transparent" />
                     </div>
                     <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">The Beginning</h4>
@@ -725,6 +725,40 @@ export default function AboutPage() {
         <GoogleReviews />
       </div>
 
+      {/* ═══ FREQUENTLY ASKED QUESTIONS (GEO & AEO OPTIMIZED) ═══ */}
+      <section className="relative py-24 z-10 bg-white dark:bg-[#06060c] border-t border-gray-100 dark:border-white/[0.05]">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="font-['Outfit'] font-bold text-[36px] text-black dark:text-white leading-tight">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-4 font-medium">Learn more about our services, processes, and policies.</p>
+          </div>
+          
+          <div className="space-y-8">
+            <div className="bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/[0.05] rounded-2xl p-8">
+              <h3 className="text-[20px] font-bold text-black dark:text-white mb-4">Why should I buy a used car from Hariram Motors?</h3>
+              <p className="text-gray-600 dark:text-[#a0a0b8] leading-relaxed">
+                Hariram Motors offers a premium buying experience with our "Hariram Certified" guarantee. Every vehicle undergoes a strict 150-point mechanical and structural inspection to ensure the highest quality standards before it reaches our showroom. We provide a 100% non-accidental history guarantee, verify genuine odometer readings, and ensure clear legal titles without any pending challans or hypothecation issues. Our comprehensive service includes handling all RTO transfers on your behalf and providing on-the-spot finance options through leading banking partners. By prioritizing transparency, competitive pricing, and total customer satisfaction, we make the process of buying a pre-owned car in Surat seamless and completely trustworthy.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/[0.05] rounded-2xl p-8">
+              <h3 className="text-[20px] font-bold text-black dark:text-white mb-4">Does Hariram Motors provide loans on used cars?</h3>
+              <p className="text-gray-600 dark:text-[#a0a0b8] leading-relaxed">
+                Yes, Hariram Motors has established direct tie-ups with leading private and nationalized banks, as well as premium NBFCs, to provide quick and hassle-free car loans for pre-owned vehicles. Our dedicated in-house finance team works to secure the lowest possible interest rates and highly flexible EMI options tailored precisely to your financial profile. We require minimal documentation and manage the entire loan processing workflow, ensuring that loan approvals are often available within just a few hours. This seamless financing integration means you can finalize your vehicle purchase and drive home the very same day without visiting a bank branch.
+              </p>
+            </div>
+
+            <div className="bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/[0.05] rounded-2xl p-8">
+              <h3 className="text-[20px] font-bold text-black dark:text-white mb-4">Can I sell or exchange my current car at Hariram Motors?</h3>
+              <p className="text-gray-600 dark:text-[#a0a0b8] leading-relaxed">
+                Absolutely. Hariram Motors offers immediate, transparent, and highly competitive market valuations for your old car through a free doorstep or showroom evaluation process. You have the total flexibility to either sell your car directly to us for instant, secure payment within 24 hours, or you can use its highest market value as an upfront down payment for seamlessly upgrading to another premium vehicle from our extensive inventory. We take complete responsibility for all paperwork, including the 100% free RC transfer process, ensuring you face absolutely zero legal liabilities after handing over your vehicle to our team.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

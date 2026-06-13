@@ -5,6 +5,11 @@ html, body {
   overflow-x: clip;
   max-width: 100vw;
 }
+/* Accessibility focus outline */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
 @theme {
   --color-white: #fcfcfc;
   --color-black: #1a1a24;

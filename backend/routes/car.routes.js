@@ -139,7 +139,7 @@ router.get('/:slug', cache(5), async (req, res) => {
 });
 
 // ── POST /api/cars — Create car (admin) ──
-router.post('/', protect, adminOnly, upload.array('images', 20), validateCar, async (req, res) => {
+router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, async (req, res) => {
   try {
     const carData = { ...req.body };
 
@@ -175,7 +175,7 @@ router.post('/', protect, adminOnly, upload.array('images', 20), validateCar, as
 });
 
 // ── PUT /api/cars/:id — Update car (admin) ──
-router.put('/:id', protect, adminOnly, upload.array('images', 20), async (req, res) => {
+router.put('/:id', protect, adminOnly, upload.array('images', 25), async (req, res) => {
   try {
     const car = await Car.findById(req.params.id);
     if (!car) return res.status(404).json({ error: 'Car not found' });

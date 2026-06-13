@@ -9,8 +9,7 @@ import {
   IconBrandYoutube, 
   IconMapPin, 
   IconPhone, 
-  IconClock,
-  IconShieldLock
+  IconClock
 } from '@tabler/icons-react';
 
 export default function Footer() {
@@ -32,29 +31,58 @@ export default function Footer() {
           
           {/* Brand Column (Wider) */}
           <div className="lg:col-span-4">
-            <Link className="hover:opacity-90 transition-opacity flex items-center group mb-6" href="/">
+            <Link className="hover:opacity-90 transition-opacity flex flex-col group mb-6" href="/">
               <div className="relative w-56 h-14 overflow-hidden flex items-center">
                 <Image 
-                  src="/logo.jpeg" 
+                  src="/without_background_logo.png" 
                   alt="Hariram Motors Logo" 
                   fill 
-                  className="object-contain mix-blend-lighten"
+                  className="object-contain object-left mix-blend-lighten"
                   sizes="224px"
                 />
               </div>
+              <span className="text-[8px] uppercase tracking-wide text-gray-500 mt-0.5 font-medium ml-6">Drive Your Own Dreams</span>
             </Link>
             <p className="text-sm leading-relaxed mb-8 text-gray-400 pr-4">
               Surat&apos;s premier destination for curated luxury and certified pre-owned vehicles. Built on trust, driven by absolute quality.
             </p>
-            <div className="flex gap-3">
-              <motion.a whileHover={{ scale: 1.2, y: -3 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }} href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-purple-600 hover:border-purple-600 hover:text-white transition-colors duration-300 text-white shadow-sm">
-                <IconBrandFacebook size={18} />
+            <div className="flex gap-4 mt-2">
+              <motion.a 
+                whileHover={{ scale: 1.15, y: -4 }} 
+                whileTap={{ scale: 0.95 }} 
+                transition={{ type: "spring", stiffness: 400, damping: 17 }} 
+                href="https://www.facebook.com/share/192ndW3BAW/?mibextid=wwXIfr" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] hover:shadow-[0_0_15px_rgba(24,119,242,0.5)] hover:text-white transition-all duration-300 text-white shadow-sm"
+                aria-label="Facebook"
+              >
+                <IconBrandFacebook size={20} stroke={1.5} />
               </motion.a>
-              <motion.a whileHover={{ scale: 1.2, y: -3 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }} href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-purple-600 hover:border-purple-600 hover:text-white transition-colors duration-300 text-white shadow-sm">
-                <IconBrandInstagram size={18} />
+              <motion.a 
+                whileHover={{ scale: 1.15, y: -4 }} 
+                whileTap={{ scale: 0.95 }} 
+                transition={{ type: "spring", stiffness: 400, damping: 17 }} 
+                href="https://www.instagram.com/hariram_motors?igsh=MTljZmdmOXFvbHRncQ%3D%3D&utm_source=qr" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden group hover:border-transparent hover:shadow-[0_0_15px_rgba(225,48,108,0.5)] transition-all duration-300 text-white shadow-sm"
+                aria-label="Instagram"
+              >
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <IconBrandInstagram size={20} stroke={1.5} className="relative z-10" />
               </motion.a>
-              <motion.a whileHover={{ scale: 1.2, y: -3 }} whileTap={{ scale: 0.9 }} transition={{ duration: 0.15 }} href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-purple-600 hover:border-purple-600 hover:text-white transition-colors duration-300 text-white shadow-sm">
-                <IconBrandYoutube size={18} />
+              <motion.a 
+                whileHover={{ scale: 1.15, y: -4 }} 
+                whileTap={{ scale: 0.95 }} 
+                transition={{ type: "spring", stiffness: 400, damping: 17 }} 
+                href="https://youtube.com/@harirammotors?si=QgG9YbGyDO2HbCGS" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#FF0000] hover:border-[#FF0000] hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] hover:text-white transition-all duration-300 text-white shadow-sm"
+                aria-label="YouTube"
+              >
+                <IconBrandYoutube size={20} stroke={1.5} />
               </motion.a>
             </div>
           </div>
@@ -71,14 +99,7 @@ export default function Footer() {
               <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/about" className="hover:text-white transition-colors inline-block">About Us</Link></motion.div></li>
               <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car" className="hover:text-white transition-colors inline-block">Sell Your Car</Link></motion.div></li>
               <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/contact" className="hover:text-white transition-colors inline-block">Contact</Link></motion.div></li>
-              <li className="pt-2">
-                <motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}>
-                  <Link href="/admin/login" className="hover:text-purple-400 transition-colors inline-flex items-center gap-1.5 text-purple-500/80 font-medium">
-                  <IconShieldLock size={14} />
-                  Admin Login
-                  </Link>
-                </motion.div>
-              </li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/insurance" className="hover:text-white transition-colors inline-block">Insurance</Link></motion.div></li>
             </ul>
           </div>
 
@@ -89,9 +110,9 @@ export default function Footer() {
               <span className="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-purple-500 rounded-full"></span>
             </h4>
             <ul className="flex flex-col gap-3 text-sm">
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog?bodyType=SUV" className="hover:text-white transition-colors inline-block">Buy SUVs</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog?bodyType=Sedan" className="hover:text-white transition-colors inline-block">Buy Sedans</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car?mode=exchange" className="hover:text-white transition-colors inline-block">Car Exchange</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog" className="hover:text-white transition-colors inline-block">Buy Car</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car" className="hover:text-white transition-colors inline-block">Sell Car</Link></motion.div></li>
+              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car?mode=exchange" className="hover:text-white transition-colors inline-block">Exchange Car</Link></motion.div></li>
               <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/contact" className="hover:text-white transition-colors inline-block">Test Drive Booking</Link></motion.div></li>
             </ul>
           </div>
