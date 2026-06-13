@@ -47,6 +47,48 @@ const REVIEWS = [
     "rating": 4,
     "text": "Good collection and offer",
     "relative_time_description": "3 years ago"
+  },
+  {
+    "author_name": "Aakib Dharar",
+    "rating": 5,
+    "text": "Getting a best deal on hariram moters owner was very friendly😊",
+    "relative_time_description": "1 year ago"
+  },
+  {
+    "author_name": "YOGESHSANGHANI GALAXYINSURANCE",
+    "rating": 5,
+    "text": "It's good old car delar and genuine car sell with commitment for a best car deal",
+    "relative_time_description": "3 years ago"
+  },
+  {
+    "author_name": "Srushti Italiya",
+    "rating": 5,
+    "text": "Good response 😇",
+    "relative_time_description": "8 months ago"
+  },
+  {
+    "author_name": "Niraj Btc",
+    "rating": 5,
+    "text": "Nice negotiation price",
+    "relative_time_description": "3 years ago"
+  },
+  {
+    "author_name": "SHREE GRAPHICS",
+    "rating": 5,
+    "text": "Very good",
+    "relative_time_description": "4 years ago"
+  },
+  {
+    "author_name": "Kevin Desai",
+    "rating": 5,
+    "text": "Great",
+    "relative_time_description": "2 years ago"
+  },
+  {
+    "author_name": "AppleWood Short Movie",
+    "rating": 5,
+    "text": "Absolutely fine",
+    "relative_time_description": "5 years ago"
   }
 ];
 
