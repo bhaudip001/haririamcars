@@ -74,6 +74,7 @@ app.use((req, res, next) => {
       if (remainingSearch) {
         req.url += '?' + remainingSearch;
       }
+      req.originalUrl = req.url;
     } else {
       const originalPath = req.headers['x-original-path'];
       if (originalPath) {
@@ -84,9 +85,11 @@ app.use((req, res, next) => {
           const match = routeMatches.match(/1=([^&]+)/);
           if (match) {
             req.url = '/api/' + match[1];
+            req.originalUrl = req.url;
           }
         } else if (!req.url.startsWith('/api')) {
           req.url = '/api' + (req.url.startsWith('/') ? '' : '/') + req.url;
+          req.originalUrl = req.url;
         }
       }
     }
