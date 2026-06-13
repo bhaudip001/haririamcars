@@ -135,13 +135,8 @@ app.use(sanitizeInputs);
 // CORS
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  'https://harirammotors.com',
-  'https://www.harirammotors.com',
-  'https://hariramcars.com',
   'https://www.hariramcars.com',
   'http://localhost:3000',
-  'http://localhost:3001',
-  'http://127.0.0.1:3000',
 ].filter(Boolean);
 
 app.use(
@@ -155,10 +150,7 @@ app.use(
         return callback(null, true);
       }
       
-      // Allow any Vercel deployment dynamically
-      if (origin.endsWith('.vercel.app')) {
-        return callback(null, true);
-      }
+      // Removed Vercel dynamic deployment origin
       
       console.warn(`CORS blocked request from: ${origin}`);
       return callback(new Error(`CORS blocked: ${origin} not allowed`));
