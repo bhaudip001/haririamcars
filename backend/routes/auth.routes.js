@@ -5,26 +5,7 @@ import { validateLogin } from '../middleware/validate.js';
 
 const router = express.Router();
 
-// ── TEMPORARY SEED ROUTE ──
-router.get('/seed', async (req, res) => {
-  try {
-    // Delete existing admin to force a clean reset
-    await User.deleteMany({ email: 'admin@hariramcars.com' });
-    
-    // Create new admin
-    await User.create({
-      name: 'Admin',
-      email: 'admin@hariramcars.com',
-      password: 'admin123456',
-      role: 'admin',
-    });
-    
-    res.json({ message: 'Admin forcibly reset and created successfully! You can now login with admin123456' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
+// SEED ROUTE REMOVED FOR PRODUCTION SECURITY
 
 // ── POST /api/auth/login ──
 router.post('/login', validateLogin, async (req, res) => {

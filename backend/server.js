@@ -57,27 +57,6 @@ import siteSettingRoutes from './routes/siteSetting.routes.js';
 const app = express();
 app.set('trust proxy', 1);
 
-// DIAGNOSTIC MIDDLEWARE - remove after debugging
-app.use((req, res, next) => {
-  // We only want to intercept diagnostic endpoints
-  if (req.url.includes('diagnostic')) {
-    return res.status(200).json({ 
-      diagnostic: true,
-      message: 'Reached Express Catch-All',
-      reqUrl: req.url,
-      originalUrl: req.originalUrl,
-      method: req.method,
-      headers: req.headers
-    });
-  }
-  
-  // Actually, let's catch EVERYTHING that isn't a static asset just to be sure
-  if (req.headers['x-vercel-id']) {
-    console.log('[VERCEL DIAGNOSTIC]', req.method, req.url, req.originalUrl);
-  }
-  
-  next();
-});
 
 // Fix req.url for Vercel using frontend custom header
 app.use((req, res, next) => {
@@ -136,6 +115,7 @@ app.use(
           'https://www.googletagmanager.com',
           'https://www.google-analytics.com',
         ],
+        workerSrc: ["'self'", 'blob:'],
         styleSrc: [
           "'self'",
           "'unsafe-inline'",

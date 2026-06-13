@@ -451,7 +451,7 @@ export default function AddCar() {
         
         for (const photo of photos) {
           const compressed = await imageCompression(photo, options);
-          formData.append('images', compressed);
+          formData.append('images', compressed, photo.name || `image_${Date.now()}.jpg`);
         }
       } else {
         toast.error('Please upload at least one image.');

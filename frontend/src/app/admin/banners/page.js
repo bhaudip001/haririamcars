@@ -40,8 +40,8 @@ export default function AdminBannersPage() {
       const fd = new FormData();
       fd.append('title', title);
       if (link) fd.append('link', link);
-      fd.append('desktopImage', compressedDesktop);
-      fd.append('mobileImage', compressedMobile);
+      fd.append('desktopImage', compressedDesktop, desktopImage.name || 'desktop.jpg');
+      fd.append('mobileImage', compressedMobile, mobileImage.name || 'mobile.jpg');
       
       await api.post('/promo-banners', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
       toast.success('Banner added successfully!');
