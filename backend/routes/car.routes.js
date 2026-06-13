@@ -3,12 +3,13 @@ import Car from '../models/Car.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
 import { upload, uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
 import { validateCar } from '../middleware/validate.js';
+import { cache, clearCache } from '../middleware/cache.js';
 
 const router = express.Router();
 // Trigger nodemon restart
 
 // ── GET /api/cars — Public listing with filters ──
-router.get('/', async (req, res) => {
+router.get('/', cache(5), async (req, res) => {
   try {
     const {
       search, make, fuelType, minPrice, maxPrice, minYear, maxYear,
@@ -72,7 +73,7 @@ router.get('/', async (req, res) => {
 });
 
 // ── GET /api/cars/filters — Get makes and brand-model map ──
-router.get('/filters', async (_req, res) => {
+router.get('/filters', cache(15), async (_req, res) => {
   try {
     const activeFilter = { status: { $ne: 'sold' } };
     const makes = await Car.distinct('make', activeFilter);
@@ -107,7 +108,7 @@ router.get('/filters', async (_req, res) => {
 });
 
 // ── GET /api/cars/brands — List unique brands ──
-router.get('/brands', async (_req, res) => {
+router.get('/brands', cache(60), async (_req, res) => {
   try {
     const brands = await Car.distinct('make');
     res.json(brands.sort());
@@ -117,7 +118,7 @@ router.get('/brands', async (_req, res) => {
 });
 
 // ── GET /api/cars/:slug — Single car by slug or ID ──
-router.get('/:slug', async (req, res) => {
+router.get('/:slug', cache(5), async (req, res) => {
   try {
     const { slug } = req.params;
     let car;
@@ -164,6 +165,8 @@ router.post('/', protect, adminOnly, upload.array('images', 20), validateCar, as
     // Generate slug with ID
     car.slug = `${car.year}-${car.make}-${car.model}`.toLowerCase().replace(/[^a-z0-9]+/g, '-') + `-${car._id.toString().slice(-6)}`;
     await car.save();
+
+    clearCache('/api/cars');
 
     res.status(201).json(car);
   } catch (error) {
@@ -215,6 +218,8 @@ router.put('/:id', protect, adminOnly, upload.array('images', 20), async (req, r
     Object.assign(car, updateData);
     await car.save();
 
+    clearCache('/api/cars');
+
     res.json(car);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -233,6 +238,7 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
     }
 
     await Car.findByIdAndDelete(req.params.id);
+    clearCache('/api/cars');
     res.json({ message: 'Car deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });

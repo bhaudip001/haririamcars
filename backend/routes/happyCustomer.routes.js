@@ -2,11 +2,12 @@ import express from 'express';
 import HappyCustomer from '../models/HappyCustomer.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
 import { upload, uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
+import { cache, clearCache } from '../middleware/cache.js';
 
 const router = express.Router();
 
 // ── GET /api/happy-customers — Public listing ──
-router.get('/', async (_req, res) => {
+router.get('/', cache(15), async (_req, res) => {
   try {
     const customers = await HappyCustomer.find({ isActive: true }).sort({ createdAt: -1 }).lean();
     res.json(customers);
@@ -36,6 +37,7 @@ router.post('/', protect, adminOnly, upload.single('photo'), async (req, res) =>
     }
 
     const customer = await HappyCustomer.create(data);
+    clearCache('/api/happy-customers');
     res.status(201).json(customer);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -61,6 +63,7 @@ router.put('/:id', protect, adminOnly, upload.single('photo'), async (req, res) 
     if (req.body.isActive !== undefined) customer.isActive = req.body.isActive;
 
     await customer.save();
+    clearCache('/api/happy-customers');
     res.json(customer);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -74,6 +77,7 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
     if (!customer) return res.status(404).json({ error: 'Not found' });
     if (customer.photo?.publicId) await deleteFromCloudinary(customer.photo.publicId);
     await HappyCustomer.findByIdAndDelete(req.params.id);
+    clearCache('/api/happy-customers');
     res.json({ message: 'Deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });

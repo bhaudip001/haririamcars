@@ -2,11 +2,12 @@ import express from 'express';
 import PromoBanner from '../models/PromoBanner.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
 import { upload, uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
+import { cache, clearCache } from '../middleware/cache.js';
 
 const router = express.Router();
 
 // ── GET /api/promo-banners — Public active banners ──
-router.get('/', async (_req, res) => {
+router.get('/', cache(15), async (_req, res) => {
   try {
     const banners = await PromoBanner.find({ isActive: true }).sort({ order: 1 }).lean();
     res.json(banners);
@@ -45,6 +46,7 @@ router.post('/', protect, adminOnly, upload.fields([
     }
 
     const banner = await PromoBanner.create(data);
+    clearCache('/api/promo-banners');
     res.status(201).json(banner);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -79,6 +81,7 @@ router.put('/:id', protect, adminOnly, upload.fields([
     if (req.body.order !== undefined) banner.order = req.body.order;
 
     await banner.save();
+    clearCache('/api/promo-banners');
     res.json(banner);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -93,6 +96,7 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
     if (banner.desktopPublicId) await deleteFromCloudinary(banner.desktopPublicId);
     if (banner.mobilePublicId) await deleteFromCloudinary(banner.mobilePublicId);
     await PromoBanner.findByIdAndDelete(req.params.id);
+    clearCache('/api/promo-banners');
     res.json({ message: 'Banner deleted' });
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -3,6 +3,7 @@ import SiteSetting from '../models/SiteSetting.js';
 import Car from '../models/Car.js';
 import HappyCustomer from '../models/HappyCustomer.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
+import { cache, clearCache } from '../middleware/cache.js';
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ const defaultSettings = {
 };
 
 // ── GET /api/site-settings — Public ──
-router.get('/', async (_req, res) => {
+router.get('/', cache(60), async (_req, res) => {
   try {
     const settings = await SiteSetting.find().lean();
     const result = { ...defaultSettings };
@@ -58,6 +59,8 @@ router.put('/', protect, adminOnly, async (req, res) => {
         { upsert: true, new: true }
       );
     }
+
+    clearCache('/api/site-settings');
 
     res.json({ message: 'Settings updated successfully' });
   } catch (error) {
