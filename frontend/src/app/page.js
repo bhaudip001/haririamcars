@@ -18,9 +18,9 @@ async function getHomeData() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
   try {
     const [carsRes, testRes, bannerRes] = await Promise.allSettled([
-      fetch(`${apiUrl}/cars?limit=8&status=available&featured=true`, { next: { revalidate: 3600 } }),
-      fetch(`${apiUrl}/happy-customers?limit=6`, { next: { revalidate: 3600 } }),
-      fetch(`${apiUrl}/promo-banners?active=true`, { next: { revalidate: 3600 } }),
+      fetch(`${apiUrl}/cars?limit=8&status=available&featured=true`, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(10000) }),
+      fetch(`${apiUrl}/happy-customers?limit=6`, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(10000) }),
+      fetch(`${apiUrl}/promo-banners?active=true`, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(10000) }),
     ]);
 
     const initialCars = carsRes.status === 'fulfilled' && carsRes.value.ok ? (await carsRes.value.json()).cars || [] : [];
