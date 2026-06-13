@@ -241,28 +241,31 @@ app.use((err, _req, res, _next) => {
   });
 });
 
-// ── Start Server ──
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(`🚗 Hariram Motors API running on port ${PORT}`);
-  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
-
-// ── Graceful Shutdown ──
-const gracefulShutdown = () => {
-  console.log('Received kill signal, shutting down gracefully...');
-  server.close(() => {
-    console.log('Closed out remaining connections.');
-    process.exit(0);
+// ── Start Server (Only if not in Vercel Serverless environment) ──
+if (process.env.VERCEL !== '1') {
+  const PORT = process.env.PORT || 5000;
+  const server = app.listen(PORT, () => {
+    console.log(`🚗 Hariram Motors API running on port ${PORT}`);
+    console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
   });
 
-  setTimeout(() => {
-    console.error('Could not close connections in time, forcefully shutting down');
-    process.exit(1);
-  }, 10000);
-};
+  // ── Graceful Shutdown ──
+  const gracefulShutdown = () => {
+    console.log('Received kill signal, shutting down gracefully...');
+    server.close(() => {
+      console.log('Closed out remaining connections.');
+      process.exit(0);
+    });
 
-process.on('SIGTERM', gracefulShutdown);
-process.on('SIGINT', gracefulShutdown);
+    setTimeout(() => {
+      console.error('Could not close connections in time, forcefully shutting down');
+      process.exit(1);
+    }, 10000);
+  };
 
+  process.on('SIGTERM', gracefulShutdown);
+  process.on('SIGINT', gracefulShutdown);
+}
+
+// ── Export for Vercel Serverless ──
 export default app;
