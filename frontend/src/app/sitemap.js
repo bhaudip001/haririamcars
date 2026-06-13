@@ -1,7 +1,9 @@
 export default async function sitemap() {
   const baseUrl = 'https://www.hariramcars.com';
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-
+  let apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  if (process.env.NODE_ENV === 'production') {
+    apiUrl = 'https://www.hariramcars.com/backend/server.js?path=api';
+  }
   const staticRoutes = [
     {
       url: baseUrl,
