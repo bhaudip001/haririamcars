@@ -158,18 +158,20 @@ export default function ContactPage() {
                 <div className="space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="relative group/input">
+                      <label htmlFor="name" className="sr-only">Full Name</label>
                       <IconUser className="absolute left-4 top-[17px] text-gray-500 group-focus-within/input:text-purple-400 transition-colors z-10" size={20} />
                       <input
-                        type="text" name="name"
+                        id="name" type="text" name="name"
                         value={form.name} onChange={handleChange}
                         className={inputClassName} placeholder="Full Name" required
                       />
                     </div>
 
                     <div className="relative group/input">
+                      <label htmlFor="phone" className="sr-only">Phone Number</label>
                       <IconPhoneCall className="absolute left-4 top-[17px] text-gray-500 group-focus-within/input:text-purple-400 transition-colors z-10" size={20} />
                       <input
-                        type="tel" name="phone"
+                        id="phone" type="tel" name="phone"
                         value={form.phone} onChange={handleChange}
                         className={inputClassName} placeholder="Phone Number" required
                       />
@@ -177,18 +179,20 @@ export default function ContactPage() {
                   </div>
 
                   <div className="relative group/input">
+                    <label htmlFor="email" className="sr-only">Email Address</label>
                     <IconMail className="absolute left-4 top-[17px] text-gray-500 group-focus-within/input:text-purple-400 transition-colors z-10" size={20} />
                     <input
-                      type="email" name="email"
+                      id="email" type="email" name="email"
                       value={form.email} onChange={handleChange}
                       className={inputClassName} placeholder="Email Address (Optional)"
                     />
                   </div>
 
                   <div className="relative group/input flex-1 flex flex-col">
+                    <label htmlFor="message" className="sr-only">Message</label>
                     <IconMessageCircle className="absolute left-4 top-[17px] text-gray-500 group-focus-within/input:text-purple-400 transition-colors z-10" size={20} />
                     <textarea
-                      name="message"
+                      id="message" name="message"
                       value={form.message} onChange={handleChange}
                       placeholder="How can we help you today?"
                       className={`${inputClassName} !pl-12 !pt-4 min-h-[140px] resize-none flex-1`}

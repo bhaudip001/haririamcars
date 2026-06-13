@@ -273,9 +273,11 @@ export default function EditCarPage() {
 
   useEffect(() => {
     if (!id) return;
+    const abortController = new AbortController();
+
     const fetchCar = async () => {
       try {
-        const res = await api.get(`/cars/${id}`);
+        const res = await api.get(`/cars/${id}`, { signal: abortController.signal });
         const data = res.data;
         const badges = data.badges || [];
         
@@ -300,10 +302,16 @@ export default function EditCarPage() {
           setExistingImages(data.images);
         }
       } catch (err) {
-        toast.error('Failed to load car data');
+        if (err.name !== 'CanceledError') {
+          toast.error('Failed to load car data');
+        }
       }
     };
     fetchCar();
+
+    return () => {
+      abortController.abort();
+    };
   }, [id, reset]);
 
   const onSubmit = async (data) => {
@@ -332,35 +340,69 @@ export default function EditCarPage() {
       if (data.isCertified) badges.push('Certified');
       if (data.isPetipack) badges.push('Peti-pack');
       if (data.validVimo) badges.push('Valid Vimo');
-      formData.append('badges', JSON.stringify(badges));
       
-      formData.append('loanAvailable', String(data.loanAvailable));
-      formData.append('isKmGenuine', String(data.isKmGenuine));
-
-      formData.append('features', JSON.stringify(data.selectedFeatures || []));
-
-      // Handle images
-      formData.append('existingImages', JSON.stringify(existingImages));
-      if (deletedImages.length > 0) {
-        formData.append('deletedImages', JSON.stringify(deletedImages));
-      }
-
+      let uploadedImages = [];
       if (photos.length > 0) {
+        toast.loading('Uploading images directly to Cloudinary...', { id: 'upload-toast' });
         const { default: imageCompression } = await import('browser-image-compression');
         const options = { maxSizeMB: 0.4, maxWidthOrHeight: 1280, useWebWorker: true };
         
+        const sigRes = await api.get('/upload/signature');
+        const { signature, timestamp, api_key, cloud_name } = sigRes.data;
+
         for (const photo of photos) {
           const compressed = await imageCompression(photo, options);
-          formData.append('images', compressed, photo.name || `image_${Date.now()}.jpg`);
+          const uploadData = new FormData();
+          uploadData.append('file', compressed);
+          uploadData.append('api_key', api_key);
+          uploadData.append('timestamp', timestamp);
+          uploadData.append('signature', signature);
+          uploadData.append('folder', 'hariram-motors/cars');
+
+          const cloudinaryRes = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+            method: 'POST',
+            body: uploadData,
+          }).then(res => res.json());
+
+          if (cloudinaryRes.secure_url) {
+            uploadedImages.push({ url: cloudinaryRes.secure_url, publicId: cloudinaryRes.public_id });
+          }
         }
+        toast.dismiss('upload-toast');
       }
 
-      if (existingImages.length === 0 && photos.length === 0) {
+      if (existingImages.length === 0 && uploadedImages.length === 0) {
         toast.error('Please ensure the car has at least one image.');
         return; 
       }
 
-      await toast.promise(api.put(`/cars/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }), {
+      const payload = {
+        make: data.make,
+        model: data.model,
+        manufacturingYear: data.manufacturingYear,
+        year: data.manufacturingYear,
+        registerYear: data.registerYear,
+        price: data.price ? String(data.price).replace(/,/g, '') : undefined,
+        kms: data.kmDriven ? String(data.kmDriven).replace(/,/g, '') : undefined,
+        fuelType: data.fuelType,
+        transmission: data.transmission,
+        owner: data.ownership,
+        bodyType: data.bodyType,
+        variant: data.variant,
+        color: data.color,
+        registration: data.registration,
+        description: data.description,
+        status: 'available',
+        badges: badges,
+        loanAvailable: data.loanAvailable,
+        isKmGenuine: data.isKmGenuine,
+        features: data.selectedFeatures || [],
+        existingImages: JSON.stringify(existingImages),
+        deletedImages: deletedImages.length > 0 ? JSON.stringify(deletedImages) : undefined,
+        images: uploadedImages
+      };
+
+      await toast.promise(api.put(`/cars/${id}`, payload, { headers: { 'Content-Type': 'application/json' } }), {
         loading: 'Updating vehicle...',
         success: 'Vehicle Updated Successfully!',
         error: 'Failed to update vehicle.',

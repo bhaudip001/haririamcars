@@ -160,7 +160,7 @@ export default function AdminInventoryPage() {
               <div className="flex items-center gap-3">
                 <div className="w-16 h-12 rounded-lg bg-[var(--color-bg-dark)] overflow-hidden relative border border-[var(--color-border)] flex-shrink-0">
                   {car.images?.[0] ? (
-                    <img src={car.images[0].url || car.images[0]} alt={car.model} className="w-full h-full object-cover" />
+                    <Image src={car.images[0].url || car.images[0]} alt={car.model} fill className="object-cover" sizes="64px" unoptimized={true} />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-[var(--color-text-muted)]">
                       <span className="text-[10px]">No img</span>

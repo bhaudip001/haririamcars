@@ -148,6 +148,8 @@ export default function Navbar() {
               onClick={() => setIsMobileMenuOpen(true)}
               className="lg:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors flex items-center justify-center h-[44px] w-[44px] border border-transparent hover:border-white/10"
               aria-label="Open Menu"
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               <IconMenu2 size={24} />
             </button>
@@ -158,7 +160,7 @@ export default function Navbar() {
       {/* FULL SCREEN MOBILE DRAWER */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-50 flex lg:hidden">
+          <div id="mobile-menu" className="fixed inset-0 z-50 flex lg:hidden">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}

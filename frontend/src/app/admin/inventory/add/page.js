@@ -404,61 +404,73 @@ export default function AddCar() {
 
   const onSubmit = async (data) => {
     try {
-      const formData = new FormData();
-      formData.append('make', data.make);
-      formData.append('model', data.model);
-      if (data.manufacturingYear) {
-        formData.append('manufacturingYear', data.manufacturingYear);
-        formData.append('year', data.manufacturingYear); 
-      }
-      if (data.registerYear) formData.append('registerYear', data.registerYear);
-      if (data.price) formData.append('price', String(data.price).replace(/,/g, ''));
-      if (data.kmDriven) formData.append('kms', String(data.kmDriven).replace(/,/g, ''));
-      if (data.fuelType) formData.append('fuelType', data.fuelType);
-      if (data.transmission) formData.append('transmission', data.transmission);
-      if (data.ownership) formData.append('owner', data.ownership);
-      formData.append('bodyType', data.bodyType);
-      if (data.variant) formData.append('variant', data.variant);
-      formData.append('color', data.color);
-      formData.append('registration', data.registration);
-      formData.append('description', data.description);
-      formData.append('status', data.status);
-      
-
-      formData.append('airConditioner', data.airConditioner);
-      formData.append('powerWindows', data.powerWindows);
-      formData.append('sunroof', data.sunroof);
-      formData.append('parkingSensors', data.parkingSensors);
-      formData.append('displacement', data.displacement);
-      formData.append('maxPower', data.maxPower);
-      formData.append('driveType', data.driveType);
-      formData.append('cylinders', data.cylinders);
-
-      formData.append('features', JSON.stringify(data.selectedFeatures || []));
-
-      const badges = [];
-      if (data.isCertified) badges.push('Certified');
-      if (data.isPetipack) badges.push('Peti-pack');
-      if (data.validVimo) badges.push('Valid Vimo');
-      formData.append('badges', JSON.stringify(badges));
-      formData.append('loanAvailable', String(data.loanAvailable));
-      formData.append('isKmGenuine', String(data.isKmGenuine));
-      formData.append('mainPhotoIndex', mainPhoto);
-
+      let uploadedImages = [];
       if (photos.length > 0) {
+        toast.loading('Uploading images directly to Cloudinary...', { id: 'upload-toast' });
         const { default: imageCompression } = await import('browser-image-compression');
         const options = { maxSizeMB: 0.4, maxWidthOrHeight: 1280, useWebWorker: true };
         
+        const sigRes = await api.get('/upload/signature');
+        const { signature, timestamp, api_key, cloud_name } = sigRes.data;
+
         for (const photo of photos) {
           const compressed = await imageCompression(photo, options);
-          formData.append('images', compressed, photo.name || `image_${Date.now()}.jpg`);
+          const uploadData = new FormData();
+          uploadData.append('file', compressed);
+          uploadData.append('api_key', api_key);
+          uploadData.append('timestamp', timestamp);
+          uploadData.append('signature', signature);
+          uploadData.append('folder', 'hariram-motors/cars');
+
+          const cloudinaryRes = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+            method: 'POST',
+            body: uploadData,
+          }).then(res => res.json());
+
+          if (cloudinaryRes.secure_url) {
+            uploadedImages.push({ url: cloudinaryRes.secure_url, publicId: cloudinaryRes.public_id });
+          }
         }
+        toast.dismiss('upload-toast');
       } else {
         toast.error('Please upload at least one image.');
         return; 
       }
 
-      await toast.promise(api.post('/cars', formData, { headers: { 'Content-Type': 'multipart/form-data' } }), {
+      const payload = {
+        make: data.make,
+        model: data.model,
+        manufacturingYear: data.manufacturingYear,
+        year: data.manufacturingYear,
+        registerYear: data.registerYear,
+        price: data.price ? String(data.price).replace(/,/g, '') : undefined,
+        kms: data.kmDriven ? String(data.kmDriven).replace(/,/g, '') : undefined,
+        fuelType: data.fuelType,
+        transmission: data.transmission,
+        owner: data.ownership,
+        bodyType: data.bodyType,
+        variant: data.variant,
+        color: data.color,
+        registration: data.registration,
+        description: data.description,
+        status: data.status,
+        airConditioner: data.airConditioner,
+        powerWindows: data.powerWindows,
+        sunroof: data.sunroof,
+        parkingSensors: data.parkingSensors,
+        displacement: data.displacement,
+        maxPower: data.maxPower,
+        driveType: data.driveType,
+        cylinders: data.cylinders,
+        features: data.selectedFeatures || [],
+        badges: badges,
+        loanAvailable: data.loanAvailable,
+        isKmGenuine: data.isKmGenuine,
+        mainPhotoIndex: mainPhoto,
+        images: uploadedImages
+      };
+
+      await toast.promise(api.post('/cars', payload, { headers: { 'Content-Type': 'application/json' } }), {
         loading: 'Publishing vehicle...',
         success: 'Vehicle Published Successfully!',
         error: 'Failed to publish vehicle.',

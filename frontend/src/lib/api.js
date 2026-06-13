@@ -32,19 +32,6 @@ api.interceptors.request.use(
       config.headers['X-Original-Path'] = config.url;
     }
 
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
-      if (token) {
-        // Validate token is not obviously malformed
-        if (token.split('.').length === 3) {
-          config.headers.Authorization = `Bearer ${token}`;
-        } else {
-          // Clear invalid token
-          localStorage.removeItem('token');
-        }
-      }
-    }
-
     // Add CSRF protection header safely
     if (typeof document !== 'undefined') {
       try {
@@ -73,7 +60,6 @@ api.interceptors.response.use(
     // Handle specific error codes
     if (error.response?.status === 401) {
       if (typeof window !== 'undefined') {
-        localStorage.removeItem('token');
         if (
           window.location.pathname.startsWith('/admin') &&
           window.location.pathname !== '/admin/login'

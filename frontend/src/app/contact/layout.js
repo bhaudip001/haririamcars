@@ -6,6 +6,19 @@ export const metadata = {
     title: 'Contact Hariram Motors | Surat',
     description: 'Call, WhatsApp or visit us in Surat.',
     url: 'https://www.hariramcars.com/contact',
+    type: 'website',
+    images: [{
+      url: '/og-image.jpg',
+      width: 1200,
+      height: 630,
+      alt: 'Contact Hariram Motors',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact Hariram Motors | Surat',
+    description: 'Call, WhatsApp or visit us in Surat.',
+    images: ['/og-image.jpg'],
   },
 };
 

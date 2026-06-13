@@ -6,6 +6,19 @@ export const metadata = {
     title: 'About Hariram Motors | Trusted Since 2013',
     description: '500+ happy customers. Surat\'s most trusted car dealer.',
     url: 'https://www.hariramcars.com/about',
+    type: 'website',
+    images: [{
+      url: '/og-image.jpg',
+      width: 1200,
+      height: 630,
+      alt: 'About Hariram Motors',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Hariram Motors | Trusted Since 2013',
+    description: '500+ happy customers. Surat\'s most trusted car dealer.',
+    images: ['/og-image.jpg'],
   },
 };
 

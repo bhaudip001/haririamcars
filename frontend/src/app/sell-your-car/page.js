@@ -360,27 +360,27 @@ export default function SellYourCarPage() {
 
                 <div className="space-y-6">
                   <div className="relative">
-                    <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">
+                    <label htmlFor="ownerName" className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">
                       Full Name <span className="text-purple-600 dark:text-purple-400">*</span>
                     </label>
                     <IconUser className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
-                    <input type="text" name="ownerName" value={form.ownerName} onChange={handleChange} className={inputClassName} placeholder="John Doe" required />
+                    <input id="ownerName" type="text" name="ownerName" value={form.ownerName} onChange={handleChange} className={inputClassName} placeholder="John Doe" required />
                   </div>
 
                   <div className="relative">
-                    <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">
+                    <label htmlFor="phone" className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">
                       Phone Number <span className="text-purple-600 dark:text-purple-400">*</span>
                     </label>
                     <IconPhone className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
-                    <input type="tel" name="phone" value={form.phone} onChange={handleChange} className={inputClassName} placeholder="+91 98765 43210" required />
+                    <input id="phone" type="tel" name="phone" value={form.phone} onChange={handleChange} className={inputClassName} placeholder="+91 98765 43210" required />
                   </div>
 
                   <div className="relative">
-                    <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">
+                    <label htmlFor="email" className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">
                       Email Address <span className="text-gray-500 dark:text-gray-600 normal-case tracking-normal">(optional)</span>
                     </label>
                     <IconMail className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
-                    <input type="email" name="email" value={form.email} onChange={handleChange} className={inputClassName} placeholder="john@example.com" />
+                    <input id="email" type="email" name="email" value={form.email} onChange={handleChange} className={inputClassName} placeholder="john@example.com" />
                   </div>
                 </div>
               </motion.div>
@@ -406,24 +406,24 @@ export default function SellYourCarPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div className="relative">
-                    <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Car Brand <span className="text-purple-600 dark:text-purple-400">*</span></label>
+                    <label htmlFor="carBrand" className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Car Brand <span className="text-purple-600 dark:text-purple-400">*</span></label>
                     <IconCar className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
-                    <input type="text" name="carBrand" value={form.carBrand} onChange={handleChange} className={inputClassName} placeholder="e.g. Hyundai" required />
+                    <input id="carBrand" type="text" name="carBrand" value={form.carBrand} onChange={handleChange} className={inputClassName} placeholder="e.g. Hyundai" required />
                   </div>
                   <div className="relative">
-                    <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Car Model <span className="text-purple-600 dark:text-purple-400">*</span></label>
+                    <label htmlFor="carModel" className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Car Model <span className="text-purple-600 dark:text-purple-400">*</span></label>
                     <IconCar className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
-                    <input type="text" name="carModel" value={form.carModel} onChange={handleChange} className={inputClassName} placeholder="e.g. i20 Asta" required />
+                    <input id="carModel" type="text" name="carModel" value={form.carModel} onChange={handleChange} className={inputClassName} placeholder="e.g. i20 Asta" required />
                   </div>
                   <div className="relative">
-                    <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Reg. Year</label>
+                    <label htmlFor="year" className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Reg. Year</label>
                     <IconCalendar className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
-                    <input type="number" name="year" value={form.year} onChange={handleChange} className={inputClassName} placeholder="e.g. 2021" />
+                    <input id="year" type="number" name="year" value={form.year} onChange={handleChange} className={inputClassName} placeholder="e.g. 2021" />
                   </div>
                   <div className="relative">
-                    <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">KM Driven</label>
+                    <label htmlFor="kmDriven" className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">KM Driven</label>
                     <IconDashboard className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
-                    <input type="number" name="kmDriven" value={form.kmDriven} onChange={handleChange} className={inputClassName} placeholder="e.g. 45000" />
+                    <input id="kmDriven" type="number" name="kmDriven" value={form.kmDriven} onChange={handleChange} className={inputClassName} placeholder="e.g. 45000" />
                   </div>
                 </div>
 
@@ -447,9 +447,9 @@ export default function SellYourCarPage() {
                 </div>
 
                 <div className="relative">
-                  <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Expected Price (₹)</label>
+                  <label htmlFor="expectedPrice" className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Expected Price (₹)</label>
                   <IconCurrencyRupee className="absolute left-4 top-[31px] text-gray-500 z-10" size={16} />
-                  <input type="number" name="expectedPrice" value={form.expectedPrice} onChange={handleChange} className={inputClassName} placeholder="e.g. 550000" />
+                  <input id="expectedPrice" type="number" name="expectedPrice" value={form.expectedPrice} onChange={handleChange} className={inputClassName} placeholder="e.g. 550000" />
                 </div>
               </motion.div>
 
@@ -513,8 +513,9 @@ export default function SellYourCarPage() {
                 )}
 
                 <div>
-                  <label className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Additional Notes</label>
+                  <label htmlFor="notes" className="block text-xs text-gray-600 dark:text-gray-400 uppercase tracking-widest mb-2 font-bold pl-1 transition-colors">Additional Notes</label>
                   <textarea
+                    id="notes"
                     name="notes"
                     value={form.notes}
                     onChange={handleChange}

@@ -26,8 +26,6 @@ export default function AdminLayout({ children }) {
   useEffect(() => {
     const verify = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) throw new Error('No token');
         const res = await api.get('/auth/verify');
         setUser(res.data.user);
       } catch {
@@ -45,7 +43,6 @@ export default function AdminLayout({ children }) {
     try {
       await api.post('/auth/logout');
     } catch { }
-    localStorage.removeItem('token');
     router.push('/admin/login');
   };
 

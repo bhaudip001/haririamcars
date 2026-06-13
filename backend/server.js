@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import compression from 'compression';
 import morgan from 'morgan';
+import mongoSanitize from 'express-mongo-sanitize';
 import connectDB from './config/db.js';
 import { sanitizeInputs } from './middleware/validate.js';
 
@@ -23,26 +24,7 @@ requiredEnvs.forEach((envName) => {
   }
 });
 
-// ── Custom Mongo Sanitizer ──
-function sanitizeObject(obj) {
-  if (obj && typeof obj === 'object') {
-    for (const key of Object.keys(obj)) {
-      if (key.startsWith('$')) {
-        delete obj[key];
-      } else if (typeof obj[key] === 'object') {
-        sanitizeObject(obj[key]);
-      }
-    }
-  }
-  return obj;
-}
-function mongoSanitize() {
-  return (req, _res, next) => {
-    if (req.body) sanitizeObject(req.body);
-    if (req.params) sanitizeObject(req.params);
-    next();
-  };
-}
+// ── Custom Mongo Sanitizer Removed ──
 
 // Route imports
 import authRoutes from './routes/auth.routes.js';
@@ -52,6 +34,7 @@ import messageRoutes from './routes/message.routes.js';
 import happyCustomerRoutes from './routes/happyCustomer.routes.js';
 import promoBannerRoutes from './routes/promoBanner.routes.js';
 import siteSettingRoutes from './routes/siteSetting.routes.js';
+import uploadRoutes from './routes/upload.routes.js';
 
 // ── Initialize Express ──
 const app = express();
@@ -171,7 +154,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(mongoSanitize());
+app.use(mongoSanitize({ replaceWith: '_' }));
 app.use(sanitizeInputs);
 
 // CORS
@@ -263,6 +246,7 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/happy-customers', happyCustomerRoutes);
 app.use('/api/promo-banners', promoBannerRoutes);
 app.use('/api/site-settings', siteSettingRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // ── 404 Handler ──
 app.use((req, res) => {
