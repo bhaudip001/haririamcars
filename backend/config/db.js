@@ -1,29 +1,40 @@
 import mongoose from 'mongoose';
 
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
 const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(
-      process.env.MONGODB_URI,
-      {
-        maxPoolSize: 10,
-        serverSelectionTimeoutMS: 5000,
-        socketTimeoutMS: 45000,
-        family: 4,
-      }
-    );
-
-    // Disable mongoose debug in production
-    mongoose.set('debug', process.env.NODE_ENV !== 'production');
-
-    // Disable buffering — fail fast if DB is down
-    mongoose.set('bufferCommands', false);
-
-    console.log(`✅ MongoDB connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error(`❌ MongoDB connection error: ${error.message}`);
-    // Do not process.exit(1) in a serverless environment to prevent CORS issues
-    // Let individual API requests fail gracefully if they need DB access
+  if (cached.conn) {
+    return cached.conn;
   }
+
+  if (!cached.promise) {
+    mongoose.set('strictQuery', false);
+    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    }).then((mongoose) => {
+      console.log(`✅ MongoDB connected: ${mongoose.connection.host}`);
+      return mongoose;
+    }).catch(err => {
+      console.error(`❌ MongoDB connection error: ${err.message}`);
+      cached.promise = null;
+      throw err;
+    });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
 };
 
 export default connectDB;

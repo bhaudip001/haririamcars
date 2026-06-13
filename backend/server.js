@@ -53,12 +53,20 @@ import happyCustomerRoutes from './routes/happyCustomer.routes.js';
 import promoBannerRoutes from './routes/promoBanner.routes.js';
 import siteSettingRoutes from './routes/siteSetting.routes.js';
 
-// ── Connect to MongoDB ──
-connectDB();
-
 // ── Initialize Express ──
 const app = express();
 app.set('trust proxy', 1);
+
+// ── Connect to MongoDB on every request (Serverless Pattern) ──
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Database connection failed:', error.message);
+    res.status(500).json({ error: 'Database connection failed. Please check your configuration.' });
+  }
+});
 
 // ── Global Middleware ──
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
