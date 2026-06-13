@@ -15,12 +15,12 @@ import GoogleReviewsSkeleton from '@/components/skeletons/GoogleReviewsSkeleton'
 import DynamicGoogleReviews from '@/components/client/DynamicGoogleReviews';
 
 export const metadata = {
-  title: 'Hariram Motors | Used & New Cars in Surat',
-  description: 'Browse 150+ certified pre-owned and new cars in Surat. Transparent pricing, full documentation, trusted since 2013. Hariram Motors, Varachha.',
+  title: 'Hariram Cars | Top Car Dealer for Second-Hand Cars in Surat',
+  description: 'Welcome to Hariram Motors (Hariram Cars). Buy or sell second-hand motors and certified pre-owned cars in Surat. Get the best deals from a trusted car dealer.',
   alternates: { canonical: 'https://www.hariramcars.com/' },
   openGraph: {
-    title: 'Hariram Motors | Used & New Cars in Surat',
-    description: 'Surat\'s #1 destination for certified pre-owned cars.',
+    title: 'Hariram Cars | Top Car Dealer for Second-Hand Cars in Surat',
+    description: 'Welcome to Hariram Motors (Hariram Cars). Buy or sell second-hand motors and certified pre-owned cars in Surat.',
     url: 'https://www.hariramcars.com/',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
   },

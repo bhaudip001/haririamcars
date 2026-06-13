@@ -1,10 +1,10 @@
 export const metadata = {
-  title: 'About Us — Trusted Car Dealer in Surat Since 2013',
-  description: 'Learn about Hariram Motors — Surat\'s most trusted pre-owned car dealership since 2013. 500+ happy customers, transparent pricing, full documentation support.',
+  title: 'About Hariram Motors | Trusted Car Dealer in Surat',
+  description: 'Learn about Hariram Motors (Hariram Cars) — Surat\'s most trusted pre-owned car dealer since 2013. 500+ happy customers, transparent pricing, full documentation support.',
   alternates: { canonical: 'https://www.hariramcars.com/about' },
   openGraph: {
-    title: 'About Hariram Motors | Trusted Since 2013',
-    description: '500+ happy customers. Surat\'s most trusted car dealer.',
+    title: 'About Hariram Motors | Trusted Car Dealer in Surat',
+    description: 'Learn about Hariram Motors (Hariram Cars) — Surat\'s most trusted pre-owned car dealer since 2013.',
     url: 'https://www.hariramcars.com/about',
     type: 'website',
     images: [{
@@ -16,8 +16,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'About Hariram Motors | Trusted Since 2013',
-    description: '500+ happy customers. Surat\'s most trusted car dealer.',
+    title: 'About Hariram Motors | Trusted Car Dealer in Surat',
+    description: 'Learn about Hariram Motors (Hariram Cars) — Surat\'s most trusted pre-owned car dealer since 2013.',
     images: ['/og-image.jpg'],
   },
 };

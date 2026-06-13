@@ -1,10 +1,10 @@
 export const metadata = {
-  title: 'Sell Your Car in Surat — Best Price Guaranteed',
-  description: 'Sell your used car at the best price in Surat. Free inspection, instant quote, same-day payment at Hariram Motors. Call +91 93734 82016.',
+  title: 'Sell Car in Surat | Best Price for Second-Hand Cars | Hariram Motors',
+  description: 'Looking to sell your car? Hariram Motors offers the best market price for second-hand motors in Surat with instant payment and zero paperwork.',
   alternates: { canonical: 'https://www.hariramcars.com/sell-your-car' },
   openGraph: {
-    title: 'Sell Your Car | Hariram Motors Surat',
-    description: 'Best price. Free inspection. Same-day payment.',
+    title: 'Sell Car in Surat | Best Price for Second-Hand Cars | Hariram Motors',
+    description: 'Looking to sell your car? Hariram Motors offers the best market price for second-hand motors in Surat with instant payment and zero paperwork.',
     url: 'https://www.hariramcars.com/sell-your-car',
     type: 'website',
     images: [{
@@ -16,8 +16,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sell Your Car | Hariram Motors Surat',
-    description: 'Best price. Free inspection. Same-day payment.',
+    title: 'Sell Car in Surat | Best Price for Second-Hand Cars | Hariram Motors',
+    description: 'Looking to sell your car? Hariram Motors offers the best market price for second-hand motors in Surat with instant payment and zero paperwork.',
     images: ['/og-image.jpg'],
   },
 };
