@@ -1,11 +1,12 @@
 import express from 'express';
 import Message from '../models/Message.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
+import { validateMessage } from '../middleware/validate.js';
 
 const router = express.Router();
 
 // ── POST /api/messages — Public form submission ──
-router.post('/', async (req, res) => {
+router.post('/', validateMessage, async (req, res) => {
   try {
     const message = await Message.create(req.body);
     res.status(201).json({ message: 'Message sent successfully!' });

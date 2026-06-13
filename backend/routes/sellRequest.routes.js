@@ -2,11 +2,12 @@ import express from 'express';
 import SellRequest from '../models/SellRequest.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
 import { upload, uploadToCloudinary } from '../config/cloudinary.js';
+import { validateSellRequest } from '../middleware/validate.js';
 
 const router = express.Router();
 
 // ── POST /api/sell-requests — Public form submission ──
-router.post('/', upload.array('photos', 10), async (req, res) => {
+router.post('/', upload.array('photos', 10), validateSellRequest, async (req, res) => {
   try {
     const data = { ...req.body };
 

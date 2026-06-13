@@ -1,6 +1,7 @@
 import express from 'express';
 import User from '../models/User.js';
 import { protect, adminOnly, generateToken } from '../middleware/authMiddleware.js';
+import { validateLogin } from '../middleware/validate.js';
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ router.get('/seed', async (req, res) => {
 
 
 // ── POST /api/auth/login ──
-router.post('/login', async (req, res) => {
+router.post('/login', validateLogin, async (req, res) => {
   try {
     const { email, password } = req.body;
 

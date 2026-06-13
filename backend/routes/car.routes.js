@@ -2,6 +2,7 @@ import express from 'express';
 import Car from '../models/Car.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
 import { upload, uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
+import { validateCar } from '../middleware/validate.js';
 
 const router = express.Router();
 // Trigger nodemon restart
@@ -137,7 +138,7 @@ router.get('/:slug', async (req, res) => {
 });
 
 // ── POST /api/cars — Create car (admin) ──
-router.post('/', protect, adminOnly, upload.array('images', 20), async (req, res) => {
+router.post('/', protect, adminOnly, upload.array('images', 20), validateCar, async (req, res) => {
   try {
     const carData = { ...req.body };
 
