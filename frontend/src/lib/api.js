@@ -21,6 +21,11 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
+    // Send original path for Vercel routing fix
+    if (config.url) {
+      config.headers['X-Original-Path'] = config.url;
+    }
+
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('token');
       if (token) {
