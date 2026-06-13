@@ -83,7 +83,7 @@ export const validateMessage = [
     .matches(/^[6-9]\d{9}$/)
     .withMessage('Valid 10-digit Indian phone required'),
   body('email')
-    .optional().isEmail().normalizeEmail()
+    .optional({ checkFalsy: true }).isEmail().normalizeEmail()
     .withMessage('Valid email required'),
   body('message')
     .trim().notEmpty().isLength({ min: 10, max: 2000 })

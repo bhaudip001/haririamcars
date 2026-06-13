@@ -141,6 +141,7 @@ app.use(
         frameSrc: [
           "'self'",
           'https://www.google.com',
+          'https://maps.google.com',
         ],
         objectSrc: ["'none'"],
         upgradeInsecureRequests: [],
