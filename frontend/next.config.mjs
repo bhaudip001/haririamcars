@@ -77,7 +77,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://res.cloudinary.com https://images.unsplash.com https://lh3.googleusercontent.com; font-src 'self' data:; connect-src 'self' https://maps.googleapis.com http://localhost:5000 https://hariramcars.vercel.app;",
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://res.cloudinary.com https://images.unsplash.com https://lh3.googleusercontent.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://maps.googleapis.com http://localhost:5000 https://hariramcars.vercel.app https://hariram-motors-api.vercel.app https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net;",
           },
         ],
       },
