@@ -49,7 +49,61 @@ const app = express();
 app.set('trust proxy', 1);
 
 // ── Global Middleware ──
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://www.googletagmanager.com',
+          'https://www.google-analytics.com',
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          'https://fonts.googleapis.com',
+        ],
+        fontSrc: [
+          "'self'",
+          'https://fonts.gstatic.com',
+        ],
+        imgSrc: [
+          "'self'",
+          'data:',
+          'blob:',
+          'https://res.cloudinary.com',
+          'https://images.unsplash.com',
+          'https://lh3.googleusercontent.com',
+        ],
+        connectSrc: [
+          "'self'",
+          process.env.FRONTEND_URL,
+          'https://api.cloudinary.com',
+        ],
+        frameSrc: [
+          "'self'",
+          'https://www.google.com',
+        ],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true,
+    },
+    noSniff: true,
+    xssFilter: true,
+    frameguard: { action: 'sameorigin' },
+    hidePoweredBy: true,
+  })
+);
 app.use(compression());
 app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
@@ -57,41 +111,86 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(mongoSanitize());
 
 // CORS
-const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:3000',
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'https://www.hariramcars.com',
-  'https://hariramcars.com',
-];
-app.use(cors({
-  origin: (origin, callback) => {
-    // allow requests with no origin
-    if (!origin) return callback(null, true);
-    
-    // Allow localhost
-    if (origin.includes('localhost')) return callback(null, true);
-    
-    // Allow any Vercel domain for this project
-    if (origin.includes('vercel.app')) return callback(null, true);
-    
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    
-    console.error(`CORS Blocked: ${origin}`);
-    callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
-}));
+const allowedOrigins =
+  process.env.NODE_ENV === 'production'
+    ? [
+        process.env.FRONTEND_URL,
+        'https://haririamcars.vercel.app',
+        'https://harirammotors.com',
+        'https://www.harirammotors.com',
+      ].filter(Boolean)
+    : [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://127.0.0.1:3000',
+      ];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow server-to-server (no origin)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(
+        new Error(`CORS blocked: ${origin} not allowed`)
+      );
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+    ],
+    exposedHeaders: ['X-Total-Count'],
+    maxAge: 86400, // Cache preflight for 24h
+  })
+);
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: process.env.NODE_ENV === 'development' ? 10000 : 200,
-  message: { error: 'Too many requests, please try again later.' },
+// General API: 200 req / 15 min
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Try again later.' },
+  skip: (req) => req.method === 'GET'
+    && req.path.startsWith('/api/cars'),
 });
-app.use('/api/', limiter);
+
+// Auth: 10 attempts / 15 min (brute force protection)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many login attempts. Try again in 15 minutes.' },
+  skipSuccessfulRequests: true,
+});
+
+// Contact/Sell forms: 5 submissions / hour
+const formLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many submissions. Try again in an hour.' },
+});
+
+// File upload: 20 uploads / hour
+const uploadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 20,
+  message: { error: 'Upload limit reached. Try again later.' },
+});
+
+app.use('/api/', generalLimiter);
+app.use('/api/auth/login', authLimiter);
+app.use('/api/messages', formLimiter);
+app.use('/api/sell-requests', uploadLimiter);
 
 // ── Health Check ──
 app.get('/api/health', (_req, res) => {
