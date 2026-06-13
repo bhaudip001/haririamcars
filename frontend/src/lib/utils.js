@@ -44,6 +44,11 @@ export function getOptimizedImage(url, width = 800) {
   return url;
 }
 
+// Generate blur data URL for Next.js Image
+export const generateBlurPlaceholder = () => {
+  return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+};
+
 // Truncate text
 export function truncate(text, maxLength = 100) {
   if (!text) return '';

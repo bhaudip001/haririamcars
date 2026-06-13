@@ -12,7 +12,7 @@ import {
   IconDashboard,
   IconBrandWhatsapp
 } from '@tabler/icons-react';
-import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink } from '@/lib/utils';
+import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder } from '@/lib/utils';
 
 export default function CarCard({ car, index = 0 }) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -53,6 +53,8 @@ export default function CarCard({ car, index = 0 }) {
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            placeholder="blur"
+            blurDataURL={generateBlurPlaceholder()}
             onLoad={() => setIsLoaded(true)}
             className={`object-cover group-hover:scale-110 transition-all duration-700 ${isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}
           />
