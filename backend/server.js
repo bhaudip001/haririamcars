@@ -57,22 +57,7 @@ import siteSettingRoutes from './routes/siteSetting.routes.js';
 const app = express();
 app.set('trust proxy', 1);
 
-// Fix req.url for Vercel
-app.use((req, res, next) => {
-  if (req.url.startsWith('/backend/server.js')) {
-    const urlObj = new URL(req.url, `http://${req.headers.host}`);
-    const pathParam = urlObj.searchParams.get('path') || '';
-    req.url = '/api/' + pathParam;
-    
-    // Also copy query params from the original url minus the 'path' parameter
-    urlObj.searchParams.delete('path');
-    const remainingSearch = urlObj.searchParams.toString();
-    if (remainingSearch) {
-      req.url += '?' + remainingSearch;
-    }
-  }
-  next();
-});
+
 
 // ── Connect to MongoDB on every request (Serverless Pattern) ──
 app.use(async (req, res, next) => {
@@ -241,7 +226,7 @@ app.use('/api/site-settings', siteSettingRoutes);
 
 // ── 404 Handler ──
 app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found', path: req.url, originalUrl: req.originalUrl });
+  res.status(404).json({ error: 'Route not found', path: req.url, originalUrl: req.originalUrl, headers: req.headers });
 });
 
 // ── Global Error Handler ──
