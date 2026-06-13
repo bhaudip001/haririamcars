@@ -14,7 +14,8 @@ import { motion } from 'framer-motion';
 import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder } from '@/lib/utils';
 import { staggerContainer, fadeInLeft } from '@/lib/animations';
 import CarCard from '@/components/CarCard';
-import EmiCalculator from '@/components/EmiCalculator';
+import dynamic from 'next/dynamic';
+const EmiCalculator = dynamic(() => import('@/components/EmiCalculator'), { ssr: false });
 
 export default function CarDetailPageClient({ initialCar, initialSimilarCars }) {
   const router = useRouter();

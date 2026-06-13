@@ -3,18 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  IconCalendarEvent,
-  IconGasStation,
-  IconManualGearbox,
-  IconMapPin,
-  IconHeart,
-  IconDashboard,
-  IconBrandWhatsapp
-} from '@tabler/icons-react';
+import { IconBrandWhatsapp } from '@tabler/icons-react';
 import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder } from '@/lib/utils';
 
-export default function CarCard({ car, index = 0 }) {
+export default function CarCard({ car, index = 0, priority = false }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   if (!car) return null;
@@ -52,7 +44,8 @@ export default function CarCard({ car, index = 0 }) {
             src={getOptimizedImage(imageUrl, 600)}
             alt={title}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            priority={priority}
             placeholder="blur"
             blurDataURL={generateBlurPlaceholder()}
             onLoad={() => setIsLoaded(true)}

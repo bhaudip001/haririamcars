@@ -3,7 +3,8 @@ import './globals.css';
 import AppLayoutWrapper from '@/components/AppLayoutWrapper';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from 'react-hot-toast';
-import LeadPopup from '@/components/LeadPopup';
+import dynamic from 'next/dynamic';
+const LeadPopup = dynamic(() => import('@/components/LeadPopup'), { ssr: false });
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({
