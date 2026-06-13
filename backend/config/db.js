@@ -7,21 +7,34 @@ if (!cached) {
 }
 
 const connectDB = async () => {
-  if (cached.conn) {
-    return cached.conn;
-  }
+  if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    mongoose.set('strictQuery', false);
     cached.promise = mongoose.connect(process.env.MONGODB_URI, {
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
-    }).then((mongoose) => {
-      console.log(`✅ MongoDB connected: ${mongoose.connection.host}`);
+    }).then(async (mongoose) => {
+      console.log('✅ MongoDB connected');
+      // Auto-seed admin user
+      try {
+        const User = (await import('../models/User.js')).default;
+        const existingAdmin = await User.findOne({ email: 'admin@hariramcars.com' });
+        if (!existingAdmin) {
+          await User.create({
+            name: 'Admin',
+            email: 'admin@hariramcars.com',
+            password: 'admin123456',
+            role: 'admin',
+          });
+          console.log('✅ Auto-seeded admin user!');
+        }
+      } catch (err) {
+        console.error('Auto-seed error:', err);
+      }
       return mongoose;
     }).catch(err => {
-      console.error(`❌ MongoDB connection error: ${err.message}`);
+      console.error('❌ MongoDB connection error:', err.message);
       cached.promise = null;
       throw err;
     });
