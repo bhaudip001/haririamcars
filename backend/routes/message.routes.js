@@ -22,7 +22,7 @@ router.get('/', protect, adminOnly, async (req, res) => {
     const skip = (Number(page) - 1) * Number(limit);
 
     const [messages, total, unreadCount] = await Promise.all([
-      Message.find().sort({ createdAt: -1 }).skip(skip).limit(Number(limit)),
+      Message.find().sort({ createdAt: -1 }).skip(skip).limit(Number(limit)).lean(),
       Message.countDocuments(),
       Message.countDocuments({ isRead: false }),
     ]);

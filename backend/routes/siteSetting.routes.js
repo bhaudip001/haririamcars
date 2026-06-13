@@ -25,7 +25,7 @@ const defaultSettings = {
 // ── GET /api/site-settings — Public ──
 router.get('/', async (_req, res) => {
   try {
-    const settings = await SiteSetting.find();
+    const settings = await SiteSetting.find().lean();
     const result = { ...defaultSettings };
 
     settings.forEach(s => {

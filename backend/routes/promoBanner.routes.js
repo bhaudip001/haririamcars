@@ -8,7 +8,7 @@ const router = express.Router();
 // ── GET /api/promo-banners — Public active banners ──
 router.get('/', async (_req, res) => {
   try {
-    const banners = await PromoBanner.find({ isActive: true }).sort({ order: 1 });
+    const banners = await PromoBanner.find({ isActive: true }).sort({ order: 1 }).lean();
     res.json(banners);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -18,7 +18,7 @@ router.get('/', async (_req, res) => {
 // ── GET /api/promo-banners/all — Admin list ──
 router.get('/all', protect, adminOnly, async (_req, res) => {
   try {
-    const banners = await PromoBanner.find().sort({ order: 1 });
+    const banners = await PromoBanner.find().sort({ order: 1 }).lean();
     res.json(banners);
   } catch (error) {
     res.status(500).json({ error: error.message });

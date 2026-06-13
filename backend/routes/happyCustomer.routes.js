@@ -8,7 +8,7 @@ const router = express.Router();
 // ── GET /api/happy-customers — Public listing ──
 router.get('/', async (_req, res) => {
   try {
-    const customers = await HappyCustomer.find({ isActive: true }).sort({ createdAt: -1 });
+    const customers = await HappyCustomer.find({ isActive: true }).sort({ createdAt: -1 }).lean();
     res.json(customers);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -18,7 +18,7 @@ router.get('/', async (_req, res) => {
 // ── GET /api/happy-customers/all — Admin listing ──
 router.get('/all', protect, adminOnly, async (_req, res) => {
   try {
-    const customers = await HappyCustomer.find().sort({ createdAt: -1 });
+    const customers = await HappyCustomer.find().sort({ createdAt: -1 }).lean();
     res.json(customers);
   } catch (error) {
     res.status(500).json({ error: error.message });

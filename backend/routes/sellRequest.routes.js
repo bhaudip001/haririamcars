@@ -36,7 +36,7 @@ router.get('/', protect, adminOnly, async (req, res) => {
 
     const skip = (Number(page) - 1) * Number(limit);
     const [requests, total] = await Promise.all([
-      SellRequest.find(filter).sort({ createdAt: -1 }).skip(skip).limit(Number(limit)),
+      SellRequest.find(filter).sort({ createdAt: -1 }).skip(skip).limit(Number(limit)).lean(),
       SellRequest.countDocuments(filter),
     ]);
 

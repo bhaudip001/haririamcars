@@ -121,12 +121,10 @@ carSchema.pre('save', function (next) {
 
 // Indexes for search & filtering
 carSchema.index({ make: 1, model: 1 });
-carSchema.index({ price: 1 });
-carSchema.index({ fuelType: 1 });
-carSchema.index({ year: 1 });
-carSchema.index({ status: 1 });
-// carSchema.index({ slug: 1 }); // Removed to prevent duplicate index warning
-carSchema.index({ createdAt: -1 });
+carSchema.index({ status: 1, price: 1 });
+carSchema.index({ status: 1, createdAt: -1 });
+carSchema.index({ fuelType: 1, bodyType: 1 });
+carSchema.index({ transmission: 1 });
 
 const Car = mongoose.model('Car', carSchema);
 export default Car;

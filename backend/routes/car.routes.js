@@ -56,7 +56,7 @@ router.get('/', async (req, res) => {
     const skip = (Number(page) - 1) * Number(limit);
 
     const [cars, total] = await Promise.all([
-      Car.find(filter).sort(sortOption).skip(skip).limit(Number(limit)),
+      Car.find(filter).sort(sortOption).skip(skip).limit(Number(limit)).lean(),
       Car.countDocuments(filter),
     ]);
 
@@ -123,11 +123,11 @@ router.get('/:slug', async (req, res) => {
     let car;
     
     if (/^[0-9a-fA-F]{24}$/.test(slug)) {
-      car = await Car.findById(slug);
+      car = await Car.findById(slug).lean();
     }
     
     if (!car) {
-      car = await Car.findOne({ slug });
+      car = await Car.findOne({ slug }).lean();
     }
     
     if (!car) return res.status(404).json({ error: 'Car not found' });
