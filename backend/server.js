@@ -65,7 +65,10 @@ app.use((req, res, next) => {
     const queryPath = urlObj.searchParams.get('path');
     
     if (queryPath) {
-      req.url = '/api/' + queryPath;
+      // Normalize queryPath: strip leading slashes and optional 'api/' prefix
+      const cleanPath = queryPath.replace(/^\/?(api\/)?/, '');
+      req.url = '/api/' + cleanPath;
+      
       urlObj.searchParams.delete('path');
       const remainingSearch = urlObj.searchParams.toString();
       if (remainingSearch) {
