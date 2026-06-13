@@ -65,7 +65,7 @@ export default function LeadPopup() {
     try {
       await api.post('/messages', {
         name: formData.name,
-        phone: formData.phone,
+        phone: formData.phone.replace(/\s+/g, ''),
         message: 'Lead generated from Welcome Popup Form.',
       });
       setIsSuccess(true);

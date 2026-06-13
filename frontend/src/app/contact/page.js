@@ -52,7 +52,7 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setStatus('loading');
     try {
-      await api.post('/messages', form);
+      await api.post('/messages', { ...form, phone: form.phone.replace(/\s+/g, '') });
       setStatus('success');
       setTimeout(() => {
         setStatus('idle');

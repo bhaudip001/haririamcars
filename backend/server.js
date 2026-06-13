@@ -131,6 +131,8 @@ const allowedOrigins =
         'https://haririamcars.vercel.app',
         'https://harirammotors.com',
         'https://www.harirammotors.com',
+        'https://hariramcars.com',
+        'https://www.hariramcars.com',
       ].filter(Boolean)
     : [
         'http://localhost:3000',

@@ -114,7 +114,13 @@ export default function SellYourCarPage() {
     try {
       const formData = new FormData();
       Object.entries(form).forEach(([key, value]) => {
-        if (value) formData.append(key, value);
+        if (value) {
+          if (key === 'phone') {
+            formData.append(key, value.replace(/\s+/g, ''));
+          } else {
+            formData.append(key, value);
+          }
+        }
       });
       photos.forEach(photo => formData.append('photos', photo));
 
