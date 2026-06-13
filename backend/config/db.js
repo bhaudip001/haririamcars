@@ -21,7 +21,8 @@ const connectDB = async () => {
     console.log(`✅ MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`❌ MongoDB connection error: ${error.message}`);
-    process.exit(1);
+    // Do not process.exit(1) in a serverless environment to prevent CORS issues
+    // Let individual API requests fail gracefully if they need DB access
   }
 };
 

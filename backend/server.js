@@ -18,7 +18,8 @@ const requiredEnvs = ['MONGODB_URI', 'JWT_SECRET', 'CLOUDINARY_CLOUD_NAME', 'CLO
 requiredEnvs.forEach((envName) => {
   if (!process.env[envName]) {
     console.error(`❌ CRITICAL: ${envName} is missing in environment variables.`);
-    process.exit(1);
+    // Instead of crashing the serverless function immediately (which breaks CORS),
+    // we log the error. Individual routes will fail gracefully later.
   }
 });
 
