@@ -186,7 +186,7 @@ export default function AboutPage() {
                   </div>
                   <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] rounded-2xl p-5 transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_10px_30px_rgba(124,58,237,0.06)] dark:hover:shadow-[0_10px_30px_rgba(124,58,237,0.1)]">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2018</span>
+                      <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2023</span>
                       <div className="h-px flex-grow bg-gradient-to-r from-purple-500/30 to-transparent" />
                     </div>
                     <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">500 Cars Milestone</h4>
@@ -201,11 +201,11 @@ export default function AboutPage() {
                   </div>
                   <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.08] rounded-2xl p-5 transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500/30 hover:shadow-[0_10px_30px_rgba(124,58,237,0.06)] dark:hover:shadow-[0_10px_30px_rgba(124,58,237,0.1)]">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2024</span>
+                      <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2026</span>
                       <div className="h-px flex-grow bg-gradient-to-r from-purple-500/30 to-transparent" />
                     </div>
                     <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">#1 in Surat</h4>
-                    <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Recognized as Surat&apos;s most trusted pre-owned car destination with 150+ stock.</p>
+                    <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Recognized as Surat's most trusted pre-owned car destination with 150+ stock.</p>
                   </div>
                 </motion.div>
               </motion.div>
