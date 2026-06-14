@@ -27,6 +27,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+  const [loadedImages, setLoadedImages] = useState({});
 
   // Smart Sticky State
   const rightColumnRef = useRef(null);
@@ -518,7 +519,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 e.stopPropagation();
                 setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
               }}
-              className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-3 transition-all z-50 backdrop-blur-md"
+              className="hidden md:flex absolute left-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-3 transition-all z-50 backdrop-blur-md"
             >
               <IconChevronLeft size={28} stroke={1.5} />
             </button>
@@ -529,7 +530,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 e.stopPropagation();
                 setActiveImageIdx(prev => (prev === images.length - 1 ? 0 : prev + 1));
               }}
-              className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-3 transition-all z-50 backdrop-blur-md"
+              className="hidden md:flex absolute right-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-3 transition-all z-50 backdrop-blur-md"
             >
               <IconChevronRight size={28} stroke={1.5} />
             </button>
@@ -543,23 +544,56 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 if (!isAdjacent && idx !== activeImageIdx) return null;
 
                 return (
-                  <Image
-                    key={idx}
-                    src={getOptimizedImage(img.url, 1920)}
-                    alt={`${title} fullscreen ${idx + 1}`}
-                    fill
-                    placeholder="blur"
-                    blurDataURL={generateBlurPlaceholder()}
-                    className={`object-contain transition-opacity duration-300 ${idx === activeImageIdx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
-                    quality={95}
-                    priority={isAdjacent}
-                  />
+                  <div key={idx} className={`absolute inset-0 transition-opacity duration-300 ${idx === activeImageIdx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}>
+                    {!loadedImages[idx] && (
+                      <div className="absolute inset-0 flex items-center justify-center z-0">
+                        <div className="w-12 h-12 border-4 border-white/20 border-t-white/90 rounded-full animate-spin"></div>
+                      </div>
+                    )}
+                    <Image
+                      src={getOptimizedImage(img.url, 1920)}
+                      alt={`${title} fullscreen ${idx + 1}`}
+                      fill
+                      placeholder="blur"
+                      blurDataURL={generateBlurPlaceholder()}
+                      className="object-contain relative z-10"
+                      quality={95}
+                      priority={isAdjacent}
+                      onLoad={() => setLoadedImages(prev => ({ ...prev, [idx]: true }))}
+                    />
+                  </div>
                 );
               })}
             </div>
 
-            <div className="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 text-white text-xs md:text-sm font-medium tracking-wide whitespace-nowrap bg-black/60 px-4 py-2 rounded-full backdrop-blur-md border border-white/10 z-50 shadow-lg">
-              {activeImageIdx + 1} / {images.length} <span>— swipe or use arrows</span>
+            <div className="absolute bottom-6 md:bottom-10 left-0 w-full flex justify-center px-4 z-50 pointer-events-none">
+              <div className="w-full max-w-[400px] flex items-center justify-between md:justify-center pointer-events-auto">
+                <button
+                  aria-label="Previous Image"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
+                  }}
+                  className="md:hidden text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-full p-2.5 backdrop-blur-md transition-colors"
+                >
+                  <IconChevronLeft size={24} stroke={1.5} />
+                </button>
+                
+                <div className="text-white text-xs md:text-sm font-medium tracking-wide whitespace-nowrap bg-black/60 px-4 py-2 rounded-full backdrop-blur-md border border-white/10 shadow-lg mx-2 flex-shrink">
+                  {activeImageIdx + 1} / {images.length} <span className="hidden sm:inline">— swipe or use arrows</span>
+                </div>
+                
+                <button
+                  aria-label="Next Image"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImageIdx(prev => (prev === images.length - 1 ? 0 : prev + 1));
+                  }}
+                  className="md:hidden text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-full p-2.5 backdrop-blur-md transition-colors"
+                >
+                  <IconChevronRight size={24} stroke={1.5} />
+                </button>
+              </div>
             </div>
           </div>
         )}
