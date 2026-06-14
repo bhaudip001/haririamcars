@@ -237,7 +237,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                     })}
                     <button
                       onClick={() => setIsLightboxOpen(true)}
-                      className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 shadow-lg border border-white/20"
+                      className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-lg border border-white/20"
                     >
                       <IconMaximize size={24} />
                     </button>
