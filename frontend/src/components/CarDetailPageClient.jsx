@@ -192,15 +192,26 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
             >
               {images.length > 0 ? (
                 <>
-                  <Image 
-                    src={getOptimizedImage(images[activeImageIdx]?.url, 1200)} 
-                    alt={title} 
-                    fill 
-                    placeholder="blur"
-                    blurDataURL={generateBlurPlaceholder()}
-                    className="object-contain group-hover:scale-105 transition-transform duration-700" 
-                    priority
-                  />
+                  {images.map((img, idx) => {
+                    const isAdjacent = Math.abs(idx - activeImageIdx) <= 1 || 
+                      (activeImageIdx === 0 && idx === images.length - 1) || 
+                      (activeImageIdx === images.length - 1 && idx === 0);
+                    
+                    if (!isAdjacent && idx !== activeImageIdx) return null;
+
+                    return (
+                      <Image 
+                        key={idx}
+                        src={getOptimizedImage(img.url, 1200)} 
+                        alt={`${title} ${idx + 1}`}
+                        fill 
+                        placeholder="blur"
+                        blurDataURL={generateBlurPlaceholder()}
+                        className={`object-contain transition-all duration-500 ${idx === activeImageIdx ? 'opacity-100 z-10 group-hover:scale-105' : 'opacity-0 z-0 pointer-events-none'}`} 
+                        priority={isAdjacent}
+                      />
+                    );
+                  })}
                   <button 
                     onClick={() => setIsLightboxOpen(true)}
                     className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 shadow-lg border border-white/20"
@@ -497,16 +508,27 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
           </button>
 
           <div className="relative w-full h-full max-w-7xl max-h-[85vh] p-4 md:p-12">
-            <Image 
-              src={getOptimizedImage(images[activeImageIdx]?.url, 1920)} 
-              alt={`${title} fullscreen`}
-              fill
-              placeholder="blur"
-              blurDataURL={generateBlurPlaceholder()}
-              className="object-contain"
-              quality={95}
-              priority
-            />
+            {images.map((img, idx) => {
+              const isAdjacent = Math.abs(idx - activeImageIdx) <= 1 || 
+                (activeImageIdx === 0 && idx === images.length - 1) || 
+                (activeImageIdx === images.length - 1 && idx === 0);
+              
+              if (!isAdjacent && idx !== activeImageIdx) return null;
+
+              return (
+                <Image 
+                  key={idx}
+                  src={getOptimizedImage(img.url, 1920)} 
+                  alt={`${title} fullscreen ${idx + 1}`}
+                  fill
+                  placeholder="blur"
+                  blurDataURL={generateBlurPlaceholder()}
+                  className={`object-contain transition-opacity duration-300 ${idx === activeImageIdx ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
+                  quality={95}
+                  priority={isAdjacent}
+                />
+              );
+            })}
           </div>
 
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/60 text-sm font-medium tracking-wide">
