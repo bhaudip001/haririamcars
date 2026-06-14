@@ -43,15 +43,43 @@ export const metadata = {
     'car dealership surat',
     'varachha used cars',
     'certified pre-owned surat',
+    
+    // Brand & Local Dealership Searches
+    'Hariram Cars Surat',
+    'Hariram Motor second hand cars',
+    'Best used car dealer in Surat',
+    'Top pre-owned car showroom in Surat',
+    'Buy used cars in Varachha Surat',
+    'Used car showroom near me',
+    
+    // High-Volume General Intent Searches
     'Second hand cars in Surat',
-    'Used cars for sale near me',
-    'Best pre-owned car dealer in Surat',
-    'Used cars under 5 lakhs in Surat',
+    'Used cars for sale in Surat',
+    'Pre-owned cars near me',
+    'Certified second hand cars in Surat',
     'Certified second hand cars',
-    'Buy used Maruti Swift Surat',
-    'Used car showroom in Surat',
+    
+    // Budget & Finance Specific Searches
+    'Used cars under 3 lakhs in Surat',
+    'Used cars under 5 lakhs in Surat',
+    'Second hand cars under 5 lakhs in Surat',
+    'Cheapest second hand cars in Surat',
+    'Used cars on loan in Surat',
     'Second hand cars on loan',
+    'Second hand cars with EMI options Surat',
     'Second hand cars on EMI',
+    
+    // Fuel & Transmission Specific Searches
+    'Second hand CNG cars in Surat',
+    'Used automatic cars for sale Surat',
+    'Second hand diesel SUV in Surat',
+    
+    // Model-Specific Searches
+    'Buy used Hyundai Creta in Surat',
+    'Second hand Maruti Swift for sale Surat',
+    'Buy used Maruti Swift Surat',
+    
+    // Broad Reach
     'Top used car dealers in Gujarat',
     'Sell my car in Surat',
   ],
