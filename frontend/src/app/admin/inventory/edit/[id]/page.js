@@ -127,8 +127,8 @@ function ToggleSwitch({ label, description, checked, onChange }) {
 // Drag & Drop Zone component combining existing and new files
 function DropZone({
   title, description, icon: Icon, accept, id,
-  existingImages, onRemoveExisting,
-  files, onFilesAdded, onRemoveFile,
+  existingImages, onRemoveExisting, onMoveExistingLeft, onMoveExistingRight, onMakeExistingMain,
+  files, onFilesAdded, onRemoveFile, onMovePhotoLeft, onMovePhotoRight
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef(null);
@@ -197,28 +197,59 @@ function DropZone({
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-3">
           
           {/* Existing Images */}
-          {existingImages.map((img, index) => (
-            <div key={`existing-${index}`} className="relative group bg-background rounded-xl overflow-hidden border border-gray-100 aspect-[4/3]">
-              <img src={img.url} alt="Existing" className="w-full h-full object-cover" />
-              <div className="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">EXISTING</div>
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                <button
-                  type="button"
-                  onClick={(e) => { e.stopPropagation(); onRemoveExisting(index); }}
-                  className="text-[10px] bg-red-500 text-white px-3 py-1.5 rounded font-bold hover:bg-red-600 shadow-sm uppercase tracking-wide"
-                >
-                  Remove
-                </button>
+          {existingImages.map((img, index) => {
+            const isMain = index === 0;
+            return (
+              <div key={`existing-${index}`} className="relative group bg-background rounded-xl overflow-hidden border border-gray-100 aspect-[4/3]">
+                <img src={img.url} alt="Existing" className="w-full h-full object-cover" />
+                {isMain ? (
+                  <div className="absolute top-2 left-2 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">MAIN</div>
+                ) : (
+                  <div className="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">EXISTING</div>
+                )}
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                  <div className="flex items-center gap-1">
+                    {onMoveExistingLeft && index > 0 && (
+                      <button type="button" onClick={(e) => { e.stopPropagation(); onMoveExistingLeft(index); }} className="text-[10px] bg-gray-800/80 text-white px-2 py-1.5 rounded font-bold hover:bg-gray-700 shadow-sm">&larr;</button>
+                    )}
+                    {!isMain && onMakeExistingMain && (
+                      <button type="button" onClick={(e) => { e.stopPropagation(); onMakeExistingMain(index); }} className="text-[10px] bg-white text-black px-3 py-1.5 rounded font-bold hover:bg-gray-200 shadow-sm uppercase tracking-wide">Make Main</button>
+                    )}
+                    {onMoveExistingRight && index < existingImages.length - 1 && (
+                      <button type="button" onClick={(e) => { e.stopPropagation(); onMoveExistingRight(index); }} className="text-[10px] bg-gray-800/80 text-white px-2 py-1.5 rounded font-bold hover:bg-gray-700 shadow-sm">&rarr;</button>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); onRemoveExisting(index); }}
+                    className="text-[10px] bg-red-500 text-white px-3 py-1.5 rounded font-bold hover:bg-red-600 shadow-sm uppercase tracking-wide"
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {/* New Files */}
           {files.map((file, index) => (
             <div key={`new-${index}`} className="relative group bg-background rounded-xl overflow-hidden border border-gray-100 aspect-[4/3]">
               <img src={URL.createObjectURL(file)} alt={file.name} className="w-full h-full object-cover" />
-              <div className="absolute top-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">NEW</div>
+              {existingImages.length === 0 && index === 0 ? (
+                 <div className="absolute top-2 left-2 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">MAIN</div>
+              ) : (
+                 <div className="absolute top-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">NEW</div>
+              )}
+              
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                <div className="flex items-center gap-1">
+                  {onMovePhotoLeft && index > 0 && (
+                    <button type="button" onClick={(e) => { e.stopPropagation(); onMovePhotoLeft(index); }} className="text-[10px] bg-gray-800/80 text-white px-2 py-1.5 rounded font-bold hover:bg-gray-700 shadow-sm">&larr;</button>
+                  )}
+                  {onMovePhotoRight && index < files.length - 1 && (
+                    <button type="button" onClick={(e) => { e.stopPropagation(); onMovePhotoRight(index); }} className="text-[10px] bg-gray-800/80 text-white px-2 py-1.5 rounded font-bold hover:bg-gray-700 shadow-sm">&rarr;</button>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={(e) => { e.stopPropagation(); onRemoveFile(index); }}
@@ -475,6 +506,61 @@ export default function EditCarPage() {
     setExistingImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const moveExistingLeft = (index) => {
+    if (index === 0) return;
+    setExistingImages((prev) => {
+      const newImages = [...prev];
+      const temp = newImages[index - 1];
+      newImages[index - 1] = newImages[index];
+      newImages[index] = temp;
+      return newImages;
+    });
+  };
+
+  const moveExistingRight = (index) => {
+    if (index === existingImages.length - 1) return;
+    setExistingImages((prev) => {
+      const newImages = [...prev];
+      const temp = newImages[index + 1];
+      newImages[index + 1] = newImages[index];
+      newImages[index] = temp;
+      return newImages;
+    });
+  };
+
+  const makeExistingMain = (index) => {
+    if (index === 0) return;
+    setExistingImages((prev) => {
+      const newImages = [...prev];
+      const [moved] = newImages.splice(index, 1);
+      newImages.unshift(moved);
+      return newImages;
+    });
+  };
+
+  const movePhotoLeft = (index) => {
+    if (index === 0) return;
+    setPhotos((prev) => {
+      const newPhotos = [...prev];
+      const temp = newPhotos[index - 1];
+      newPhotos[index - 1] = newPhotos[index];
+      newPhotos[index] = temp;
+      return newPhotos;
+    });
+  };
+
+  const movePhotoRight = (index) => {
+    if (index === photos.length - 1) return;
+    setPhotos((prev) => {
+      const newPhotos = [...prev];
+      const temp = newPhotos[index + 1];
+      newPhotos[index + 1] = newPhotos[index];
+      newPhotos[index] = temp;
+      return newPhotos;
+    });
+  };
+
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="pb-24">
       {/* Page Title */}
@@ -613,9 +699,14 @@ export default function EditCarPage() {
               accept="image/*"
               existingImages={existingImages}
               onRemoveExisting={removeExistingPhoto}
+              onMoveExistingLeft={moveExistingLeft}
+              onMoveExistingRight={moveExistingRight}
+              onMakeExistingMain={makeExistingMain}
               files={photos}
               onFilesAdded={addPhotos}
               onRemoveFile={removePhoto}
+              onMovePhotoLeft={movePhotoLeft}
+              onMovePhotoRight={movePhotoRight}
             />
           </div>
         </section>
