@@ -80,7 +80,7 @@ export default function LeadPopup() {
       if (error.code === 'ERR_NETWORK') {
          alert('Network Error: The backend API is unreachable or blocking the request (CORS).');
       } else {
-         alert('Something went wrong. Please try again.');
+         alert(error.response?.data?.error || 'Something went wrong. Please try again.');
       }
     } finally {
       setIsSubmitting(false);

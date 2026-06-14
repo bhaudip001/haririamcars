@@ -183,47 +183,45 @@ app.use(mongoSanitize({ replaceWith: '_' }));
 app.use(sanitizeInputs);
 // Removed duplicate CORS block
 // Rate limiting
-// General API: 200 req / 15 min
-const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 200,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: 'Too many requests. Try again later.' },
-  skip: (req) => req.method === 'GET'
-    && req.path.startsWith('/api/cars'),
-});
+// Rate limiting (Only enabled in production)
+if (process.env.NODE_ENV === 'production') {
+  const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 200,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many requests. Try again later.' },
+    skip: (req) => req.method === 'GET' && req.path.startsWith('/api/cars'),
+  });
 
-// Auth: 10 attempts / 15 min (brute force protection)
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: 'Too many login attempts. Try again in 15 minutes.' },
-  skipSuccessfulRequests: true,
-});
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many login attempts. Try again in 15 minutes.' },
+    skipSuccessfulRequests: true,
+  });
 
-// Contact/Sell forms: 5 submissions / hour
-const formLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 5,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: 'Too many submissions. Try again in an hour.' },
-});
+  const formLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: 'Too many submissions. Try again in an hour.' },
+  });
 
-// File upload: 20 uploads / hour
-const uploadLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 20,
-  message: { error: 'Upload limit reached. Try again later.' },
-});
+  const uploadLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,
+    max: 20,
+    message: { error: 'Upload limit reached. Try again later.' },
+  });
 
-app.use('/api/', generalLimiter);
-app.use('/api/auth/login', authLimiter);
-app.use('/api/messages', formLimiter);
-app.use('/api/sell-requests', uploadLimiter);
+  app.use('/api/', generalLimiter);
+  app.use('/api/auth/login', authLimiter);
+  app.use('/api/messages', formLimiter);
+  app.use('/api/sell-requests', uploadLimiter);
+}
 
 // ── Health Check ──
 app.get('/api/health', (_req, res) => {
