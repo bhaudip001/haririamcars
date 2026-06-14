@@ -27,11 +27,6 @@ export const metadata = {
     default: 'Hariram Motors | Used & pre-owned cars in Surat',
     template: '%s | Hariram Motors',
   },
-  appleWebApp: {
-    title: 'Hariram Cars',
-    statusBarStyle: 'black-translucent',
-    capable: true,
-  },
   description: 'Browse 150+ certified used & pre-owned cars in Surat. Transparent pricing, full documentation, trusted since 2013. Hariram Motors, Varachha.',
   keywords: [
     'hariram motor',
@@ -48,7 +43,7 @@ export const metadata = {
     'car dealership surat',
     'varachha used cars',
     'certified pre-owned surat',
-    
+
     // Brand & Local Dealership Searches
     'Hariram Cars Surat',
     'Hariram Motor second hand cars',
@@ -56,14 +51,14 @@ export const metadata = {
     'Top pre-owned car showroom in Surat',
     'Buy used cars in Varachha Surat',
     'Used car showroom near me',
-    
+
     // High-Volume General Intent Searches
     'Second hand cars in Surat',
     'Used cars for sale in Surat',
     'Pre-owned cars near me',
     'Certified second hand cars in Surat',
     'Certified second hand cars',
-    
+
     // Budget & Finance Specific Searches
     'Used cars under 3 lakhs in Surat',
     'Used cars under 5 lakhs in Surat',
@@ -73,17 +68,17 @@ export const metadata = {
     'Second hand cars on loan',
     'Second hand cars with EMI options Surat',
     'Second hand cars on EMI',
-    
+
     // Fuel & Transmission Specific Searches
     'Second hand CNG cars in Surat',
     'Used automatic cars for sale Surat',
     'Second hand diesel SUV in Surat',
-    
+
     // Model-Specific Searches
     'Buy used Hyundai Creta in Surat',
     'Second hand Maruti Swift for sale Surat',
     'Buy used Maruti Swift Surat',
-    
+
     // Broad Reach
     'Top used car dealers in Gujarat',
     'Sell my car in Surat',
@@ -203,8 +198,8 @@ export default function RootLayout({ children }) {
                   {
                     "@type": "OpeningHoursSpecification",
                     "dayOfWeek": [
-                      "Monday","Tuesday","Wednesday",
-                      "Thursday","Friday","Saturday"
+                      "Monday", "Tuesday", "Wednesday",
+                      "Thursday", "Friday", "Saturday"
                     ],
                     "opens": "09:00",
                     "closes": "20:00"
