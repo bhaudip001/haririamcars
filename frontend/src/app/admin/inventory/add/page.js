@@ -384,7 +384,7 @@ export default function AddCar() {
     defaultValues: {
       status: 'available',
       make: '', model: '', manufacturingYear: '', registerYear: '', price: '',
-      kmDriven: '', fuelType: '', transmission: '', ownership: '',
+      kmDriven: '', fuelType: '', transmission: '', ownership: '', insurance: '',
       bodyType: '', variant: '', color: '', registration: '', description: '', features: [{ key: '', value: '' }],
       airConditioner: '', powerWindows: '', sunroof: '', parkingSensors: '',
       displacement: '', maxPower: '', driveType: '', cylinders: '',
@@ -492,6 +492,7 @@ export default function AddCar() {
         fuelType: data.fuelType || undefined,
         transmission: data.transmission || undefined,
         owner: data.ownership || undefined,
+        insurance: data.insurance || undefined,
         bodyType: data.bodyType || undefined,
         variant: data.variant || undefined,
         color: data.color || undefined,
@@ -685,6 +686,13 @@ export default function AddCar() {
               error={errors.ownership}
               placeholder="Select ownership"
               options={['1st Owner', '2nd Owner', '3rd Owner', '4th Owner+', 'Unregistered']}
+            />
+            <FormSelect
+              label="Insurance"
+              register={register('insurance')}
+              error={errors.insurance}
+              placeholder="Select insurance"
+              options={['Comprehensive', 'Third Party', 'Expired', 'Zero Dep']}
             />
             <FormSelect
               label="Body Type"

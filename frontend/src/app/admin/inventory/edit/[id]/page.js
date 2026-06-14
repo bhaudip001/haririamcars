@@ -285,7 +285,7 @@ export default function EditCarPage() {
   } = useForm({
     defaultValues: {
       make: '', model: '', manufacturingYear: '', registerYear: '', price: '',
-      kmDriven: '', fuelType: '', transmission: '', ownership: '',
+      kmDriven: '', fuelType: '', transmission: '', ownership: '', insurance: '',
       bodyType: '', variant: '', color: '', registration: '', description: '',
       isCertified: false, isPetipack: false, validVimo: false, loanAvailable: false, isKmGenuine: false,
       selectedFeatures: [],
@@ -317,7 +317,7 @@ export default function EditCarPage() {
           manufacturingYear: data.year || data.manufacturingYear || '',
           registerYear: data.registerYear || '', price: data.price || '', 
           kmDriven: data.kms || '', fuelType: data.fuelType || '', 
-          transmission: data.transmission || '', ownership: data.owner || '',
+          transmission: data.transmission || '', ownership: data.owner || '', insurance: data.insurance || '',
           bodyType: data.bodyType || '', variant: data.variant || '', 
           color: data.color || '', registration: data.registration || '', 
           description: data.description || '',
@@ -360,6 +360,7 @@ export default function EditCarPage() {
       if (data.fuelType) formData.append('fuelType', data.fuelType);
       if (data.transmission) formData.append('transmission', data.transmission);
       if (data.ownership) formData.append('owner', data.ownership);
+      if (data.insurance) formData.append('insurance', data.insurance);
       formData.append('bodyType', data.bodyType);
       if (data.variant) formData.append('variant', data.variant);
       formData.append('color', data.color);
@@ -609,6 +610,7 @@ export default function EditCarPage() {
             <FormSelect label="Fuel Type" register={register('fuelType')} error={errors.fuelType} placeholder="Select fuel type" options={['Petrol', 'Diesel', 'CNG', 'Electric', 'Hybrid']} />
             <FormSelect label="Transmission" register={register('transmission')} error={errors.transmission} placeholder="Select transmission" options={['Manual', 'Automatic']} />
             <FormSelect label="Ownership" register={register('ownership')} error={errors.ownership} placeholder="Select ownership" options={['1st Owner', '2nd Owner', '3rd Owner', '4th Owner+', 'Unregistered']} />
+            <FormSelect label="Insurance" register={register('insurance')} error={errors.insurance} placeholder="Select insurance" options={['Comprehensive', 'Third Party', 'Expired', 'Zero Dep']} />
             <FormSelect label="Body Type" register={register('bodyType')} error={errors.bodyType} placeholder="e.g. SUV" options={['SUV', 'Sedan', 'Hatchback', 'MUV', 'Coupe', 'Convertible']} />
             <FormInput label="Variant" register={register('variant')} error={errors.variant} placeholder="e.g. LXI, VXI, Top" />
             <FormInput label="Color" register={register('color')} error={errors.color} placeholder="e.g. Polar White" />
