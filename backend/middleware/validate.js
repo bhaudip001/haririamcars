@@ -53,22 +53,23 @@ export const validateCar = [
     .trim().notEmpty().isLength({ max: 50 })
     .withMessage('Model required, max 50 chars'),
   body('year')
+    .optional({ checkFalsy: true })
     .isInt({ min: 1990, max: new Date().getFullYear() + 1 })
     .withMessage('Valid year required'),
   body('price')
-    .optional()
+    .optional({ checkFalsy: true })
     .isFloat({ min: 0, max: 100000000 })
     .withMessage('Valid price required'),
   body('kms')
-    .optional()
+    .optional({ checkFalsy: true })
     .isInt({ min: 0, max: 1000000 })
     .withMessage('Valid KM required'),
   body('fuelType')
-    .optional()
+    .optional({ checkFalsy: true })
     .isIn(['Petrol', 'Diesel', 'CNG', 'Electric', 'Hybrid'])
     .withMessage('Invalid fuel type'),
   body('transmission')
-    .optional()
+    .optional({ checkFalsy: true })
     .isIn(['Manual', 'Automatic', 'AMT', 'CVT', 'DCT'])
     .withMessage('Invalid transmission'),
   handleValidation,
