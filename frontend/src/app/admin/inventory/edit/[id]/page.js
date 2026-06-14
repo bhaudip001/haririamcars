@@ -458,6 +458,7 @@ export default function EditCarPage() {
         fuelType: data.fuelType || undefined,
         transmission: data.transmission || undefined,
         owner: data.ownership || undefined,
+        insurance: data.insurance || undefined,
         bodyType: data.bodyType || undefined,
         variant: data.variant || undefined,
         color: data.color || undefined,
