@@ -610,7 +610,7 @@ export default function EditCarPage() {
             <FormSelect label="Fuel Type" register={register('fuelType')} error={errors.fuelType} placeholder="Select fuel type" options={['Petrol', 'Diesel', 'CNG', 'Electric', 'Hybrid']} />
             <FormSelect label="Transmission" register={register('transmission')} error={errors.transmission} placeholder="Select transmission" options={['Manual', 'Automatic']} />
             <FormSelect label="Ownership" register={register('ownership')} error={errors.ownership} placeholder="Select ownership" options={['1st Owner', '2nd Owner', '3rd Owner', '4th Owner+', 'Unregistered']} />
-            <FormSelect label="Insurance" register={register('insurance')} error={errors.insurance} placeholder="Select insurance" options={['Comprehensive', 'Third Party', 'Expired', 'Zero Dep']} />
+            <FormInput label="Insurance" register={register('insurance')} error={errors.insurance} placeholder="e.g. Comprehensive, Third Party, etc." />
             <FormSelect label="Body Type" register={register('bodyType')} error={errors.bodyType} placeholder="e.g. SUV" options={['SUV', 'Sedan', 'Hatchback', 'MUV', 'Coupe', 'Convertible']} />
             <FormInput label="Variant" register={register('variant')} error={errors.variant} placeholder="e.g. LXI, VXI, Top" />
             <FormInput label="Color" register={register('color')} error={errors.color} placeholder="e.g. Polar White" />

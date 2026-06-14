@@ -687,12 +687,11 @@ export default function AddCar() {
               placeholder="Select ownership"
               options={['1st Owner', '2nd Owner', '3rd Owner', '4th Owner+', 'Unregistered']}
             />
-            <FormSelect
+            <FormInput
               label="Insurance"
               register={register('insurance')}
               error={errors.insurance}
-              placeholder="Select insurance"
-              options={['Comprehensive', 'Third Party', 'Expired', 'Zero Dep']}
+              placeholder="e.g. Comprehensive, Third Party, etc."
             />
             <FormSelect
               label="Body Type"

@@ -67,10 +67,7 @@ const carSchema = new mongoose.Schema(
     ownership: { type: String, trim: true },
     seats: { type: Number },
     engineCC: { type: Number },
-    insurance: {
-      type: String,
-      enum: ['Comprehensive', 'Third Party', 'Expired', 'Zero Dep'],
-    },
+    insurance: { type: String, trim: true },
     registrationState: { type: String, trim: true },
     registration: { type: String, trim: true },
 
