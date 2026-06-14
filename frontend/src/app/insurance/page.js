@@ -58,9 +58,9 @@ export default function InsurancePage() {
       <section className="relative pt-32 lg:pt-48 pb-20 lg:pb-32 overflow-hidden z-10 border-b border-black/5 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex flex-col lg:flex-row items-center gap-16">
-            
+
             {/* Hero Content */}
-            <motion.div 
+            <motion.div
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
@@ -70,18 +70,18 @@ export default function InsurancePage() {
                 <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
                 <span className="text-blue-700 dark:text-blue-300 text-xs uppercase tracking-widest font-bold">Hariram Insurance Services</span>
               </motion.div>
-              
+
               <motion.h1 variants={fadeInLeft} className="font-['Outfit'] font-black text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-black dark:text-white leading-[1.1] mb-6">
                 Protect Your Drive with <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-500 dark:from-blue-400 dark:via-cyan-300 dark:to-blue-400 bg-300% animate-gradient">
                   Absolute Trust.
                 </span>
               </motion.h1>
-              
+
               <motion.p variants={fadeInLeft} className="font-['Inter'] text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-xl leading-relaxed">
                 Experience cashless repairs across 5000+ garages, zero depreciation benefits, and instant claim settlements. Your peace of mind is our priority.
               </motion.p>
-              
+
               <motion.div variants={fadeInLeft} className="flex flex-col sm:flex-row gap-4">
                 <a href="tel:+919898558222" className="group flex items-center justify-center gap-3 bg-blue-600 text-white px-8 py-4 rounded-full font-['Outfit'] font-bold text-lg transition-all shadow-[0_10px_40px_rgba(37,99,235,0.4)] hover:shadow-[0_15px_50px_rgba(37,99,235,0.6)] hover:-translate-y-1">
                   <IconPhoneCall size={22} className="group-hover:rotate-12 transition-transform" />
@@ -96,14 +96,14 @@ export default function InsurancePage() {
               <motion.div variants={fadeInLeft} className="mt-12 flex items-center gap-6 pt-8 border-t border-black/5 dark:border-white/5">
                 <div className="flex -space-x-4">
                   {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className={`w-10 h-10 rounded-full border-2 border-[#f4f4f8] dark:border-[#0a0a12] flex items-center justify-center bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50 z-${50-i*10}`}>
+                    <div key={i} className={`w-10 h-10 rounded-full border-2 border-[#f4f4f8] dark:border-[#0a0a12] flex items-center justify-center bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/50 dark:to-cyan-900/50 z-${50 - i * 10}`}>
                       <IconStarFilled size={14} className="text-yellow-500" />
                     </div>
                   ))}
                 </div>
                 <div>
                   <div className="flex items-center gap-1 text-black dark:text-white font-bold font-['Outfit'] text-lg">
-                    4.9/5 <IconStarFilled size={16} className="text-yellow-500" />
+                    4.3/5 <IconStarFilled size={16} className="text-yellow-500" />
                   </div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">Trusted by 2000+ Customers</div>
                 </div>
@@ -111,7 +111,7 @@ export default function InsurancePage() {
             </motion.div>
 
             {/* Hero Interactive Card Graphic */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9, rotateY: 15 }}
               animate={{ opacity: 1, scale: 1, rotateY: 0 }}
               transition={{ duration: 1, delay: 0.2, type: "spring", stiffness: 100 }}
@@ -119,7 +119,7 @@ export default function InsurancePage() {
             >
               <div className="relative w-full max-w-sm sm:max-w-md mx-auto min-h-[420px] sm:min-h-0 sm:aspect-[4/5] h-auto rounded-[2.5rem] bg-gradient-to-br from-white/80 to-white/30 dark:from-white/10 dark:to-white/5 backdrop-blur-2xl border border-white/40 dark:border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] p-6 sm:p-8 flex flex-col overflow-hidden group">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 group-hover:bg-cyan-500/30 transition-colors duration-700"></div>
-                
+
                 <div className="flex items-center justify-between mb-6 sm:mb-8 z-10">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center shrink-0">
                     <IconShieldCheck size={24} className="text-blue-600 dark:text-blue-400 sm:w-7 sm:h-7" />
@@ -133,7 +133,7 @@ export default function InsurancePage() {
                 <div className="z-10 mb-auto">
                   <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 uppercase tracking-widest font-bold mb-1">Comprehensive Plan</div>
                   <div className="font-['Outfit'] font-black text-3xl sm:text-4xl text-black dark:text-white mb-5 sm:mb-6">₹18,50,000</div>
-                  
+
                   <div className="space-y-3 sm:space-y-4">
                     <div className="flex items-center justify-between p-3 sm:p-4 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/40 dark:border-white/5">
                       <div className="flex items-center gap-2 sm:gap-3 text-gray-700 dark:text-gray-300 font-medium text-sm sm:text-base">
@@ -171,7 +171,7 @@ export default function InsurancePage() {
           <p className="text-center text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] mb-8">Trusted by Premium Insurance Partners</p>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 dark:opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
             {PARTNERS.map((partner, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -198,7 +198,7 @@ export default function InsurancePage() {
             </p>
           </div>
 
-          <motion.div 
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -213,7 +213,7 @@ export default function InsurancePage() {
             ].map((feature, idx) => (
               <motion.div key={idx} variants={fadeInUp} className="group relative p-8 rounded-[2rem] bg-white dark:bg-[#12121a] border border-gray-100 dark:border-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.03)] dark:shadow-none hover:shadow-[0_20px_60px_rgba(37,99,235,0.1)] transition-all duration-500 hover:-translate-y-2 overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700" />
-                
+
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/10 flex items-center justify-center mb-8 border border-blue-200/50 dark:border-blue-700/30 group-hover:scale-110 transition-transform duration-300">
                   <feature.icon size={32} className="text-blue-600 dark:text-blue-400" />
                 </div>
@@ -244,10 +244,10 @@ export default function InsurancePage() {
                 Start Now <IconCheck size={20} />
               </a>
             </div>
-            
+
             <div className="lg:w-2/3 grid grid-cols-1 sm:grid-cols-3 gap-6 relative">
               <div className="hidden sm:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 dark:from-blue-900 dark:via-blue-500 dark:to-blue-900 -translate-y-1/2 z-0" />
-              
+
               {[
                 { step: "01", title: "Share Details", desc: "Provide your car number and basic details via Call or WhatsApp." },
                 { step: "02", title: "Compare Plans", desc: "We generate the best quotes from multiple premium insurers for you." },
@@ -277,7 +277,7 @@ export default function InsurancePage() {
           <div className="space-y-4">
             {FAQS.map((faq, idx) => (
               <div key={idx} className="bg-white dark:bg-[#12121a] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden transition-all duration-300">
-                <button 
+                <button
                   onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
                   className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
                 >
@@ -286,7 +286,7 @@ export default function InsurancePage() {
                 </button>
                 <AnimatePresence>
                   {activeFaq === idx && (
-                    <motion.div 
+                    <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -310,7 +310,7 @@ export default function InsurancePage() {
           <div className="rounded-[2rem] sm:rounded-[3rem] overflow-hidden relative p-8 sm:p-12 md:p-20 bg-gradient-to-br from-gray-900 to-black text-white shadow-2xl border border-white/10">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent mix-blend-overlay"></div>
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3"></div>
-            
+
             <div className="relative z-10 flex flex-col items-center text-center">
               <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-md mb-8 border border-white/20">
                 <IconShieldCheck size={40} className="text-blue-400" />

@@ -25,6 +25,8 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
   const [loading, setLoading] = useState(!initialCar);
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   // Smart Sticky State
   const rightColumnRef = useRef(null);
@@ -58,6 +60,27 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
       if (observer) observer.disconnect();
     };
   }, [car]);
+
+  // Swipe Handlers
+  const minSwipeDistance = 50;
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) {
+      setActiveImageIdx(prev => (prev === images.length - 1 ? 0 : prev + 1));
+    }
+    if (isRightSwipe) {
+      setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
+    }
+  };
 
   if (loading) {
     return (
@@ -476,7 +499,12 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
 
       {/* ════ Lightbox ════ */}
       {isLightboxOpen && images.length > 0 && (
-        <div className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center backdrop-blur-xl">
+        <div 
+          className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center backdrop-blur-xl"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
           <button 
             aria-label="Close Lightbox"
             onClick={() => setIsLightboxOpen(false)}
@@ -531,8 +559,9 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
             })}
           </div>
 
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/60 text-sm font-medium tracking-wide">
-            {activeImageIdx + 1} / {images.length} — swipe or use arrows
+          <div className="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 text-white text-xs md:text-sm font-medium tracking-wide whitespace-nowrap bg-black/60 px-4 py-2 rounded-full backdrop-blur-md border border-white/10 z-50 shadow-lg">
+            {activeImageIdx + 1} / {images.length} <span className="hidden sm:inline">— swipe or use arrows</span>
+            <span className="sm:hidden">— swipe</span>
           </div>
         </div>
       )}
