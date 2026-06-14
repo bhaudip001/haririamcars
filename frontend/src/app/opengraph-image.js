@@ -39,7 +39,7 @@ export default function OgImage() {
           fontSize: 24,
           color: '#a0a0b8',
         }}>
-          +91 93734 82016 · harirammotors.com
+          +91 98985 58222 · harirammotors.com
         </div>
       </div>
     ),

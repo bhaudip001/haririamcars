@@ -34,7 +34,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
     >
       <Link href={`/catalog/${car.slug}`} className="absolute inset-0 z-10 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#12121f] outline-none rounded-2xl" aria-label={`View details of ${title}`} />
 
-      <div className="flex flex-col h-full relative z-0">
+      <div className="flex flex-col h-full relative">
         {/* Image Area */}
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl bg-black/10 dark:bg-[#1a1a2e]">
           {!isLoaded && (
@@ -101,7 +101,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
           </div>
 
           {/* Buttons Row */}
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-2.5 md:gap-3 relative z-20 mt-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-2.5 md:gap-3 relative z-20 mt-auto pointer-events-none">
             <div className="w-full sm:flex-1 text-center border border-purple-600 dark:border-purple-600 text-purple-600 dark:text-purple-400 bg-transparent rounded-lg sm:rounded-xl py-2 sm:py-3 md:py-2.5 text-xs sm:text-sm md:text-base font-bold group-hover:bg-purple-600 group-hover:text-white transition-all duration-200 cursor-pointer flex items-center justify-center min-h-[36px] sm:min-h-[44px]">
               View Details
             </div>
@@ -110,7 +110,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
                 href={getCarInquiryLink(car, process.env.NEXT_PUBLIC_WHATSAPP || '+919898558222')}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:flex-1 flex items-center justify-center gap-1.5 bg-[#25D366] hover:bg-[#1ebe57] text-white dark:text-black rounded-lg sm:rounded-xl py-2 sm:py-3 md:py-2.5 text-xs sm:text-sm md:text-base font-bold shadow-[0_0_15px_rgba(37,211,102,0.3)] transition-all duration-200 cursor-pointer min-h-[36px] sm:min-h-[44px]"
+                className="w-full sm:flex-1 flex items-center justify-center gap-1.5 bg-[#25D366] hover:bg-[#1ebe57] text-white dark:text-black rounded-lg sm:rounded-xl py-2 sm:py-3 md:py-2.5 text-xs sm:text-sm md:text-base font-bold shadow-[0_0_15px_rgba(37,211,102,0.3)] transition-all duration-200 cursor-pointer min-h-[36px] sm:min-h-[44px] pointer-events-auto"
                 onClick={(e) => e.stopPropagation()}
                 title="Chat on WhatsApp"
               >

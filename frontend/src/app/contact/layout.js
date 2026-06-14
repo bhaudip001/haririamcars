@@ -1,6 +1,6 @@
 export const metadata = {
   title: 'Contact Us — Hariram Motors Surat',
-  description: 'Contact Hariram Motors in Surat. Visit our showroom at Simada to, Canal, BRTS Rd, near Setubandh Hills. Call +91 93734 82016.',
+  description: 'Contact Hariram Motors in Surat. Visit our showroom at Simada to, Canal, BRTS Rd, near Setubandh Hills. Call +91 98985 58222.',
   alternates: { canonical: 'https://www.hariramcars.com/contact' },
   openGraph: {
     title: 'Contact Hariram Motors | Surat',

@@ -48,7 +48,7 @@ const nextConfig = {
       || 'http://localhost:5000/api',
     NEXT_PUBLIC_WHATSAPP:
       process.env.NEXT_PUBLIC_WHATSAPP
-      || '+919373482016',
+      || '+9198985 58222',
     NEXT_PUBLIC_BASE_URL:
       process.env.NEXT_PUBLIC_BASE_URL
       || 'https://www.hariramcars.com/',
@@ -120,7 +120,7 @@ const nextConfig = {
   async rewrites() {
     const isVercel = process.env.VERCEL === '1';
     let baseUrl = 'http://localhost:5000';
-    
+
     if (isVercel) {
       if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
         baseUrl = 'https://www.hariramcars.com';
@@ -128,7 +128,7 @@ const nextConfig = {
         baseUrl = `https://${process.env.VERCEL_URL}`;
       }
     }
-      
+
     return [
       {
         source: '/api/:path*',
