@@ -476,6 +476,11 @@ export default function AddCar() {
         return; 
       }
 
+      const badges = [];
+      if (data.isCertified) badges.push('Certified');
+      if (data.isPetipack) badges.push('Peti-pack');
+      if (data.validVimo) badges.push('Valid Vimo');
+
       const payload = {
         make: data.make,
         model: data.model,
