@@ -24,10 +24,10 @@ const outfit = Outfit({
 export const metadata = {
   metadataBase: new URL('https://www.hariramcars.com/'),
   title: {
-    default: 'Hariram Motors | Premium Pre-Owned & New Cars in Surat',
+    default: 'Hariram Motors | Used & pre-owned cars in Surat',
     template: '%s | Hariram Motors',
   },
-  description: 'Buy or sell certified pre-owned and new cars at Hariram Motors, Surat. 150+ verified vehicles, transparent pricing, trusted since 2013.',
+  description: 'Browse 150+ certified used & pre-owned cars in Surat. Transparent pricing, full documentation, trusted since 2013. Hariram Motors, Varachha.',
   keywords: [
     'hariram motor',
     'hariram motors',
@@ -54,8 +54,8 @@ export const metadata = {
     locale: 'en_IN',
     url: 'https://www.hariramcars.com/',
     siteName: 'Hariram Motors',
-    title: 'Hariram Motors | Premium Cars in Surat',
-    description: 'Surat\'s most trusted destination for pre-owned and new cars.',
+    title: 'Hariram Motors | Used & pre-owned cars in Surat',
+    description: 'Surat\'s most trusted destination for used & pre-owned cars.',
     images: [{
       url: '/og-image.jpg',
       width: 1200,
@@ -65,8 +65,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hariram Motors | Premium Cars in Surat',
-    description: 'Buy or sell certified pre-owned cars in Surat.',
+    title: 'Hariram Motors | Used & pre-owned cars in Surat',
+    description: 'Buy or sell certified used & pre-owned cars in Surat.',
     images: ['/og-image.jpg'],
   },
   robots: {

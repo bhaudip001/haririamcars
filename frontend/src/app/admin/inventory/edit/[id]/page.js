@@ -345,12 +345,33 @@ export default function EditCarPage() {
       if (photos.length > 0) {
         toast.loading('Uploading images directly to Cloudinary...', { id: 'upload-toast' });
         const { default: imageCompression } = await import('browser-image-compression');
-        const options = { maxSizeMB: 0.4, maxWidthOrHeight: 1280, useWebWorker: true };
+        const options = { maxSizeMB: 5, maxWidthOrHeight: 2048, useWebWorker: true };
         
         const sigRes = await api.get('/upload/signature');
         const { signature, timestamp, api_key, cloud_name } = sigRes.data;
 
-        for (const photo of photos) {
+        for (let photo of photos) {
+          if (photo.name.toLowerCase().endsWith('.heic') || photo.name.toLowerCase().endsWith('.heif')) {
+            toast.loading(`Converting ${photo.name}...`, { id: 'heic-convert' });
+            try {
+              const heic2any = (await import('heic2any')).default;
+              const convertedBlob = await heic2any({
+                blob: photo,
+                toType: 'image/jpeg',
+                quality: 0.95
+              });
+              const singleBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+              photo = new File([singleBlob], photo.name.replace(/\.heic$|\.heif$/i, '.jpg'), { type: 'image/jpeg' });
+            } catch (err) {
+              console.error('HEIC conversion error:', err);
+              toast.error(`Failed to convert ${photo.name}`);
+              toast.dismiss('heic-convert');
+              toast.dismiss('upload-toast');
+              return;
+            }
+            toast.dismiss('heic-convert');
+          }
+
           const compressed = await imageCompression(photo, options);
           const uploadData = new FormData();
           uploadData.append('file', compressed);

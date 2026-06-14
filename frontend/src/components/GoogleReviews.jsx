@@ -43,6 +43,12 @@ const REVIEWS = [
     "relative_time_description": "5 years ago"
   },
   {
+    "author_name": "Chiren Bhorniya",
+    "rating": 5,
+    "text": "Awesome car.. Good service i am satisfied",
+    "relative_time_description": "5 years ago"
+  },
+  {
     "author_name": "Abhay Kothiya",
     "rating": 4,
     "text": "Good collection and offer",
@@ -89,6 +95,12 @@ const REVIEWS = [
     "rating": 5,
     "text": "Absolutely fine",
     "relative_time_description": "5 years ago"
+  },
+  {
+    "author_name": "Samjibhai Kapadi",
+    "rating": 5,
+    "text": "Ok",
+    "relative_time_description": "2 years ago"
   }
 ];
 

@@ -1,7 +1,7 @@
 import express from 'express';
 import SellRequest from '../models/SellRequest.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
-import { upload, uploadToCloudinary } from '../config/cloudinary.js';
+import { upload, uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
 import { validateSellRequest } from '../middleware/validate.js';
 
 const router = express.Router();
@@ -64,9 +64,20 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
 // ── DELETE /api/sell-requests/:id ──
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const request = await SellRequest.findByIdAndDelete(req.params.id);
+    const request = await SellRequest.findById(req.params.id);
     if (!request) return res.status(404).json({ error: 'Request not found' });
-    res.json({ message: 'Request deleted' });
+
+    // Delete associated photos from Cloudinary to free up storage
+    if (request.photos && request.photos.length > 0) {
+      for (const photo of request.photos) {
+        if (photo.publicId) {
+          await deleteFromCloudinary(photo.publicId);
+        }
+      }
+    }
+
+    await SellRequest.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Request and associated photos deleted permanently' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
