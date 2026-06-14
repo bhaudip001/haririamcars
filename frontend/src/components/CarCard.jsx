@@ -38,18 +38,10 @@ export default function CarCard({ car, index = 0, priority = false }) {
         {/* Image Area */}
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl bg-black/10 dark:bg-[#1a1a2e]">
           {!isLoaded && (
-            <div className="absolute inset-0 z-20 animate-pulse bg-gray-200 dark:bg-white/10" />
+            <div className="absolute inset-0 z-10 animate-pulse bg-gray-200 dark:bg-white/10" />
           )}
-          
-          {/* Blurred Background Image to fill empty space */}
-          {imageUrl && (
-            <Image
-              src={getOptimizedImage(imageUrl, 100)}
-              alt="background"
-              fill
-              className="object-cover opacity-60 dark:opacity-40 blur-xl scale-125 z-0"
-            />
-          )}
+
+
 
           {/* Main Image - Now using object-contain to prevent cutting off */}
           <Image
@@ -61,7 +53,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
             placeholder="blur"
             blurDataURL={generateBlurPlaceholder()}
             onLoad={() => setIsLoaded(true)}
-            className={`object-contain z-10 group-hover:scale-105 transition-all duration-700 drop-shadow-xl ${isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}
+            className={`object-cover group-hover:scale-110 transition-all duration-700 ${isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}
           />
 
           {/* Top Left Badge */}
