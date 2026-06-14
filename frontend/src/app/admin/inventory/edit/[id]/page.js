@@ -467,9 +467,8 @@ export default function EditCarPage() {
         loanAvailable: data.loanAvailable,
         isKmGenuine: data.isKmGenuine,
         features: data.selectedFeatures || [],
-        existingImages: JSON.stringify(existingImages),
         deletedImages: deletedImages.length > 0 ? JSON.stringify(deletedImages) : undefined,
-        images: uploadedImages
+        images: [...existingImages, ...uploadedImages]
       };
 
       await toast.promise(api.put(`/cars/${id}`, payload, { headers: { 'Content-Type': 'application/json' } }), {
