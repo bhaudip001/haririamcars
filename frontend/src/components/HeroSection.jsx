@@ -142,7 +142,7 @@ export default function HeroSection() {
           >
             <Image
               src="/images/hero_bg_desktop.png"
-              alt="Premium Car"
+              alt="Buy Premium Used & Pre-Owned Cars in Surat - Hariram Motors"
               fill
               priority
               className="object-cover object-[center_60%] origin-[center_60%]"
@@ -167,7 +167,7 @@ export default function HeroSection() {
         >
           <Image
             src="/images/hero_bg_mobile.png"
-            alt="Premium Car"
+            alt="Buy Premium Used & Pre-Owned Cars in Surat - Hariram Motors"
             fill
             priority
             className="object-cover object-bottom"
@@ -190,14 +190,14 @@ export default function HeroSection() {
             </span> Now Within Reach!
           </motion.h1>
 
-          <motion.p
+          <motion.h2
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
             className="mt-4 text-white/95 text-sm font-semibold tracking-wide max-w-[320px] drop-shadow-md"
           >
             Surat&apos;s premier destination for curated luxury and certified pre-owned vehicles. Built on trust, driven by quality.
-          </motion.p>
+          </motion.h2>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -389,12 +389,12 @@ export default function HeroSection() {
               <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-purple-500 to-blue-500">Dream Car,</span>
             </span> Now Within Your Reach!
           </motion.h1>
-          <motion.p
+          <motion.h2
             variants={itemVariants}
             className="text-lg md:text-xl text-slate-200 mt-6 max-w-2xl font-medium leading-relaxed drop-shadow-md"
           >
             Surat&apos;s premier destination for curated luxury and certified pre-owned vehicles. Built on trust, driven by quality.
-          </motion.p>
+          </motion.h2>
 
           {/* Trust Badges & Details (Desktop) */}
           <motion.div

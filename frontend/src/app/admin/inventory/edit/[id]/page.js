@@ -351,7 +351,11 @@ export default function EditCarPage() {
         const { signature, timestamp, api_key, cloud_name } = sigRes.data;
 
         for (let photo of photos) {
-          if (photo.name.toLowerCase().endsWith('.heic') || photo.name.toLowerCase().endsWith('.heif')) {
+          let fileToUpload = photo;
+          let isHeic = photo.name.toLowerCase().endsWith('.heic') || photo.name.toLowerCase().endsWith('.heif');
+          let heicFailed = false;
+
+          if (isHeic) {
             toast.loading(`Converting ${photo.name}...`, { id: 'heic-convert' });
             try {
               const heic2any = (await import('heic2any')).default;
@@ -361,18 +365,22 @@ export default function EditCarPage() {
                 quality: 0.95
               });
               const singleBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
-              photo = new File([singleBlob], photo.name.replace(/\.heic$|\.heif$/i, '.jpg'), { type: 'image/jpeg' });
+              fileToUpload = new File([singleBlob], photo.name.replace(/\.heic$|\.heif$/i, '.jpg'), { type: 'image/jpeg' });
             } catch (err) {
               console.error('HEIC conversion error:', err);
-              toast.error(`Failed to convert ${photo.name}`);
-              toast.dismiss('heic-convert');
-              toast.dismiss('upload-toast');
-              return;
+              toast.error(`Failed to convert ${photo.name}, uploading original directly.`, { id: 'heic-convert' });
+              heicFailed = true;
             }
             toast.dismiss('heic-convert');
           }
 
-          const compressed = await imageCompression(photo, options);
+          let compressed;
+          if (heicFailed) {
+            compressed = fileToUpload; // Skip browser compression if HEIC conversion fails
+          } else {
+            compressed = await imageCompression(fileToUpload, options);
+          }
+
           const uploadData = new FormData();
           uploadData.append('file', compressed);
           uploadData.append('api_key', api_key);
@@ -385,9 +393,19 @@ export default function EditCarPage() {
             body: uploadData,
           }).then(res => res.json());
 
-          if (cloudinaryRes.secure_url) {
-            uploadedImages.push({ url: cloudinaryRes.secure_url, publicId: cloudinaryRes.public_id });
+          if (cloudinaryRes.error) {
+            throw new Error(cloudinaryRes.error.message);
           }
+
+          let finalUrl = cloudinaryRes.secure_url;
+          if (heicFailed) {
+            finalUrl = finalUrl.replace(/\.heic$|\.heif$/i, '.jpg');
+          }
+
+          uploadedImages.push({
+            url: finalUrl,
+            publicId: cloudinaryRes.public_id
+          });
         }
         toast.dismiss('upload-toast');
       }
