@@ -27,6 +27,11 @@ export const metadata = {
     default: 'Hariram Motors | Used & pre-owned cars in Surat',
     template: '%s | Hariram Motors',
   },
+  appleWebApp: {
+    title: 'Hariram Cars',
+    statusBarStyle: 'black-translucent',
+    capable: true,
+  },
   description: 'Browse 150+ certified used & pre-owned cars in Surat. Transparent pricing, full documentation, trusted since 2013. Hariram Motors, Varachha.',
   keywords: [
     'hariram motor',
