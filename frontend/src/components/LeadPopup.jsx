@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IconX, IconCar, IconArrowRight, IconChecks } from '@tabler/icons-react';
 import api from '@/lib/api';
@@ -10,6 +11,12 @@ export default function LeadPopup() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({ name: '', phone: '' });
+  const pathname = usePathname();
+
+  // Don't render popup on admin or login routes
+  if (pathname && (pathname.startsWith('/admin') || pathname.startsWith('/login'))) {
+    return null;
+  }
 
   const validatePhone = (phone) => {
     const cleaned = phone.replace(/\s+/g, '');
