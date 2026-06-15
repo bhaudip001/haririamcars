@@ -7,8 +7,6 @@ import api from '@/lib/api';
 
 export default function LeadPopup() {
   const [isOpen, setIsOpen] = useState(false);
-  const [canClose, setCanClose] = useState(false);
-  const [countdown, setCountdown] = useState(5);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({ name: '', phone: '' });
@@ -33,19 +31,8 @@ export default function LeadPopup() {
     }
   }, []);
 
-  useEffect(() => {
-    if (isOpen && !canClose && !isSuccess) {
-      if (countdown > 0) {
-        const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-        return () => clearTimeout(timer);
-      } else {
-        setCanClose(true);
-      }
-    }
-  }, [isOpen, canClose, countdown, isSuccess]);
-
   const handleClose = () => {
-    if (canClose && !isSuccess) {
+    if (!isSuccess) {
       setIsOpen(false);
       sessionStorage.setItem('hariram_lead_popup_closed', 'true'); // Only hide for this session
     }
@@ -69,7 +56,6 @@ export default function LeadPopup() {
         message: 'Lead generated from Welcome Popup Form.',
       });
       setIsSuccess(true);
-      setCanClose(true);
       localStorage.setItem('hariram_lead_popup_filled', 'true'); // Never show again once filled
       setTimeout(() => {
         setIsOpen(false);
@@ -97,7 +83,7 @@ export default function LeadPopup() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => canClose && handleClose()}
+            onClick={() => handleClose()}
           />
           
           {/* Popup Content */}
@@ -118,18 +104,12 @@ export default function LeadPopup() {
               <p className="text-white/80 text-sm font-['Inter']">Get exclusive offers directly from our experts.</p>
               
               {/* Close Button */}
-              {canClose ? (
-                <button 
-                  onClick={handleClose}
-                  className="absolute top-4 right-4 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full p-1.5 transition-colors"
-                >
-                  <IconX size={20} />
-                </button>
-              ) : (
-                <div className="absolute top-4 right-4 text-white/70 text-xs font-bold bg-black/20 px-3 py-1.5 rounded-full">
-                  Wait {countdown}s
-                </div>
-              )}
+              <button 
+                onClick={handleClose}
+                className="absolute top-4 right-4 text-white/70 hover:text-white bg-black/20 hover:bg-black/40 rounded-full p-1.5 transition-colors"
+              >
+                <IconX size={20} />
+              </button>
             </div>
 
             {/* Form Area */}

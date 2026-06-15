@@ -36,7 +36,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
 
       <div className="flex flex-col h-full relative">
         {/* Image Area */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-t-2xl bg-black/10 dark:bg-[#1a1a2e]">
+        <div className="relative aspect-[5/4] w-full overflow-hidden rounded-t-2xl bg-black/10 dark:bg-[#1a1a2e]">
           {!isLoaded && (
             <div className="absolute inset-0 z-10 animate-pulse bg-gray-200 dark:bg-white/10" />
           )}
