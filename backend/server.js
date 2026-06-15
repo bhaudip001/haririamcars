@@ -46,6 +46,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   'https://www.hariramcars.com',
   'http://localhost:3000',
+  'http://localhost:3001',
 ].filter(Boolean);
 
 app.use(
@@ -71,12 +72,12 @@ app.use((req, res, next) => {
   if (process.env.VERCEL === '1') {
     const urlObj = new URL(req.url, `http://${req.headers.host}`);
     const queryPath = urlObj.searchParams.get('path');
-    
+
     if (queryPath) {
       // Normalize queryPath: strip leading slashes and optional 'api/' prefix
       const cleanPath = queryPath.replace(/^\/?(api\/)?/, '');
       req.url = '/api/' + cleanPath;
-      
+
       urlObj.searchParams.delete('path');
       const remainingSearch = urlObj.searchParams.toString();
       if (remainingSearch) {
