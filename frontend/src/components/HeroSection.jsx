@@ -145,10 +145,10 @@ export default function HeroSection() {
               alt="Buy Premium Used & Pre-Owned Cars in Surat - Hariram Motors"
               fill
               priority
-              className="object-cover xl:object-contain object-center origin-center"
+              className="object-cover object-[center_60%] origin-[center_60%]"
             />
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a12]/95 via-[#0a0a12]/60 to-transparent xl:via-[#0a0a12]/80 xl:to-[#0a0a12]/30"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a12]/95 via-[#0a0a12]/40 to-transparent"></div>
         </motion.div>
       </div>
 
