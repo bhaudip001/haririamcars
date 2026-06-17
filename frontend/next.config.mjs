@@ -34,6 +34,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [375, 430, 768, 1024, 1280, 1536],
@@ -90,7 +94,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: `default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://res.cloudinary.com https://images.unsplash.com https://lh3.googleusercontent.com; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' https://www.google.com https://maps.google.com; connect-src 'self' https://api.cloudinary.com https://maps.googleapis.com ${apiDomain} https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net;`,
+            value: `default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; worker-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://res.cloudinary.com https://images.unsplash.com https://lh3.googleusercontent.com https://randomuser.me; font-src 'self' data: https://fonts.gstatic.com; frame-src 'self' https://www.google.com https://maps.google.com; connect-src 'self' https://api.cloudinary.com https://maps.googleapis.com ${apiDomain} https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net;`,
           },
         ],
       },
@@ -129,10 +133,16 @@ const nextConfig = {
       }
     }
 
+    let destination = `${baseUrl}/backend/server.js?path=:path*`;
+
+    if (!isVercel) {
+      destination = `${baseUrl}/api/:path*`;
+    }
+
     return [
       {
         source: '/api/:path*',
-        destination: `${baseUrl}/backend/server.js?path=:path*`,
+        destination,
       },
     ];
   },

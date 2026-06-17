@@ -39,7 +39,7 @@ export default function WarrantyPage() {
     <div className="bg-[#fcfaf8] dark:bg-[#070505] min-h-screen pb-0 relative transition-colors duration-500 w-full flex flex-col overflow-hidden" style={{ paddingTop: 0 }}>
       {/* Light Mode: Background */}
       <div className="fixed inset-0 dark:hidden pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[url('/blueprint-grid.png')] opacity-[0.04]"></div>
+        <div className="absolute inset-0 blueprint-grid opacity-[0.04]"></div>
         <div className="absolute top-[5%] left-[5%] w-[600px] h-[600px] bg-amber-100/60 rounded-full blur-[120px] mix-blend-multiply animate-pulse-ring"></div>
         <div className="absolute bottom-[10%] right-[5%] w-[800px] h-[800px] bg-yellow-100/50 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
       </div>
@@ -47,7 +47,7 @@ export default function WarrantyPage() {
       {/* Dark Mode: Background */}
       <div className="hidden dark:block fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[#0a0808]"></div>
-        <div className="absolute inset-0 bg-[url('/blueprint-grid.png')] opacity-[0.03] invert"></div>
+        <div className="absolute inset-0 blueprint-grid opacity-[0.03] invert"></div>
         <div className="absolute top-[5%] left-[5%] w-[600px] h-[600px] bg-amber-900/20 rounded-full blur-[140px] mix-blend-screen animate-pulse-ring"></div>
         <div className="absolute bottom-[10%] right-[5%] w-[800px] h-[800px] bg-yellow-900/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
       </div>
