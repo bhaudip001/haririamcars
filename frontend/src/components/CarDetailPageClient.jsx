@@ -113,48 +113,35 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
 
   const specialBadgeNames = ['Certified', 'Peti-pack', 'Valid Vimo'];
   const photoBadges = [];
-  const regularFeatures = [];
   let isLoanAvailable = car.loanAvailable;
 
   const hasExplicitBadges = Array.isArray(car.badges) && car.badges.length > 0;
   if (hasExplicitBadges) {
     photoBadges.push(...car.badges.filter(b => specialBadgeNames.includes(b)));
+  } else {
+    // Legacy support for badges stored in features
+    (car.features || []).forEach(feat => {
+      if (typeof feat === 'string') {
+        if (specialBadgeNames.some(b => feat.toLowerCase().includes(b.toLowerCase()))) {
+          if (!photoBadges.includes(feat)) photoBadges.push(feat);
+        } else if (feat.toLowerCase().includes('loan available')) {
+          isLoanAvailable = true;
+        }
+      }
+    });
   }
 
-  const allFeatures = [...(car.badges || []), ...(car.features || [])];
-  allFeatures.forEach(feat => {
-    const isSpecialBadge = specialBadgeNames.some(b => feat.toLowerCase().includes(b.toLowerCase()));
-    if (isSpecialBadge) {
-      if (!hasExplicitBadges && !photoBadges.includes(feat)) photoBadges.push(feat);
-    } else if (feat.toLowerCase().includes('loan available')) {
-      isLoanAvailable = true;
-    } else {
-      if (!regularFeatures.includes(feat)) regularFeatures.push(feat);
-    }
-  });
-
-  const featureCategories = {
-    EXTERIOR: ['alloy', 'fog', 'sunroof', 'led', 'headlight', 'wiper', 'roof', 'spoiler', 'drl', 'mirror'],
-    INTERIOR: ['leather', 'seat', 'ambient', 'ac', 'cruise', 'steering', 'upholstery', 'wood', 'dashboard', 'trim'],
-    SAFETY: ['abs', 'esc', 'camera', 'sensor', 'airbag', 'ebd', 'brake', 'traction', 'hill', 'isofix', 'security'],
-    CONVENIENCE: ['android', 'apple', 'wireless', 'push', 'keyless', 'bluetooth', 'navigation', 'display', 'touch', 'auto', 'power', 'window']
-  };
-
-  const categorizeFeature = (feature) => {
-    const f = feature.toLowerCase();
-    for (const [cat, keywords] of Object.entries(featureCategories)) {
-      if (keywords.some(kw => f.includes(kw))) {
-        return cat;
+  // Normalize regular features to [{key, value}]
+  const normalizedFeatures = [];
+  (car.features || []).forEach(feat => {
+    if (typeof feat === 'string') {
+      const isBadge = specialBadgeNames.some(b => feat.toLowerCase().includes(b.toLowerCase())) || feat.toLowerCase().includes('loan available');
+      if (!isBadge) {
+        normalizedFeatures.push({ key: feat, value: '' });
       }
+    } else if (typeof feat === 'object' && feat.key) {
+      normalizedFeatures.push(feat);
     }
-    return 'OTHER';
-  };
-
-  const groupedFeatures = {};
-  regularFeatures.forEach(feat => {
-    const cat = categorizeFeature(feat);
-    if (!groupedFeatures[cat]) groupedFeatures[cat] = [];
-    groupedFeatures[cat].push(feat);
   });
 
   return (
@@ -284,36 +271,15 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 {car.description || `Experience the pinnacle of automotive engineering with this meticulously maintained ${title}. This vehicle blends everyday usability with unparalleled performance.`}
               </div>
 
-              {regularFeatures.length > 0 && (
+              {normalizedFeatures.length > 0 && (
                 <div className="mt-6 pt-6 border-t border-gray-100 dark:border-white/10">
-                  <div className="flex items-center justify-between cursor-pointer group" onClick={() => { }}>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Features</h3>
-                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-5" style={{ fontFamily: 'var(--font-outfit)' }}>Key Features (Specifications)</h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-5">
-                    {Object.entries(groupedFeatures).map(([category, features]) => (
-                      <div key={category}>
-                        <h4 className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                          {category}
-                        </h4>
-                        <motion.ul
-                          variants={staggerContainer}
-                          initial="hidden"
-                          whileInView="visible"
-                          viewport={{ once: true, margin: '-50px' }}
-                          className="space-y-2.5"
-                        >
-                          {features.map((feat, i) => (
-                            <motion.li variants={fadeInLeft} key={`${category}-${i}`} className="flex items-start gap-2.5">
-                              <div className="mt-0.5 w-4 h-4 rounded-full bg-purple-50 dark:bg-purple-500/10 border border-purple-200 dark:border-purple-500/20 flex items-center justify-center shrink-0">
-                                <svg className="w-2.5 h-2.5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                </svg>
-                              </div>
-                              <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">{feat}</span>
-                            </motion.li>
-                          ))}
-                        </motion.ul>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+                    {normalizedFeatures.map((feat, i) => (
+                      <div key={i} className="flex items-start justify-between border-b border-gray-100 dark:border-white/5 pb-2 last:border-0 sm:last:border-b">
+                        <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">{feat.key}</span>
+                        <span className="text-sm text-gray-900 dark:text-white font-semibold text-right max-w-[50%]">{feat.value || 'Yes'}</span>
                       </div>
                     ))}
                   </div>

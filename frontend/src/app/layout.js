@@ -3,7 +3,7 @@ import './globals.css';
 import AppLayoutWrapper from '@/components/AppLayoutWrapper';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from 'react-hot-toast';
-import DynamicLeadPopup from '@/components/client/DynamicLeadPopup';
+import PwaInstallPrompt from '@/components/client/PwaInstallPrompt';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({
@@ -21,7 +21,17 @@ const outfit = Outfit({
   weight: ['400', '500', '600', '700', '800'],
 });
 
+export const viewport = {
+  themeColor: '#000000',
+};
+
 export const metadata = {
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Hariram Motors',
+  },
   metadataBase: new URL('https://www.hariramcars.com/'),
   title: {
     default: 'Hariram Motors | Used & pre-owned cars in Surat',
@@ -231,7 +241,7 @@ export default function RootLayout({ children }) {
               },
             }}
           />
-          <DynamicLeadPopup />
+          <PwaInstallPrompt />
           <AppLayoutWrapper>{children}</AppLayoutWrapper>
         </ThemeProvider>
       </body>

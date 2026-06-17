@@ -83,7 +83,7 @@ const carSchema = new mongoose.Schema(
 
     // ── Additional ──
     description: { type: String, trim: true },
-    features: [{ type: String }],
+    features: [mongoose.Schema.Types.Mixed],
     airConditioner: { type: String, trim: true },
     powerWindows: { type: String, trim: true },
     sunroof: { type: String, trim: true },

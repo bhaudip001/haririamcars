@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import {
@@ -18,24 +18,6 @@ import {
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import api from '@/lib/api';
-
-const COMMON_FEATURES = [
-  'Power Steering', 'Power Windows', 'Air Conditioner', 'Heater', 'Adjustable Steering', 'Automatic Climate Control',
-  'Air Quality Control', 'Low Fuel Warning Light', 'Accessory Power Outlet', 'Trunk Light', 'Vanity Mirror',
-  'Rear Reading Lamp', 'Rear Seat Headrest', 'Adjustable Headrest', 'Rear Seat Centre Arm Rest', 'Height Adjustable Front Seat Belts',
-  'Cup Holders-Front', 'Cup Holders-Rear', 'Rear AC Vents', 'Seat Lumbar Support', 'Cruise Control',
-  'Parking Sensors', 'Navigation System', 'Foldable Rear Seat', 'Smart Access Card Entry', 'KeyLess Entry',
-  'Engine Start/Stop Button', 'Glove Box Cooling', 'Voice Control', 'Steering Wheel Gearshift Paddles',
-  'USB Charger', 'Central Console Armrest', 'Tailgate Ajar', 'Gear Shift Indicator', 'Rear Curtain', 'Luggage Hook & Net',
-  'Drive Modes', 'Anti-Lock Braking System', 'Brake Assist', 'Central Locking', 'Power Door Locks', 'Child Safety Locks',
-  'Anti-Theft Alarm', 'Driver Airbag', 'Passenger Airbag', 'Side Airbag-Front', 'Side Airbag-Rear', 'Day & Night Rear View Mirror',
-  'Passenger Side Rear View Mirror', 'Xenon Headlamps', 'Rear Seat Belts', 'Seat Belt Warning', 'Door Ajar Warning',
-  'Side Impact Beams', 'Front Impact Beams', 'Traction Control', 'Adjustable Seats', 'Tyre Pressure Monitor', 'Vehicle Stability Control System',
-  'Engine Immobilizer', 'Crash Sensor', 'Centrally Mounted Fuel Tank', 'Engine Check Warning', 'Clutch Lock', 'EBD',
-  'Electronic Stability Control', 'Advance Safety Features', 'Rear Camera', 'Anti-Theft Device', 'Anti-Pinch Power Windows',
-  'Speed Alert', 'Speed Sensing Auto Door Lock', 'ISOFIX Child Seat Mounts', 'Head-Up Display', 'Pretensioners & Force Limiter Seatbelts',
-  'Hill Assist', 'Impact Sensing Auto Door Unlock', '360 View Camera', 'Sunroof', 'Touchscreen', 'Alloy Wheels'
-];
 
 // Reusable Select component
 function FormSelect({ label, options, placeholder, register, error }) {
@@ -388,8 +370,7 @@ export default function AddCar() {
       bodyType: '', variant: '', color: '', registration: '', description: '', features: [{ key: '', value: '' }],
       airConditioner: '', powerWindows: '', sunroof: '', parkingSensors: '',
       displacement: '', maxPower: '', driveType: '', cylinders: '',
-      isCertified: false, isPetipack: false, validVimo: false, loanAvailable: false, isKmGenuine: false,
-      selectedFeatures: []
+      isCertified: false, isPetipack: false, validVimo: false, loanAvailable: false, isKmGenuine: false
     }
   });
 
@@ -397,23 +378,41 @@ export default function AddCar() {
   const isPetipack = watch('isPetipack');
   const validVimo = watch('validVimo');
   const loanAvailable = watch('loanAvailable');
-  const selectedFeatures = watch('selectedFeatures') || [];
 
   const [photos, setPhotos] = useState([]);
   const [mainPhoto, setMainPhoto] = useState(0);
+  const [brands, setBrands] = useState([]);
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await api.get('/brands');
+        setBrands(res.data);
+      } catch (err) {
+        console.error('Failed to fetch brands');
+      }
+    };
+    fetchBrands();
+  }, []);
+
+  const selectedMake = watch('make');
+  const selectedBrandObj = brands.find(b => b.name === selectedMake);
+  const modelsForSelectedMake = selectedBrandObj ? selectedBrandObj.models : [];
 
   const onSubmit = async (data) => {
     try {
       let uploadedImages = [];
       if (photos.length > 0) {
-        toast.loading('Uploading images directly to Cloudinary...', { id: 'upload-toast' });
+        toast.loading(`Preparing to upload ${photos.length} photos...`, { id: 'upload-toast' });
         const { default: imageCompression } = await import('browser-image-compression');
         const options = { maxSizeMB: 5, maxWidthOrHeight: 2048, useWebWorker: true };
         
         const sigRes = await api.get('/upload/signature');
         const { signature, timestamp, api_key, cloud_name } = sigRes.data;
 
-        for (let photo of photos) {
+        for (let i = 0; i < photos.length; i++) {
+          let photo = photos[i];
+          toast.loading(`Uploading photo ${i + 1}/${photos.length}...`, { id: 'upload-toast' });
           let fileToUpload = photo;
           let isHeic = photo.name.toLowerCase().endsWith('.heic') || photo.name.toLowerCase().endsWith('.heif');
           let heicFailed = false;
@@ -507,7 +506,7 @@ export default function AddCar() {
         maxPower: data.maxPower,
         driveType: data.driveType,
         cylinders: data.cylinders,
-        features: data.selectedFeatures || [],
+        features: (data.features || []).filter(f => f.key.trim() !== '').map(f => ({ key: f.key.trim(), value: f.value.trim() || 'Yes' })),
         badges: badges,
         loanAvailable: data.loanAvailable,
         isKmGenuine: data.isKmGenuine,
@@ -604,18 +603,30 @@ export default function AddCar() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <FormInput
+            <FormSelect
               label="Make"
               register={register('make', { required: 'Make is required' })}
               error={errors.make}
-              placeholder="e.g. Maruti Suzuki"
+              placeholder="Select Make"
+              options={brands.map(b => b.name)}
             />
-            <FormInput
-              label="Model"
-              register={register('model', { required: 'Model is required' })}
-              error={errors.model}
-              placeholder="e.g. Swift VXI"
-            />
+            {modelsForSelectedMake.length > 0 ? (
+              <FormSelect
+                label="Model"
+                register={register('model', { required: 'Model is required' })}
+                error={errors.model}
+                placeholder="Select Model"
+                options={modelsForSelectedMake}
+              />
+            ) : (
+               <FormSelect
+                label="Model"
+                register={register('model', { required: 'Model is required' })}
+                error={errors.model}
+                placeholder={selectedMake ? "No models added for this Make" : "Select Make first"}
+                options={[]}
+              />
+            )}
             <FormInput
               label="Mfg. Year"
               type="number"
@@ -733,35 +744,7 @@ export default function AddCar() {
 
         {/* ── Section 2: Features ── */}
         <section className="bg-surface rounded-2xl border border-gray-100 p-6 sm:p-8 mt-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-              <span className="font-heading font-bold text-sm text-primary">2</span>
-            </div>
-            <h2 className="font-heading font-bold text-lg text-text">Features</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-            {COMMON_FEATURES.map(feature => {
-              const isSelected = selectedFeatures.includes(feature);
-              return (
-                <div 
-                  key={feature} 
-                  onClick={() => {
-                    if (isSelected) {
-                      setValue('selectedFeatures', selectedFeatures.filter(f => f !== feature));
-                    } else {
-                      setValue('selectedFeatures', [...selectedFeatures, feature]);
-                    }
-                  }}
-                  className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-all ${isSelected ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 bg-background hover:border-primary/50'}`}
-                >
-                  <div className={`w-4 h-4 rounded-sm flex items-center justify-center border ${isSelected ? 'bg-primary border-primary' : 'border-gray-300'}`}>
-                    {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
-                  </div>
-                  <span className="font-body text-xs font-semibold select-none truncate">{feature}</span>
-                </div>
-              )
-            })}
-          </div>
+          <FeatureManager control={control} register={register} errors={errors} />
         </section>
 
         {/* ── Section 3: Vehicle Badges ── */}

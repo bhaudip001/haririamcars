@@ -87,8 +87,8 @@ export const validateMessage = [
     .optional({ checkFalsy: true }).isEmail().normalizeEmail()
     .withMessage('Valid email required'),
   body('message')
-    .trim().notEmpty().isLength({ min: 10, max: 2000 })
-    .withMessage('Message must be 10-2000 chars'),
+    .trim().notEmpty().isLength({ min: 2, max: 2000 })
+    .withMessage('Message must be 2-2000 chars'),
   handleValidation,
 ];
 

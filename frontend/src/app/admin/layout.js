@@ -3,12 +3,13 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Car, MessageSquare, HandCoins, Image, Users, Settings, LogOut, Menu, X, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Car, MessageSquare, HandCoins, Image, Users, Settings, LogOut, Menu, X, ChevronRight, Tags } from 'lucide-react';
 import api from '@/lib/api';
 
 const adminNav = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/inventory', label: 'Inventory', icon: Car },
+  { href: '/admin/brands', label: 'Brands & Models', icon: Tags },
   { href: '/admin/sell-requests', label: 'Sell Requests', icon: HandCoins },
   { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
   { href: '/admin/happy-customers', label: 'Testimonials', icon: Users },

@@ -13,6 +13,8 @@ import BannerSkeleton from '@/components/skeletons/BannerSkeleton';
 import TestimonialSkeleton from '@/components/skeletons/TestimonialSkeleton';
 import GoogleReviewsSkeleton from '@/components/skeletons/GoogleReviewsSkeleton';
 import DynamicGoogleReviews from '@/components/client/DynamicGoogleReviews';
+import CustomerReviewReels from '@/components/CustomerReviewReels';
+import ShowroomVideo from '@/components/ShowroomVideo';
 
 export const metadata = {
   title: 'Hariram Cars | Top Car Dealer for Second-Hand Cars in Surat',
@@ -76,6 +78,9 @@ export default function HomePage() {
         </section>
       </div>
 
+      {/* SHOWROOM VIDEO SECTION */}
+      <ShowroomVideo />
+
       <WhyChooseUs />
 
       {/* ════ UNIFIED SHOWROOM BACKGROUND (SECTIONS 6, 7 & 8) ════ */}
@@ -106,6 +111,9 @@ export default function HomePage() {
             <DynamicGoogleReviews />
           </Suspense>
         </div>
+
+        {/* CUSTOMER REVIEW REELS */}
+        <CustomerReviewReels />
 
         <Suspense fallback={<TestimonialSkeleton />}>
           <TestimonialsServer />

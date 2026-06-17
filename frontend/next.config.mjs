@@ -7,6 +7,13 @@ try {
   console.warn('Invalid NEXT_PUBLIC_API_URL format, defaulting to localhost');
 }
 
+import withPWAInit from '@ducanh2912/next-pwa';
+
+const withPWA = withPWAInit({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Compress responses
@@ -154,4 +161,4 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
 
-export default withBundleAnalyzer(nextConfig);
+export default withBundleAnalyzer(withPWA(nextConfig));

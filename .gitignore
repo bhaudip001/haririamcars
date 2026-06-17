@@ -31,3 +31,9 @@ Thumbs.db
 
 # Vercel
 .vercel
+
+# Media Files
+frontend/public/car delivery/
+frontend/public/customer review/
+frontend/public/*.MOV
+frontend/public/*.MP4

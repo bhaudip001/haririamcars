@@ -59,7 +59,10 @@ export default function ContactPage() {
         setForm({ name: '', phone: '', email: '', message: '' });
       }, 5000);
     } catch (err) {
-      toast.error('Failed to send message. Please try again.');
+      const errorMessage = err.response?.data?.details?.[0]?.message 
+                        || err.response?.data?.error 
+                        || 'Failed to send message. Please try again.';
+      toast.error(errorMessage);
       setStatus('idle');
     } finally {
       setIsSubmitting(false);

@@ -11,29 +11,80 @@ import {
   CheckCircle2,
   AlertCircle,
   ArrowLeft,
+  RotateCw,
+  Plus,
+  Trash2,
   Save,
 } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import Link from 'next/link';
 import api from '@/lib/api';
 
-const COMMON_FEATURES = [
-  'Power Steering', 'Power Windows', 'Air Conditioner', 'Heater', 'Adjustable Steering', 'Automatic Climate Control',
-  'Air Quality Control', 'Low Fuel Warning Light', 'Accessory Power Outlet', 'Trunk Light', 'Vanity Mirror',
-  'Rear Reading Lamp', 'Rear Seat Headrest', 'Adjustable Headrest', 'Rear Seat Centre Arm Rest', 'Height Adjustable Front Seat Belts',
-  'Cup Holders-Front', 'Cup Holders-Rear', 'Rear AC Vents', 'Seat Lumbar Support', 'Cruise Control',
-  'Parking Sensors', 'Navigation System', 'Foldable Rear Seat', 'Smart Access Card Entry', 'KeyLess Entry',
-  'Engine Start/Stop Button', 'Glove Box Cooling', 'Voice Control', 'Steering Wheel Gearshift Paddles',
-  'USB Charger', 'Central Console Armrest', 'Tailgate Ajar', 'Gear Shift Indicator', 'Rear Curtain', 'Luggage Hook & Net',
-  'Drive Modes', 'Anti-Lock Braking System', 'Brake Assist', 'Central Locking', 'Power Door Locks', 'Child Safety Locks',
-  'Anti-Theft Alarm', 'Driver Airbag', 'Passenger Airbag', 'Side Airbag-Front', 'Side Airbag-Rear', 'Day & Night Rear View Mirror',
-  'Passenger Side Rear View Mirror', 'Xenon Headlamps', 'Rear Seat Belts', 'Seat Belt Warning', 'Door Ajar Warning',
-  'Side Impact Beams', 'Front Impact Beams', 'Traction Control', 'Adjustable Seats', 'Tyre Pressure Monitor', 'Vehicle Stability Control System',
-  'Engine Immobilizer', 'Crash Sensor', 'Centrally Mounted Fuel Tank', 'Engine Check Warning', 'Clutch Lock', 'EBD',
-  'Electronic Stability Control', 'Advance Safety Features', 'Rear Camera', 'Anti-Theft Device', 'Anti-Pinch Power Windows',
-  'Speed Alert', 'Speed Sensing Auto Door Lock', 'ISOFIX Child Seat Mounts', 'Head-Up Display', 'Pretensioners & Force Limiter Seatbelts',
-  'Hill Assist', 'Impact Sensing Auto Door Unlock', '360 View Camera', 'Sunroof', 'Touchscreen', 'Alloy Wheels'
-];
+// Feature Manager Component for Key-Value pairs
+function FeatureManager({ control, register, errors }) {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "features"
+  });
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <label className="font-body text-sm font-semibold text-text">
+          Key Features (Specifications)
+        </label>
+        <button
+          type="button"
+          onClick={() => append({ key: '', value: '' })}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/5 text-primary hover:bg-primary/10 rounded-lg font-body text-xs font-bold transition-colors"
+        >
+          <Plus className="w-3.5 h-3.5" /> Add Feature
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3">
+        {fields.map((field, index) => (
+          <div key={field.id} className="flex items-center gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+              <div className="relative">
+                <input
+                  {...register(`features.${index}.key`)}
+                  placeholder="Feature (e.g. Airbags)"
+                  className="w-full px-4 py-2.5 bg-background border border-transparent focus:border-primary/30 rounded-xl font-body text-sm text-text placeholder:text-text-muted/40 outline-none transition-all focus:ring-2 focus:ring-primary/10"
+                />
+              </div>
+              <div className="relative">
+                <input
+                  {...register(`features.${index}.value`)}
+                  placeholder="Value (e.g. 6) - Optional"
+                  className="w-full px-4 py-2.5 bg-background border border-transparent focus:border-primary/30 rounded-xl font-body text-sm text-text placeholder:text-text-muted/40 outline-none transition-all focus:ring-2 focus:ring-primary/10"
+                />
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => remove(index)}
+              className="p-2.5 bg-red-50 text-red-500 hover:bg-red-100 rounded-xl transition-colors"
+              title="Remove Feature"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
+        ))}
+      </div>
+      
+      {fields.length === 0 && (
+        <div 
+          onClick={() => append({ key: '', value: '' })}
+          className="py-8 border-2 border-dashed border-gray-100 rounded-2xl flex flex-col items-center justify-center text-text-muted/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.01] cursor-pointer transition-all"
+        >
+          <Plus className="w-6 h-6 mb-2" />
+          <span className="font-body text-xs font-medium">Click to add your first feature</span>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // Reusable Select component
 function FormSelect({ label, options, placeholder, register, error }) {
@@ -281,6 +332,7 @@ export default function EditCarPage() {
     reset,
     watch,
     setValue,
+    control,
     formState: { errors, isSubmitting }
   } = useForm({
     defaultValues: {
@@ -288,7 +340,7 @@ export default function EditCarPage() {
       kmDriven: '', fuelType: '', transmission: '', ownership: '', insurance: '',
       bodyType: '', variant: '', color: '', registration: '', description: '',
       isCertified: false, isPetipack: false, validVimo: false, loanAvailable: false, isKmGenuine: false,
-      selectedFeatures: [],
+      features: [{ key: '', value: '' }],
     }
   });
 
@@ -296,11 +348,27 @@ export default function EditCarPage() {
   const isPetipack = watch('isPetipack');
   const validVimo = watch('validVimo');
   const loanAvailable = watch('loanAvailable');
-  const selectedFeatures = watch('selectedFeatures') || [];
 
   const [existingImages, setExistingImages] = useState([]);
   const [deletedImages, setDeletedImages] = useState([]);
   const [photos, setPhotos] = useState([]);
+  const [brands, setBrands] = useState([]);
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await api.get('/brands');
+        setBrands(res.data);
+      } catch (err) {
+        console.error('Failed to fetch brands');
+      }
+    };
+    fetchBrands();
+  }, []);
+
+  const selectedMake = watch('make');
+  const selectedBrandObj = brands.find(b => b.name === selectedMake);
+  const modelsForSelectedMake = selectedBrandObj ? selectedBrandObj.models : [];
 
   useEffect(() => {
     if (!id) return;
@@ -326,7 +394,9 @@ export default function EditCarPage() {
           validVimo: badges.includes('Valid Vimo'), 
           loanAvailable: data.loanAvailable === 'true' || data.loanAvailable === true,
           isKmGenuine: data.isKmGenuine === 'true' || data.isKmGenuine === true,
-          selectedFeatures: data.features ? (typeof data.features === 'string' ? JSON.parse(data.features) : data.features) : [],
+          features: Array.isArray(data.features) && data.features.length > 0 
+            ? data.features.map(f => typeof f === 'string' ? { key: f, value: '' } : f) 
+            : [{ key: '', value: '' }],
         });
         
         if (data.images && data.images.length > 0) {
@@ -375,14 +445,16 @@ export default function EditCarPage() {
       
       let uploadedImages = [];
       if (photos.length > 0) {
-        toast.loading('Uploading images directly to Cloudinary...', { id: 'upload-toast' });
+        toast.loading(`Preparing to upload ${photos.length} photos...`, { id: 'upload-toast' });
         const { default: imageCompression } = await import('browser-image-compression');
         const options = { maxSizeMB: 5, maxWidthOrHeight: 2048, useWebWorker: true };
         
         const sigRes = await api.get('/upload/signature');
         const { signature, timestamp, api_key, cloud_name } = sigRes.data;
 
-        for (let photo of photos) {
+        for (let i = 0; i < photos.length; i++) {
+          let photo = photos[i];
+          toast.loading(`Uploading photo ${i + 1}/${photos.length}...`, { id: 'upload-toast' });
           let fileToUpload = photo;
           let isHeic = photo.name.toLowerCase().endsWith('.heic') || photo.name.toLowerCase().endsWith('.heif');
           let heicFailed = false;
@@ -468,7 +540,7 @@ export default function EditCarPage() {
         badges: badges,
         loanAvailable: data.loanAvailable,
         isKmGenuine: data.isKmGenuine,
-        features: data.selectedFeatures || [],
+        features: (data.features || []).filter(f => f.key.trim() !== '').map(f => ({ key: f.key.trim(), value: f.value.trim() || 'Yes' })),
         deletedImages: deletedImages.length > 0 ? JSON.stringify(deletedImages) : undefined,
         images: [...existingImages, ...uploadedImages].map(img => ({ url: img.url, publicId: img.publicId }))
       };
@@ -586,8 +658,30 @@ export default function EditCarPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            <FormInput label="Make" register={register('make', { required: 'Make is required' })} error={errors.make} placeholder="e.g. Maruti Suzuki" />
-            <FormInput label="Model" register={register('model', { required: 'Model is required' })} error={errors.model} placeholder="e.g. Swift VXI" />
+            <FormSelect
+              label="Make"
+              register={register('make', { required: 'Make is required' })}
+              error={errors.make}
+              placeholder="Select Make"
+              options={brands.map(b => b.name)}
+            />
+            {modelsForSelectedMake.length > 0 ? (
+              <FormSelect
+                label="Model"
+                register={register('model', { required: 'Model is required' })}
+                error={errors.model}
+                placeholder="Select Model"
+                options={modelsForSelectedMake}
+              />
+            ) : (
+               <FormSelect
+                label="Model"
+                register={register('model', { required: 'Model is required' })}
+                error={errors.model}
+                placeholder={selectedMake ? "No models added for this Make" : "Select Make first"}
+                options={[]}
+              />
+            )}
             <FormInput label="Mfg. Year" type="number" register={register('manufacturingYear', { min: { value: 1990, message: 'Invalid year' } })} error={errors.manufacturingYear} placeholder="e.g. 2022" />
             <FormInput label="Reg. Year" type="number" register={register('registerYear', { min: { value: 1990, message: 'Invalid year' } })} error={errors.registerYear} placeholder="e.g. 2023" />
             <FormInput label="Price" type="text" register={register('price', { validate: v => !v || !isNaN(Number(String(v).replace(/,/g, ''))) || 'Invalid price' })} error={errors.price} placeholder="e.g. 5,85,000" prefix="₹" />
@@ -625,35 +719,7 @@ export default function EditCarPage() {
 
         {/* ── Section 2: Features ── */}
         <section className="bg-surface rounded-2xl border border-gray-100 p-6 sm:p-8 mt-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-              <span className="font-heading font-bold text-sm text-primary">2</span>
-            </div>
-            <h2 className="font-heading font-bold text-lg text-text">Features</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-            {COMMON_FEATURES.map(feature => {
-              const isSelected = selectedFeatures.includes(feature);
-              return (
-                <div 
-                  key={feature} 
-                  onClick={() => {
-                    if (isSelected) {
-                      setValue('selectedFeatures', selectedFeatures.filter(f => f !== feature));
-                    } else {
-                      setValue('selectedFeatures', [...selectedFeatures, feature]);
-                    }
-                  }}
-                  className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer transition-all ${isSelected ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 bg-background hover:border-primary/50'}`}
-                >
-                  <div className={`w-4 h-4 rounded-sm flex items-center justify-center border ${isSelected ? 'bg-primary border-primary' : 'border-gray-300'}`}>
-                    {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
-                  </div>
-                  <span className="font-body text-xs font-semibold select-none truncate">{feature}</span>
-                </div>
-              )
-            })}
-          </div>
+          <FeatureManager control={control} register={register} errors={errors} />
         </section>
 
         {/* ── Section 3: Vehicle Badges ── */}

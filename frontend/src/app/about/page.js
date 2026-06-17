@@ -9,6 +9,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import dynamic from 'next/dynamic';
 import AboutHero from '@/components/AboutHero';
+import CustomerDeliveryReels from '@/components/CustomerDeliveryReels';
 
 const GoogleReviews = dynamic(() => import('@/components/GoogleReviews'), { ssr: false });
 import api from '@/lib/api';
@@ -126,7 +127,7 @@ export default function AboutPage() {
                   What started in 2020 as a small lot with big dreams has evolved into Surat&apos;s most trusted pre-owned car dealership. Our foundation was simple: <strong className="text-black dark:text-white transition-colors">treat every customer like family.</strong>
                 </p>
                 <p className="font-['Inter'] text-[16px] text-gray-600 dark:text-[#a0a0b8] leading-8 transition-colors">
-                  Through sheer trust and word of mouth, we&apos;ve grown exponentially. We&apos;ve proudly served over <strong className="text-black dark:text-white transition-colors">500 families</strong>, ensuring each one drives away with a smile and total peace of mind.
+                  Through sheer trust and word of mouth, we&apos;ve grown exponentially. We&apos;ve proudly served over <strong className="text-black dark:text-white transition-colors">3,600+ families</strong>, ensuring each one drives away with a smile and total peace of mind.
                 </p>
                 <p className="font-['Inter'] text-[16px] text-gray-600 dark:text-[#a0a0b8] leading-8 transition-colors">
                   Today, with a constantly refreshed inventory of over 150 meticulously inspected cars, full documentation support, and a commitment to transparency, we are Surat&apos;s go-to automotive destination.
@@ -189,8 +190,8 @@ export default function AboutPage() {
                       <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2023</span>
                       <div className="h-px flex-grow bg-gradient-to-r from-purple-500/30 to-transparent" />
                     </div>
-                    <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">500 Cars Milestone</h4>
-                    <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Crossed 500 successful sales — entirely through word-of-mouth referrals.</p>
+                    <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">400+ Annual Sales</h4>
+                    <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Achieved a milestone of 400+ cars sold in a single year, entirely through word-of-mouth referrals.</p>
                   </div>
                 </motion.div>
 
@@ -204,8 +205,8 @@ export default function AboutPage() {
                       <span className="font-['Outfit'] font-black text-[28px] text-purple-600 dark:text-purple-400 transition-colors">2026</span>
                       <div className="h-px flex-grow bg-gradient-to-r from-purple-500/30 to-transparent" />
                     </div>
-                    <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">#1 in Surat</h4>
-                    <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Recognized as Surat's most trusted pre-owned car destination with 150+ stock.</p>
+                    <h4 className="font-['Outfit'] font-bold text-[17px] text-black dark:text-white transition-colors">3,600+ Cars Delivered</h4>
+                    <p className="font-['Inter'] text-[13px] text-gray-500 dark:text-[#6b6b80] leading-6 mt-1 transition-colors">Recognized as Surat's most trusted destination, proudly delivering over 3,600+ cars to happy families.</p>
                   </div>
                 </motion.div>
               </motion.div>
@@ -327,6 +328,9 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* CUSTOMER DELIVERY REELS */}
+      <CustomerDeliveryReels />
 
       {/* SERVICES SECTION (Glowing SaaS Style) */}
       <section className="py-24 w-full relative overflow-hidden" style={{ background: '#0a0a12', color: '#e8dfee' }}>
@@ -698,7 +702,7 @@ export default function AboutPage() {
                   <div key={`${t._id}-${index}`} className="relative w-[280px] sm:w-[320px] h-[380px] sm:h-[420px] shrink-0 rounded-2xl overflow-hidden group shadow-xl dark:shadow-[0_15px_40px_rgba(0,0,0,0.5)] border border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-[#12121f] transition-colors duration-500 cursor-grab active:cursor-grabbing">
                     <div className="absolute inset-0 w-full h-full overflow-hidden">
                       {t.photo?.url ? (
-                        <Image src={t.photo.url} alt={t.customerName} fill className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                        <Image src={t.photo.url} alt={t.customerName} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-purple-500/30">No Photo</div>
                       )}
