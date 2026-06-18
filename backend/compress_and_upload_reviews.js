@@ -31,11 +31,11 @@ const compressVideo = (inputPath, outputPath) => {
     ffmpeg(inputPath)
       .outputOptions([
         '-c:v libx264',
-        '-crf 28',         // higher number = more compression
-        '-preset fast',    // fast compression
-        '-s 720x1280',     // resize to 720p vertical
+        '-crf 22',         // Visually lossless quality
+        '-preset fast',
+        '-s 1080x1920',    // Keep high resolution (1080p)
         '-c:a aac',
-        '-b:a 128k'
+        '-b:a 192k'        // Better audio quality
       ])
       .on('end', () => {
         console.log(`✅ Compression finished: ${outputPath}`);
