@@ -16,11 +16,6 @@ const withPWA = withPWAInit({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Ignore ESLint errors during Vercel builds to prevent deployment failures
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-
   // Compress responses
   compress: true,
 

@@ -275,11 +275,11 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 <div className="mt-6 pt-6 border-t border-gray-100 dark:border-white/10">
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-5" style={{ fontFamily: 'var(--font-outfit)' }}>Key Features (Specifications)</h3>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {normalizedFeatures.map((feat, i) => (
-                      <div key={i} className="flex items-start justify-between border-b border-gray-100 dark:border-white/5 pb-2 last:border-0 sm:last:border-b">
-                        <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">{feat.key}</span>
-                        <span className="text-sm text-gray-900 dark:text-white font-semibold text-right max-w-[50%]">{feat.value || 'Yes'}</span>
+                      <div key={i} className="bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl p-3 sm:p-4 flex flex-col justify-center text-center hover:border-purple-300 dark:hover:border-purple-500/50 hover:shadow-sm transition-all group">
+                        <span className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1 uppercase tracking-wider group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{feat.key}</span>
+                        <span className="text-sm sm:text-base text-gray-900 dark:text-white font-bold">{feat.value || 'Yes'}</span>
                       </div>
                     ))}
                   </div>
