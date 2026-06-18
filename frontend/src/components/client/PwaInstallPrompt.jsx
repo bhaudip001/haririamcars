@@ -19,9 +19,16 @@ export default function PwaInstallPrompt() {
     const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
     setIsIOS(isIosDevice);
 
-    // Check if already installed
-    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+    // Check if already installed via localStorage or standalone mode
+    const isAlreadyInstalled = localStorage.getItem('pwaInstalled') === 'true';
+    if (isAlreadyInstalled || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) {
       setIsInstalled(true);
+      localStorage.setItem('pwaInstalled', 'true');
+      return;
+    }
+
+    // Check if dismissed in this session
+    if (sessionStorage.getItem('pwaPromptDismissed') === 'true') {
       return;
     }
 
@@ -38,6 +45,7 @@ export default function PwaInstallPrompt() {
       setIsInstalled(true);
       setShowPrompt(false);
       setDeferredPrompt(null);
+      localStorage.setItem('pwaInstalled', 'true');
     });
 
     // Initial show after 3 seconds
@@ -84,6 +92,7 @@ export default function PwaInstallPrompt() {
 
   const handleLaterClick = () => {
     setShowPrompt(false);
+    sessionStorage.setItem('pwaPromptDismissed', 'true');
   };
 
   // Don't render popup on admin or login routes
