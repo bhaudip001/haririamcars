@@ -8,12 +8,6 @@ import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import ReelVideo from '@/components/ReelVideo';
 
 const videos = [
-  { src: '/customer review/IMG_5513.MOV', name: 'Joy Anjirwala', car: '2012 Innova' },
-  { src: '/customer review/IMG_5507.MOV', name: 'Mehrotra Rajatbhai', car: '2017 Honda city' },
-  { src: '/customer review/IMG_5503.MOV', name: 'Raithatha Sagarbhai', car: 'Polo 2016' },
-  { src: '/customer review/IMG_5504.MOV', name: 'Jogani Sandipbhai', car: '2021 Venue' },
-  { src: '/customer review/IMG_5505.MOV', name: 'Rathod Siddhrajsinh', car: 'Hexa 2018' },
-  { src: '/customer review/IMG_5511.MOV', name: 'Durgeshbhai Santram Marathe', car: 'Ecosport 2017' },
   { src: '/car delivery/IMG_5502.MP4', name: 'Bhimabhai shamla', car: 'Creta 2020' },
   { src: '/car delivery/IMG_5506.MOV', name: 'Ajudiya Rameshbhai', car: 'Endeavour 2018' },
   { src: '/car delivery/IMG_5509.MOV', name: 'Arjunbhai Kavithiya', car: 'Slavia 2022' },

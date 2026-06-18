@@ -113,12 +113,12 @@ export default function ShowroomVideo() {
           {/* Mute Toggle */}
           <button
             onClick={toggleMute}
-            className="absolute top-6 right-6 z-20 w-12 h-12 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition shadow-lg opacity-100"
+            className="absolute top-4 right-4 md:top-6 md:right-6 z-20 w-8 h-8 md:w-12 md:h-12 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition shadow-lg opacity-100"
           >
             {isMuted ? (
-              <VolumeX className="w-6 h-6 text-white" />
+              <VolumeX className="w-4 h-4 md:w-6 md:h-6 text-white" />
             ) : (
-              <Volume2 className="w-6 h-6 text-white" />
+              <Volume2 className="w-4 h-4 md:w-6 md:h-6 text-white" />
             )}
           </button>
         </motion.div>

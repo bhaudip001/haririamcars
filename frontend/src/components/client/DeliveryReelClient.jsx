@@ -2,41 +2,47 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Mousewheel } from 'swiper/modules';
+import { Mousewheel } from 'swiper/modules';
 import { Play, Volume2, VolumeX, Star, Quote } from 'lucide-react';
 import 'swiper/css';
-import 'swiper/css/free-mode';
 
 export default function DeliveryReelClient({ initialReels }) {
   // Since we only have one video for now, let's duplicate it so the slider looks full.
   const reels = initialReels && initialReels.length > 0 ? initialReels : [
     {
       id: 1,
-      videoSrc: '/IMG_5513.MOV',
-      customerName: 'Rahul Patel',
-      carModel: 'Hyundai Creta 2022',
-      review: 'Amazing experience! Got my dream car delivered in perfect condition.',
+      videoSrc: '/car delivery/IMG_5502.MP4',
+      customerName: 'Bhimabhai shamla',
+      carModel: 'Creta 2020',
+      review: '',
     },
     {
       id: 2,
-      videoSrc: '/IMG_5513.MOV',
-      customerName: 'Anjali Sharma',
-      carModel: 'Kia Seltos',
-      review: 'Smooth process from start to finish. Highly recommended dealership!',
+      videoSrc: '/car delivery/IMG_5506.MOV',
+      customerName: 'Ajudiya Rameshbhai',
+      carModel: 'Endeavour 2018',
+      review: '',
     },
     {
       id: 3,
-      videoSrc: '/IMG_5513.MOV',
-      customerName: 'Vikram Singh',
-      carModel: 'Honda City',
-      review: 'Very transparent pricing and excellent customer service.',
+      videoSrc: '/car delivery/IMG_5509.MOV',
+      customerName: 'Arjunbhai Kavithiya',
+      carModel: 'Slavia 2022',
+      review: '',
     },
     {
       id: 4,
-      videoSrc: '/IMG_5513.MOV',
-      customerName: 'Neha Gupta',
-      carModel: 'Maruti Suzuki Baleno',
-      review: 'Loved the fast delivery and the car looks brand new!',
+      videoSrc: '/car delivery/IMG_5510.MOV',
+      customerName: 'Natha Ram',
+      carModel: 'Brezza 2020',
+      review: '',
+    },
+    {
+      id: 5,
+      videoSrc: '/car delivery/IMG_5514.MOV',
+      customerName: 'Der Rajubhai',
+      carModel: 'Verna 2021',
+      review: '',
     }
   ];
 
@@ -59,10 +65,9 @@ export default function DeliveryReelClient({ initialReels }) {
         {/* Swiper Slider */}
         <div className="-mx-4 sm:mx-0 px-4 sm:px-0">
           <Swiper
-            modules={[FreeMode, Mousewheel]}
+            modules={[Mousewheel]}
             slidesPerView={'auto'}
             spaceBetween={16}
-            freeMode={true}
             mousewheel={{ forceToAxis: true }}
             className="!overflow-visible"
             breakpoints={{
