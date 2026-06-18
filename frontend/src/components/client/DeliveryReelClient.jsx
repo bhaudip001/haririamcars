@@ -11,7 +11,7 @@ export default function DeliveryReelClient({ initialReels }) {
   const reels = initialReels && initialReels.length > 0 ? initialReels : [
     {
       id: 1,
-      videoSrc: '/car delivery/IMG_5502.MP4',
+      videoSrc: 'https://res.cloudinary.com/dvo48lu7g/video/upload/v1781787590/IMG_5502_zo5slm.mp4',
       customerName: 'Bhimabhai shamla',
       carModel: 'Creta 2020',
       review: '',

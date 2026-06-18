@@ -8,7 +8,7 @@ import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import ReelVideo from '@/components/ReelVideo';
 
 const videos = [
-  { src: '/car delivery/IMG_5502.MP4', name: 'Bhimabhai shamla', car: 'Creta 2020' },
+  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/v1781787590/IMG_5502_zo5slm.mp4', name: 'Bhimabhai shamla', car: 'Creta 2020' },
   { src: '/car delivery/IMG_5506.MOV', name: 'Ajudiya Rameshbhai', car: 'Endeavour 2018' },
   { src: '/car delivery/IMG_5509.MOV', name: 'Arjunbhai Kavithiya', car: 'Slavia 2022' },
   { src: '/car delivery/IMG_5510.MOV', name: 'Natha Ram', car: 'Brezza 2020' },
