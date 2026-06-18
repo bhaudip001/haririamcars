@@ -60,7 +60,7 @@ export default function ShowroomVideo() {
   const toggleMute = (e) => {
     e.stopPropagation();
     const newMutedState = !isMuted;
-    
+
     if (videoRef.current) {
       videoRef.current.muted = newMutedState;
       setIsMuted(newMutedState);
@@ -82,7 +82,7 @@ export default function ShowroomVideo() {
             <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
             <span className="text-purple-600 dark:text-purple-400 text-[11px] uppercase tracking-[0.15em] font-bold transition-colors">Inside Our Showroom</span>
           </div>
-          
+
           <h2 className="font-['Outfit'] font-bold text-[36px] md:text-[46px] text-black dark:text-white leading-tight mb-4 transition-colors">
             Experience <span className="bg-gradient-to-r from-purple-500 to-pink-400 bg-clip-text text-transparent">Hariram Motors</span>
           </h2>
@@ -96,7 +96,7 @@ export default function ShowroomVideo() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "0px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative max-w-sm md:max-w-[400px] mx-auto rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-[9/16]"
+          className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-video"
           onClick={togglePlay}
         >
           <video
