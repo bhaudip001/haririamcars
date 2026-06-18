@@ -151,6 +151,7 @@ function ReelCard({ reel }) {
         muted={isMuted}
         playsInline
         preload="metadata"
+        poster={reel.videoSrc ? reel.videoSrc.replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
       ></video>
 
       {/* Play/Pause Overlay */}

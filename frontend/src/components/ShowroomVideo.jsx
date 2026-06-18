@@ -108,6 +108,7 @@ export default function ShowroomVideo() {
             muted={isMuted}
             playsInline
             preload="metadata"
+            poster="https://res.cloudinary.com/dvo48lu7g/video/upload/v1781787778/hariram-motors-videos/showroom_video.jpg"
           />
 
           {/* Mute Toggle */}

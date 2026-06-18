@@ -108,6 +108,7 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
           loop
           playsInline
           preload="metadata"
+          poster={src ? src.replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center absolute inset-0">
