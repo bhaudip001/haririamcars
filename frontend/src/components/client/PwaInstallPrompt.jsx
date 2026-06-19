@@ -12,6 +12,8 @@ export default function PwaInstallPrompt() {
   const [isInstalled, setIsInstalled] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const pathname = usePathname();
+  const promptRef = useRef(showPrompt);
+  promptRef.current = showPrompt;
 
   useEffect(() => {
     // Detect iOS for specific install instructions
@@ -24,11 +26,6 @@ export default function PwaInstallPrompt() {
     if (isAlreadyInstalled || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) {
       setIsInstalled(true);
       localStorage.setItem('pwaInstalled', 'true');
-      return;
-    }
-
-    // Check if dismissed in this session
-    if (sessionStorage.getItem('pwaPromptDismissed') === 'true') {
       return;
     }
 
@@ -48,26 +45,43 @@ export default function PwaInstallPrompt() {
       localStorage.setItem('pwaInstalled', 'true');
     });
 
+    const checkAndShowPrompt = () => {
+      if (localStorage.getItem('pwaInstalled') === 'true' || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) {
+        return;
+      }
+      
+      const lastDismissedAt = sessionStorage.getItem('pwaDismissedAt');
+      const now = Date.now();
+      
+      if (lastDismissedAt) {
+        const timeSince = now - parseInt(lastDismissedAt);
+        if (timeSince >= 120000) { // 2 minutes (120,000 ms)
+          setShowPrompt(true);
+          sessionStorage.removeItem('pwaDismissedAt'); // Reset so it can be dismissed again
+        }
+      } else {
+        setShowPrompt(true);
+      }
+    };
+
     // Initial show after 3 seconds
     const timeoutId = setTimeout(() => {
-      if (!isInstalled && !window.matchMedia('(display-mode: standalone)').matches) {
-        setShowPrompt(true);
-      }
+      checkAndShowPrompt();
     }, 3000);
 
-    // Show every 2 minutes
+    // Constantly check every 10 seconds if it's time to show the prompt again
     const intervalId = setInterval(() => {
-      if (!isInstalled && !window.matchMedia('(display-mode: standalone)').matches) {
-        setShowPrompt(true);
+      if (!promptRef.current) { // Only check if not currently showing
+        checkAndShowPrompt();
       }
-    }, 120000);
+    }, 10000);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       clearInterval(intervalId);
       clearTimeout(timeoutId);
     };
-  }, [isInstalled]);
+  }, []);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) {
@@ -77,6 +91,7 @@ export default function PwaInstallPrompt() {
         alert('Please use Chrome or Safari and click "Install" from the browser menu.');
       }
       setShowPrompt(false);
+      sessionStorage.setItem('pwaDismissedAt', Date.now().toString());
       return;
     }
 
@@ -87,12 +102,17 @@ export default function PwaInstallPrompt() {
     if (outcome === 'accepted') {
       console.log('User accepted the install prompt');
       setDeferredPrompt(null);
+      setIsInstalled(true);
+      localStorage.setItem('pwaInstalled', 'true');
+    } else {
+      // User cancelled the prompt, wait 2 mins before asking again
+      sessionStorage.setItem('pwaDismissedAt', Date.now().toString());
     }
   };
 
   const handleLaterClick = () => {
     setShowPrompt(false);
-    sessionStorage.setItem('pwaPromptDismissed', 'true');
+    sessionStorage.setItem('pwaDismissedAt', Date.now().toString());
   };
 
   // Don't render popup on admin or login routes
