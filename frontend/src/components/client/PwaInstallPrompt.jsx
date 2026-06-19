@@ -31,12 +31,7 @@ export default function PwaInstallPrompt() {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       setDeferredPrompt(e);
-      window.globalDeferredPrompt = e;
     };
-
-    if (window.globalDeferredPrompt) {
-      setDeferredPrompt(window.globalDeferredPrompt);
-    }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
@@ -90,7 +85,7 @@ export default function PwaInstallPrompt() {
       if (isIOS) {
         alert('To install the app on iOS, tap the Share button at the bottom of your screen and select "Add to Home Screen".');
       } else {
-        alert('If you are in an Incognito/Private tab, Chrome disables app installation.\n\nOtherwise, please use Chrome/Safari and click "Install" from the browser menu.');
+        alert('Please use Chrome or Safari and click "Install" from the browser menu.');
       }
       setShowPrompt(false);
       sessionStorage.setItem('pwaDismissedAt', Date.now().toString());
