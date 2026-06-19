@@ -138,64 +138,67 @@ export default function AdminDashboard() {
           ) : featuredCars.length > 0 ? (
             <div className="flex flex-col">
               {featuredCars.map((car) => (
-                <div key={car._id} className="group relative flex flex-col sm:flex-row items-center gap-4 p-3 mx-2 my-1 rounded-xl hover:bg-white/[0.03] transition-colors border border-transparent hover:border-white/5">
+                <div key={car._id} className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 mx-2 my-1 rounded-xl hover:bg-white/[0.03] transition-colors border border-transparent hover:border-white/5">
                   
-                  {/* Thumbnail */}
-                  <div className="w-full sm:w-24 h-40 sm:h-14 bg-[#0a0a10] rounded-lg overflow-hidden relative shrink-0">
-                    {car.images?.[0]?.url ? (
-                      <img src={car.images[0].url} alt={car.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-600">
-                        <Car size={18} />
+                  <div className="flex flex-row items-center gap-3 w-full sm:w-auto flex-1 min-w-0">
+                    {/* Thumbnail */}
+                    <div className="w-16 h-12 sm:w-24 sm:h-14 bg-[#1a1a24] rounded-lg overflow-hidden relative shrink-0 flex items-center justify-center border border-white/5">
+                      <Car size={18} className="text-gray-600 absolute" />
+                      {car.images?.[0]?.url && (
+                        <img 
+                          src={car.images[0].url} 
+                          alt="" 
+                          className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500" 
+                          onError={(e) => { e.target.style.opacity = '0'; }}
+                        />
+                      )}
+                    </div>
+                    
+                    {/* Info */}
+                    <div className="flex-1 min-w-0 flex flex-col justify-center">
+                      <h3 className="text-sm font-bold text-white truncate group-hover:text-purple-400 transition-colors">
+                        {car.make} {car.model} {car.year ? `(${car.year})` : ''}
+                      </h3>
+                      <div className="flex flex-wrap items-center gap-2 mt-1">
+                        <span className="text-xs font-bold text-purple-300 bg-purple-500/20 border border-purple-500/30 px-2 py-0.5 rounded-md">
+                          {car.price ? `₹${(car.price / 100000).toFixed(2)} Lakhs` : 'Price N/A'}
+                        </span>
+                        <div className="flex items-center gap-2 text-[11px] text-gray-400">
+                          <span className="flex items-center gap-1"><span className="w-1 h-1 rounded-full bg-gray-500"></span> {car.kms?.toLocaleString() || '0'} km</span>
+                          <span className="flex items-center gap-1"><span className="w-1 h-1 rounded-full bg-gray-500"></span> {car.fuelType || 'N/A'}</span>
+                        </div>
                       </div>
-                    )}
-                  </div>
-                  
-                  {/* Info */}
-                  <div className="flex-1 min-w-0 w-full flex flex-wrap items-center gap-3">
-                    <h3 className="text-sm font-bold text-white truncate group-hover:text-purple-400 transition-colors">
-                      {car.make} {car.model} {car.year ? `(${car.year})` : ''}
-                    </h3>
-                    
-                    <span className="text-xs font-bold text-purple-300 bg-purple-500/20 border border-purple-500/30 px-2 py-0.5 rounded-md">
-                      {car.price ? `₹${(car.price / 100000).toFixed(2)} Lakhs` : 'Price N/A'}
-                    </span>
-                    
-                    <div className="flex items-center gap-2.5 text-xs text-gray-400">
-                      <span className="bg-white/5 px-2 py-0.5 rounded border border-white/5">{car.year || 'N/A'}</span>
-                      <span className="flex items-center gap-1"><span className="w-1 h-1 rounded-full bg-gray-500"></span> {car.kms?.toLocaleString() || '0'} km</span>
-                      <span className="flex items-center gap-1"><span className="w-1 h-1 rounded-full bg-gray-500"></span> {car.fuelType || 'Fuel N/A'}</span>
                     </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="w-full sm:w-auto flex items-center justify-end sm:opacity-0 group-hover:opacity-100 transition-opacity gap-2">
+                  <div className="w-full sm:w-auto flex items-center justify-end sm:opacity-0 group-hover:opacity-100 transition-opacity gap-1.5 border-t border-white/5 sm:border-t-0 pt-2 sm:pt-0">
                     <a 
                       href={`/cars/${car.slug}`} 
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400 border border-transparent transition-all"
+                      className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400 border border-transparent transition-all"
                       title="View Public Page"
                     >
                       <Eye size={14} />
                     </a>
                     <button 
                       onClick={() => handleRemoveFromFeatured(car._id)}
-                      className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-orange-500/20 text-gray-400 hover:text-orange-400 border border-transparent transition-all"
+                      className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg bg-white/5 hover:bg-orange-500/20 text-gray-400 hover:text-orange-400 border border-transparent transition-all"
                       title="Remove from homescreen"
                     >
                       <Home size={14} />
                     </button>
                     <a 
                       href={`/admin/inventory/edit/${car._id}`} 
-                      className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-blue-500/20 text-gray-400 hover:text-blue-400 border border-transparent transition-all"
+                      className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg bg-white/5 hover:bg-blue-500/20 text-gray-400 hover:text-blue-400 border border-transparent transition-all"
                       title="Edit Vehicle"
                     >
                       <Edit size={14} />
                     </a>
                     <button 
                       onClick={() => handleDelete(car._id)}
-                      className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 border border-transparent transition-all"
+                      className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 border border-transparent transition-all"
                       title="Delete Vehicle"
                     >
                       <Trash2 size={14} />

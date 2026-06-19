@@ -1,1 +1,92 @@
-if(!self.define){let e,a={};const c=(c,s)=>(c=new URL(c+".js",s).href,a[c]||new Promise(a=>{if("document"in self){const e=document.createElement("script");e.src=c,e.onload=a,document.head.appendChild(e)}else e=c,importScripts(c),a()}).then(()=>{let e=a[c];if(!e)throw new Error(`Module ${c} didn’t register its module`);return e}));self.define=(s,i)=>{const n=e||("document"in self?document.currentScript.src:"")||location.href;if(a[n])return;let t={};const r=e=>c(e,n),f={module:{uri:n},exports:t,require:r};a[n]=Promise.all(s.map(e=>f[e]||r(e))).then(e=>(i(...e),t))}}define(["./workbox-c8ab336a"],function(e){"use strict";importScripts(),self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"/151.png",revision:"4848814edc98709c724f9e2f6bbdb094"},{url:"/3.png",revision:"e1873d7b2627951771dbb8aeecc0d80c"},{url:"/4.jpeg",revision:"9f353d0cdf8068411be7f5d485846ca4"},{url:"/IMG_5370.PNG",revision:"38e8ceacf4b1c0e67b31c778d93335c1"},{url:"/IMG_5500.PNG",revision:"5c942c711f280cb54a5634ff33fc3e41"},{url:"/IMG_5512.MOV",revision:"6772080e120f24174b60fb35cb573c32"},{url:"/_next/static/DNlNnUHMx3zb9MRY0O6nh/_buildManifest.js",revision:"b7ee85e32312251ad273748bead396e9"},{url:"/_next/static/DNlNnUHMx3zb9MRY0O6nh/_ssgManifest.js",revision:"b6652df95db52feb4daf4eca35380933"},{url:"/_next/static/chunks/1150.ba9a1e8c3810eaa4.js",revision:"ba9a1e8c3810eaa4"},{url:"/_next/static/chunks/1194-3f6a5be49819f0ce.js",revision:"3f6a5be49819f0ce"},{url:"/_next/static/chunks/1766-a8f02af549962df9.js",revision:"a8f02af549962df9"},{url:"/_next/static/chunks/1863-0fead24724911ffc.js",revision:"0fead24724911ffc"},{url:"/_next/static/chunks/1966.b8f83f7ba376c962.js",revision:"b8f83f7ba376c962"},{url:"/_next/static/chunks/2207-d08433d70e76f33b.js",revision:"d08433d70e76f33b"},{url:"/_next/static/chunks/2355-84a987b84414a90d.js",revision:"84a987b84414a90d"},{url:"/_next/static/chunks/361-7c36e46b00e75332.js",revision:"7c36e46b00e75332"},{url:"/_next/static/chunks/3899.3f761f7e3a944e8c.js",revision:"3f761f7e3a944e8c"},{url:"/_next/static/chunks/4539-16fcadd8fd0ff1d5.js",revision:"16fcadd8fd0ff1d5"},{url:"/_next/static/chunks/4972-6605351609fd5ebb.js",revision:"6605351609fd5ebb"},{url:"/_next/static/chunks/4bd1b696-e356ca5ba0218e27.js",revision:"e356ca5ba0218e27"},{url:"/_next/static/chunks/5408.fc45a05ce9763339.js",revision:"fc45a05ce9763339"},{url:"/_next/static/chunks/5772-59ce64175725c4f8.js",revision:"59ce64175725c4f8"},{url:"/_next/static/chunks/6555-60fb71277e10f43a.js",revision:"60fb71277e10f43a"},{url:"/_next/static/chunks/6760-4b2e9629939baa63.js",revision:"4b2e9629939baa63"},{url:"/_next/static/chunks/7412-e7a439bdb890d8a5.js",revision:"e7a439bdb890d8a5"},{url:"/_next/static/chunks/8500-287dd3e5d372ba6f.js",revision:"287dd3e5d372ba6f"},{url:"/_next/static/chunks/8865-fe966be89efb12ab.js",revision:"fe966be89efb12ab"},{url:"/_next/static/chunks/8928-c8e577830dff716b.js",revision:"c8e577830dff716b"},{url:"/_next/static/chunks/9426-70c042fa0579043d.js",revision:"70c042fa0579043d"},{url:"/_next/static/chunks/9875.5f502bdc53ddb7fc.js",revision:"5f502bdc53ddb7fc"},{url:"/_next/static/chunks/app/_global-error/page-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/app/_not-found/page-1d0a821cdaa8cdcd.js",revision:"1d0a821cdaa8cdcd"},{url:"/_next/static/chunks/app/about/layout-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/app/about/page-54eeb9776e17bee4.js",revision:"54eeb9776e17bee4"},{url:"/_next/static/chunks/app/admin/banners/page-19bb40bf665c3314.js",revision:"19bb40bf665c3314"},{url:"/_next/static/chunks/app/admin/brands/page-8b4a41a81b7339be.js",revision:"8b4a41a81b7339be"},{url:"/_next/static/chunks/app/admin/dashboard/page-8d0b7f5c0e6e4ba6.js",revision:"8d0b7f5c0e6e4ba6"},{url:"/_next/static/chunks/app/admin/happy-customers/page-5f5b310ee8f03a65.js",revision:"5f5b310ee8f03a65"},{url:"/_next/static/chunks/app/admin/inventory/add/page-994e89860380e398.js",revision:"994e89860380e398"},{url:"/_next/static/chunks/app/admin/inventory/edit/%5Bid%5D/page-cfdee189ca923a4e.js",revision:"cfdee189ca923a4e"},{url:"/_next/static/chunks/app/admin/inventory/page-9a758a27585ed645.js",revision:"9a758a27585ed645"},{url:"/_next/static/chunks/app/admin/layout-cf5acc0b465f5aaf.js",revision:"cf5acc0b465f5aaf"},{url:"/_next/static/chunks/app/admin/login/page-f7493ea9fd1a306a.js",revision:"f7493ea9fd1a306a"},{url:"/_next/static/chunks/app/admin/messages/page-17b6c2069aa84077.js",revision:"17b6c2069aa84077"},{url:"/_next/static/chunks/app/admin/page-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/app/admin/sell-requests/page-4d75db9450889ad3.js",revision:"4d75db9450889ad3"},{url:"/_next/static/chunks/app/admin/settings/page-c238e5bb5dc01729.js",revision:"c238e5bb5dc01729"},{url:"/_next/static/chunks/app/catalog/%5Bslug%5D/layout-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/app/catalog/%5Bslug%5D/page-e5cf5af908bff934.js",revision:"e5cf5af908bff934"},{url:"/_next/static/chunks/app/catalog/page-c24c9706de12f725.js",revision:"c24c9706de12f725"},{url:"/_next/static/chunks/app/contact/layout-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/app/contact/page-d33841a4f393caf8.js",revision:"d33841a4f393caf8"},{url:"/_next/static/chunks/app/insurance/page-62a18e410be888d4.js",revision:"62a18e410be888d4"},{url:"/_next/static/chunks/app/layout-39a1207ceaf36d79.js",revision:"39a1207ceaf36d79"},{url:"/_next/static/chunks/app/opengraph-image/route-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/app/page-8c0d0f3c2d94934b.js",revision:"8c0d0f3c2d94934b"},{url:"/_next/static/chunks/app/robots.txt/route-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/app/sell-your-car/layout-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/app/sell-your-car/page-b31fbb08a26517b5.js",revision:"b31fbb08a26517b5"},{url:"/_next/static/chunks/app/sitemap.xml/route-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/app/warranty/page-063da68b6845663f.js",revision:"063da68b6845663f"},{url:"/_next/static/chunks/e99863e0.28aaa12ef465579d.js",revision:"28aaa12ef465579d"},{url:"/_next/static/chunks/framework-711ef29bc66f648c.js",revision:"711ef29bc66f648c"},{url:"/_next/static/chunks/main-app-0de50242dd92af23.js",revision:"0de50242dd92af23"},{url:"/_next/static/chunks/main-e0bf9e182e0709aa.js",revision:"e0bf9e182e0709aa"},{url:"/_next/static/chunks/next/dist/client/components/builtin/app-error-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/next/dist/client/components/builtin/forbidden-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/next/dist/client/components/builtin/global-error-a97b8bd1dc784cac.js",revision:"a97b8bd1dc784cac"},{url:"/_next/static/chunks/next/dist/client/components/builtin/not-found-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/next/dist/client/components/builtin/unauthorized-e9ace60c57398261.js",revision:"e9ace60c57398261"},{url:"/_next/static/chunks/polyfills-42372ed130431b0a.js",revision:"846118c33b2c0e922d7b3a7676f81f6f"},{url:"/_next/static/chunks/webpack-5ee6777f7734df4b.js",revision:"5ee6777f7734df4b"},{url:"/_next/static/css/a5fb6fab44ee0ca5.css",revision:"a5fb6fab44ee0ca5"},{url:"/_next/static/css/cbcee31e1313cc90.css",revision:"cbcee31e1313cc90"},{url:"/_next/static/media/19cfc7226ec3afaa-s.woff2",revision:"9dda5cfc9a46f256d0e131bb535e46f8"},{url:"/_next/static/media/21350d82a1f187e9-s.woff2",revision:"4e2553027f1d60eff32898367dd4d541"},{url:"/_next/static/media/7b0b24f36b1a6d0b-s.p.woff2",revision:"98ccc2b7f18991a5126a91ac56fbb1fc"},{url:"/_next/static/media/8e9860b6e62d6359-s.woff2",revision:"01ba6c2a184b8cba08b0d57167664d75"},{url:"/_next/static/media/98848575513c9742-s.woff2",revision:"e2b64ddcb351dbe7397e0da426a8c8d6"},{url:"/_next/static/media/ba9851c3c22cd980-s.woff2",revision:"9e494903d6b0ffec1a1e14d34427d44d"},{url:"/_next/static/media/c5fe6dc8356a8c31-s.woff2",revision:"027a89e9ab733a145db70f09b8a18b42"},{url:"/_next/static/media/df0a9ae256c0569c-s.woff2",revision:"d54db44de5ccb18886ece2fda72bdfe0"},{url:"/_next/static/media/e4af272ccee01ff0-s.p.woff2",revision:"65850a373e258f1c897a2b3d75eb74de"},{url:"/car delivery/IMG_5502.MP4",revision:"6e0826b2c55bc4ad2acf8b326f648922"},{url:"/car delivery/IMG_5506.MOV",revision:"cffbf1412b06ec1f1e6cd84f30b10881"},{url:"/car delivery/IMG_5509.MOV",revision:"e3fa884e1369124b7bc51f66f416e339"},{url:"/car delivery/IMG_5510.MOV",revision:"88db03b24957095f3261fce8abb60ac0"},{url:"/car delivery/IMG_5514.MOV",revision:"dcb5b0778b2b3766f453351e0cba3779"},{url:"/customer review/IMG_5503.MOV",revision:"899aeecc66fc407bae18536ed6ccab56"},{url:"/customer review/IMG_5504.MOV",revision:"d603957b0821fa81f3420d594538b37a"},{url:"/customer review/IMG_5505.MOV",revision:"efe2668cd0f4c3940d08c717a9055a34"},{url:"/customer review/IMG_5507.MOV",revision:"72bc1e3ea4aca626c8dc6f95c54241fe"},{url:"/customer review/IMG_5511.MOV",revision:"8c2977d226416a14657ed272655217d7"},{url:"/customer review/IMG_5513.MOV",revision:"fea1326efcb8764c879e32e91b59e0c9"},{url:"/file.svg",revision:"d09f95206c3fa0bb9bd9fefabfd0ea71"},{url:"/globe.svg",revision:"2aaafa6a49b6563925fe440891e32717"},{url:"/hero_bg_real.jpg",revision:"a7618870ba48e3f680237c8ec9b66e6c"},{url:"/hero_chatgpt.png",revision:"4117d47d90d53a3e80835f1fe4979b12"},{url:"/images/hero_bg_desktop.png",revision:"929ab9f9fabe90ac1ceeee4752d60139"},{url:"/images/hero_bg_desktop_light.png",revision:"a353ef2ddf9c050a4c6296cfecf976f1"},{url:"/images/hero_bg_mobile.png",revision:"f3a880bb5ac740e19f55606e751972af"},{url:"/images/hero_bg_mobile_light.png",revision:"5c76f648a3b6f306b1368a394293b111"},{url:"/llms.txt",revision:"4bf6979f31724b3dfa18bf14a749a9aa"},{url:"/login-bg.png",revision:"e561341fa96cf17652bfa7e51d6dc869"},{url:"/logo-192.jpg",revision:"0928d10cb5a58e73ff75328701dc29bc"},{url:"/logo-32.jpg",revision:"1adf72a47272ba1846845deec19bf070"},{url:"/logo-48.jpg",revision:"df9652cf18a886519d6a98c6d08ace10"},{url:"/logo-512.jpg",revision:"8bbea5cfdcc37b7375a280d691d15d43"},{url:"/logo-96.jpg",revision:"23b8fc665cf5c6a5df248aff5e780e77"},{url:"/logo.jpeg",revision:"878434438b0e5b36b36fb6136da93d40"},{url:"/manifest.json",revision:"f87e4302ccc421acc9c613219108bd9b"},{url:"/next.svg",revision:"8e061864f388b47f33a1c3780831193e"},{url:"/placeholder-car.svg",revision:"a5cc6c8d8fd020ea67f90b985fbe277b"},{url:"/premium_suv_showroom.png",revision:"63aa5ba2d67c6890cdc5a0615201532e"},{url:"/showroom-hero.png",revision:"b3297119c4730f945f85baba1f163261"},{url:"/vercel.svg",revision:"c0af2f507b369b085b35ef4bbe3bcf1e"},{url:"/window.svg",revision:"a2760511c65806022ad20adf74370ff3"},{url:"/without_background_logo.png",revision:"912bc39baa897d798b93ef4f97c25f2d"}],{ignoreURLParametersMatching:[/^utm_/,/^fbclid$/]}),e.cleanupOutdatedCaches(),e.registerRoute("/",new e.NetworkFirst({cacheName:"start-url",plugins:[{cacheWillUpdate:async({response:e})=>e&&"opaqueredirect"===e.type?new Response(e.body,{status:200,statusText:"OK",headers:e.headers}):e}]}),"GET"),e.registerRoute(/^https:\/\/res\.cloudinary\.com\/.*\/video\/.*/i,new e.NetworkOnly({cacheName:"cloudinary-videos-exclude",plugins:[]}),"GET")});
+/**
+ * Copyright 2018 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// If the loader is already loaded, just stop.
+if (!self.define) {
+  let registry = {};
+
+  // Used for `eval` and `importScripts` where we can't get script URL by other means.
+  // In both cases, it's safe to use a global var because those functions are synchronous.
+  let nextDefineUri;
+
+  const singleRequire = (uri, parentUri) => {
+    uri = new URL(uri + ".js", parentUri).href;
+    return registry[uri] || (
+      
+        new Promise(resolve => {
+          if ("document" in self) {
+            const script = document.createElement("script");
+            script.src = uri;
+            script.onload = resolve;
+            document.head.appendChild(script);
+          } else {
+            nextDefineUri = uri;
+            importScripts(uri);
+            resolve();
+          }
+        })
+      
+      .then(() => {
+        let promise = registry[uri];
+        if (!promise) {
+          throw new Error(`Module ${uri} didn’t register its module`);
+        }
+        return promise;
+      })
+    );
+  };
+
+  self.define = (depsNames, factory) => {
+    const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
+    if (registry[uri]) {
+      // Module is already loading or loaded.
+      return;
+    }
+    let exports = {};
+    const require = depUri => singleRequire(depUri, uri);
+    const specialDeps = {
+      module: { uri },
+      exports,
+      require
+    };
+    registry[uri] = Promise.all(depsNames.map(
+      depName => specialDeps[depName] || require(depName)
+    )).then(deps => {
+      factory(...deps);
+      return exports;
+    });
+  };
+}
+define(['./workbox-7144475a'], (function (workbox) { 'use strict';
+
+  importScripts("/worker-development.js");
+  self.skipWaiting();
+  workbox.clientsClaim();
+  workbox.registerRoute("/", new workbox.NetworkFirst({
+    "cacheName": "start-url",
+    plugins: [{
+      cacheWillUpdate: async ({
+        response: e
+      }) => e && "opaqueredirect" === e.type ? new Response(e.body, {
+        status: 200,
+        statusText: "OK",
+        headers: e.headers
+      }) : e
+    }]
+  }), 'GET');
+  workbox.registerRoute(/.*/i, new workbox.NetworkOnly({
+    "cacheName": "dev",
+    plugins: []
+  }), 'GET');
+
+}));

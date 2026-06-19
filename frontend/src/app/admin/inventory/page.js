@@ -107,12 +107,18 @@ export default function AdminInventoryPage() {
                   <td className="py-4 px-4">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-12 rounded-lg bg-[var(--color-bg-dark)] overflow-hidden relative border border-[var(--color-border)]">
-                        {car.images && car.images.length > 0 ? (
-                          <Image src={car.images[0].url || car.images[0]} alt={car.model} fill className="object-cover" unoptimized={true} />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-white/5 text-gray-400">
-                            <span className="text-xs">No img</span>
-                          </div>
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-white/5 text-gray-400">
+                          <span className="text-[10px]">No img</span>
+                        </div>
+                        {car.images && car.images.length > 0 && (
+                          <Image 
+                            src={car.images[0].url || car.images[0]} 
+                            alt="" 
+                            fill 
+                            className="object-cover relative z-10" 
+                            unoptimized={true} 
+                            onError={(e) => { e.target.style.opacity = '0'; }}
+                          />
                         )}
                       </div>
                       <div>
@@ -159,12 +165,19 @@ export default function AdminInventoryPage() {
             <div key={car._id} className="bg-[rgba(255,255,255,0.03)] p-4 rounded-xl border border-[var(--color-border)] flex flex-col gap-3 relative">
               <div className="flex items-center gap-3">
                 <div className="w-16 h-12 rounded-lg bg-[var(--color-bg-dark)] overflow-hidden relative border border-[var(--color-border)] flex-shrink-0">
-                  {car.images?.[0] ? (
-                    <Image src={car.images[0].url || car.images[0]} alt={car.model} fill className="object-cover" sizes="64px" unoptimized={true} />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-[var(--color-text-muted)]">
-                      <span className="text-[10px]">No img</span>
-                    </div>
+                  <div className="absolute inset-0 flex items-center justify-center text-[var(--color-text-muted)]">
+                    <span className="text-[10px]">No img</span>
+                  </div>
+                  {car.images?.[0] && (
+                    <Image 
+                      src={car.images[0].url || car.images[0]} 
+                      alt="" 
+                      fill 
+                      className="object-cover relative z-10" 
+                      sizes="64px" 
+                      unoptimized={true} 
+                      onError={(e) => { e.target.style.opacity = '0'; }}
+                    />
                   )}
                 </div>
                 <div className="flex-1">
