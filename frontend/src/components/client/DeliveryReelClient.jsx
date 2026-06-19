@@ -145,6 +145,7 @@ function ReelCard({ reel }) {
       {/* Video Element */}
       <video
         ref={videoRef}
+        src={reel.videoSrc.replace('f_auto', 'f_mp4')}
         className="w-full h-full object-cover"
         autoPlay
         loop
@@ -153,9 +154,7 @@ function ReelCard({ reel }) {
         playsInline
         preload="metadata"
         poster={reel.videoSrc ? reel.videoSrc.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
-      >
-        <source src={reel.videoSrc.replace('f_auto', 'f_mp4')} type="video/mp4" />
-      </video>
+      />
 
       {/* Play/Pause Overlay */}
       {!isPlaying && (

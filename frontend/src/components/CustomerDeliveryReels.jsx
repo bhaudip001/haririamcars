@@ -8,11 +8,11 @@ import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import ReelVideo from '@/components/ReelVideo';
 
 const videos = [
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/v1781787590/IMG_5502_zo5slm.mp4', name: 'Bhimabhai shamla', car: 'Creta 2020' },
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/v1781787957/hariram-motors-videos/IMG_5506.mp4', name: 'Ajudiya Rameshbhai', car: 'Endeavour 2018' },
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/v1781788203/hariram-motors-videos/IMG_5509.mp4', name: 'Arjunbhai Kavithiya', car: 'Slavia 2022' },
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/v1781788441/hariram-motors-videos/IMG_5510.mp4', name: 'Natha Ram', car: 'Brezza 2020' },
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/v1781788601/hariram-motors-videos/IMG_5514.mp4', name: 'Der Rajubhai', car: 'Verna 2021' }
+  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781787590/IMG_5502_zo5slm.mp4', name: 'Bhimabhai shamla', car: 'Creta 2020' },
+  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781787957/hariram-motors-videos/IMG_5506.mp4', name: 'Ajudiya Rameshbhai', car: 'Endeavour 2018' },
+  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781788203/hariram-motors-videos/IMG_5509.mp4', name: 'Arjunbhai Kavithiya', car: 'Slavia 2022' },
+  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781788441/hariram-motors-videos/IMG_5510.mp4', name: 'Natha Ram', car: 'Brezza 2020' },
+  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781788601/hariram-motors-videos/IMG_5514.mp4', name: 'Der Rajubhai', car: 'Verna 2021' }
 ];
 
 export default function CustomerDeliveryReels() {

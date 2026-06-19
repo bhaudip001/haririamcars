@@ -101,6 +101,7 @@ export default function ShowroomVideo() {
         >
           <video
             ref={videoRef}
+            src="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_mp4/v1781839047/hariram-motors-videos/showroom_video.mp4"
             className="w-full h-full object-cover"
             autoPlay
             loop
@@ -109,9 +110,7 @@ export default function ShowroomVideo() {
             playsInline
             preload="metadata"
             poster="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto,so_1/v1781839047/hariram-motors-videos/showroom_video.jpg"
-          >
-            <source src="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_mp4/v1781839047/hariram-motors-videos/showroom_video.mp4" type="video/mp4" />
-          </video>
+          />
 
           {/* Mute Toggle */}
           <button
