@@ -57,9 +57,9 @@ router.put('/:id', protect, adminOnly, upload.single('photo'), async (req, res) 
       customer.photo = { url: result.secure_url, publicId: result.public_id };
     }
 
-    customer.customerName = req.body.customerName || customer.customerName;
-    customer.review = req.body.review || customer.review;
-    customer.rating = req.body.rating || customer.rating;
+    if (req.body.customerName !== undefined) customer.customerName = req.body.customerName;
+    if (req.body.review !== undefined) customer.review = req.body.review;
+    if (req.body.rating !== undefined) customer.rating = req.body.rating;
     if (req.body.isActive !== undefined) customer.isActive = req.body.isActive;
 
     await customer.save();
