@@ -174,7 +174,7 @@ export default function AdminDashboard() {
                   {/* Actions */}
                   <div className="w-full sm:w-auto flex items-center justify-end sm:opacity-0 group-hover:opacity-100 transition-opacity gap-1.5 border-t border-white/5 sm:border-t-0 pt-2 sm:pt-0">
                     <a 
-                      href={`/cars/${car.slug}`} 
+                      href={`/catalog/${car.slug}`} 
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400 border border-transparent transition-all"

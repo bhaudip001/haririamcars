@@ -8,4 +8,9 @@ self.addEventListener('fetch', (event) => {
     // By stopping propagation and NOT calling event.respondWith(),
     // we force the browser to handle the request natively, preserving all Range headers!
   }
+
+  // Bypass Service Worker for admin pages and API routes
+  if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/backend') || url.pathname.startsWith('/api')) {
+    event.stopImmediatePropagation();
+  }
 });
