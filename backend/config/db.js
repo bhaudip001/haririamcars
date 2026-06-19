@@ -29,6 +29,17 @@ const connectDB = async () => {
           });
           console.log('✅ Auto-seeded admin user!');
         }
+
+        const secondAdmin = await User.findOne({ email: 'bhaudip001@gmail.com' });
+        if (!secondAdmin) {
+          await User.create({
+            name: 'Bhaudip Admin',
+            email: 'bhaudip001@gmail.com',
+            password: 'bhaudip12345',
+            role: 'admin',
+          });
+          console.log('✅ Auto-seeded Bhaudip Admin user!');
+        }
       } catch (err) {
         console.error('Auto-seed error:', err);
       }
