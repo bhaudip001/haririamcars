@@ -145,6 +145,7 @@ export default function HeroSection() {
               alt="Buy Premium Used & Pre-Owned Cars in Surat - Hariram Motors"
               fill
               priority
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-[center_60%] origin-[center_60%]"
             />
           </motion.div>

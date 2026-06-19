@@ -144,9 +144,9 @@ export default function AdminDashboard() {
                     {/* Thumbnail */}
                     <div className="w-16 h-12 sm:w-24 sm:h-14 bg-[#1a1a24] rounded-lg overflow-hidden relative shrink-0 flex items-center justify-center border border-white/5">
                       <Car size={18} className="text-gray-600 absolute" />
-                      {car.images?.[0]?.url && (
+                      {car.images?.[0] && (
                         <img 
-                          src={car.images[0].url} 
+                          src={car.images[0].url || car.images[0]} 
                           alt="" 
                           className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500" 
                           onError={(e) => { e.target.style.opacity = '0'; }}

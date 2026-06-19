@@ -150,7 +150,7 @@ function ReelCard({ reel }) {
         autoPlay
         loop
         muted={isMuted}
-        defaultMuted={true}
+
         playsInline
         preload="metadata"
         poster={reel.videoSrc ? reel.videoSrc.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}

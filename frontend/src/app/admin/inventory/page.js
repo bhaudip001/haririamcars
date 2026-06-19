@@ -111,12 +111,10 @@ export default function AdminInventoryPage() {
                           <span className="text-[10px]">No img</span>
                         </div>
                         {car.images && car.images.length > 0 && (
-                          <Image 
+                          <img 
                             src={car.images[0].url || car.images[0]} 
                             alt="" 
-                            fill 
-                            className="object-cover z-10" 
-                            unoptimized={true} 
+                            className="w-full h-full object-cover relative z-10" 
                             onError={(e) => { e.target.style.opacity = '0'; }}
                           />
                         )}
@@ -169,13 +167,10 @@ export default function AdminInventoryPage() {
                     <span className="text-[10px]">No img</span>
                   </div>
                   {car.images?.[0] && (
-                    <Image 
+                    <img 
                       src={car.images[0].url || car.images[0]} 
                       alt="" 
-                      fill 
-                      className="object-cover z-10" 
-                      sizes="64px" 
-                      unoptimized={true} 
+                      className="w-full h-full object-cover relative z-10" 
                       onError={(e) => { e.target.style.opacity = '0'; }}
                     />
                   )}
