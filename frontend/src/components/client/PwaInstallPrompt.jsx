@@ -118,9 +118,6 @@ export default function PwaInstallPrompt() {
 
   if (!showPrompt || isInstalled) return null;
 
-  // Do not show the prompt if the browser didn't fire an install event (meaning it's already installed) and it's not iOS
-  if (!deferredPrompt && !isIOS) return null;
-
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
