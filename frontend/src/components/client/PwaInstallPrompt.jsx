@@ -31,7 +31,12 @@ export default function PwaInstallPrompt() {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       setDeferredPrompt(e);
+      window.globalDeferredPrompt = e;
     };
+
+    if (window.globalDeferredPrompt) {
+      setDeferredPrompt(window.globalDeferredPrompt);
+    }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
