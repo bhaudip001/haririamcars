@@ -102,44 +102,66 @@ export default function PwaInstallPrompt() {
 
   return (
     <AnimatePresence>
-      <div className="fixed bottom-0 left-0 right-0 z-[100] p-4 sm:p-6 pointer-events-none flex justify-center">
+      <div className="fixed inset-0 z-[100] flex items-end justify-center sm:p-6 sm:pb-8">
+        {/* Backdrop */}
         <motion.div 
-          initial={{ opacity: 0, y: 100 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
+          onClick={handleDismiss}
+        />
+        
+        {/* Bottom Sheet Content */}
+        <motion.div 
+          initial={{ opacity: 0, y: "100%" }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 100 }}
-          transition={{ type: "spring", damping: 20, stiffness: 300 }}
-          className="pointer-events-auto w-full max-w-md bg-gradient-to-r from-[#4c1d95] to-[#2e1065] border border-purple-500/40 rounded-[20px] shadow-[0_-10px_40px_-10px_rgba(109,40,217,0.4)] overflow-hidden flex items-center p-3 sm:p-4 gap-3 sm:gap-4 relative"
+          exit={{ opacity: 0, y: "100%" }}
+          transition={{ type: "spring", damping: 26, stiffness: 260 }}
+          className="relative w-full max-w-[500px] bg-[#f8f9fa] dark:bg-[#120a1f] rounded-t-[32px] sm:rounded-[32px] shadow-2xl overflow-hidden mx-auto pt-3 pb-8 px-6 sm:px-8 pointer-events-auto"
         >
-          {/* Top Edge Glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-purple-300 to-transparent opacity-50"></div>
+          {/* Drag Handle */}
+          <div className="w-10 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-6"></div>
 
-          {/* App Icon */}
-          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-[14px] flex-shrink-0 flex items-center justify-center p-1 shadow-inner">
-             <Image src="/logo-192.jpg" alt="Logo" width={48} height={48} className="rounded-[10px] object-cover w-full h-full" unoptimized />
-          </div>
+          {/* Close Button */}
+          <button 
+            onClick={handleDismiss}
+            className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-white transition-colors"
+            aria-label="Dismiss"
+          >
+            <X size={20} strokeWidth={2.5} />
+          </button>
 
-          {/* Text Content */}
-          <div className="flex-1 min-w-0">
-            <h3 className="text-white font-bold text-[15px] sm:text-[16px] truncate tracking-tight">Hariram Motors App</h3>
-            <p className="text-purple-200 text-[12px] sm:text-[13px] truncate font-medium">Faster, offline, exclusive deals</p>
-          </div>
+          <div className="text-center relative z-10 flex flex-col items-center">
+            {/* App Icon */}
+            <div className="w-[72px] h-[72px] bg-black rounded-[18px] flex items-center justify-center mb-5 shadow-md overflow-hidden p-0.5">
+               <Image src="/logo-192.jpg" alt="Hariram Motors Logo" width={68} height={68} className="rounded-[14px] object-cover w-full h-full" unoptimized />
+            </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <button 
-              onClick={handleInstallClick}
-              className="bg-white hover:bg-gray-100 text-purple-900 font-bold py-2 px-4 rounded-xl text-[13px] sm:text-[14px] shadow-sm transition-transform active:scale-95 flex items-center gap-1"
-            >
-              <Download size={16} strokeWidth={2.5} />
-              <span className="hidden sm:inline">Install</span>
-            </button>
-            <button 
-              onClick={handleDismiss}
-              className="text-purple-300 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors"
-              aria-label="Dismiss"
-            >
-              <X size={20} strokeWidth={2.5} />
-            </button>
+            <h2 className="font-['Outfit'] font-bold text-xl sm:text-2xl text-gray-900 dark:text-white mb-2 tracking-tight">
+              Hariram Motors App
+            </h2>
+            
+            <p className="text-gray-500 dark:text-purple-200/70 text-[14px] sm:text-[15px] mb-8 leading-relaxed max-w-[300px] mx-auto">
+              Install our app for faster access, offline browsing, and a native experience.
+            </p>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3 sm:gap-4 w-full">
+              <button 
+                onClick={handleDismiss}
+                className="flex-1 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300 font-semibold py-3.5 px-4 rounded-2xl transition-colors text-[14px] sm:text-[15px]"
+              >
+                Maybe Later
+              </button>
+              
+              <button 
+                onClick={handleInstallClick}
+                className="flex-1 bg-[#6d28d9] hover:bg-[#5b21b6] text-white font-bold py-3.5 px-4 rounded-2xl shadow-lg shadow-purple-900/20 transition-all active:scale-[0.98] text-[14px] sm:text-[15px]"
+              >
+                Install Now
+              </button>
+            </div>
           </div>
         </motion.div>
       </div>
