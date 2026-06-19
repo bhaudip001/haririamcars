@@ -145,14 +145,17 @@ function ReelCard({ reel }) {
       {/* Video Element */}
       <video
         ref={videoRef}
-        src={reel.videoSrc}
         className="w-full h-full object-cover"
+        autoPlay
         loop
         muted={isMuted}
+        defaultMuted={true}
         playsInline
         preload="metadata"
-        poster={reel.videoSrc ? reel.videoSrc.replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
-      ></video>
+        poster={reel.videoSrc ? reel.videoSrc.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
+      >
+        <source src={reel.videoSrc.replace('f_auto', 'f_mp4')} type="video/mp4" />
+      </video>
 
       {/* Play/Pause Overlay */}
       {!isPlaying && (

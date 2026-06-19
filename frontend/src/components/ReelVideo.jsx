@@ -102,14 +102,17 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
       {shouldLoad ? (
         <video
           ref={videoRef}
-          src={src}
           className="w-full h-full object-cover transition-opacity duration-700"
           muted={isMuted}
+          defaultMuted={true}
+          autoPlay
           loop
           playsInline
           preload="metadata"
-          poster={src ? src.replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
-        />
+          poster={src ? src.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
+        >
+          <source src={src.replace('f_auto', 'f_mp4')} type="video/mp4" />
+        </video>
       ) : (
         <div className="w-full h-full flex items-center justify-center absolute inset-0">
           <div className="w-8 h-8 border-2 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
