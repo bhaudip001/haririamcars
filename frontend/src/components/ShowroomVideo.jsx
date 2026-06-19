@@ -12,7 +12,7 @@ export default function ShowroomVideo() {
   // Play video on intersection and handle global mute
   useEffect(() => {
     const handleOtherVideoUnmuted = (e) => {
-      if (e.detail.src !== "https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-videos/showroom_video.mp4") {
+      if (e.detail.src !== "https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781839047/hariram-motors-videos/showroom_video.mp4") {
         setIsMuted(true);
         if (videoRef.current) {
           videoRef.current.muted = true;
@@ -67,7 +67,7 @@ export default function ShowroomVideo() {
     }
 
     if (!newMutedState) {
-      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-videos/showroom_video.mp4" } }));
+      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781839047/hariram-motors-videos/showroom_video.mp4" } }));
     }
   };
 
@@ -96,19 +96,19 @@ export default function ShowroomVideo() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "0px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative max-w-[320px] sm:max-w-[400px] md:max-w-[450px] mx-auto rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-[9/16]"
+          className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-video"
           onClick={togglePlay}
         >
           <video
             ref={videoRef}
-            src="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-videos/showroom_video.mp4"
+            src="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781839047/hariram-motors-videos/showroom_video.mp4"
             className="w-full h-full object-cover"
             autoPlay
             loop
             muted={isMuted}
             playsInline
             preload="metadata"
-            poster="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-videos/showroom_video.jpg"
+            poster="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781839047/hariram-motors-videos/showroom_video.jpg"
           />
 
           {/* Mute Toggle */}
