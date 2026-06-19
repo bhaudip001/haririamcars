@@ -102,6 +102,7 @@ export default function ShowroomVideo() {
           <video
             ref={videoRef}
             src="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_mp4/v1781839047/hariram-motors-videos/showroom_video.mp4"
+            crossOrigin="anonymous"
             className="w-full h-full object-cover"
             autoPlay
             loop

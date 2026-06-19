@@ -146,6 +146,7 @@ function ReelCard({ reel }) {
       <video
         ref={videoRef}
         src={reel.videoSrc.replace('f_auto', 'f_mp4')}
+        crossOrigin="anonymous"
         className="w-full h-full object-cover"
         autoPlay
         loop
