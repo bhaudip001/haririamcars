@@ -27,6 +27,20 @@ const seed = async () => {
     console.log('ℹ️  Admin user already exists');
   }
 
+  // Create Bhaudip admin user
+  const secondAdmin = await User.findOne({ email: 'bhaudip001@gmail.com' });
+  if (!secondAdmin) {
+    await User.create({
+      name: 'Bhaudip Admin',
+      email: 'bhaudip001@gmail.com',
+      password: 'bhaudip12345',
+      role: 'admin',
+    });
+    console.log('✅ Bhaudip Admin user created');
+  } else {
+    console.log('ℹ️  Bhaudip Admin user already exists');
+  }
+
   // Seed default settings
   const defaults = {
     yearsInBusiness: 10,
