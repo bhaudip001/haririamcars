@@ -162,7 +162,7 @@ export default function GoogleReviews() {
             </p>
 
             <a
-              href="https://www.google.com/maps/search/Hariram+Motors,+Simada+Canal,+BRTS+Rd,+Surat,+Gujarat/"
+              href="https://maps.app.goo.gl/MQEDgMYX1C7fbQdY6"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 w-full lg:w-auto rounded-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-black dark:text-white font-['Outfit'] font-bold hover:bg-gray-50 dark:hover:bg-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all shadow-lg backdrop-blur-md group"
