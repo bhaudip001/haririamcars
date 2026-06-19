@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { Key, ShieldCheck, Lock, Eye, EyeOff } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Key, ShieldCheck, Lock, Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
 
@@ -9,6 +9,11 @@ export default function AdminSettingsPage() {
   const [passwords, setPasswords] = useState({ currentPassword: '', newPassword: '', confirm: '' });
   const [showPass, setShowPass] = useState({ current: false, new: false, confirm: false });
   const [changingPass, setChangingPass] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    api.get('/auth/verify').then(res => setUser(res.data?.user)).catch(() => {});
+  }, []);
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -76,90 +81,101 @@ export default function AdminSettingsPage() {
             </div>
           </div>
 
-          <form onSubmit={handleChangePassword} className="space-y-6">
-            
-            {/* Current Password */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">Current Password</label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-purple-400 transition-colors">
-                  <Lock size={18} />
-                </div>
-                <input 
-                  type={showPass.current ? "text" : "password"} 
-                  value={passwords.currentPassword} 
-                  onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })} 
-                  className="w-full bg-[#151520] border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 transition-all shadow-inner"
-                  placeholder="Enter current password"
-                  required 
-                />
-                <button type="button" onClick={() => toggleShow('current')} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors">
-                  {showPass.current ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
+            {/* Check if user is primary admin */}
+            {user?.email && user.email !== 'admin@hariramcars.com' ? (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-6 text-center mt-6">
+                <AlertTriangle size={32} className="text-red-400 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-red-400 mb-2">Restricted Access</h3>
+                <p className="text-gray-300 text-sm">
+                  Your account ({user.email}) is a fixed administrator account. Password modifications are strictly reserved for the primary system administrator.
+                </p>
               </div>
-            </div>
-            
-            {/* New Password & Confirm (Side by Side on desktop) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">New Password</label>
-                <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-purple-400 transition-colors">
-                    <Lock size={18} />
+            ) : (
+              <form onSubmit={handleChangePassword} className="space-y-6">
+                
+                {/* Current Password */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">Current Password</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-purple-400 transition-colors">
+                      <Lock size={18} />
+                    </div>
+                    <input 
+                      type={showPass.current ? "text" : "password"} 
+                      value={passwords.currentPassword} 
+                      onChange={(e) => setPasswords({ ...passwords, currentPassword: e.target.value })} 
+                      className="w-full bg-[#151520] border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 transition-all shadow-inner"
+                      placeholder="Enter current password"
+                      required 
+                    />
+                    <button type="button" onClick={() => toggleShow('current')} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors">
+                      {showPass.current ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
                   </div>
-                  <input 
-                    type={showPass.new ? "text" : "password"} 
-                    value={passwords.newPassword} 
-                    onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })} 
-                    className="w-full bg-[#151520] border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 transition-all shadow-inner"
-                    placeholder="Min. 6 characters"
-                    required 
-                  />
-                  <button type="button" onClick={() => toggleShow('new')} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors">
-                    {showPass.new ? <EyeOff size={18} /> : <Eye size={18} />}
+                </div>
+                
+                {/* New Password & Confirm (Side by Side on desktop) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">New Password</label>
+                    <div className="relative group">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-purple-400 transition-colors">
+                        <Lock size={18} />
+                      </div>
+                      <input 
+                        type={showPass.new ? "text" : "password"} 
+                        value={passwords.newPassword} 
+                        onChange={(e) => setPasswords({ ...passwords, newPassword: e.target.value })} 
+                        className="w-full bg-[#151520] border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 transition-all shadow-inner"
+                        placeholder="Min. 6 characters"
+                        required 
+                      />
+                      <button type="button" onClick={() => toggleShow('new')} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors">
+                        {showPass.new ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">Confirm Password</label>
+                    <div className="relative group">
+                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-purple-400 transition-colors">
+                        <Lock size={18} />
+                      </div>
+                      <input 
+                        type={showPass.confirm ? "text" : "password"} 
+                        value={passwords.confirm} 
+                        onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })} 
+                        className="w-full bg-[#151520] border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 transition-all shadow-inner"
+                        placeholder="Repeat new password"
+                        required 
+                      />
+                      <button type="button" onClick={() => toggleShow('confirm')} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors">
+                        {showPass.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-8 mt-6">
+                  <button 
+                    type="submit" 
+                    disabled={changingPass || !passwords.currentPassword || !passwords.newPassword || !passwords.confirm} 
+                    className="w-full relative group overflow-hidden rounded-xl p-[1px] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.01] active:scale-[0.99]"
+                  >
+                    {/* Button border gradient */}
+                    <span className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 opacity-70 group-hover:opacity-100 transition-opacity"></span>
+                    <div className="relative bg-[#1a0e2e] py-3.5 px-8 rounded-xl flex items-center justify-center gap-2 transition-all">
+                      <Key size={18} className="text-purple-400 group-hover:text-purple-300" />
+                      <span className="font-bold text-white tracking-wide">
+                        {changingPass ? 'Verifying & Updating...' : 'Update Administrator Password'}
+                      </span>
+                    </div>
                   </button>
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2 ml-1">Confirm Password</label>
-                <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-purple-400 transition-colors">
-                    <Lock size={18} />
-                  </div>
-                  <input 
-                    type={showPass.confirm ? "text" : "password"} 
-                    value={passwords.confirm} 
-                    onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })} 
-                    className="w-full bg-[#151520] border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 transition-all shadow-inner"
-                    placeholder="Repeat new password"
-                    required 
-                  />
-                  <button type="button" onClick={() => toggleShow('confirm')} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-white transition-colors">
-                    {showPass.confirm ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-8 mt-6">
-              <button 
-                type="submit" 
-                disabled={changingPass || !passwords.currentPassword || !passwords.newPassword || !passwords.confirm} 
-                className="w-full relative group overflow-hidden rounded-xl p-[1px] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.01] active:scale-[0.99]"
-              >
-                {/* Button border gradient */}
-                <span className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 opacity-70 group-hover:opacity-100 transition-opacity"></span>
-                <div className="relative bg-[#1a0e2e] py-3.5 px-8 rounded-xl flex items-center justify-center gap-2 transition-all">
-                  <Key size={18} className="text-purple-400 group-hover:text-purple-300" />
-                  <span className="font-bold text-white tracking-wide">
-                    {changingPass ? 'Verifying & Updating...' : 'Update Administrator Password'}
-                  </span>
-                </div>
-              </button>
-            </div>
-
-          </form>
+              </form>
+            )}
         </div>
       </div>
     </div>

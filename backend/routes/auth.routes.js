@@ -103,6 +103,12 @@ router.put('/change-password', protect, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     const user = await User.findById(req.user._id).select('+password');
+
+    // Restrict password change to primary admin
+    if (user.email !== 'admin@hariramcars.com') {
+      return res.status(403).json({ error: 'Password change is restricted to the primary admin account.' });
+    }
+
     if (!(await user.comparePassword(currentPassword))) {
       return res.status(400).json({ error: 'Current password is incorrect' });
     }
