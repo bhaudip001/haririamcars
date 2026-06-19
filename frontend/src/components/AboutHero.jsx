@@ -171,7 +171,7 @@ export default function AboutHero() {
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
                   </span>
                   <span className="text-purple-400 text-sm font-medium font-['Inter']">
-                    Surat&apos;s Most Trusted Since 2013
+                    Surat&apos;s Most Trusted Since 2020
                   </span>
                 </div>
               </div>
@@ -301,7 +301,7 @@ export default function AboutHero() {
                         Hariram Motors Showroom
                       </div>
                       <div className="text-[#a0a0b8] text-xs mt-1 font-['Inter']">
-                        Varachha, Surat — Est. 2013
+                        Varachha, Surat — Est. 2020
                       </div>
                     </div>
 
