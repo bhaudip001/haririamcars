@@ -96,7 +96,7 @@ export default function ShowroomVideo() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "0px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-video"
+          className="relative max-w-[320px] sm:max-w-[400px] md:max-w-[450px] mx-auto rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-[9/16]"
           onClick={togglePlay}
         >
           <video
