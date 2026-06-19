@@ -52,6 +52,11 @@ export default function PwaInstallPrompt() {
         return;
       }
       
+      // Only show prompt if we have a deferred prompt (for Android/Desktop) or if it's iOS
+      if (!window.globalDeferredPrompt && !isIosDevice) {
+        return;
+      }
+
       const lastDismissedAt = sessionStorage.getItem('pwaDismissedAt');
       const now = Date.now();
       
@@ -86,7 +91,8 @@ export default function PwaInstallPrompt() {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) {
+    const promptEvent = deferredPrompt || window.globalDeferredPrompt;
+    if (!promptEvent) {
       if (isIOS) {
         alert('To install the app on iOS, tap the Share button at the bottom of your screen and select "Add to Home Screen".');
       } else {
@@ -98,12 +104,13 @@ export default function PwaInstallPrompt() {
     }
 
     setShowPrompt(false);
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
+    promptEvent.prompt();
+    const { outcome } = await promptEvent.userChoice;
     
     if (outcome === 'accepted') {
       console.log('User accepted the install prompt');
       setDeferredPrompt(null);
+      window.globalDeferredPrompt = null;
       setIsInstalled(true);
     } else {
       // User cancelled the prompt, wait 2 mins before asking again
@@ -125,7 +132,7 @@ export default function PwaInstallPrompt() {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[100] flex items-end justify-center p-4 sm:pb-8">
         {/* Backdrop */}
         <motion.div 
           initial={{ opacity: 0 }}
@@ -137,10 +144,11 @@ export default function PwaInstallPrompt() {
         
         {/* Popup Content */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="relative w-full max-w-sm bg-white dark:bg-[#12121a] rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-white/10"
+          initial={{ opacity: 0, y: "100%" }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: "100%" }}
+          transition={{ type: "spring", damping: 25, stiffness: 200 }}
+          className="relative w-full max-w-md bg-white dark:bg-[#12121a] rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-white/10"
         >
           {/* Header Area */}
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6 text-white text-center relative overflow-hidden">

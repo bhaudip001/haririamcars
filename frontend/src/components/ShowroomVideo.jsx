@@ -106,7 +106,6 @@ export default function ShowroomVideo() {
             autoPlay
             loop
             muted={isMuted}
-            defaultMuted={true}
             playsInline
             preload="metadata"
             poster="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto,so_1/v1781839047/hariram-motors-videos/showroom_video.jpg"
