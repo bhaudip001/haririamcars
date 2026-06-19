@@ -9,8 +9,8 @@ self.addEventListener('fetch', (event) => {
     // we force the browser to handle the request natively, preserving all Range headers!
   }
 
-  // Bypass Service Worker for admin pages and API routes
-  if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/backend') || url.pathname.startsWith('/api')) {
+  // Bypass Service Worker for admin pages, API routes, and dynamic catalog routes
+  if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/backend') || url.pathname.startsWith('/api') || url.pathname.startsWith('/catalog/')) {
     event.stopImmediatePropagation();
   }
 });

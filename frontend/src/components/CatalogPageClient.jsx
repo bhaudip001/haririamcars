@@ -87,8 +87,12 @@ function CatalogContent() {
 
   // Re-fetch on filter changes
   useEffect(() => {
-    setPage(1);
-    fetchCars(1, false);
+    const debounceTimer = setTimeout(() => {
+      setPage(1);
+      fetchCars(1, false);
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMakes, selectedFuels, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam]);
 
