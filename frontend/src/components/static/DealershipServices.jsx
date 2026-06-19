@@ -34,7 +34,7 @@ export default function DealershipServices() {
               150+ premium certified cars you can trust. Every car undergoes rigorous inspection for your complete security and peace of mind.
             </p>
             <Link href="/catalog" className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
-              More info <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              Let's do It <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
@@ -48,7 +48,7 @@ export default function DealershipServices() {
               Get the best market value for your car through our transparent evaluation process and receive secure, instant payment.
             </p>
             <Link href="/sell-your-car" className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
-              More info <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              Let's do It <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
@@ -62,7 +62,7 @@ export default function DealershipServices() {
               Upgrade effortlessly! Get your favorite car with the absolute best exchange value for your old vehicle along with attractive benefits.
             </p>
             <Link href="/sell-your-car?mode=exchange" className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
-              More info <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              Let's do It <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function ShowroomVideo() {
   // Play video on intersection and handle global mute
   useEffect(() => {
     const handleOtherVideoUnmuted = (e) => {
-      if (e.detail.src !== "https://res.cloudinary.com/dvo48lu7g/video/upload/hariram-motors-videos/showroom_video.mp4") {
+      if (e.detail.src !== "https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-videos/showroom_video.mp4") {
         setIsMuted(true);
         if (videoRef.current) {
           videoRef.current.muted = true;
@@ -67,7 +67,7 @@ export default function ShowroomVideo() {
     }
 
     if (!newMutedState) {
-      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "https://res.cloudinary.com/dvo48lu7g/video/upload/hariram-motors-videos/showroom_video.mp4" } }));
+      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-videos/showroom_video.mp4" } }));
     }
   };
 
@@ -101,14 +101,14 @@ export default function ShowroomVideo() {
         >
           <video
             ref={videoRef}
-            src="https://res.cloudinary.com/dvo48lu7g/video/upload/hariram-motors-videos/showroom_video.mp4"
+            src="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-videos/showroom_video.mp4"
             className="w-full h-full object-cover"
             autoPlay
             loop
             muted={isMuted}
             playsInline
             preload="metadata"
-            poster="https://res.cloudinary.com/dvo48lu7g/video/upload/hariram-motors-videos/showroom_video.jpg"
+            poster="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-videos/showroom_video.jpg"
           />
 
           {/* Mute Toggle */}

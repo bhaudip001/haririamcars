@@ -14,10 +14,6 @@ cloudinary.config({
 });
 
 const videos = [
-  { name: 'IMG_5503', path: '../frontend/public/customer review/IMG_5503.MOV' },
-  { name: 'IMG_5504', path: '../frontend/public/customer review/IMG_5504.MOV' },
-  { name: 'IMG_5505', path: '../frontend/public/customer review/IMG_5505.MOV' },
-  { name: 'IMG_5507', path: '../frontend/public/customer review/IMG_5507.MOV' },
   { name: 'IMG_5511', path: '../frontend/public/customer review/IMG_5511.MOV' },
   { name: 'IMG_5513', path: '../frontend/public/customer review/IMG_5513.MOV' }
 ];
