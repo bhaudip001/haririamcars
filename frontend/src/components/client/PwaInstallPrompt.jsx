@@ -47,12 +47,18 @@ export default function PwaInstallPrompt() {
       setDeferredPrompt(null);
     });
 
+    // If the user previously dismissed it, and they just refreshed the page,
+    // we want to restart the 2-minute countdown from NOW.
+    if (localStorage.getItem('pwaDismissedAt')) {
+      localStorage.setItem('pwaDismissedAt', Date.now().toString());
+    }
+
     const checkAndShowPrompt = () => {
       if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
         return;
       }
 
-      const lastDismissedAt = sessionStorage.getItem('pwaDismissedAt');
+      const lastDismissedAt = localStorage.getItem('pwaDismissedAt');
       const now = Date.now();
       
       // Only show prompt if we have a deferred prompt (for Android/Desktop) or if it's iOS
@@ -64,7 +70,7 @@ export default function PwaInstallPrompt() {
         const timeSince = now - parseInt(lastDismissedAt);
         if (timeSince >= 120000) { // 2 minutes (120,000 ms)
           setShowPrompt(true);
-          sessionStorage.removeItem('pwaDismissedAt'); // Reset so it can be dismissed again
+          localStorage.removeItem('pwaDismissedAt'); // Reset so it can be dismissed again
         }
       } else {
         setShowPrompt(true);
@@ -99,7 +105,7 @@ export default function PwaInstallPrompt() {
         alert('Please use Chrome or Safari and click "Install" from the browser menu.');
       }
       setShowPrompt(false);
-      sessionStorage.setItem('pwaDismissedAt', Date.now().toString());
+      localStorage.setItem('pwaDismissedAt', Date.now().toString());
       return;
     }
 
@@ -114,13 +120,13 @@ export default function PwaInstallPrompt() {
       setIsInstalled(true);
     } else {
       // User cancelled the prompt, wait 2 mins before asking again
-      sessionStorage.setItem('pwaDismissedAt', Date.now().toString());
+      localStorage.setItem('pwaDismissedAt', Date.now().toString());
     }
   };
 
   const handleLaterClick = () => {
     setShowPrompt(false);
-    sessionStorage.setItem('pwaDismissedAt', Date.now().toString());
+    localStorage.setItem('pwaDismissedAt', Date.now().toString());
   };
 
   // Don't render popup on admin or login routes

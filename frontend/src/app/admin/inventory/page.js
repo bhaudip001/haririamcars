@@ -115,7 +115,7 @@ export default function AdminInventoryPage() {
                             src={car.images[0].url || car.images[0]} 
                             alt="" 
                             fill 
-                            className="object-cover relative z-10" 
+                            className="object-cover z-10" 
                             unoptimized={true} 
                             onError={(e) => { e.target.style.opacity = '0'; }}
                           />
@@ -173,7 +173,7 @@ export default function AdminInventoryPage() {
                       src={car.images[0].url || car.images[0]} 
                       alt="" 
                       fill 
-                      className="object-cover relative z-10" 
+                      className="object-cover z-10" 
                       sizes="64px" 
                       unoptimized={true} 
                       onError={(e) => { e.target.style.opacity = '0'; }}
