@@ -152,6 +152,17 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.globalDeferredPrompt = null;
+              window.addEventListener('beforeinstallprompt', function(e) {
+                e.preventDefault();
+                window.globalDeferredPrompt = e;
+              });
+            `
+          }}
+        />
 
         <script
           type="application/ld+json"
