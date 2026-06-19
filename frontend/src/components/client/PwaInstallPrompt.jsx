@@ -21,11 +21,9 @@ export default function PwaInstallPrompt() {
     const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
     setIsIOS(isIosDevice);
 
-    // Check if already installed via localStorage or standalone mode
-    const isAlreadyInstalled = localStorage.getItem('pwaInstalled') === 'true';
-    if (isAlreadyInstalled || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) {
+    // If they are currently using the installed app, don't do anything
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
       setIsInstalled(true);
-      localStorage.setItem('pwaInstalled', 'true');
       return;
     }
 
@@ -42,11 +40,10 @@ export default function PwaInstallPrompt() {
       setIsInstalled(true);
       setShowPrompt(false);
       setDeferredPrompt(null);
-      localStorage.setItem('pwaInstalled', 'true');
     });
 
     const checkAndShowPrompt = () => {
-      if (localStorage.getItem('pwaInstalled') === 'true' || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) {
+      if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
         return;
       }
       
@@ -103,7 +100,6 @@ export default function PwaInstallPrompt() {
       console.log('User accepted the install prompt');
       setDeferredPrompt(null);
       setIsInstalled(true);
-      localStorage.setItem('pwaInstalled', 'true');
     } else {
       // User cancelled the prompt, wait 2 mins before asking again
       sessionStorage.setItem('pwaDismissedAt', Date.now().toString());
