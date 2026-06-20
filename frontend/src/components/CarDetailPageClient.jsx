@@ -131,6 +131,15 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
     });
   }
 
+  // Escape key to close lightbox
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setIsLightboxOpen(false);
+    };
+    if (isLightboxOpen) window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen]);
+
   // Normalize regular features to [{key, value}]
   const normalizedFeatures = [];
   (car.features || []).forEach(feat => {
@@ -470,13 +479,19 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
+            onClick={() => setIsLightboxOpen(false)}
           >
+            {/* Prominent Back/Close Button */}
             <button
               aria-label="Close Lightbox"
-              onClick={() => setIsLightboxOpen(false)}
-              className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-50 p-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full backdrop-blur-md"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsLightboxOpen(false);
+              }}
+              className="absolute top-6 left-4 md:left-6 text-white hover:text-purple-400 transition-colors z-[110] px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full backdrop-blur-md flex items-center gap-2 shadow-lg"
             >
-              <IconX size={28} stroke={1.5} />
+              <IconArrowLeft size={20} stroke={2} />
+              <span className="font-bold tracking-wider text-sm uppercase">Back</span>
             </button>
 
             <button
@@ -501,7 +516,10 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
               <IconChevronRight size={28} stroke={1.5} />
             </button>
 
-            <div className="relative w-full h-full max-w-7xl max-h-[85vh] p-4 md:p-12">
+            <div 
+              className="relative w-full h-full max-w-7xl max-h-[85vh] p-4 md:p-12"
+              onClick={(e) => e.stopPropagation()}
+            >
               {images.map((img, idx) => {
                 const isAdjacent = Math.abs(idx - activeImageIdx) <= 1 ||
                   (activeImageIdx === 0 && idx === images.length - 1) ||
