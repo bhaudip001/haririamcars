@@ -582,7 +582,6 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
               </div>
             </div>
           </div>
-          </div>
         )}
     </div>
   );
