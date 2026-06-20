@@ -106,7 +106,7 @@ function CatalogContent() {
     const MIN = Math.floor((globalMinPrice || 100000) / 10000) * 10000;
     const MAX = Math.ceil((globalMaxPrice || 10000000) / 10000) * 10000;
     const formatPrice = (val) => val ? Number(val).toLocaleString('en-IN') : "";
-    
+
     // Safety check to prevent divide by zero
     const range = MAX - MIN === 0 ? 1 : MAX - MIN;
     const minPercent = minPrice ? ((minPrice - MIN) / range) * 100 : 0;
@@ -142,30 +142,30 @@ function CatalogContent() {
             <span className="text-[13px] font-bold text-gray-900 dark:text-white">₹{formatPrice(maxPrice || MAX)}</span>
           </div>
 
-          <div className="relative h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full mt-2 px-2 flex items-center">
-            <div 
-              className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-100" 
+          <div className="relative h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full mt-2 flex items-center">
+            <div
+              className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-100"
               style={{ left: `${minPercent}%`, width: `${maxPercent - minPercent}%` }}
             ></div>
-            <input 
-              type="range" 
+            <input
+              type="range"
               min={MIN} max={MAX} step={10000}
               value={minPrice || MIN}
               onChange={(e) => {
-                const val = Number(e.target.value);
                 const max = Number(maxPrice || MAX);
-                if (val <= max - 10000) setMinPrice(val === MIN ? "" : val);
+                const val = Math.min(Number(e.target.value), max - 10000);
+                setMinPrice(val === MIN ? "" : val);
               }}
               className="absolute w-full left-0 h-8 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
             />
-            <input 
-              type="range" 
+            <input
+              type="range"
               min={MIN} max={MAX} step={10000}
               value={maxPrice || MAX}
               onChange={(e) => {
-                const val = Number(e.target.value);
                 const min = Number(minPrice || MIN);
-                if (val >= min + 10000) setMaxPrice(val === MAX ? "" : val);
+                const val = Math.max(Number(e.target.value), min + 10000);
+                setMaxPrice(val === MAX ? "" : val);
               }}
               className="absolute w-full left-0 h-8 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
             />
