@@ -488,7 +488,8 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 e.stopPropagation();
                 setIsLightboxOpen(false);
               }}
-              className="absolute top-6 left-4 md:left-6 text-white hover:text-purple-400 transition-colors z-[110] px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full backdrop-blur-md flex items-center gap-2 shadow-lg"
+              style={{ zIndex: 9999 }}
+              className="absolute top-12 md:top-6 left-4 md:left-6 text-white hover:text-purple-400 transition-colors px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full backdrop-blur-md flex items-center gap-2 shadow-lg"
             >
               <IconArrowLeft size={20} stroke={2} />
               <span className="font-bold tracking-wider text-sm uppercase">Back</span>
