@@ -471,12 +471,11 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
             </div>
           </section>
         )}
-      </main>
 
-      {/* ════ Lightbox (Moved outside main to escape z-index stacking context) ════ */}
+        {/* ════ Lightbox ════ */}
         {isLightboxOpen && images.length > 0 && (
           <div
-            className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center backdrop-blur-xl"
+            className="fixed inset-0 z-[9999] bg-black/98 flex items-center justify-center backdrop-blur-xl"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
@@ -583,6 +582,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
             </div>
           </div>
         )}
+      </main>
     </div>
   );
 }
