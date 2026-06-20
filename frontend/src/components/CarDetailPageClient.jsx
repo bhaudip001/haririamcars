@@ -471,8 +471,9 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
             </div>
           </section>
         )}
+      </main>
 
-        {/* ════ Lightbox ════ */}
+      {/* ════ Lightbox ════ */}
         {isLightboxOpen && images.length > 0 && (
           <div
             className="fixed inset-0 z-[9999] bg-black/98 flex items-center justify-center backdrop-blur-xl"
@@ -581,8 +582,8 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
               </div>
             </div>
           </div>
+          </div>
         )}
-      </main>
     </div>
   );
 }
