@@ -16,10 +16,10 @@ function CatalogContent() {
   const [makes, setMakes] = useState([]);
   const [fuelTypes, setFuelTypes] = useState(['Petrol', 'Diesel', 'CNG', 'Electric', 'Hybrid']);
   const [bodyTypes, setBodyTypes] = useState([]);
-  
+
   const [globalMinPrice, setGlobalMinPrice] = useState(100000);
   const [globalMaxPrice, setGlobalMaxPrice] = useState(10000000);
-  
+
   const [selectedMakes, setSelectedMakes] = useState(searchParams.get('make') ? searchParams.get('make').split(',') : []);
   const [selectedFuels, setSelectedFuels] = useState(searchParams.get('fuelType') ? searchParams.get('fuelType').split(',') : []);
   const [selectedBodyTypes, setSelectedBodyTypes] = useState(searchParams.get('bodyType') ? searchParams.get('bodyType').split(',') : []);
@@ -56,7 +56,7 @@ function CatalogContent() {
       params.append('page', pageNum);
       params.append('limit', 12);
       params.append('status', 'available'); // Only show available cars in catalog
-      
+
       if (selectedMakes.length > 0) params.append('make', selectedMakes.join(','));
       if (selectedFuels.length > 0) params.append('fuelType', selectedFuels.join(','));
       if (selectedBodyTypes.length > 0) params.append('bodyType', selectedBodyTypes.join(','));
@@ -103,11 +103,14 @@ function CatalogContent() {
   };
 
   const FiltersContent = () => {
-    const MIN = globalMinPrice;
-    const MAX = globalMaxPrice;
+    const MIN = Math.floor((globalMinPrice || 100000) / 10000) * 10000;
+    const MAX = Math.ceil((globalMaxPrice || 10000000) / 10000) * 10000;
     const formatPrice = (val) => val ? Number(val).toLocaleString('en-IN') : "";
-    const minPercent = minPrice ? ((minPrice - MIN) / (MAX - MIN)) * 100 : 0;
-    const maxPercent = maxPrice ? ((maxPrice - MIN) / (MAX - MIN)) * 100 : 100;
+    
+    // Safety check to prevent divide by zero
+    const range = MAX - MIN === 0 ? 1 : MAX - MIN;
+    const minPercent = minPrice ? ((minPrice - MIN) / range) * 100 : 0;
+    const maxPercent = maxPrice ? ((maxPrice - MIN) / range) * 100 : 100;
 
     const clearFilters = () => {
       setSelectedMakes([]);
@@ -123,122 +126,122 @@ function CatalogContent() {
     };
 
     return (
-    <div className="space-y-8 pb-20 md:pb-0 transition-colors duration-500">
-      <div className="hidden md:flex justify-between items-center border-b border-gray-200 dark:border-white/10 pb-4">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Advanced Filters</h3>
-        <button onClick={clearFilters} className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors whitespace-nowrap">Clear All</button>
-      </div>
-
-      {/* Price Range / BUDGET */}
-      <div className="pt-2 md:pt-0 pb-2 transition-colors">
-        <h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-wider uppercase mb-3">Budget</h4>
-        
-        <div className="bg-gray-50 dark:bg-white/5 rounded-2xl py-2.5 px-3 flex justify-center items-center gap-2 mb-6 border border-gray-100 dark:border-white/5 shadow-inner whitespace-nowrap">
-          <span className="text-[13px] font-bold text-gray-900 dark:text-white">₹{formatPrice(minPrice || MIN)}</span>
-          <span className="text-gray-400 text-xs">-</span>
-          <span className="text-[13px] font-bold text-gray-900 dark:text-white">₹{formatPrice(maxPrice || MAX)}</span>
+      <div className="space-y-8 pb-20 md:pb-0 transition-colors duration-500">
+        <div className="hidden md:flex justify-between items-center border-b border-gray-200 dark:border-white/10 pb-4">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Advanced Filters</h3>
+          <button onClick={clearFilters} className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors whitespace-nowrap">Clear All</button>
         </div>
 
-        <div className="relative h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full mt-2 px-2">
-          <div 
-            className="absolute h-full bg-purple-500 rounded-full" 
-            style={{ left: `${minPercent}%`, right: `${100 - maxPercent}%` }}
-          ></div>
-          <input 
-            type="range" 
-            min={MIN} max={MAX} step={10000}
-            value={minPrice || MIN}
-            onChange={(e) => {
-              const val = Number(e.target.value);
-              const max = Number(maxPrice || MAX);
-              if (val <= max - 10000) setMinPrice(val === MIN ? "" : val);
-            }}
-            className="absolute w-full -top-2.5 left-0 h-6 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-gray-200 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_2px_5px_rgba(0,0,0,0.15)] z-20 cursor-pointer"
-          />
-          <input 
-            type="range" 
-            min={MIN} max={MAX} step={10000}
-            value={maxPrice || MAX}
-            onChange={(e) => {
-              const val = Number(e.target.value);
-              const min = Number(minPrice || MIN);
-              if (val >= min + 10000) setMaxPrice(val === MAX ? "" : val);
-            }}
-            className="absolute w-full -top-2.5 left-0 h-6 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-gray-200 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_2px_5px_rgba(0,0,0,0.15)] z-20 cursor-pointer"
-          />
-        </div>
-      </div>
+        {/* Price Range / BUDGET */}
+        <div className="pt-2 md:pt-0 pb-2 transition-colors">
+          <h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-wider uppercase mb-3">Budget</h4>
 
-      {/* Brand Filter */}
-      {makes.length > 0 && (
-        <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Brand</h4>
-          <div className="flex flex-wrap gap-2">
-            <button 
-              onClick={() => setSelectedMakes([])}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-            >
-              All Brands
-            </button>
-            {makes.map(make => (
-              <button 
-                key={make}
-                onClick={() => toggleArrayItem(setSelectedMakes, make, selectedMakes)}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.includes(make) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+          <div className="bg-gray-50 dark:bg-white/5 rounded-2xl py-2.5 px-3 flex justify-center items-center gap-2 mb-6 border border-gray-100 dark:border-white/5 shadow-inner whitespace-nowrap">
+            <span className="text-[13px] font-bold text-gray-900 dark:text-white">₹{formatPrice(minPrice || MIN)}</span>
+            <span className="text-gray-400 text-xs">-</span>
+            <span className="text-[13px] font-bold text-gray-900 dark:text-white">₹{formatPrice(maxPrice || MAX)}</span>
+          </div>
+
+          <div className="relative h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full mt-2 px-2 flex items-center">
+            <div 
+              className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-100" 
+              style={{ left: `${minPercent}%`, width: `${maxPercent - minPercent}%` }}
+            ></div>
+            <input 
+              type="range" 
+              min={MIN} max={MAX} step={10000}
+              value={minPrice || MIN}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                const max = Number(maxPrice || MAX);
+                if (val <= max - 10000) setMinPrice(val === MIN ? "" : val);
+              }}
+              className="absolute w-full left-0 h-8 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
+            />
+            <input 
+              type="range" 
+              min={MIN} max={MAX} step={10000}
+              value={maxPrice || MAX}
+              onChange={(e) => {
+                const val = Number(e.target.value);
+                const min = Number(minPrice || MIN);
+                if (val >= min + 10000) setMaxPrice(val === MAX ? "" : val);
+              }}
+              className="absolute w-full left-0 h-8 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
+            />
+          </div>
+        </div>
+
+        {/* Brand Filter */}
+        {makes.length > 0 && (
+          <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+            <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Brand</h4>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setSelectedMakes([])}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
               >
-                {make}
+                All Brands
+              </button>
+              {makes.map(make => (
+                <button
+                  key={make}
+                  onClick={() => toggleArrayItem(setSelectedMakes, make, selectedMakes)}
+                  className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.includes(make) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+                >
+                  {make}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Body Type Filter */}
+        {bodyTypes.length > 0 && (
+          <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+            <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Body Type</h4>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setSelectedBodyTypes([])}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+              >
+                All Types
+              </button>
+              {bodyTypes.map(type => (
+                <button
+                  key={type}
+                  onClick={() => toggleArrayItem(setSelectedBodyTypes, type, selectedBodyTypes)}
+                  className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.includes(type) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Fuel Type */}
+        <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Fuel Type</h4>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedFuels([])}
+              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+            >
+              All
+            </button>
+            {fuelTypes.map(fuel => (
+              <button
+                key={fuel}
+                onClick={() => toggleArrayItem(setSelectedFuels, fuel, selectedFuels)}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.includes(fuel) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+              >
+                {fuel}
               </button>
             ))}
           </div>
         </div>
-      )}
-
-      {/* Body Type Filter */}
-      {bodyTypes.length > 0 && (
-        <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Body Type</h4>
-          <div className="flex flex-wrap gap-2">
-            <button 
-              onClick={() => setSelectedBodyTypes([])}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-            >
-              All Types
-            </button>
-            {bodyTypes.map(type => (
-              <button 
-                key={type}
-                onClick={() => toggleArrayItem(setSelectedBodyTypes, type, selectedBodyTypes)}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.includes(type) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-              >
-                {type}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Fuel Type */}
-      <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-        <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Fuel Type</h4>
-        <div className="flex flex-wrap gap-2">
-          <button 
-            onClick={() => setSelectedFuels([])}
-            className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-          >
-            All
-          </button>
-          {fuelTypes.map(fuel => (
-            <button 
-              key={fuel}
-              onClick={() => toggleArrayItem(setSelectedFuels, fuel, selectedFuels)}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.includes(fuel) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-            >
-              {fuel}
-            </button>
-          ))}
-        </div>
       </div>
-    </div>
     );
   };
 
@@ -248,7 +251,7 @@ function CatalogContent() {
       <div className="fixed inset-0 dark:hidden pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
         <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
-        
+
         {/* Sweeping Showroom Lights */}
         <div className="absolute top-[10%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent rotate-[35deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90"></div>
         <div className="absolute top-[60%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent -rotate-[15deg] transform-gpu blur-[30px] opacity-70"></div>
@@ -262,10 +265,10 @@ function CatalogContent() {
       <div className="hidden dark:block fixed inset-0 pointer-events-none z-0">
         {/* Deep Space Base */}
         <div className="absolute inset-0 bg-[#0a0a12]"></div>
-        
+
         {/* Neon Blueprint Grid */}
         <div className="absolute inset-0 opacity-[0.05] blueprint-grid"></div>
-        
+
         {/* Sweeping Showroom Lights (Dark) */}
         <div className="absolute top-[10%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-purple-600/10 to-transparent rotate-[35deg] transform-gpu blur-[30px] shadow-[0_0_120px_rgba(168,85,247,0.15)] z-0"></div>
         <div className="absolute top-[60%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-blue-600/10 to-transparent -rotate-[15deg] transform-gpu blur-[40px] z-0"></div>
@@ -276,166 +279,166 @@ function CatalogContent() {
       </div>
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 flex flex-col md:flex-row gap-8 relative z-10">
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-64 flex-shrink-0 sticky top-24 self-start bg-white dark:bg-transparent p-6 dark:p-0 rounded-2xl border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none transition-all duration-500">
-        <FiltersContent />
-      </aside>
+        {/* Desktop Sidebar */}
+        <aside className="hidden md:block w-64 flex-shrink-0 sticky top-24 self-start bg-white dark:bg-transparent p-6 dark:p-0 rounded-2xl border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none transition-all duration-500">
+          <FiltersContent />
+        </aside>
 
-      {/* Mobile Bottom Sheet Filters */}
-      <AnimatePresence>
-        {isMobileFilterOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMobileFilterOpen(false)}
-              className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="md:hidden fixed inset-x-0 bottom-0 z-50 max-h-[85vh] bg-white/95 dark:bg-[#0f0f1e]/95 backdrop-blur-xl rounded-t-3xl border-t border-gray-200 dark:border-white/20 shadow-2xl flex flex-col transition-colors duration-500"
-            >
-              <div className="flex justify-center pt-3 pb-2">
-                <div className="w-12 h-1.5 bg-gray-300 dark:bg-white/20 rounded-full transition-colors" />
-              </div>
-              
-              <div className="px-6 pb-4 flex items-center justify-between border-b border-gray-200 dark:border-white/10 transition-colors">
-                <h2 className="text-xl font-bold text-black dark:text-white tracking-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h2>
-                <button
-                  aria-label="Close Filters"
-                  onClick={() => setIsMobileFilterOpen(false)}
-                  className="p-2 bg-gray-100 dark:bg-white/5 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
-                >
-                  <IconX className="w-5 h-5" />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto px-6 py-6">
-                <FiltersContent />
-              </div>
-
-              <div className="p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f0f1e] sticky bottom-0 transition-colors duration-500">
-                <button
-                  onClick={() => setIsMobileFilterOpen(false)}
-                  className="w-full h-[52px] bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all"
-                >
-                  Apply Filters
-                </button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Catalog Grid Area */}
-      <div className="flex-grow flex flex-col space-y-6">
-        {/* Results Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-6 gap-4">
-          <div className="w-full flex items-center justify-between lg:w-auto lg:block">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-black dark:text-white leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Premium Inventory</h1>
-              <p className="text-purple-400 mt-2 font-medium">Showing {total} available vehicles</p>
-            </div>
-            {/* Mobile Filter Button */}
-            <button 
-              aria-label="Open Filters"
-              onClick={() => setIsMobileFilterOpen(true)}
-              className="md:hidden flex items-center justify-center w-12 h-12 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/20 rounded-xl active:bg-gray-100 dark:active:bg-white/20 transition-colors shadow-sm dark:shadow-none"
-            >
-              <IconFilter className="text-black dark:text-white transition-colors" size={24} />
-            </button>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-            {/* Search Box */}
-            <div className="relative w-full sm:w-64">
-              <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              <input 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-[14px] md:py-2.5 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-base md:text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-colors shadow-sm dark:shadow-none" 
-                placeholder="Search models..." 
-                type="text"
+        {/* Mobile Bottom Sheet Filters */}
+        <AnimatePresence>
+          {isMobileFilterOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMobileFilterOpen(false)}
+                className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
               />
-            </div>
-
-            {/* Sort Dropdown */}
-            <div className="flex items-center space-x-3 w-full sm:w-auto">
-              <span className="text-gray-400 text-sm whitespace-nowrap">Sort by:</span>
-              <div className="relative w-full sm:w-48">
-                <select 
-                  value={sortParam}
-                onChange={(e) => setSortParam(e.target.value)}
-                className="w-full appearance-none h-[52px] md:h-auto bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-black dark:text-white font-medium focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 cursor-pointer text-base md:text-sm transition-colors shadow-sm dark:shadow-none"
+              <motion.div
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="md:hidden fixed inset-x-0 bottom-0 z-50 max-h-[85vh] bg-white/95 dark:bg-[#0f0f1e]/95 backdrop-blur-xl rounded-t-3xl border-t border-gray-200 dark:border-white/20 shadow-2xl flex flex-col transition-colors duration-500"
               >
-                <option value="-createdAt" className="text-black">Recently Added</option>
-                <option value="price" className="text-black">Price: Low to High</option>
-                <option value="-price" className="text-black">Price: High to Low</option>
-                <option value="-year" className="text-black">Year: Newest First</option>
-                <option value="kms" className="text-black">Kilometers: Low to High</option>
-              </select>
-              <IconChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
-            </div>
-          </div>
-        </div>
-        </div>
+                <div className="flex justify-center pt-3 pb-2">
+                  <div className="w-12 h-1.5 bg-gray-300 dark:bg-white/20 rounded-full transition-colors" />
+                </div>
 
-        {/* Grid */}
-        {loading && page === 1 ? (
-          <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden animate-pulse h-[360px] transition-colors">
-                <div className="aspect-[4/3] bg-gray-100 dark:bg-white/5 transition-colors" />
-                <div className="p-4 space-y-3">
-                  <div className="h-6 bg-gray-200 dark:bg-white/5 rounded w-3/4 transition-colors" />
-                  <div className="h-4 bg-gray-200 dark:bg-white/5 rounded w-full transition-colors" />
+                <div className="px-6 pb-4 flex items-center justify-between border-b border-gray-200 dark:border-white/10 transition-colors">
+                  <h2 className="text-xl font-bold text-black dark:text-white tracking-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h2>
+                  <button
+                    aria-label="Close Filters"
+                    onClick={() => setIsMobileFilterOpen(false)}
+                    className="p-2 bg-gray-100 dark:bg-white/5 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
+                  >
+                    <IconX className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto px-6 py-6">
+                  <FiltersContent />
+                </div>
+
+                <div className="p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f0f1e] sticky bottom-0 transition-colors duration-500">
+                  <button
+                    onClick={() => setIsMobileFilterOpen(false)}
+                    className="w-full h-[52px] bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all"
+                  >
+                    Apply Filters
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Catalog Grid Area */}
+        <div className="flex-grow flex flex-col space-y-6">
+          {/* Results Header */}
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-6 gap-4">
+            <div className="w-full flex items-center justify-between lg:w-auto lg:block">
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-black dark:text-white leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Premium Inventory</h1>
+                <p className="text-purple-400 mt-2 font-medium">Showing {total} available vehicles</p>
+              </div>
+              {/* Mobile Filter Button */}
+              <button
+                aria-label="Open Filters"
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="md:hidden flex items-center justify-center w-12 h-12 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/20 rounded-xl active:bg-gray-100 dark:active:bg-white/20 transition-colors shadow-sm dark:shadow-none"
+              >
+                <IconFilter className="text-black dark:text-white transition-colors" size={24} />
+              </button>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+              {/* Search Box */}
+              <div className="relative w-full sm:w-64">
+                <IconSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                <input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-[14px] md:py-2.5 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-base md:text-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-colors shadow-sm dark:shadow-none"
+                  placeholder="Search models..."
+                  type="text"
+                />
+              </div>
+
+              {/* Sort Dropdown */}
+              <div className="flex items-center space-x-3 w-full sm:w-auto">
+                <span className="text-gray-400 text-sm whitespace-nowrap">Sort by:</span>
+                <div className="relative w-full sm:w-48">
+                  <select
+                    value={sortParam}
+                    onChange={(e) => setSortParam(e.target.value)}
+                    className="w-full appearance-none h-[52px] md:h-auto bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-black dark:text-white font-medium focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 cursor-pointer text-base md:text-sm transition-colors shadow-sm dark:shadow-none"
+                  >
+                    <option value="-createdAt" className="text-black">Recently Added</option>
+                    <option value="price" className="text-black">Price: Low to High</option>
+                    <option value="-price" className="text-black">Price: High to Low</option>
+                    <option value="-year" className="text-black">Year: Newest First</option>
+                    <option value="kms" className="text-black">Kilometers: Low to High</option>
+                  </select>
+                  <IconChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        ) : cars.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
-            {cars.map((car, i) => (
-              <CarCard key={car._id} car={car} index={i} />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl transition-colors shadow-sm dark:shadow-none">
-            <IconSearch size={48} className="text-gray-400 dark:text-gray-500 mb-4 transition-colors" />
-            <h3 className="text-xl font-bold text-black dark:text-white mb-2 transition-colors">No vehicles found</h3>
-            <p className="text-gray-600 dark:text-gray-400 text-center max-w-md transition-colors">Try adjusting your filters or search criteria to find what you're looking for.</p>
-            <button 
-              onClick={() => {
-                setSelectedMake('');
-                setSelectedFuel('');
-                setSelectedBodyType('');
-                setMinPrice('');
-                setMaxPrice('');
-                setSearchQuery('');
-              }}
-              className="mt-6 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-bold transition-colors"
-            >
-              Clear All Filters
-            </button>
-          </div>
-        )}
 
-        {/* Load More */}
-        {hasMore && cars.length > 0 && (
-          <div className="w-full flex justify-center pt-8">
-            <button 
-              onClick={handleLoadMore}
-              disabled={loading}
-              className="bg-transparent border border-purple-600 dark:border-purple-500 text-purple-600 dark:text-purple-400 px-8 py-3 rounded-full hover:bg-purple-600 hover:text-white transition-colors duration-300 font-bold tracking-wide disabled:opacity-50"
-            >
-              {loading ? 'Loading...' : 'Load More Vehicles'}
-            </button>
-          </div>
-        )}
+          {/* Grid */}
+          {loading && page === 1 ? (
+            <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden animate-pulse h-[360px] transition-colors">
+                  <div className="aspect-[4/3] bg-gray-100 dark:bg-white/5 transition-colors" />
+                  <div className="p-4 space-y-3">
+                    <div className="h-6 bg-gray-200 dark:bg-white/5 rounded w-3/4 transition-colors" />
+                    <div className="h-4 bg-gray-200 dark:bg-white/5 rounded w-full transition-colors" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : cars.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+              {cars.map((car, i) => (
+                <CarCard key={car._id} car={car} index={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl transition-colors shadow-sm dark:shadow-none">
+              <IconSearch size={48} className="text-gray-400 dark:text-gray-500 mb-4 transition-colors" />
+              <h3 className="text-xl font-bold text-black dark:text-white mb-2 transition-colors">No vehicles found</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-center max-w-md transition-colors">Try adjusting your filters or search criteria to find what you're looking for.</p>
+              <button
+                onClick={() => {
+                  setSelectedMake('');
+                  setSelectedFuel('');
+                  setSelectedBodyType('');
+                  setMinPrice('');
+                  setMaxPrice('');
+                  setSearchQuery('');
+                }}
+                className="mt-6 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-bold transition-colors"
+              >
+                Clear All Filters
+              </button>
+            </div>
+          )}
+
+          {/* Load More */}
+          {hasMore && cars.length > 0 && (
+            <div className="w-full flex justify-center pt-8">
+              <button
+                onClick={handleLoadMore}
+                disabled={loading}
+                className="bg-transparent border border-purple-600 dark:border-purple-500 text-purple-600 dark:text-purple-400 px-8 py-3 rounded-full hover:bg-purple-600 hover:text-white transition-colors duration-300 font-bold tracking-wide disabled:opacity-50"
+              >
+                {loading ? 'Loading...' : 'Load More Vehicles'}
+              </button>
+            </div>
+          )}
         </div>
       </main>
     </div>
