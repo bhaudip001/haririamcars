@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Plus, Search, Trash2, Edit, Eye } from 'lucide-react';
+import { Plus, Search, Trash2, Edit, Eye, Share2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
 import { formatPrice } from '@/lib/utils';
@@ -30,6 +30,29 @@ export default function AdminInventoryPage() {
   };
 
   useEffect(() => { fetchCars(); }, []);
+
+  const handleShareCatalog = async () => {
+    const text = `Hello! Check out our complete range of available premium cars here:\n${window.location.origin}/catalog`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Hariram Motors Catalog',
+          text: text,
+        });
+        return;
+      } catch (err) {
+        console.log('Error sharing', err);
+      }
+    }
+    
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success('Catalog link copied to clipboard!');
+    } catch {
+      toast.error('Failed to copy link');
+    }
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -67,7 +90,10 @@ export default function AdminInventoryPage() {
           <p className="text-sm text-[var(--color-text-muted)]">Manage your car listings</p>
         </div>
         <div className="flex gap-3">
-          <Link href="/admin/inventory/add" className="btn-primary !py-2.5 !px-5 !text-sm">
+          <button onClick={handleShareCatalog} className="btn-secondary !py-2.5 !px-5 !text-sm flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors text-white">
+            <Share2 size={16} /> Share Catalog
+          </button>
+          <Link href="/admin/inventory/add" className="btn-primary !py-2.5 !px-5 !text-sm flex items-center gap-1">
             <Plus size={16} /> Add Car
           </Link>
         </div>

@@ -2,8 +2,9 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { Search, SlidersHorizontal, X, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 import CarCard from '@/components/CarCard';
 import api from '@/lib/api';
 
@@ -68,17 +69,45 @@ export default function CatalogClient() {
 
   const hasActiveFilters = search || make || fuelType || bodyType || minPrice || maxPrice;
 
+  const handleShareCatalog = async () => {
+    const text = `Hello! Check out Hariram Motors' complete range of available premium cars here:\n${window.location.origin}/catalog`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Hariram Motors Catalog',
+          text: text,
+        });
+        return;
+      } catch (err) {
+        console.log('Error sharing', err);
+      }
+    }
+    
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success('Catalog link copied to clipboard!');
+    } catch {
+      toast.error('Failed to copy link');
+    }
+  };
+
   return (
     <div className="pt-[72px] min-h-screen">
       {/* Header */}
       <div className="bg-[var(--color-bg-surface)] border-b border-[var(--color-border)]">
-        <div className="container mx-auto px-4 lg:px-8 py-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{ fontFamily: 'var(--font-outfit)' }}>
-            Our <span className="gradient-text">Collection</span>
-          </h1>
-          <p className="text-[var(--color-text-secondary)]">
-            {total > 0 ? `${total} cars available` : 'Browse our premium collection'}
-          </p>
+        <div className="container mx-auto px-4 lg:px-8 py-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2" style={{ fontFamily: 'var(--font-outfit)' }}>
+              Our <span className="gradient-text">Collection</span>
+            </h1>
+            <p className="text-[var(--color-text-secondary)]">
+              {total > 0 ? `${total} cars available` : 'Browse our premium collection'}
+            </p>
+          </div>
+          <button onClick={handleShareCatalog} className="btn-secondary !py-2.5 !px-5 !text-sm flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-[var(--color-border)] rounded-lg transition-colors text-white w-full md:w-auto">
+            <Share2 size={16} /> Share Catalog
+          </button>
         </div>
       </div>
 

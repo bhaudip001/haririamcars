@@ -87,38 +87,39 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-2 lg:col-start-6">
-            <h4 className="font-['Outfit'] text-white text-lg font-bold mb-6 tracking-wide relative inline-block">
-              Navigation
-              <span className="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-purple-500 rounded-full"></span>
-            </h4>
-            <ul className="flex flex-col gap-3 text-sm">
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/" className="hover:text-white transition-colors inline-block">Home</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog" className="hover:text-white transition-colors inline-block">Our Inventory</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/about" className="hover:text-white transition-colors inline-block">About Us</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car" className="hover:text-white transition-colors inline-block">Sell Your Car</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/contact" className="hover:text-white transition-colors inline-block">Contact</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/insurance" className="hover:text-white transition-colors inline-block">Insurance</Link></motion.div></li>
-            </ul>
-          </div>
+          {/* Quick Links & Services */}
+          <div className="lg:col-span-5 lg:col-start-5 grid grid-cols-2 gap-4 lg:gap-8 px-0 lg:px-8">
+            <div>
+              <h4 className="font-['Outfit'] text-white text-lg font-bold mb-6 tracking-wide relative inline-block">
+                Navigation
+                <span className="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-purple-500 rounded-full"></span>
+              </h4>
+              <ul className="flex flex-col gap-3 text-sm">
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/" className="hover:text-white transition-colors inline-block">Home</Link></motion.div></li>
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog" className="hover:text-white transition-colors inline-block">Our Inventory</Link></motion.div></li>
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/about" className="hover:text-white transition-colors inline-block">About Us</Link></motion.div></li>
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car" className="hover:text-white transition-colors inline-block">Sell Your Car</Link></motion.div></li>
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/contact" className="hover:text-white transition-colors inline-block">Contact</Link></motion.div></li>
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/insurance" className="hover:text-white transition-colors inline-block">Insurance</Link></motion.div></li>
+              </ul>
+            </div>
 
-          {/* Services */}
-          <div className="lg:col-span-2">
-            <h4 className="font-['Outfit'] text-white text-lg font-bold mb-6 tracking-wide relative inline-block">
-              Services
-              <span className="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-purple-500 rounded-full"></span>
-            </h4>
-            <ul className="flex flex-col gap-3 text-sm">
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog" className="hover:text-white transition-colors inline-block">Buy Car</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car" className="hover:text-white transition-colors inline-block">Sell Car</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car?mode=exchange" className="hover:text-white transition-colors inline-block">Exchange Car</Link></motion.div></li>
-              <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/contact" className="hover:text-white transition-colors inline-block">Test Drive Booking</Link></motion.div></li>
-            </ul>
+            <div>
+              <h4 className="font-['Outfit'] text-white text-lg font-bold mb-6 tracking-wide relative inline-block">
+                Services
+                <span className="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-purple-500 rounded-full"></span>
+              </h4>
+              <ul className="flex flex-col gap-3 text-sm">
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/catalog" className="hover:text-white transition-colors inline-block">Buy Car</Link></motion.div></li>
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car" className="hover:text-white transition-colors inline-block">Sell Car</Link></motion.div></li>
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/sell-your-car?mode=exchange" className="hover:text-white transition-colors inline-block">Exchange Car</Link></motion.div></li>
+                <li><motion.div whileHover={{ x: 3 }} transition={{ duration: 0.15 }}><Link href="/contact" className="hover:text-white transition-colors inline-block">Test Drive Booking</Link></motion.div></li>
+              </ul>
+            </div>
           </div>
 
           {/* Visit Us */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 lg:col-start-10">
             <h4 className="font-['Outfit'] text-white text-lg font-bold mb-6 tracking-wide relative inline-block">
               Get In Touch
               <span className="absolute -bottom-2 left-0 w-1/2 h-0.5 bg-purple-500 rounded-full"></span>

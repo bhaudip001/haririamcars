@@ -199,7 +199,7 @@ export default function RootLayout({ children }) {
                 "description": "Top car dealer for second-hand motors and certified pre-owned cars in Surat, Gujarat.",
                 "url": "https://www.hariramcars.com/",
                 "telephone": "+919898558222",
-                "email": "info@harimotors.com",
+                "email": "hariramcars@gmail.com",
                 "foundingDate": "2020",
                 "priceRange": "₹₹",
                 "address": {
@@ -220,9 +220,9 @@ export default function RootLayout({ children }) {
                     "@type": "OpeningHoursSpecification",
                     "dayOfWeek": [
                       "Monday", "Tuesday", "Wednesday",
-                      "Thursday", "Friday", "Saturday"
+                      "Thursday", "Friday", "Saturday", "Sunday"
                     ],
-                    "opens": "09:00",
+                    "opens": "09:30",
                     "closes": "20:00"
                   }
                 ],

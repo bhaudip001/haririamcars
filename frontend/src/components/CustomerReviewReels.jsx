@@ -23,7 +23,7 @@ export default function CustomerReviewReels() {
   const scrollNext = () => emblaApi && emblaApi.scrollNext();
 
   return (
-    <section className="py-24 relative overflow-hidden bg-transparent transition-colors duration-500">
+    <section className="py-8 md:py-12 relative overflow-hidden bg-transparent transition-colors duration-500">
       {/* Decorative background */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-purple-500/[0.04] rounded-full blur-[100px] -translate-y-1/2" />

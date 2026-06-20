@@ -107,7 +107,7 @@ export default function ContactPage() {
           </div>
 
           <h1 className="font-['Outfit'] font-bold text-[42px] sm:text-[54px] md:text-[68px] text-black dark:text-white leading-[1.05] tracking-tight md:tracking-tighter mb-6 transition-colors">
-            Your Premium Car<br className="hidden sm:block" />
+            Your Dream Car<br className="hidden sm:block" />
             <span className="bg-gradient-to-r from-purple-600 dark:from-purple-400 via-purple-700 dark:via-purple-500 to-blue-600 dark:to-blue-500 bg-clip-text text-transparent inline-block sm:mt-2 pb-2 filter drop-shadow-sm dark:drop-shadow-none">
               Journey Starts Here.
             </span>
@@ -281,8 +281,8 @@ export default function ContactPage() {
               </motion.div>
               <div className="overflow-hidden">
                 <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Email Us</div>
-                <a href="mailto:info@harirammotors.com" className="font-['Outfit'] font-bold text-base text-black dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors truncate block">
-                  info@harirammotors.com
+                <a href="mailto:hariramcars@gmail.com" className="font-['Outfit'] font-bold text-base text-black dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors truncate block">
+                  hariramcars@gmail.com
                 </a>
               </div>
             </div>
@@ -296,7 +296,10 @@ export default function ContactPage() {
               </motion.div>
               <div>
                 <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Working Hours</div>
-                <div className="font-['Outfit'] font-bold text-base text-black dark:text-white transition-colors">Mon – Sat: 9AM – 8PM</div>
+                <div className="font-['Outfit'] font-bold text-base text-black dark:text-white transition-colors">
+                  Mon – Sun: 9:30 AM – 8:00 PM<br/>
+                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400">2nd & 4th Saturday Closed</span>
+                </div>
               </div>
             </div>
           </motion.div>

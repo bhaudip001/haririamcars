@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 
 import HeroSection from '@/components/HeroSection';
-import DealershipServices from '@/components/static/DealershipServices';
+// import DealershipServices from '@/components/static/DealershipServices';
 import WhyChooseUs from '@/components/static/WhyChooseUs';
 import FeaturedCarsServer from '@/components/server/FeaturedCarsServer';
 import PromoBannersServer from '@/components/server/PromoBannersServer';
@@ -33,6 +33,9 @@ export default function HomePage() {
     <>
       <HeroSection />
 
+      {/* SHOWROOM VIDEO SECTION */}
+      <ShowroomVideo />
+
       {/* ════ UNIFIED SHOWROOM BACKGROUND (SECTIONS 3 & 4) ════ */}
       <div className="relative w-full overflow-hidden bg-[#f4f4f8] dark:bg-transparent transition-colors duration-500">
         <div className="absolute inset-0 dark:hidden pointer-events-none z-0">
@@ -52,7 +55,7 @@ export default function HomePage() {
           <div className="absolute bottom-[10%] right-[-10%] w-[700px] h-[700px] bg-blue-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
         </div>
 
-        <DealershipServices />
+        {/* <DealershipServices /> */}
 
         <section className="py-10 md:py-14 lg:py-20 relative z-10 transition-colors duration-500 dark:bg-transparent">
           <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -77,9 +80,6 @@ export default function HomePage() {
           </div>
         </section>
       </div>
-
-      {/* SHOWROOM VIDEO SECTION */}
-      <ShowroomVideo />
 
       <WhyChooseUs />
 
@@ -106,14 +106,15 @@ export default function HomePage() {
           <PromoBannersServer />
         </Suspense>
 
+
+        {/* CUSTOMER REVIEW REELS */}
+        <CustomerReviewReels />
+
         <div className="relative z-10 dark:bg-transparent">
           <Suspense fallback={<GoogleReviewsSkeleton />}>
             <DynamicGoogleReviews />
           </Suspense>
         </div>
-
-        {/* CUSTOMER REVIEW REELS */}
-        <CustomerReviewReels />
 
         <Suspense fallback={<TestimonialSkeleton />}>
           <TestimonialsServer />

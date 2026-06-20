@@ -189,7 +189,7 @@ export default function AboutHero() {
                 className="hero-enter-sub font-['Inter'] text-[#a0a0b8] leading-8 max-w-md mx-auto lg:mx-0 mt-6"
                 style={{ fontSize: '18px' }}
               >
-                Over a decade, 500+ families in Surat have trusted us
+                Over a decade, 3600+ families in Surat have trusted us
                 with one of the biggest decisions of their lives.
                 That responsibility drives everything we do.
               </p>
@@ -199,7 +199,7 @@ export default function AboutHero() {
                 {/* Stat 1 */}
                 <div className="flex flex-col items-center lg:items-start px-5 first:pl-0">
                   <span className="font-['Outfit'] font-bold text-[28px] text-white leading-none">
-                    <AnimatedNumber target={500} suffix="+" />
+                    <AnimatedNumber target={3600} suffix="+" />
                   </span>
                   <span className="font-['Inter'] text-[12px] text-[#6b6b80] uppercase tracking-wider mt-1">
                     Happy Customers
@@ -330,7 +330,7 @@ export default function AboutHero() {
                       <span className="text-white font-bold text-sm font-['Outfit']">4.3 Rating</span>
                     </div>
                     <div className="text-slate-300 text-xs mt-1 font-['Inter']">
-                      from 500+ Google reviews
+                      from 3600+ Google reviews
                     </div>
                     <div className="flex items-center gap-1 mt-2">
                       <StarIcon size={12} />

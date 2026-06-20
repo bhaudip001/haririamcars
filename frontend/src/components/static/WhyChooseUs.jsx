@@ -24,10 +24,10 @@ export default function WhyChooseUs() {
             </Link>
           </motion.div>
 
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8 relative">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-7 flex overflow-x-auto sm:grid sm:grid-cols-2 gap-4 sm:gap-x-8 sm:gap-y-8 relative pb-6 sm:pb-0 snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mx-4 px-4 sm:mx-0 sm:px-0">
 
             {/* CARD 1 (01) - Top Left */}
-            <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group">
+            <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="w-[85vw] sm:w-auto shrink-0 snap-center sm:snap-none bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-6 sm:p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group">
               {/* Outward Right Arrow */}
               <div className="hidden sm:block absolute top-1/2 -right-[16px] w-8 h-8 bg-white dark:bg-[#1a0e2e] rotate-45 transform -translate-y-1/2 z-30 border-t border-r border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
 
@@ -38,7 +38,7 @@ export default function WhyChooseUs() {
             </motion.div>
 
             {/* CARD 2 (02) - Top Right */}
-            <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group">
+            <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="w-[85vw] sm:w-auto shrink-0 snap-center sm:snap-none bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-6 sm:p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group">
               {/* Inward Left Cutout */}
               <div className="hidden sm:block absolute top-1/2 -left-[17px] w-[34px] h-[34px] bg-[#0f0f1e] rotate-45 transform -translate-y-1/2 z-20 border-t border-r border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
               {/* Outward Bottom Arrow */}
@@ -51,7 +51,7 @@ export default function WhyChooseUs() {
             </motion.div>
 
             {/* CARD 4 (04) - Bottom Left */}
-            <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group order-4 sm:order-3">
+            <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="w-[85vw] sm:w-auto shrink-0 snap-center sm:snap-none bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-6 sm:p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group order-4 sm:order-3">
               {/* Inward Right Cutout */}
               <div className="hidden sm:block absolute top-1/2 -right-[17px] w-[34px] h-[34px] bg-[#0f0f1e] rotate-45 transform -translate-y-1/2 z-20 border-b border-l border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
 
@@ -62,7 +62,7 @@ export default function WhyChooseUs() {
             </motion.div>
 
             {/* CARD 3 (03) - Bottom Right */}
-            <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group order-3 sm:order-4">
+            <motion.div variants={scaleIn} whileHover={{ scale: 1.02 }} className="w-[85vw] sm:w-auto shrink-0 snap-center sm:snap-none bg-white dark:bg-[#1a0e2e] border border-gray-200 dark:border-white/10 dark:hover:border-purple-500/40 dark:hover:bg-purple-500/10 rounded-[2rem] p-6 sm:p-8 relative shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group order-3 sm:order-4">
               {/* Inward Top Cutout */}
               <div className="hidden sm:block absolute -top-[17px] left-1/2 w-[34px] h-[34px] bg-[#0f0f1e] rotate-45 transform -translate-x-1/2 z-20 border-r border-b border-gray-200 dark:border-white/10 rounded-[4px] transition-colors"></div>
               {/* Outward Left Arrow */}

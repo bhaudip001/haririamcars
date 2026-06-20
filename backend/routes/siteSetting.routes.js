@@ -11,7 +11,7 @@ const router = express.Router();
 const defaultSettings = {
   yearsInBusiness: 10,
   carsSold: 500,
-  happyCustomers: 450,
+  happyCustomers: 3600,
   dealershipName: 'Hariram Motors',
   tagline: 'Your Trusted Car Partner in Surat',
   phone: '+91 98765 43210',

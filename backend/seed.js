@@ -45,12 +45,12 @@ const seed = async () => {
   const defaults = {
     yearsInBusiness: 10,
     carsSold: 500,
-    happyCustomers: 450,
+    happyCustomers: 3600,
     dealershipName: 'Hariram Motors',
     tagline: 'Your Trusted Car Partner in Surat',
     phone: '+91 98985 58222',
     whatsapp: '+9198985 58222',
-    email: 'info@harimotors.com',
+    email: 'hariramcars@gmail.com',
     address: 'Simada to, Canal, BRTS Rd, near Setubandh Hills, Surat, Gujarat 395006',
   };
 

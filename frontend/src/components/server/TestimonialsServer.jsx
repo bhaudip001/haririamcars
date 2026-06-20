@@ -37,7 +37,7 @@ export default async function TestimonialsServer() {
   if (!testimonials || testimonials.length === 0) return null;
 
   return (
-    <section className="py-10 md:py-14 lg:py-20 overflow-hidden relative z-10 transition-colors duration-500 dark:bg-transparent">
+    <section className="py-8 md:py-12 overflow-hidden relative z-10 transition-colors duration-500 dark:bg-transparent">
       <TestimonialsClient testimonials={testimonials} />
     </section>
   );

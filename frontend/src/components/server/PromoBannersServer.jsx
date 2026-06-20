@@ -36,7 +36,7 @@ export default async function PromoBannersServer() {
   if (!banners || banners.length === 0) return null;
 
   return (
-    <section className="py-10 md:py-14 lg:py-20 relative z-10 transition-colors duration-500 dark:bg-transparent">
+    <section className="py-8 md:py-12 relative z-10 transition-colors duration-500 dark:bg-transparent">
       <PromoBannersClient banners={banners} />
     </section>
   );
