@@ -146,23 +146,23 @@ function CatalogContent() {
           ></div>
           <input 
             type="range" 
-            min={MIN} max={MAX} step={50000}
+            min={MIN} max={MAX} step={10000}
             value={minPrice || MIN}
             onChange={(e) => {
               const val = Number(e.target.value);
               const max = Number(maxPrice || MAX);
-              if (val <= max - 50000) setMinPrice(val === MIN ? "" : val);
+              if (val <= max - 10000) setMinPrice(val === MIN ? "" : val);
             }}
             className="absolute w-full -top-2.5 left-0 h-6 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-gray-200 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_2px_5px_rgba(0,0,0,0.15)] z-20 cursor-pointer"
           />
           <input 
             type="range" 
-            min={MIN} max={MAX} step={50000}
+            min={MIN} max={MAX} step={10000}
             value={maxPrice || MAX}
             onChange={(e) => {
               const val = Number(e.target.value);
               const min = Number(minPrice || MIN);
-              if (val >= min + 50000) setMaxPrice(val === MAX ? "" : val);
+              if (val >= min + 10000) setMaxPrice(val === MAX ? "" : val);
             }}
             className="absolute w-full -top-2.5 left-0 h-6 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-gray-200 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_2px_5px_rgba(0,0,0,0.15)] z-20 cursor-pointer"
           />
