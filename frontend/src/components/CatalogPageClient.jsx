@@ -142,11 +142,16 @@ function CatalogContent() {
             <span className="text-[13px] font-bold text-gray-900 dark:text-white">₹{formatPrice(maxPrice || MAX)}</span>
           </div>
 
-          <div className="relative h-1.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full mt-2 flex items-center">
+          <div className="relative w-full h-8 flex items-center group mt-2">
+            {/* Track Background */}
+            <div className="absolute w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+
+            {/* Track Active Highlight */}
             <div
               className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-100"
               style={{ left: `${minPercent}%`, width: `${maxPercent - minPercent}%` }}
             ></div>
+            {/* Min Slider */}
             <input
               type="range"
               min={MIN} max={MAX} step={10000}
@@ -156,8 +161,9 @@ function CatalogContent() {
                 const val = Math.min(Number(e.target.value), max - 10000);
                 setMinPrice(val === MIN ? "" : val);
               }}
-              className="absolute w-full left-0 h-8 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
+              className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
             />
+            {/* Max Slider */}
             <input
               type="range"
               min={MIN} max={MAX} step={10000}
@@ -167,7 +173,7 @@ function CatalogContent() {
                 const val = Math.max(Number(e.target.value), min + 10000);
                 setMaxPrice(val === MAX ? "" : val);
               }}
-              className="absolute w-full left-0 h-8 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
+              className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
             />
           </div>
         </div>
