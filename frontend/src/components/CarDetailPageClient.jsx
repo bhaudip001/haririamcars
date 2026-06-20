@@ -471,12 +471,11 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
             </div>
           </section>
         )}
-      </main>
 
-      {/* ════ Lightbox ════ */}
+        {/* ════ Lightbox ════ */}
         {isLightboxOpen && images.length > 0 && (
           <div
-            className="fixed inset-0 z-[9999] bg-black/98 flex items-center justify-center backdrop-blur-xl"
+            className="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center backdrop-blur-xl"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
@@ -489,8 +488,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 e.stopPropagation();
                 setIsLightboxOpen(false);
               }}
-              style={{ zIndex: 9999 }}
-              className="absolute top-12 md:top-6 left-4 md:left-6 text-white hover:text-purple-400 transition-colors px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full backdrop-blur-md flex items-center gap-2 shadow-lg"
+              className="absolute top-[85px] md:top-[100px] left-4 md:left-6 text-white hover:text-purple-400 transition-colors px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full backdrop-blur-md flex items-center gap-2 shadow-lg"
             >
               <IconArrowLeft size={20} stroke={2} />
               <span className="font-bold tracking-wider text-sm uppercase">Back</span>
@@ -583,6 +581,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
             </div>
           </div>
         )}
+      </main>
     </div>
   );
 }
