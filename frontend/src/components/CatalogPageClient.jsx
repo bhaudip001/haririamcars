@@ -349,7 +349,7 @@ const FiltersContent = ({
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 flex flex-col md:flex-row gap-8 relative z-10">
         {/* Desktop Sidebar */}
-        <aside className="hidden md:block w-64 flex-shrink-0 sticky top-24 self-start bg-white dark:bg-transparent p-6 dark:p-0 rounded-2xl border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none transition-all duration-500">
+        <aside className="hidden md:block w-64 flex-shrink-0 sticky top-24 self-start bg-white dark:bg-transparent p-6 dark:p-0 rounded-2xl border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none transition-all duration-500 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800">
           <FiltersContent
             globalMinPrice={globalMinPrice}
             globalMaxPrice={globalMaxPrice}
