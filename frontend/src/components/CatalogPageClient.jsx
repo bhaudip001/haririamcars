@@ -120,8 +120,7 @@ const FiltersContent = ({
   setSelectedFuels,
 }) => {
   const exactMin = Number(globalMinPrice) || 0;
-  // If globalMaxPrice is very low, make sure the slider at least goes to 50L (5000000) to allow flexible sliding just like sadguru
-  const exactMax = Math.max(Number(globalMaxPrice) || 5000000, 5000000); 
+  const exactMax = Number(globalMaxPrice) || 5000000; 
   
   // Mathematically snap slider bounds beyond actual max so users can scale properly
   const minBound = Math.floor(exactMin / 10000) * 10000;
@@ -130,6 +129,16 @@ const FiltersContent = ({
   // Use filter's budget or fallback to overall bounds
   const currentMin = minPrice !== '' && minPrice !== null ? Number(minPrice) : minBound;
   const currentMax = maxPrice !== '' && maxPrice !== null ? Number(maxPrice) : maxBound;
+
+  // Local state for ultra-smooth native scrolling without debounce lag
+  const [localMin, setLocalMin] = useState(currentMin);
+  const [localMax, setLocalMax] = useState(currentMax);
+
+  // Sync local state when external state changes (e.g. clear filters)
+  useEffect(() => {
+    setLocalMin(currentMin);
+    setLocalMax(currentMax);
+  }, [currentMin, currentMax]);
 
   // Format currency
   const formatINR = (val) => {
@@ -145,8 +154,13 @@ const FiltersContent = ({
     return Math.round(((value - minBound) / (maxBound - minBound)) * 100);
   };
 
-  const currentMinPercent = getPercent(currentMin);
-  const currentMaxPercent = getPercent(currentMax);
+  const localMinPercent = getPercent(localMin);
+  const localMaxPercent = getPercent(localMax);
+
+  const handleDragEnd = () => {
+    setMinPrice(localMin);
+    setMaxPrice(localMax);
+  };
 
   const clearFilters = () => {
     setSelectedMakes([]);
@@ -175,9 +189,9 @@ const FiltersContent = ({
         </div>
 
         <div className="flex items-center justify-between font-bold text-[15px] text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 px-4 py-2.5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm">
-          <span>{formatINR(currentMin)}</span>
+          <span>{formatINR(localMin)}</span>
           <span className="text-gray-400">-</span>
-          <span>{formatINR(currentMax)}</span>
+          <span>{formatINR(localMax)}</span>
         </div>
 
         <div className="relative w-full h-8 flex items-center group mt-2">
@@ -186,10 +200,10 @@ const FiltersContent = ({
 
           {/* Track Active Highlight */}
           <div
-            className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-100"
+            className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-75"
             style={{
-              left: `${currentMinPercent}%`,
-              width: `${currentMaxPercent - currentMinPercent}%`
+              left: `${localMinPercent}%`,
+              width: `${localMaxPercent - localMinPercent}%`
             }}
           ></div>
 
@@ -198,12 +212,14 @@ const FiltersContent = ({
             type="range"
             min={minBound}
             max={maxBound}
-            value={currentMin}
+            value={localMin}
             step={10000}
             onChange={(e) => {
-              const value = Math.min(Number(e.target.value), currentMax - 10000);
-              setMinPrice(value);
+              const value = Math.min(Number(e.target.value), localMax - 10000);
+              setLocalMin(value);
             }}
+            onMouseUp={handleDragEnd}
+            onTouchEnd={handleDragEnd}
             className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
           />
 
@@ -212,12 +228,14 @@ const FiltersContent = ({
             type="range"
             min={minBound}
             max={maxBound}
-            value={currentMax}
+            value={localMax}
             step={10000}
             onChange={(e) => {
-              const value = Math.max(Number(e.target.value), currentMin + 10000);
-              setMaxPrice(value);
+              const value = Math.max(Number(e.target.value), localMin + 10000);
+              setLocalMax(value);
             }}
+            onMouseUp={handleDragEnd}
+            onTouchEnd={handleDragEnd}
             className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
           />
         </div>
