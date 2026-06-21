@@ -477,14 +477,6 @@ const FiltersContent = ({
                 <h1 className="text-3xl md:text-4xl font-bold text-black dark:text-white leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Premium Inventory</h1>
                 <p className="text-purple-400 mt-2 font-medium">Showing {total} available vehicles</p>
               </div>
-              {/* Mobile Filter Button */}
-              <button
-                aria-label="Open Filters"
-                onClick={() => setIsMobileFilterOpen(true)}
-                className="md:hidden flex items-center justify-center w-12 h-12 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/20 rounded-xl active:bg-gray-100 dark:active:bg-white/20 transition-colors shadow-sm dark:shadow-none"
-              >
-                <IconFilter className="text-black dark:text-white transition-colors" size={24} />
-              </button>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
@@ -591,6 +583,17 @@ const FiltersContent = ({
               </button>
             </div>
           )}
+        </div>
+
+        {/* Mobile Floating Action Button (FAB) for Filters */}
+        <div className="md:hidden fixed bottom-6 left-0 right-0 z-30 px-4 pointer-events-none flex justify-center">
+          <button
+            onClick={() => setIsMobileFilterOpen(true)}
+            className="pointer-events-auto w-full max-w-[200px] h-12 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-full flex items-center justify-center gap-2 shadow-[0_8px_30px_rgb(147,51,234,0.4)] active:scale-95 transition-all duration-300"
+          >
+            <IconFilter size={18} />
+            Advanced Filters
+          </button>
         </div>
       </main>
     </div>
