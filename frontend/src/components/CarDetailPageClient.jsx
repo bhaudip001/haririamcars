@@ -480,7 +480,6 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
-            onClick={() => setIsLightboxOpen(false)}
           >
             {/* Prominent Back/Close Button */}
             <button
