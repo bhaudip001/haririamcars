@@ -469,7 +469,19 @@ const FiltersContent = ({
         </AnimatePresence>
 
         {/* Catalog Grid Area */}
-        <div className="flex-grow flex flex-col space-y-6">
+        <div className="flex-grow flex flex-col space-y-6 relative">
+          
+          {/* Mobile Filter Button - Sticky like Sadguru */}
+          <div className="md:hidden sticky top-[72px] z-40 w-full">
+            <button
+              onClick={() => setIsMobileFilterOpen(true)}
+              className="w-full flex items-center justify-center gap-2 bg-white/95 dark:bg-[#12121f]/95 backdrop-blur-md text-purple-700 dark:text-purple-400 border border-purple-100 dark:border-purple-500/30 py-3.5 rounded-2xl font-bold shadow-xl shadow-purple-900/5 dark:shadow-black/50 active:scale-[0.98] transition-all"
+            >
+              <IconFilter size={20} />
+              Advanced Filters
+            </button>
+          </div>
+
           {/* Results Header */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-6 gap-4">
             <div className="w-full flex items-center justify-between lg:w-auto lg:block">
@@ -583,17 +595,6 @@ const FiltersContent = ({
               </button>
             </div>
           )}
-        </div>
-
-        {/* Mobile Floating Action Button (FAB) for Filters */}
-        <div className="md:hidden fixed bottom-6 left-0 right-0 z-30 px-4 pointer-events-none flex justify-center">
-          <button
-            onClick={() => setIsMobileFilterOpen(true)}
-            className="pointer-events-auto w-full max-w-[200px] h-12 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-full flex items-center justify-center gap-2 shadow-[0_8px_30px_rgb(147,51,234,0.4)] active:scale-95 transition-all duration-300"
-          >
-            <IconFilter size={18} />
-            Advanced Filters
-          </button>
         </div>
       </main>
     </div>
