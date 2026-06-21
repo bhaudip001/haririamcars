@@ -31,6 +31,7 @@ function CatalogContent() {
   // Data State
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -49,8 +50,9 @@ function CatalogContent() {
   }, []);
 
   // Fetch Cars
-  const fetchCars = async (pageNum = 1, append = false) => {
+  const fetchCars = async (pageNum = 1, append = false, signal = undefined) => {
     setLoading(true);
+    setError(null);
     try {
       const params = new URLSearchParams();
       params.append('page', pageNum);
@@ -68,10 +70,13 @@ function CatalogContent() {
       // Update URL silently
       router.replace(`/catalog?${params.toString()}`, { scroll: false });
 
-      const res = await api.get(`/cars?${params.toString()}`);
+      const res = await api.get(`/cars?${params.toString()}`, { signal });
       if (res.data) {
         if (append) {
-          setCars(prev => [...prev, ...(res.data.cars || [])]);
+          setCars(prev => {
+            const newCars = [...prev, ...(res.data.cars || [])];
+            return newCars.slice(0, 500); // Prevent frontend DOM overload
+          });
         } else {
           setCars(res.data.cars || []);
         }
@@ -79,7 +84,10 @@ function CatalogContent() {
         setHasMore(res.data.cars?.length === 12);
       }
     } catch (err) {
-      console.error(err);
+      if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
+        console.error(err);
+        setError("Unable to connect to the server. Please try again later.");
+      }
     } finally {
       setLoading(false);
     }
@@ -87,14 +95,29 @@ function CatalogContent() {
 
   // Re-fetch on filter changes
   useEffect(() => {
+    const controller = new AbortController();
     const debounceTimer = setTimeout(() => {
       setPage(1);
-      fetchCars(1, false);
+      fetchCars(1, false, controller.signal);
     }, 500);
 
-    return () => clearTimeout(debounceTimer);
+    return () => {
+      clearTimeout(debounceTimer);
+      controller.abort();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMakes, selectedFuels, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam]);
+
+  // Sync state with URL if browser back/forward buttons are used
+  useEffect(() => {
+    setSelectedMakes(searchParams.get('make') ? searchParams.get('make').split(',') : []);
+    setSelectedFuels(searchParams.get('fuelType') ? searchParams.get('fuelType').split(',') : []);
+    setSelectedBodyTypes(searchParams.get('bodyType') ? searchParams.get('bodyType').split(',') : []);
+    setMinPrice(searchParams.get('minPrice') || '');
+    setMaxPrice(searchParams.get('maxPrice') || '');
+    setSearchQuery(searchParams.get('search') || '');
+    setSortParam(searchParams.get('sort') || '-createdAt');
+  }, [searchParams]);
 
   const handleLoadMore = () => {
     const nextPage = page + 1;
@@ -127,8 +150,10 @@ const FiltersContent = ({
   const maxBound = Math.ceil(exactMax / 10000) * 10000;
 
   // Use filter's budget or fallback to overall bounds
-  const currentMin = minPrice !== '' && minPrice !== null ? Number(minPrice) : minBound;
-  const currentMax = maxPrice !== '' && maxPrice !== null ? Number(maxPrice) : maxBound;
+  const parsedMin = Number(minPrice);
+  const currentMin = !isNaN(parsedMin) && minPrice !== '' && minPrice !== null ? parsedMin : minBound;
+  const parsedMax = Number(maxPrice);
+  const currentMax = !isNaN(parsedMax) && maxPrice !== '' && maxPrice !== null ? parsedMax : maxBound;
 
   // Local state for ultra-smooth native scrolling without debounce lag
   const [localMin, setLocalMin] = useState(currentMin);
@@ -210,6 +235,7 @@ const FiltersContent = ({
           {/* Min Slider */}
           <input
             type="range"
+            aria-label="Minimum Budget"
             min={minBound}
             max={maxBound}
             value={localMin}
@@ -226,6 +252,7 @@ const FiltersContent = ({
           {/* Max Slider */}
           <input
             type="range"
+            aria-label="Maximum Budget"
             min={minBound}
             max={maxBound}
             value={localMax}
@@ -248,6 +275,7 @@ const FiltersContent = ({
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedMakes([])}
+              aria-pressed={selectedMakes.length === 0}
               className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
             >
               All Brands
@@ -256,6 +284,7 @@ const FiltersContent = ({
               <button
                 key={make}
                 onClick={() => toggleArrayItem(setSelectedMakes, make, selectedMakes)}
+                aria-pressed={selectedMakes.includes(make)}
                 className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.includes(make) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
               >
                 {make}
@@ -272,6 +301,7 @@ const FiltersContent = ({
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedBodyTypes([])}
+              aria-pressed={selectedBodyTypes.length === 0}
               className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
             >
               All Types
@@ -280,6 +310,7 @@ const FiltersContent = ({
               <button
                 key={type}
                 onClick={() => toggleArrayItem(setSelectedBodyTypes, type, selectedBodyTypes)}
+                aria-pressed={selectedBodyTypes.includes(type)}
                 className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.includes(type) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
               >
                 {type}
@@ -295,6 +326,7 @@ const FiltersContent = ({
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setSelectedFuels([])}
+            aria-pressed={selectedFuels.length === 0}
             className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
           >
             All
@@ -303,6 +335,7 @@ const FiltersContent = ({
             <button
               key={fuel}
               onClick={() => toggleArrayItem(setSelectedFuels, fuel, selectedFuels)}
+              aria-pressed={selectedFuels.includes(fuel)}
               className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.includes(fuel) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
             >
               {fuel}
@@ -385,7 +418,7 @@ const FiltersContent = ({
                 animate={{ y: 0 }}
                 exit={{ y: "100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="md:hidden fixed inset-x-0 bottom-0 z-50 max-h-[85vh] bg-white/95 dark:bg-[#0f0f1e]/95 backdrop-blur-xl rounded-t-3xl border-t border-gray-200 dark:border-white/20 shadow-2xl flex flex-col transition-colors duration-500"
+                className="md:hidden fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] bg-white/95 dark:bg-[#0f0f1e]/95 backdrop-blur-xl rounded-t-3xl border-t border-gray-200 dark:border-white/20 shadow-2xl flex flex-col transition-colors duration-500"
               >
                 <div className="flex justify-center pt-3 pb-2">
                   <div className="w-12 h-1.5 bg-gray-300 dark:bg-white/20 rounded-full transition-colors" />
@@ -509,22 +542,40 @@ const FiltersContent = ({
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl transition-colors shadow-sm dark:shadow-none">
-              <IconSearch size={48} className="text-gray-400 dark:text-gray-500 mb-4 transition-colors" />
-              <h3 className="text-xl font-bold text-black dark:text-white mb-2 transition-colors">No vehicles found</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-center max-w-md transition-colors">Try adjusting your filters or search criteria to find what you're looking for.</p>
-              <button
-                onClick={() => {
-                  setSelectedMake('');
-                  setSelectedFuel('');
-                  setSelectedBodyType('');
-                  setMinPrice('');
-                  setMaxPrice('');
-                  setSearchQuery('');
-                }}
-                className="mt-6 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-bold transition-colors"
-              >
-                Clear All Filters
-              </button>
+              {error ? (
+                <>
+                  <div className="w-12 h-12 bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 rounded-full flex items-center justify-center mb-4 shadow-sm">
+                    <IconX size={24} stroke={2.5} />
+                  </div>
+                  <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2 transition-colors">Connection Error</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-6">{error}</p>
+                  <button
+                    onClick={() => fetchCars(1, false)}
+                    className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold transition-colors"
+                  >
+                    Try Again
+                  </button>
+                </>
+              ) : (
+                <>
+                  <IconSearch size={48} className="text-gray-400 dark:text-gray-500 mb-4 transition-colors" />
+                  <h3 className="text-xl font-bold text-black dark:text-white mb-2 transition-colors">No vehicles found</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-center max-w-md transition-colors">Try adjusting your filters or search criteria to find what you're looking for.</p>
+                  <button
+                    onClick={() => {
+                      setSelectedMakes([]);
+                      setSelectedFuels([]);
+                      setSelectedBodyTypes([]);
+                      setMinPrice('');
+                      setMaxPrice('');
+                      setSearchQuery('');
+                    }}
+                    className="mt-6 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-bold transition-colors"
+                  >
+                    Clear All Filters
+                  </button>
+                </>
+              )}
             </div>
           )}
 
