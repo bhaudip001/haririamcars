@@ -103,14 +103,33 @@ function CatalogContent() {
   };
 
   const FiltersContent = () => {
-    const MIN = Math.floor((globalMinPrice || 100000) / 10000) * 10000;
-    const MAX = Math.ceil((globalMaxPrice || 10000000) / 10000) * 10000;
-    const formatPrice = (val) => val ? Number(val).toLocaleString('en-IN') : "";
+    const exactMin = Number(globalMinPrice) || 0;
+    const exactMax = Number(globalMaxPrice) || 5000000;
+    
+    // Mathematically snap slider bounds beyond actual max so users can scale properly
+    const minBound = Math.floor(exactMin / 10000) * 10000;
+    const maxBound = Math.ceil(exactMax / 10000) * 10000;
 
-    // Safety check to prevent divide by zero
-    const range = MAX - MIN === 0 ? 1 : MAX - MIN;
-    const minPercent = minPrice ? ((minPrice - MIN) / range) * 100 : 0;
-    const maxPercent = maxPrice ? ((maxPrice - MIN) / range) * 100 : 100;
+    // Use filter's budget or fallback to overall bounds
+    const currentMin = minPrice !== '' && minPrice !== null ? Number(minPrice) : minBound;
+    const currentMax = maxPrice !== '' && maxPrice !== null ? Number(maxPrice) : maxBound;
+
+    // Format currency
+    const formatINR = (val) => {
+      return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0
+      }).format(val);
+    };
+
+    const getPercent = (value) => {
+      if (maxBound === minBound) return 0;
+      return Math.round(((value - minBound) / (maxBound - minBound)) * 100);
+    };
+
+    const currentMinPercent = getPercent(currentMin);
+    const currentMaxPercent = getPercent(currentMax);
 
     const clearFilters = () => {
       setSelectedMakes([]);
@@ -137,9 +156,9 @@ function CatalogContent() {
           <h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-wider uppercase mb-3">Budget</h4>
 
           <div className="bg-gray-50 dark:bg-white/5 rounded-2xl py-2.5 px-3 flex justify-center items-center gap-2 mb-6 border border-gray-100 dark:border-white/5 shadow-inner whitespace-nowrap">
-            <span className="text-[13px] font-bold text-gray-900 dark:text-white">₹{formatPrice(minPrice || MIN)}</span>
+            <span className="text-[13px] font-bold text-gray-900 dark:text-white">{formatINR(currentMin)}</span>
             <span className="text-gray-400 text-xs">-</span>
-            <span className="text-[13px] font-bold text-gray-900 dark:text-white">₹{formatPrice(maxPrice || MAX)}</span>
+            <span className="text-[13px] font-bold text-gray-900 dark:text-white">{formatINR(currentMax)}</span>
           </div>
 
           <div className="relative w-full h-8 flex items-center group mt-2">
@@ -149,29 +168,36 @@ function CatalogContent() {
             {/* Track Active Highlight */}
             <div
               className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-100"
-              style={{ left: `${minPercent}%`, width: `${maxPercent - minPercent}%` }}
+              style={{
+                left: `${currentMinPercent}%`,
+                width: `${currentMaxPercent - currentMinPercent}%`
+              }}
             ></div>
+
             {/* Min Slider */}
             <input
               type="range"
-              min={MIN} max={MAX} step={10000}
-              value={minPrice || MIN}
+              min={minBound}
+              max={maxBound}
+              value={currentMin}
+              step={10000}
               onChange={(e) => {
-                const max = Number(maxPrice || MAX);
-                const val = Math.min(Number(e.target.value), max - 10000);
-                setMinPrice(val === MIN ? "" : val);
+                const value = Math.min(Number(e.target.value), currentMax - 10000);
+                setMinPrice(value);
               }}
               className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
             />
+
             {/* Max Slider */}
             <input
               type="range"
-              min={MIN} max={MAX} step={10000}
-              value={maxPrice || MAX}
+              min={minBound}
+              max={maxBound}
+              value={currentMax}
+              step={10000}
               onChange={(e) => {
-                const min = Number(minPrice || MIN);
-                const val = Math.max(Number(e.target.value), min + 10000);
-                setMaxPrice(val === MAX ? "" : val);
+                const value = Math.max(Number(e.target.value), currentMin + 10000);
+                setMaxPrice(value);
               }}
               className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
             />
