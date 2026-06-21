@@ -119,11 +119,12 @@ const FiltersContent = ({
   selectedFuels,
   setSelectedFuels,
 }) => {
-  // Force a wide scale for the slider so it feels flexible
-  // Even if all cars are between 4L and 7L, the slider will show 0 to 1Cr
-  const exactMax = Math.max(Number(globalMaxPrice) || 10000000, 10000000); 
+  const exactMin = Number(globalMinPrice) || 0;
+  // If globalMaxPrice is very low, make sure the slider at least goes to 50L (5000000) to allow flexible sliding just like sadguru
+  const exactMax = Math.max(Number(globalMaxPrice) || 5000000, 5000000); 
   
-  const minBound = 0;
+  // Mathematically snap slider bounds beyond actual max so users can scale properly
+  const minBound = Math.floor(exactMin / 10000) * 10000;
   const maxBound = Math.ceil(exactMax / 10000) * 10000;
 
   // Use filter's budget or fallback to overall bounds
