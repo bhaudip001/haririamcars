@@ -102,180 +102,198 @@ function CatalogContent() {
     fetchCars(nextPage, true);
   };
 
-  const FiltersContent = () => {
-    const exactMin = Number(globalMinPrice) || 0;
-    const exactMax = Number(globalMaxPrice) || 5000000;
-    
-    // Mathematically snap slider bounds beyond actual max so users can scale properly
-    const minBound = Math.floor(exactMin / 10000) * 10000;
-    const maxBound = Math.ceil(exactMax / 10000) * 10000;
+const FiltersContent = ({
+  globalMinPrice,
+  globalMaxPrice,
+  minPrice,
+  setMinPrice,
+  maxPrice,
+  setMaxPrice,
+  makes,
+  selectedMakes,
+  setSelectedMakes,
+  bodyTypes,
+  selectedBodyTypes,
+  setSelectedBodyTypes,
+  fuelTypes,
+  selectedFuels,
+  setSelectedFuels,
+}) => {
+  const exactMin = Number(globalMinPrice) || 0;
+  const exactMax = Number(globalMaxPrice) || 5000000;
+  
+  // Mathematically snap slider bounds beyond actual max so users can scale properly
+  const minBound = Math.floor(exactMin / 10000) * 10000;
+  const maxBound = Math.ceil(exactMax / 10000) * 10000;
 
-    // Use filter's budget or fallback to overall bounds
-    const currentMin = minPrice !== '' && minPrice !== null ? Number(minPrice) : minBound;
-    const currentMax = maxPrice !== '' && maxPrice !== null ? Number(maxPrice) : maxBound;
+  // Use filter's budget or fallback to overall bounds
+  const currentMin = minPrice !== '' && minPrice !== null ? Number(minPrice) : minBound;
+  const currentMax = maxPrice !== '' && maxPrice !== null ? Number(maxPrice) : maxBound;
 
-    // Format currency
-    const formatINR = (val) => {
-      return new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: 'INR',
-        maximumFractionDigits: 0
-      }).format(val);
-    };
+  // Format currency
+  const formatINR = (val) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    }).format(val);
+  };
 
-    const getPercent = (value) => {
-      if (maxBound === minBound) return 0;
-      return Math.round(((value - minBound) / (maxBound - minBound)) * 100);
-    };
+  const getPercent = (value) => {
+    if (maxBound === minBound) return 0;
+    return Math.round(((value - minBound) / (maxBound - minBound)) * 100);
+  };
 
-    const currentMinPercent = getPercent(currentMin);
-    const currentMaxPercent = getPercent(currentMax);
+  const currentMinPercent = getPercent(currentMin);
+  const currentMaxPercent = getPercent(currentMax);
 
-    const clearFilters = () => {
-      setSelectedMakes([]);
-      setSelectedBodyTypes([]);
-      setSelectedFuels([]);
-      setMinPrice('');
-      setMaxPrice('');
-    };
+  const clearFilters = () => {
+    setSelectedMakes([]);
+    setSelectedBodyTypes([]);
+    setSelectedFuels([]);
+    setMinPrice('');
+    setMaxPrice('');
+  };
 
-    const toggleArrayItem = (setter, item, arr) => {
-      if (arr.includes(item)) setter(arr.filter(i => i !== item));
-      else setter([...arr, item]);
-    };
+  const toggleArrayItem = (setter, item, arr) => {
+    if (arr.includes(item)) setter(arr.filter(i => i !== item));
+    else setter([...arr, item]);
+  };
 
-    return (
-      <div className="space-y-8 pb-20 md:pb-0 transition-colors duration-500">
-        <div className="hidden md:flex justify-between items-center border-b border-gray-200 dark:border-white/10 pb-4">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Advanced Filters</h3>
-          <button onClick={clearFilters} className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors whitespace-nowrap">Clear All</button>
+  return (
+    <div className="space-y-8 pb-20 md:pb-0 transition-colors duration-500">
+      <div className="hidden md:flex justify-between items-center border-b border-gray-200 dark:border-white/10 pb-4">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Advanced Filters</h3>
+        <button onClick={clearFilters} className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors whitespace-nowrap">Clear All</button>
+      </div>
+
+      {/* Price Range / BUDGET */}
+      <div className="flex flex-col gap-5 pt-2 md:pt-0 pb-2 transition-colors">
+        <div className="flex justify-between items-center">
+          <h3 className="font-bold text-sm text-gray-500 dark:text-gray-400 tracking-widest uppercase">Budget</h3>
         </div>
 
-        {/* Price Range / BUDGET */}
-        <div className="pt-2 md:pt-0 pb-2 transition-colors">
-          <h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-wider uppercase mb-3">Budget</h4>
-
-          <div className="bg-gray-50 dark:bg-white/5 rounded-2xl py-2.5 px-3 flex justify-center items-center gap-2 mb-6 border border-gray-100 dark:border-white/5 shadow-inner whitespace-nowrap">
-            <span className="text-[13px] font-bold text-gray-900 dark:text-white">{formatINR(currentMin)}</span>
-            <span className="text-gray-400 text-xs">-</span>
-            <span className="text-[13px] font-bold text-gray-900 dark:text-white">{formatINR(currentMax)}</span>
-          </div>
-
-          <div className="relative w-full h-8 flex items-center group mt-2">
-            {/* Track Background */}
-            <div className="absolute w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
-
-            {/* Track Active Highlight */}
-            <div
-              className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-100"
-              style={{
-                left: `${currentMinPercent}%`,
-                width: `${currentMaxPercent - currentMinPercent}%`
-              }}
-            ></div>
-
-            {/* Min Slider */}
-            <input
-              type="range"
-              min={minBound}
-              max={maxBound}
-              value={currentMin}
-              step={10000}
-              onChange={(e) => {
-                const value = Math.min(Number(e.target.value), currentMax - 10000);
-                setMinPrice(value);
-              }}
-              className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
-            />
-
-            {/* Max Slider */}
-            <input
-              type="range"
-              min={minBound}
-              max={maxBound}
-              value={currentMax}
-              step={10000}
-              onChange={(e) => {
-                const value = Math.max(Number(e.target.value), currentMin + 10000);
-                setMaxPrice(value);
-              }}
-              className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
-            />
-          </div>
+        <div className="flex items-center justify-between font-bold text-[15px] text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 px-4 py-2.5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm">
+          <span>{formatINR(currentMin)}</span>
+          <span className="text-gray-400">-</span>
+          <span>{formatINR(currentMax)}</span>
         </div>
 
-        {/* Brand Filter */}
-        {makes.length > 0 && (
-          <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-            <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Brand</h4>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setSelectedMakes([])}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-              >
-                All Brands
-              </button>
-              {makes.map(make => (
-                <button
-                  key={make}
-                  onClick={() => toggleArrayItem(setSelectedMakes, make, selectedMakes)}
-                  className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.includes(make) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-                >
-                  {make}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+        <div className="relative w-full h-8 flex items-center group mt-2">
+          {/* Track Background */}
+          <div className="absolute w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
 
-        {/* Body Type Filter */}
-        {bodyTypes.length > 0 && (
-          <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-            <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Body Type</h4>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setSelectedBodyTypes([])}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-              >
-                All Types
-              </button>
-              {bodyTypes.map(type => (
-                <button
-                  key={type}
-                  onClick={() => toggleArrayItem(setSelectedBodyTypes, type, selectedBodyTypes)}
-                  className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.includes(type) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+          {/* Track Active Highlight */}
+          <div
+            className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-100"
+            style={{
+              left: `${currentMinPercent}%`,
+              width: `${currentMaxPercent - currentMinPercent}%`
+            }}
+          ></div>
 
-        {/* Fuel Type */}
+          {/* Min Slider */}
+          <input
+            type="range"
+            min={minBound}
+            max={maxBound}
+            value={currentMin}
+            step={10000}
+            onChange={(e) => {
+              const value = Math.min(Number(e.target.value), currentMax - 10000);
+              setMinPrice(value);
+            }}
+            className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
+          />
+
+          {/* Max Slider */}
+          <input
+            type="range"
+            min={minBound}
+            max={maxBound}
+            value={currentMax}
+            step={10000}
+            onChange={(e) => {
+              const value = Math.max(Number(e.target.value), currentMin + 10000);
+              setMaxPrice(value);
+            }}
+            className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
+          />
+        </div>
+      </div>
+
+      {/* Brand Filter */}
+      {makes.length > 0 && (
         <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Fuel Type</h4>
+          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Brand</h4>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setSelectedFuels([])}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+              onClick={() => setSelectedMakes([])}
+              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
             >
-              All
+              All Brands
             </button>
-            {fuelTypes.map(fuel => (
+            {makes.map(make => (
               <button
-                key={fuel}
-                onClick={() => toggleArrayItem(setSelectedFuels, fuel, selectedFuels)}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.includes(fuel) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+                key={make}
+                onClick={() => toggleArrayItem(setSelectedMakes, make, selectedMakes)}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.includes(make) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
               >
-                {fuel}
+                {make}
               </button>
             ))}
           </div>
         </div>
+      )}
+
+      {/* Body Type Filter */}
+      {bodyTypes.length > 0 && (
+        <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Body Type</h4>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedBodyTypes([])}
+              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+            >
+              All Types
+            </button>
+            {bodyTypes.map(type => (
+              <button
+                key={type}
+                onClick={() => toggleArrayItem(setSelectedBodyTypes, type, selectedBodyTypes)}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.includes(type) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Fuel Type */}
+      <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+        <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Fuel Type</h4>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedFuels([])}
+            className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+          >
+            All
+          </button>
+          {fuelTypes.map(fuel => (
+            <button
+              key={fuel}
+              onClick={() => toggleArrayItem(setSelectedFuels, fuel, selectedFuels)}
+              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.includes(fuel) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+            >
+              {fuel}
+            </button>
+          ))}
+        </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
   return (
     <div className="min-h-screen bg-[#f4f4f8] dark:bg-transparent relative transition-colors duration-500 w-full flex flex-col">
@@ -313,7 +331,23 @@ function CatalogContent() {
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 flex flex-col md:flex-row gap-8 relative z-10">
         {/* Desktop Sidebar */}
         <aside className="hidden md:block w-64 flex-shrink-0 sticky top-24 self-start bg-white dark:bg-transparent p-6 dark:p-0 rounded-2xl border border-gray-200 dark:border-transparent shadow-sm dark:shadow-none transition-all duration-500">
-          <FiltersContent />
+          <FiltersContent
+            globalMinPrice={globalMinPrice}
+            globalMaxPrice={globalMaxPrice}
+            minPrice={minPrice}
+            setMinPrice={setMinPrice}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+            makes={makes}
+            selectedMakes={selectedMakes}
+            setSelectedMakes={setSelectedMakes}
+            bodyTypes={bodyTypes}
+            selectedBodyTypes={selectedBodyTypes}
+            setSelectedBodyTypes={setSelectedBodyTypes}
+            fuelTypes={fuelTypes}
+            selectedFuels={selectedFuels}
+            setSelectedFuels={setSelectedFuels}
+          />
         </aside>
 
         {/* Mobile Bottom Sheet Filters */}
@@ -350,7 +384,23 @@ function CatalogContent() {
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 py-6">
-                  <FiltersContent />
+                  <FiltersContent
+                    globalMinPrice={globalMinPrice}
+                    globalMaxPrice={globalMaxPrice}
+                    minPrice={minPrice}
+                    setMinPrice={setMinPrice}
+                    maxPrice={maxPrice}
+                    setMaxPrice={setMaxPrice}
+                    makes={makes}
+                    selectedMakes={selectedMakes}
+                    setSelectedMakes={setSelectedMakes}
+                    bodyTypes={bodyTypes}
+                    selectedBodyTypes={selectedBodyTypes}
+                    setSelectedBodyTypes={setSelectedBodyTypes}
+                    fuelTypes={fuelTypes}
+                    selectedFuels={selectedFuels}
+                    setSelectedFuels={setSelectedFuels}
+                  />
                 </div>
 
                 <div className="p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f0f1e] sticky bottom-0 transition-colors duration-500">
