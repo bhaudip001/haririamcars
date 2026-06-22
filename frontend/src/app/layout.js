@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from 'react-hot-toast';
 import PwaInstallPrompt from '@/components/client/PwaInstallPrompt';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import ClientTracker from '@/components/ClientTracker';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -253,6 +254,7 @@ export default function RootLayout({ children }) {
             }}
           />
           <PwaInstallPrompt />
+          <ClientTracker />
           <AppLayoutWrapper>{children}</AppLayoutWrapper>
         </ThemeProvider>
       </body>

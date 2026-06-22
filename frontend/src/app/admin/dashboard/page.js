@@ -1,12 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalLink, Trash2, Home, Edit, Eye } from 'lucide-react';
+import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalLink, Trash2, Home, Edit, Eye, Activity } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({ cars: 0, messages: 0, unread: 0, sellRequests: 0, customers: 0 });
+  const [isMobile, setIsMobile] = useState(true);
+
+  const [trafficData, setTrafficData] = useState([]);
   const [featuredCars, setFeaturedCars] = useState([]);
   const [featuredTotal, setFeaturedTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -18,14 +22,19 @@ export default function AdminDashboard() {
     else if (hour < 18) setGreeting('Good Afternoon');
     else setGreeting('Good Evening');
 
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     const fetch = async () => {
       try {
-        const [carsRes, msgRes, sellRes, custRes, featuredRes] = await Promise.allSettled([
+        const [carsRes, msgRes, sellRes, custRes, featuredRes, analyticsRes] = await Promise.allSettled([
           api.get('/cars?limit=1'), // Just for total count
           api.get('/messages?limit=1'),
           api.get('/sell-requests?limit=1'),
           api.get('/happy-customers/all'),
-          api.get('/cars?limit=5&featured=true')
+          api.get('/cars?limit=5&featured=true'),
+          api.get('/analytics/summary')
         ]);
 
         setStats({
@@ -39,10 +48,15 @@ export default function AdminDashboard() {
           setFeaturedCars(featuredRes.value.data.cars || []);
           setFeaturedTotal(featuredRes.value.data.total || 0);
         }
+        if (analyticsRes.status === 'fulfilled') {
+          setTrafficData(analyticsRes.value.data || []);
+        }
       } catch {}
       setLoading(false);
     };
     fetch();
+
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleRemoveFromFeatured = async (id) => {
@@ -98,21 +112,65 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {cards.map((card, idx) => (
-          <div key={idx} className={`relative overflow-hidden bg-[#12121a] border border-white/5 rounded-2xl p-5 hover:-translate-y-1 transition-all duration-300 ${card.glow}`}>
-            <div className="flex items-start justify-between mb-3">
-              <div className={`p-2.5 rounded-xl ${card.bg}`}>
+          <div key={idx} className={`relative overflow-hidden bg-[#12121a] border border-white/5 rounded-2xl p-4 sm:p-5 hover:-translate-y-1 transition-all duration-300 ${card.glow}`}>
+            <div className="flex items-start justify-between mb-2 sm:mb-3">
+              <div className={`p-2 sm:p-2.5 rounded-xl ${card.bg}`}>
                 <card.icon size={20} className={card.color} />
               </div>
             </div>
             <div>
-              <p className="text-2xl font-bold text-white tracking-tight">{loading ? '—' : card.value}</p>
-              <h3 className="text-xs font-semibold text-gray-300 mt-1">{card.label}</h3>
-              <p className="text-[10px] text-gray-500 mt-0.5">{card.subtext}</p>
+              <p className="text-xl sm:text-2xl font-bold text-white tracking-tight">{loading ? '—' : card.value}</p>
+              <h3 className="text-[11px] sm:text-xs font-semibold text-gray-300 mt-1 truncate">{card.label}</h3>
+              <p className="text-[9px] sm:text-[10px] text-gray-500 mt-0.5 truncate">{card.subtext}</p>
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Traffic Graph Section */}
+      <div className="bg-[#12121a] border border-white/5 rounded-2xl overflow-hidden shadow-xl p-4 sm:p-5">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <h2 className="text-base font-bold text-white flex items-center gap-2">
+              <Activity size={18} className="text-blue-400" />
+              Website Traffic Growth
+            </h2>
+            <p className="text-xs text-gray-400 mt-0.5">Daily visitor analytics over the last {isMobile ? '7' : '30'} days.</p>
+          </div>
+          <div className="flex items-center gap-4 text-xs font-medium">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-blue-500/80"></div>
+              <span className="text-gray-300">Visitors</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full h-[250px] sm:h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              data={isMobile ? trafficData.slice(-7) : trafficData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="colorPageViews" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                </linearGradient>
+
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+              <XAxis dataKey="name" stroke="rgba(255,255,255,0.2)" fontSize={12} tickLine={false} axisLine={false} />
+              <YAxis stroke="rgba(255,255,255,0.2)" fontSize={12} tickLine={false} axisLine={false} />
+              <Tooltip 
+                contentStyle={{ backgroundColor: '#1a1a24', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff' }}
+                itemStyle={{ color: '#fff', fontSize: '12px' }}
+              />
+              <Area type="monotone" dataKey="pageViews" name="Visitors" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorPageViews)" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
       {/* Featured Inventory List */}

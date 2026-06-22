@@ -36,6 +36,7 @@ import promoBannerRoutes from './routes/promoBanner.routes.js';
 import siteSettingRoutes from './routes/siteSetting.routes.js';
 import uploadRoutes from './routes/upload.routes.js';
 import brandRoutes from './routes/brand.routes.js';
+import analyticsRoutes from './routes/analytics.routes.js';
 
 // ── Initialize Express ──
 const app = express();
@@ -240,6 +241,7 @@ app.use('/api/promo-banners', promoBannerRoutes);
 app.use('/api/site-settings', siteSettingRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/brands', brandRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // ── 404 Handler ──
 app.use((req, res) => {
