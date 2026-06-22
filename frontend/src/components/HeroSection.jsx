@@ -19,6 +19,18 @@ export default function HeroSection() {
   const [availableModels, setAvailableModels] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Lock body scroll when mobile search is open
+  useEffect(() => {
+    if (isMobileSearchOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileSearchOpen]);
+
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
@@ -355,7 +367,7 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="pt-6 pb-8 px-6 border-t border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20">
+            <div className="pt-6 pb-12 md:pb-8 px-6 border-t border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 1rem))' }}>
               <button
                 onClick={() => {
                   setIsMobileSearchOpen(false);

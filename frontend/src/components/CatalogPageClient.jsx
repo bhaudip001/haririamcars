@@ -59,8 +59,8 @@ function CatalogContent() {
       if (selectedMakes.length > 0) params.append('make', selectedMakes.join(','));
       if (selectedFuels.length > 0) params.append('fuelType', selectedFuels.join(','));
       if (selectedBodyTypes.length > 0) params.append('bodyType', selectedBodyTypes.join(','));
-      if (minPrice) params.append('minPrice', minPrice);
-      if (maxPrice) params.append('maxPrice', maxPrice);
+      if (minPrice !== '' && minPrice !== null) params.append('minPrice', minPrice);
+      if (maxPrice !== '' && maxPrice !== null) params.append('maxPrice', maxPrice);
       if (searchQuery) params.append('search', searchQuery);
       if (sortParam) params.append('sort', sortParam);
 
@@ -130,6 +130,18 @@ function CatalogContent() {
     setSearchQuery(searchParams.get('search') || '');
     setSortParam(searchParams.get('sort') || '-createdAt');
   }, [searchParams, router]);
+
+  // Lock body scroll when mobile filter is open
+  useEffect(() => {
+    if (isMobileFilterOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileFilterOpen]);
 
 
 
@@ -355,6 +367,86 @@ const FiltersContent = ({
   );
 };
 
+// Wrapper for mobile filters to buffer state changes until "Apply Filters" is clicked
+const MobileFiltersWrapper = ({ onClose, ...props }) => {
+  const [tempMakes, setTempMakes] = useState(props.selectedMakes);
+  const [tempFuels, setTempFuels] = useState(props.selectedFuels);
+  const [tempBodyTypes, setTempBodyTypes] = useState(props.selectedBodyTypes);
+  const [tempMinPrice, setTempMinPrice] = useState(props.minPrice);
+  const [tempMaxPrice, setTempMaxPrice] = useState(props.maxPrice);
+
+  const handleApply = () => {
+    props.setSelectedMakes(tempMakes);
+    props.setSelectedFuels(tempFuels);
+    props.setSelectedBodyTypes(tempBodyTypes);
+    props.setMinPrice(tempMinPrice);
+    props.setMaxPrice(tempMaxPrice);
+    onClose();
+  };
+
+  const handleClear = () => {
+    setTempMakes([]);
+    setTempFuels([]);
+    setTempBodyTypes([]);
+    setTempMinPrice('');
+    setTempMaxPrice('');
+  };
+
+  return (
+    <div className="flex flex-col h-full max-h-[85dvh]">
+      <div className="flex justify-center pt-3 pb-2 flex-shrink-0">
+        <div className="w-12 h-1.5 bg-gray-300 dark:bg-white/20 rounded-full transition-colors" />
+      </div>
+
+      <div className="px-6 pb-4 flex items-center justify-between border-b border-gray-200 dark:border-white/10 transition-colors flex-shrink-0">
+        <h2 className="text-xl font-bold text-black dark:text-white tracking-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h2>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleClear}
+            className="flex items-center gap-1.5 text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors"
+          >
+            <IconRefresh size={16} />
+            Clear All
+          </button>
+          <button
+            aria-label="Close Filters"
+            onClick={onClose}
+            className="p-2 bg-gray-100 dark:bg-white/5 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
+          >
+            <IconX className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-6 py-6">
+        <FiltersContent
+          {...props}
+          selectedMakes={tempMakes}
+          setSelectedMakes={setTempMakes}
+          selectedFuels={tempFuels}
+          setSelectedFuels={setTempFuels}
+          selectedBodyTypes={tempBodyTypes}
+          setSelectedBodyTypes={setTempBodyTypes}
+          minPrice={tempMinPrice}
+          setMinPrice={setTempMinPrice}
+          maxPrice={tempMaxPrice}
+          setMaxPrice={setTempMaxPrice}
+        />
+      </div>
+
+      <div className="p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f0f1e] flex-shrink-0 transition-colors duration-500" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 1rem))' }}>
+        <button
+          onClick={handleApply}
+          className="w-full h-[52px] bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all shadow-[0_10px_25px_rgba(147,51,234,0.4)]"
+        >
+          Apply Filters
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
   return (
     <div className="min-h-screen bg-[#f4f4f8] dark:bg-transparent relative transition-colors duration-500 w-full flex flex-col">
       {/* Light Mode: Massive Unified Premium Background */}
@@ -426,66 +518,26 @@ const FiltersContent = ({
                 animate={{ y: 0 }}
                 exit={{ y: "100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="md:hidden fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] bg-white/95 dark:bg-[#0f0f1e]/95 backdrop-blur-xl rounded-t-3xl border-t border-gray-200 dark:border-white/20 shadow-2xl flex flex-col transition-colors duration-500"
+                className="md:hidden fixed inset-x-0 bottom-0 z-50 bg-white/95 dark:bg-[#0f0f1e]/95 backdrop-blur-xl rounded-t-3xl border-t border-gray-200 dark:border-white/20 shadow-2xl transition-colors duration-500"
               >
-                <div className="flex justify-center pt-3 pb-2">
-                  <div className="w-12 h-1.5 bg-gray-300 dark:bg-white/20 rounded-full transition-colors" />
-                </div>
-
-                <div className="px-6 pb-4 flex items-center justify-between border-b border-gray-200 dark:border-white/10 transition-colors">
-                  <h2 className="text-xl font-bold text-black dark:text-white tracking-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h2>
-                  <div className="flex items-center gap-4">
-                    <button
-                      onClick={() => {
-                        setSelectedMakes([]);
-                        setSelectedBodyTypes([]);
-                        setSelectedFuels([]);
-                        setMinPrice('');
-                        setMaxPrice('');
-                      }}
-                      className="flex items-center gap-1.5 text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors"
-                    >
-                      <IconRefresh size={16} />
-                      Clear All
-                    </button>
-                    <button
-                      aria-label="Close Filters"
-                      onClick={() => setIsMobileFilterOpen(false)}
-                      className="p-2 bg-gray-100 dark:bg-white/5 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
-                    >
-                      <IconX className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex-1 overflow-y-auto px-6 py-6">
-                  <FiltersContent
-                    globalMinPrice={globalMinPrice}
-                    globalMaxPrice={globalMaxPrice}
-                    minPrice={minPrice}
-                    setMinPrice={setMinPrice}
-                    maxPrice={maxPrice}
-                    setMaxPrice={setMaxPrice}
-                    makes={makes}
-                    selectedMakes={selectedMakes}
-                    setSelectedMakes={setSelectedMakes}
-                    bodyTypes={bodyTypes}
-                    selectedBodyTypes={selectedBodyTypes}
-                    setSelectedBodyTypes={setSelectedBodyTypes}
-                    fuelTypes={fuelTypes}
-                    selectedFuels={selectedFuels}
-                    setSelectedFuels={setSelectedFuels}
-                  />
-                </div>
-
-                <div className="p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f0f1e] sticky bottom-0 transition-colors duration-500">
-                  <button
-                    onClick={() => setIsMobileFilterOpen(false)}
-                    className="w-full h-[52px] bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all"
-                  >
-                    Apply Filters
-                  </button>
-                </div>
+                <MobileFiltersWrapper
+                  onClose={() => setIsMobileFilterOpen(false)}
+                  globalMinPrice={globalMinPrice}
+                  globalMaxPrice={globalMaxPrice}
+                  minPrice={minPrice}
+                  setMinPrice={setMinPrice}
+                  maxPrice={maxPrice}
+                  setMaxPrice={setMaxPrice}
+                  makes={makes}
+                  selectedMakes={selectedMakes}
+                  setSelectedMakes={setSelectedMakes}
+                  bodyTypes={bodyTypes}
+                  selectedBodyTypes={selectedBodyTypes}
+                  setSelectedBodyTypes={setSelectedBodyTypes}
+                  fuelTypes={fuelTypes}
+                  selectedFuels={selectedFuels}
+                  setSelectedFuels={setSelectedFuels}
+                />
               </motion.div>
             </>
           )}
