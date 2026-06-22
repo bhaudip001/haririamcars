@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { IconSearch, IconFilter, IconChevronDown, IconX } from '@tabler/icons-react';
+import { IconSearch, IconFilter, IconChevronDown, IconX, IconRefresh } from '@tabler/icons-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CarCard from '@/components/CarCard';
 import api from '@/lib/api';
@@ -426,13 +426,28 @@ const FiltersContent = ({
 
                 <div className="px-6 pb-4 flex items-center justify-between border-b border-gray-200 dark:border-white/10 transition-colors">
                   <h2 className="text-xl font-bold text-black dark:text-white tracking-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h2>
-                  <button
-                    aria-label="Close Filters"
-                    onClick={() => setIsMobileFilterOpen(false)}
-                    className="p-2 bg-gray-100 dark:bg-white/5 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
-                  >
-                    <IconX className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => {
+                        setSelectedMakes([]);
+                        setSelectedBodyTypes([]);
+                        setSelectedFuels([]);
+                        setMinPrice('');
+                        setMaxPrice('');
+                      }}
+                      className="flex items-center gap-1.5 text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors"
+                    >
+                      <IconRefresh size={16} />
+                      Clear All
+                    </button>
+                    <button
+                      aria-label="Close Filters"
+                      onClick={() => setIsMobileFilterOpen(false)}
+                      className="p-2 bg-gray-100 dark:bg-white/5 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
+                    >
+                      <IconX className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 py-6">
