@@ -13,7 +13,7 @@ router.get('/', cache(5), async (req, res) => {
   try {
     const {
       search, make, fuelType, minPrice, maxPrice, minYear, maxYear,
-      transmission, bodyType, status, sort, page = 1, limit = 12,
+      transmission, bodyType, status, sort, page = 1, limit = 1000,
       featured, condition,
     } = req.query;
 

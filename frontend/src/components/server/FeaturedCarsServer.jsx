@@ -8,7 +8,7 @@ async function getFeaturedCars() {
   if (process.env.NODE_ENV === 'production') {
     baseUrl = 'https://www.hariramcars.com/backend/server.js?path=api';
   }
-  
+
   try {
     const res = await fetch(`${baseUrl}/cars?limit=8&status=available&featured=true`, {
       next: { tags: ['cars'], revalidate: 300 }
