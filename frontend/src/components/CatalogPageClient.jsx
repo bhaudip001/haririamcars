@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { IconSearch, IconFilter, IconChevronDown, IconX, IconRefresh } from '@tabler/icons-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -108,8 +108,24 @@ function CatalogContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMakes, selectedFuels, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam]);
 
+  const hasHandledReload = useRef(false);
+
   // Sync state with URL if browser back/forward buttons are used
   useEffect(() => {
+    if (typeof window !== 'undefined' && !hasHandledReload.current) {
+      hasHandledReload.current = true;
+      const navEntries = performance.getEntriesByType('navigation');
+      const isReload = navEntries.length > 0 && navEntries[0].type === 'reload';
+      const isMobile = window.innerWidth < 768;
+      
+      if (isReload && isMobile) {
+        if (searchParams.toString() !== '') {
+          router.replace('/catalog', { scroll: false });
+          return;
+        }
+      }
+    }
+
     setSelectedMakes(searchParams.get('make') ? searchParams.get('make').split(',') : []);
     setSelectedFuels(searchParams.get('fuelType') ? searchParams.get('fuelType').split(',') : []);
     setSelectedBodyTypes(searchParams.get('bodyType') ? searchParams.get('bodyType').split(',') : []);
@@ -117,7 +133,7 @@ function CatalogContent() {
     setMaxPrice(searchParams.get('maxPrice') || '');
     setSearchQuery(searchParams.get('search') || '');
     setSortParam(searchParams.get('sort') || '-createdAt');
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   const handleLoadMore = () => {
     const nextPage = page + 1;
