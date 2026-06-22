@@ -33,8 +33,6 @@ function CatalogContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
 
   // Fetch Filters metadata
   useEffect(() => {
@@ -50,13 +48,12 @@ function CatalogContent() {
   }, []);
 
   // Fetch Cars
-  const fetchCars = async (pageNum = 1, append = false, signal = undefined) => {
+  const fetchCars = async (signal = undefined) => {
     setLoading(true);
     setError(null);
     try {
       const params = new URLSearchParams();
-      params.append('page', pageNum);
-      params.append('limit', 12);
+      params.append('limit', 1000);
       params.append('status', 'available'); // Only show available cars in catalog
 
       if (selectedMakes.length > 0) params.append('make', selectedMakes.join(','));
@@ -72,16 +69,8 @@ function CatalogContent() {
 
       const res = await api.get(`/cars?${params.toString()}`, { signal });
       if (res.data) {
-        if (append) {
-          setCars(prev => {
-            const newCars = [...prev, ...(res.data.cars || [])];
-            return newCars.slice(0, 500); // Prevent frontend DOM overload
-          });
-        } else {
-          setCars(res.data.cars || []);
-        }
+        setCars(res.data.cars || []);
         setTotal(res.data.total || 0);
-        setHasMore(res.data.cars?.length === 12);
       }
     } catch (err) {
       if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
@@ -97,8 +86,7 @@ function CatalogContent() {
   useEffect(() => {
     const controller = new AbortController();
     const debounceTimer = setTimeout(() => {
-      setPage(1);
-      fetchCars(1, false, controller.signal);
+      fetchCars(controller.signal);
     }, 500);
 
     return () => {
@@ -143,11 +131,7 @@ function CatalogContent() {
     setSortParam(searchParams.get('sort') || '-createdAt');
   }, [searchParams, router]);
 
-  const handleLoadMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-    fetchCars(nextPage, true);
-  };
+
 
 const FiltersContent = ({
   globalMinPrice,
@@ -565,7 +549,7 @@ const FiltersContent = ({
           </div>
 
           {/* Grid */}
-          {loading && page === 1 ? (
+          {loading ? (
             <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden animate-pulse h-[360px] transition-colors">
@@ -622,18 +606,7 @@ const FiltersContent = ({
             </div>
           )}
 
-          {/* Load More */}
-          {hasMore && cars.length > 0 && (
-            <div className="w-full flex justify-center pt-8">
-              <button
-                onClick={handleLoadMore}
-                disabled={loading}
-                className="bg-transparent border border-purple-600 dark:border-purple-500 text-purple-600 dark:text-purple-400 px-8 py-3 rounded-full hover:bg-purple-600 hover:text-white transition-colors duration-300 font-bold tracking-wide disabled:opacity-50"
-              >
-                {loading ? 'Loading...' : 'Load More Vehicles'}
-              </button>
-            </div>
-          )}
+
         </div>
       </main>
     </div>
