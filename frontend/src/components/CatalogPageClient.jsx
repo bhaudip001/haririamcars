@@ -115,11 +115,19 @@ function CatalogContent() {
     if (typeof window !== 'undefined' && !hasHandledReload.current) {
       hasHandledReload.current = true;
       const navEntries = performance.getEntriesByType('navigation');
-      const isReload = navEntries.length > 0 && navEntries[0].type === 'reload';
-      const isMobile = window.innerWidth < 768;
+      const isReload = (navEntries.length > 0 && navEntries[0].type === 'reload') || 
+                       (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
       
-      if (isReload && isMobile) {
+      if (isReload) {
         if (searchParams.toString() !== '') {
+          // Synchronously clear states so the UI updates instantly
+          setSelectedMakes([]);
+          setSelectedFuels([]);
+          setSelectedBodyTypes([]);
+          setMinPrice('');
+          setMaxPrice('');
+          setSearchQuery('');
+          
           router.replace('/catalog', { scroll: false });
           return;
         }
