@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import api from '@/lib/api';
 
 export default function ClientTracker() {
   const pathname = usePathname();
@@ -15,13 +16,7 @@ export default function ClientTracker() {
     // but tracking once here is cleaner.
     const trackVisit = async () => {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/analytics/track`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          // We don't need body, IP is captured by backend from request headers
-        });
+        await api.post('/analytics/track', {});
         tracked.current = true;
       } catch (err) {
         console.error('Failed to track visit', err);
