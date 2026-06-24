@@ -167,7 +167,7 @@ export default function AdminDashboard() {
                 contentStyle={{ backgroundColor: '#1a1a24', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff' }}
                 itemStyle={{ color: '#fff', fontSize: '12px' }}
               />
-              <Area type="monotone" dataKey="pageViews" name="Visitors" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorPageViews)" />
+              <Area type="monotone" dataKey="visitors" name="Visitors" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorPageViews)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>

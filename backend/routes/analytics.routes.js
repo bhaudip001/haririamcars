@@ -23,8 +23,8 @@ router.post('/track', async (req, res) => {
         ips: [ip] 
       });
     } else {
-      analytics.pageViews += 1;
       if (!analytics.ips.includes(ip)) {
+        analytics.pageViews += 1;
         analytics.visitors += 1;
         analytics.ips.push(ip);
       }
