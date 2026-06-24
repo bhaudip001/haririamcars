@@ -11,7 +11,8 @@ export default function CarCard({ car, index = 0, priority = false }) {
 
   if (!car) return null;
 
-  const title = `${car.make} ${car.model}${car.year ? ` (${car.year})` : ''}`.trim();
+  const displayYear = car.registerYear || car.year;
+  const title = `${car.make} ${car.model}${displayYear ? ` (${displayYear})` : ''}`.trim();
   const images = car.images || [];
   const imageUrl = images.length > 0 ? (images[0].url || images[0]) : null;
 
