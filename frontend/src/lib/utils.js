@@ -23,7 +23,10 @@ export function formatKms(kms) {
 
 // Generate WhatsApp link
 export function getWhatsAppLink(phone, message = '') {
-  const cleanPhone = phone?.replace(/[^0-9]/g, '') || '919876543210';
+  let cleanPhone = phone?.replace(/[^0-9]/g, '') || '919876543210';
+  if (cleanPhone.length === 10) {
+    cleanPhone = '91' + cleanPhone;
+  }
   const encoded = encodeURIComponent(message);
   return `https://wa.me/${cleanPhone}?text=${encoded}`;
 }
