@@ -109,7 +109,7 @@ export const metadata = {
       url: '/og-image.jpg',
       width: 1200,
       height: 630,
-      alt: 'Hariram Motors — Premium Cars in Surat',
+      alt: 'Hariram Motors — Verified Cars in Surat',
     }],
   },
   twitter: {

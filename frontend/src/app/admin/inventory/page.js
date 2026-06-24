@@ -32,7 +32,7 @@ export default function AdminInventoryPage() {
   useEffect(() => { fetchCars(); }, []);
 
   const handleShareCatalog = async () => {
-    const text = `Hello! Check out our complete range of available premium cars here:\n${window.location.origin}/catalog`;
+    const text = `Hello! Check out our complete range of available verified cars here:\n${window.location.origin}/catalog`;
     
     if (navigator.share) {
       try {

@@ -93,7 +93,7 @@ export default function AdminDashboard() {
   return (
     <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-500">
       
-      {/* Premium Header */}
+      {/* Verified Header */}
       <div className="relative overflow-hidden rounded-2xl p-6 bg-gradient-to-r from-[#1a1a2e] to-[#0d0d16] border border-white/5 shadow-2xl">
         <div className="absolute top-0 right-0 w-48 h-48 bg-purple-500/20 blur-[80px] rounded-full pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 blur-[60px] rounded-full pointer-events-none"></div>
@@ -181,7 +181,7 @@ export default function AdminDashboard() {
               <TrendingUp size={18} className="text-purple-400" />
               Homepage Featured Fleet
             </h2>
-            <p className="text-xs text-gray-400 mt-0.5">{featuredTotal} premium vehicles showcased on the homepage.</p>
+            <p className="text-xs text-gray-400 mt-0.5">{featuredTotal} verified vehicles showcased on the homepage.</p>
           </div>
           <a href="/admin/inventory" className="text-xs font-semibold text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors">
             View Complete Inventory <ArrowRight size={14} />

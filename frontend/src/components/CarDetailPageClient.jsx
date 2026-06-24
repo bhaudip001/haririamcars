@@ -155,7 +155,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
 
   return (
     <div className="min-h-screen bg-[#f4f4f8] dark:bg-transparent relative transition-colors duration-500 w-full flex flex-col">
-      {/* Light Mode: Massive Unified Premium Background */}
+      {/* Light Mode: Massive Unified Verified Background */}
       <div className="fixed inset-0 dark:hidden pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
         <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
@@ -169,7 +169,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
         <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-pink-100/40 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
       </div>
 
-      {/* Dark Mode: Massive Unified Premium Background */}
+      {/* Dark Mode: Massive Unified Verified Background */}
       <div className="hidden dark:block fixed inset-0 pointer-events-none z-0">
         {/* Deep Space Base */}
         <div className="absolute inset-0 bg-[#0a0a12]"></div>

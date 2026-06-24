@@ -87,7 +87,7 @@ export default function ShowroomVideo() {
             Experience <span className="bg-gradient-to-r from-purple-500 to-pink-400 bg-clip-text text-transparent">Hariram Motors</span>
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-[16px] md:text-[18px] font-['Inter'] leading-relaxed transition-colors">
-            Step inside our premium showroom in Surat. Discover our exceptional collection of certified pre-owned cars, meticulously prepared for you.
+            Step inside our verified showroom in Surat. Discover our exceptional collection of certified pre-owned cars, meticulously prepared for you.
           </p>
         </div>
 

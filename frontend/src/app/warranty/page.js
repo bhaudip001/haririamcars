@@ -108,7 +108,7 @@ export default function WarrantyPage() {
                   </div>
                   <div className="px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold tracking-wider uppercase border border-amber-500/30 flex items-center gap-1.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                    Premium Protection
+                    Verified Protection
                   </div>
                 </div>
 

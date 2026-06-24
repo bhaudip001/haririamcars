@@ -154,7 +154,7 @@ export default function HeroSection() {
           >
             <Image
               src="/IMG_5500.PNG"
-              alt="Buy Premium Used & Pre-Owned Cars in Surat - Hariram Motors"
+              alt="Buy Verified Used & Pre-Owned Cars in Surat - Hariram Motors"
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -180,7 +180,7 @@ export default function HeroSection() {
         >
           <Image
             src="/hero_chatgpt.png"
-            alt="Buy Premium Used & Pre-Owned Cars in Surat - Hariram Motors"
+            alt="Buy Verified Used & Pre-Owned Cars in Surat - Hariram Motors"
             fill
             priority
             className="object-cover object-bottom"

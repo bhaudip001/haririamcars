@@ -54,7 +54,7 @@ export default function InsurancePage() {
         <div className="absolute bottom-[10%] right-[5%] w-[800px] h-[800px] bg-cyan-900/20 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
       </div>
 
-      {/* HERO SECTION - Premium Split Layout */}
+      {/* HERO SECTION - Verified Split Layout */}
       <section className="relative pt-32 lg:pt-48 pb-20 lg:pb-32 overflow-hidden z-10 border-b border-black/5 dark:border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex flex-col lg:flex-row items-center gap-16">
@@ -168,7 +168,7 @@ export default function InsurancePage() {
       {/* PARTNERS SECTION */}
       <section className="py-12 border-b border-black/5 dark:border-white/5 relative z-10 bg-white/30 dark:bg-[#0a0a12]/30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] mb-8">Trusted by Premium Insurance Partners</p>
+          <p className="text-center text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-[0.2em] mb-8">Trusted by Verified Insurance Partners</p>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 dark:opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
             {PARTNERS.map((partner, idx) => (
               <motion.div
@@ -250,7 +250,7 @@ export default function InsurancePage() {
 
               {[
                 { step: "01", title: "Share Details", desc: "Provide your car number and basic details via Call or WhatsApp." },
-                { step: "02", title: "Compare Plans", desc: "We generate the best quotes from multiple premium insurers for you." },
+                { step: "02", title: "Compare Plans", desc: "We generate the best quotes from multiple verified insurers for you." },
                 { step: "03", title: "Instant Policy", desc: "Make the payment securely and receive your policy document instantly." }
               ].map((item, idx) => (
                 <div key={idx} className="relative z-10 bg-white dark:bg-[#12121a] p-8 rounded-3xl border border-gray-100 dark:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.05)] dark:shadow-none flex flex-col items-center text-center group hover:-translate-y-2 transition-transform duration-300">

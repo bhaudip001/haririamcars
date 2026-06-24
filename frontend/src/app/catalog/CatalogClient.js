@@ -70,7 +70,7 @@ export default function CatalogClient() {
   const hasActiveFilters = search || make || fuelType || bodyType || minPrice || maxPrice;
 
   const handleShareCatalog = async () => {
-    const text = `Hello! Check out Hariram Motors' complete range of available premium cars here:\n${window.location.origin}/catalog`;
+    const text = `Hello! Check out Hariram Motors' complete range of available verified cars here:\n${window.location.origin}/catalog`;
     
     if (navigator.share) {
       try {
@@ -102,7 +102,7 @@ export default function CatalogClient() {
               Our <span className="gradient-text">Collection</span>
             </h1>
             <p className="text-[var(--color-text-secondary)]">
-              {total > 0 ? `${total} cars available` : 'Browse our premium collection'}
+              {total > 0 ? `${total} cars available` : 'Browse our verified collection'}
             </p>
           </div>
           <button onClick={handleShareCatalog} className="btn-secondary !py-2.5 !px-5 !text-sm flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-[var(--color-border)] rounded-lg transition-colors text-white w-full md:w-auto">

@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'nodejs';
-export const alt = 'Hariram Motors — Premium Cars in Surat';
+export const alt = 'Hariram Motors — Verified Cars in Surat';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -33,7 +33,7 @@ export default function OgImage() {
           color: '#a855f7',
           marginBottom: 24,
         }}>
-          Premium Pre-Owned Cars · Surat
+          Verified Pre-Owned Cars · Surat
         </div>
         <div style={{
           fontSize: 24,

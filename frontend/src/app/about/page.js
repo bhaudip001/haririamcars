@@ -58,7 +58,7 @@ export default function AboutPage() {
 
   return (
     <div className="bg-[#f4f4f8] dark:bg-transparent min-h-screen pb-0 relative transition-colors duration-500 w-full flex flex-col" style={{ paddingTop: 0 }}>
-      {/* Light Mode: Massive Unified Premium Background */}
+      {/* Light Mode: Massive Unified Verified Background */}
       <div className="fixed inset-0 dark:hidden pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
         <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
@@ -72,7 +72,7 @@ export default function AboutPage() {
         <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-pink-100/40 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
       </div>
 
-      {/* Dark Mode: Massive Unified Premium Background */}
+      {/* Dark Mode: Massive Unified Verified Background */}
       <div className="hidden dark:block fixed inset-0 pointer-events-none z-0">
         {/* Deep Space Base */}
         <div className="absolute inset-0 bg-[#0a0a12]"></div>
@@ -97,7 +97,7 @@ export default function AboutPage() {
       {/* Anchor for "Explore Our Story" CTA */}
       <div id="our-story" />
 
-      {/* OUR STORY — PREMIUM EDITORIAL REDESIGN */}
+      {/* OUR STORY — VERIFIED EDITORIAL REDESIGN */}
       <section className="relative pt-28 pb-12 overflow-hidden transition-colors duration-500 z-10 dark:bg-[#0a0a12]">
         {/* Decorative background */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -216,7 +216,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* MISSION & VISION — PREMIUM REDESIGN */}
+      {/* MISSION & VISION — VERIFIED REDESIGN */}
       <section className="relative pt-12 pb-28 overflow-hidden transition-colors duration-500 z-10 dark:bg-[#0a0a12]">
         {/* Decorative background */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -360,7 +360,7 @@ export default function AboutPage() {
                   1
                 </div>
                 <h3 className="font-['Outfit'] font-bold text-[22px] text-text-primary leading-tight mt-1">
-                  Buy Premium <br /> Pre-owned Cars
+                  Buy Verified <br /> Pre-owned Cars
                 </h3>
               </div>
 
@@ -482,7 +482,7 @@ export default function AboutPage() {
               </div>
 
               <p className="font-['Inter'] text-[14px] text-text-muted leading-relaxed mb-4">
-                Upgrade your lifestyle seamlessly by trading in your old vehicle for a new premium ride. We provide the most lucrative exchange offers in the market.
+                Upgrade your lifestyle seamlessly by trading in your old vehicle for a new verified ride. We provide the most lucrative exchange offers in the market.
               </p>
 
               <ul className="space-y-2 mb-8 flex-grow">
@@ -535,7 +535,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* OUR PROMISE — PREMIUM REDESIGN */}
+      {/* OUR PROMISE — VERIFIED REDESIGN */}
       <section className="relative py-28 overflow-hidden transition-colors duration-500 z-10 dark:bg-[#0c0c18]">
         {/* Decorative elements */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -562,7 +562,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* 3 Premium Cards */}
+          {/* 3 Verified Cards */}
           <motion.div 
             variants={staggerContainer}
             initial="hidden"
@@ -732,7 +732,7 @@ export default function AboutPage() {
         <GoogleReviews />
       </div>
 
-      {/* ═══ FREQUENTLY ASKED QUESTIONS (PREMIUM REDESIGN) ═══ */}
+      {/* ═══ FREQUENTLY ASKED QUESTIONS (VERIFIED REDESIGN) ═══ */}
       <section className="relative py-28 z-10 bg-[#f4f4f8] dark:bg-[#0a0a12] overflow-hidden transition-colors duration-500">
         {/* Background Decorative Glows */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -765,15 +765,15 @@ export default function AboutPage() {
             {[
               {
                 question: "Why should I buy a used car from Hariram Motors?",
-                answer: "Hariram Motors offers a premium buying experience with our \"Hariram Certified\" guarantee. Every vehicle undergoes a strict 150-point mechanical and structural inspection to ensure the highest quality standards before it reaches our showroom. We provide a 100% non-accidental history guarantee, verify genuine odometer readings, and ensure clear legal titles without any pending challans or hypothecation issues. Our comprehensive service includes handling all RTO transfers on your behalf and providing on-the-spot finance options through leading banking partners. By prioritizing transparency, competitive pricing, and total customer satisfaction, we make the process of buying a pre-owned car in Surat seamless and completely trustworthy."
+                answer: "Hariram Motors offers a verified buying experience with our \"Hariram Certified\" guarantee. Every vehicle undergoes a strict 150-point mechanical and structural inspection to ensure the highest quality standards before it reaches our showroom. We provide a 100% non-accidental history guarantee, verify genuine odometer readings, and ensure clear legal titles without any pending challans or hypothecation issues. Our comprehensive service includes handling all RTO transfers on your behalf and providing on-the-spot finance options through leading banking partners. By prioritizing transparency, competitive pricing, and total customer satisfaction, we make the process of buying a pre-owned car in Surat seamless and completely trustworthy."
               },
               {
                 question: "Does Hariram Motors provide loans on used cars?",
-                answer: "Yes, Hariram Motors has established direct tie-ups with leading private and nationalized banks, as well as premium NBFCs, to provide quick and hassle-free car loans for pre-owned vehicles. Our dedicated in-house finance team works to secure the lowest possible interest rates and highly flexible EMI options tailored precisely to your financial profile. We require minimal documentation and manage the entire loan processing workflow, ensuring that loan approvals are often available within just a few hours. This seamless financing integration means you can finalize your vehicle purchase and drive home the very same day without visiting a bank branch."
+                answer: "Yes, Hariram Motors has established direct tie-ups with leading private and nationalized banks, as well as verified NBFCs, to provide quick and hassle-free car loans for pre-owned vehicles. Our dedicated in-house finance team works to secure the lowest possible interest rates and highly flexible EMI options tailored precisely to your financial profile. We require minimal documentation and manage the entire loan processing workflow, ensuring that loan approvals are often available within just a few hours. This seamless financing integration means you can finalize your vehicle purchase and drive home the very same day without visiting a bank branch."
               },
               {
                 question: "Can I sell or exchange my current car at Hariram Motors?",
-                answer: "Absolutely. Hariram Motors offers immediate, transparent, and highly competitive market valuations for your old car through a free doorstep or showroom evaluation process. You have the total flexibility to either sell your car directly to us for instant, secure payment within 24 hours, or you can use its highest market value as an upfront down payment for seamlessly upgrading to another premium vehicle from our extensive inventory. We take complete responsibility for all paperwork, including the 100% free RC transfer process, ensuring you face absolutely zero legal liabilities after handing over your vehicle to our team."
+                answer: "Absolutely. Hariram Motors offers immediate, transparent, and highly competitive market valuations for your old car through a free doorstep or showroom evaluation process. You have the total flexibility to either sell your car directly to us for instant, secure payment within 24 hours, or you can use its highest market value as an upfront down payment for seamlessly upgrading to another verified vehicle from our extensive inventory. We take complete responsibility for all paperwork, including the 100% free RC transfer process, ensuring you face absolutely zero legal liabilities after handing over your vehicle to our team."
               }
             ].map((faq, index) => (
               <motion.div variants={fadeInUp} key={index}>

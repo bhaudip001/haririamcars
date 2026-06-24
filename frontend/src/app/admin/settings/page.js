@@ -44,7 +44,7 @@ export default function AdminSettingsPage() {
   return (
     <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6">
       
-      {/* Premium Header */}
+      {/* Verified Header */}
       <div className="flex flex-col items-center text-center mb-10 animate-in fade-in slide-in-from-top-4 duration-500">
         <div className="relative mb-6 group">
           <div className="absolute inset-0 bg-purple-600 blur-[30px] opacity-20 group-hover:opacity-40 transition-opacity duration-500 rounded-full"></div>

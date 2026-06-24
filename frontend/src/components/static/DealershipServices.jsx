@@ -14,7 +14,7 @@ export default function DealershipServices() {
 
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="text-center max-w-3xl mx-auto mb-16">
-          <motion.p variants={fadeInDown} className="text-purple-600 dark:text-purple-400 text-sm font-bold tracking-widest uppercase mb-3 transition-colors">Premium Dealership Services</motion.p>
+          <motion.p variants={fadeInDown} className="text-purple-600 dark:text-purple-400 text-sm font-bold tracking-widest uppercase mb-3 transition-colors">Verified Dealership Services</motion.p>
           <motion.h2 variants={fadeInUp} className="text-3xl md:text-[40px] text-black dark:text-white font-bold mb-6 leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>
             Surat's Complete Automotive Solution for <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-500">Buy, Sell & Exchange</span>
           </motion.h2>
@@ -31,7 +31,7 @@ export default function DealershipServices() {
             </div>
             <h3 className="text-2xl font-bold text-black dark:text-white mb-4 transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Buy Certified Cars</h3>
             <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8 flex-grow transition-colors">
-              150+ premium certified cars you can trust. Every car undergoes rigorous inspection for your complete security and peace of mind.
+              150+ verified certified cars you can trust. Every car undergoes rigorous inspection for your complete security and peace of mind.
             </p>
             <Link href="/catalog" className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold hover:text-purple-700 dark:hover:text-purple-300 transition-colors">
               Let's do It <IconArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />

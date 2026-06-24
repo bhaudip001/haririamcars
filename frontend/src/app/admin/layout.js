@@ -110,7 +110,7 @@ export default function AdminLayout({ children }) {
             ))}
           </nav>
 
-          {/* Premium User Profile & Logout */}
+          {/* Verified User Profile & Logout */}
           <div className="p-4 border-t border-[var(--color-border)]">
             <div className="bg-[#12121a] border border-white/5 rounded-2xl p-3 shadow-inner relative overflow-hidden group/profile">
               {/* Subtle animated background glow */}

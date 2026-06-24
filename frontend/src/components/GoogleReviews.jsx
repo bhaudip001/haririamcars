@@ -118,7 +118,7 @@ export default function GoogleReviews() {
 
   return (
     <section className="py-8 md:py-12 px-4 relative overflow-hidden bg-transparent transition-colors duration-500">
-      {/* Premium Background Glows */}
+      {/* Verified Background Glows */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 

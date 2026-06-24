@@ -21,7 +21,7 @@ export default function Footer() {
       transition={{ duration: 0.6 }}
       className="bg-[#05050a] text-gray-400 border-t border-white/10 pt-20 pb-8 relative z-10 overflow-hidden"
     >
-      {/* Premium Background Accents */}
+      {/* Verified Background Accents */}
       <div className="absolute top-0 left-1/4 w-1/2 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
       <div className="absolute -bottom-48 -left-48 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
       <div className="absolute -top-48 -right-48 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>

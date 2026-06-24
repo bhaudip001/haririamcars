@@ -449,7 +449,7 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
 
   return (
     <div className="min-h-screen bg-[#f4f4f8] dark:bg-transparent relative transition-colors duration-500 w-full flex flex-col">
-      {/* Light Mode: Massive Unified Premium Background */}
+      {/* Light Mode: Massive Unified Verified Background */}
       <div className="fixed inset-0 dark:hidden pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
         <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
@@ -463,7 +463,7 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
         <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-pink-100/40 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
       </div>
 
-      {/* Dark Mode: Massive Unified Premium Background */}
+      {/* Dark Mode: Massive Unified Verified Background */}
       <div className="hidden dark:block fixed inset-0 pointer-events-none z-0">
         {/* Deep Space Base */}
         <div className="absolute inset-0 bg-[#0a0a12]"></div>
@@ -561,7 +561,7 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-6 gap-4">
             <div className="w-full flex items-center justify-between lg:w-auto lg:block">
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-black dark:text-white leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Premium Inventory</h1>
+                <h1 className="text-3xl md:text-4xl font-bold text-black dark:text-white leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Verified Inventory</h1>
                 <p className="text-purple-400 mt-2 font-medium">Showing {total} available vehicles</p>
               </div>
             </div>

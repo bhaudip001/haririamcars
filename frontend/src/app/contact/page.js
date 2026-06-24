@@ -74,7 +74,7 @@ export default function ContactPage() {
   return (
     <div className="bg-[#f4f4f8] dark:bg-[#05050A] min-h-screen pt-20 pb-16 selection:bg-purple-500/30 relative overflow-clip transition-colors duration-500 flex flex-col w-full">
 
-      {/* Light Mode: Massive Unified Premium Background */}
+      {/* Light Mode: Massive Unified Verified Background */}
       <div className="fixed inset-0 dark:hidden pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
         <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
