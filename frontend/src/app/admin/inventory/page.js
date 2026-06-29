@@ -241,7 +241,7 @@ export default function AdminInventoryPage() {
       {totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-6">
           {[...Array(totalPages)].map((_, i) => (
-            <button key={i} onClick={() => fetchCars(i + 1)} className={`w-9 h-9 rounded-lg text-xs font-medium ${page === i + 1 ? 'gradient-primary text-[#0f0f1a]' : 'bg-[var(--color-bg-card)] text-[var(--color-text-secondary)]'}`}>
+            <button key={i} onClick={() => { fetchCars(i + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`w-9 h-9 rounded-lg text-xs font-medium transition-colors ${page === i + 1 ? 'bg-purple-600 text-white shadow-md' : 'bg-white/5 hover:bg-white/10 text-gray-400'}`}>
               {i + 1}
             </button>
           ))}
