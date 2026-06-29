@@ -21,8 +21,15 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    // Rely on next.config.mjs rewrites to handle Vercel routing
-    if (config.url) {
+    // Force Vercel to bypass Next.js and hit the backend directly
+    if (process.env.NODE_ENV === 'production' && config.url) {
+      // Remove leading slash if present
+      const cleanPath = config.url.startsWith('/') ? config.url.substring(1) : config.url;
+      // Split path and query parameters to prevent Vercel swallowing them
+      const [basePath, searchStr] = cleanPath.split('?');
+      config.baseURL = '';
+      config.url = `/backend/server.js?path=${basePath}${searchStr ? '&' + searchStr : ''}`;
+    } else if (config.url) {
       config.headers['X-Original-Path'] = config.url;
     }
 
@@ -33,7 +40,7 @@ api.interceptors.request.use(
           .split('; ')
           .find(row => row.startsWith('csrf='))
           ?.split('=')[1];
-          
+
         if (csrfToken) {
           config.headers['X-CSRF-Token'] = csrfToken;
         }
