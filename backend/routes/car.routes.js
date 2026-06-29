@@ -48,11 +48,13 @@ router.get('/', cache(5), async (req, res) => {
       if (maxYear) filter.year.$lte = Number(maxYear);
     }
 
-    const sortOption = sort === 'price_asc' ? { price: 1 }
+    const baseSort = sort === 'price_asc' ? { price: 1 }
       : sort === 'price_desc' ? { price: -1 }
       : sort === 'year_desc' ? { year: -1 }
       : sort === 'year_asc' ? { year: 1 }
       : { createdAt: -1 };
+    
+    const sortOption = { ...baseSort, _id: -1 };
 
     const skip = (Number(page) - 1) * Number(limit);
 
