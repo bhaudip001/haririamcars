@@ -27,7 +27,7 @@ api.interceptors.request.use(
       const cleanPath = config.url.startsWith('/') ? config.url.substring(1) : config.url;
       // Completely overwrite the baseURL and url to hit the edge function explicitly
       config.baseURL = '';
-      config.url = `/backend/server.js?path=${cleanPath}`;
+      config.url = `/backend/server.js?path=${encodeURIComponent(cleanPath)}`;
     } else if (config.url) {
       config.headers['X-Original-Path'] = config.url;
     }
