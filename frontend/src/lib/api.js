@@ -21,14 +21,8 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    // Force Vercel to bypass Next.js and hit the backend directly
-    if (process.env.NODE_ENV === 'production' && config.url) {
-      // Remove leading slash if present
-      const cleanPath = config.url.startsWith('/') ? config.url.substring(1) : config.url;
-      // Completely overwrite the baseURL and url to hit the edge function explicitly
-      config.baseURL = '';
-      config.url = `/backend/server.js?path=${encodeURIComponent(cleanPath)}`;
-    } else if (config.url) {
+    // Rely on next.config.mjs rewrites to handle Vercel routing
+    if (config.url) {
       config.headers['X-Original-Path'] = config.url;
     }
 
