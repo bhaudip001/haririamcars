@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import api from '@/lib/api';
 
@@ -25,27 +24,49 @@ export default function LiveTicker() {
   if (!latestCar) return null;
 
   return (
-    <div className="bg-primary/10 border-b border-primary/20 text-primary overflow-hidden relative flex items-center h-10 w-full z-50">
-      <div className="absolute left-0 bg-background z-10 px-4 h-full flex items-center font-bold text-sm uppercase tracking-wider border-r border-primary/20">
-        Live Updates
+    <>
+      <style>{`
+        @keyframes ticker-scroll {
+          0% { transform: translateX(100vw); }
+          100% { transform: translateX(-100%); }
+        }
+        .animate-ticker {
+          animation: ticker-scroll 20s linear infinite;
+        }
+        /* Pause animation on hover for better readability */
+        .ticker-container:hover .animate-ticker {
+          animation-play-state: paused;
+        }
+      `}</style>
+      <div className="ticker-container bg-gradient-to-r from-[#6d28d9] via-[#4c1d95] to-[#6d28d9] text-white overflow-hidden relative flex items-center h-10 sm:h-12 w-full z-[60] shadow-md border-b border-white/10">
+        {/* Live Badge Overlay */}
+        <div className="absolute left-0 bg-red-600 text-white z-10 px-3 sm:px-5 h-full flex items-center font-['Outfit'] font-bold text-[11px] sm:text-sm uppercase tracking-wider shadow-[8px_0_15px_rgba(0,0,0,0.4)]">
+          <span className="w-2 h-2 rounded-full bg-white animate-pulse mr-2"></span>
+          Live
+        </div>
+        
+        {/* Marquee Container */}
+        <div className="flex-1 overflow-hidden relative h-full flex items-center">
+          <div className="animate-ticker flex whitespace-nowrap items-center w-max pl-4">
+            <span className="text-[13px] sm:text-[15px] font-medium tracking-wide">
+              🔥 Just Listed: <strong className="text-[#fde047] ml-1">{latestCar.make} {latestCar.model} {latestCar.year ? `(${latestCar.year})` : ''}</strong>
+            </span>
+            <span className="mx-3 text-white/50">•</span>
+            <span className="text-[13px] sm:text-[15px] font-medium text-white/90">
+              Hurry Up! This deal won't last long.
+            </span>
+            <Link 
+              href={`/cars/${latestCar.slug}`} 
+              className="ml-4 sm:ml-6 bg-white text-[#6d28d9] px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-sm font-bold hover:bg-gray-100 transition-colors shadow-sm flex items-center gap-1 active:scale-95"
+            >
+              View Details
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        </div>
       </div>
-      
-      <div className="flex-1 overflow-hidden relative h-full flex items-center">
-        <motion.div
-          className="absolute flex items-center whitespace-nowrap"
-          animate={{ x: [window?.innerWidth || 1000, -1000] }}
-          transition={{
-            repeat: Infinity,
-            duration: 15,
-            ease: 'linear',
-          }}
-        >
-          <span className="mr-4">🚀 New {latestCar.make} {latestCar.model} just listed!! Hurry Up!!</span>
-          <Link href={`/cars/${latestCar.slug}`} className="underline font-bold text-primary hover:text-primary/80">
-            View Details
-          </Link>
-        </motion.div>
-      </div>
-    </div>
+    </>
   );
 }
