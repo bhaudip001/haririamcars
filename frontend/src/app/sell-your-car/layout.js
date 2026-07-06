@@ -10,8 +10,6 @@ export const metadata = {
     type: 'website',
     images: [{
       url: '/3.png',
-      width: 1200,
-      height: 630,
       alt: 'Sell your car in just 29 Minutes',
     }],
   },

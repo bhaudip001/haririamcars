@@ -107,8 +107,6 @@ export const metadata = {
     description: 'Surat\'s most trusted destination for used & pre-owned cars.',
     images: [{
       url: '/3.png',
-      width: 1200,
-      height: 630,
       alt: 'Hariram Motors — Verified Cars in Surat',
     }],
   },
