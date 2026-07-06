@@ -4,6 +4,17 @@ import { protect, adminOnly } from '../middleware/authMiddleware.js';
 import { upload, uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
 import { validateCar } from '../middleware/validate.js';
 import { cache, clearCache } from '../middleware/cache.js';
+import webpush from 'web-push';
+import { Subscription } from '../models/subscription.model.js';
+
+// Setup Web Push
+if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+  webpush.setVapidDetails(
+    'mailto:contact@hariramcars.com',
+    process.env.VAPID_PUBLIC_KEY,
+    process.env.VAPID_PRIVATE_KEY
+  );
+}
 
 const router = express.Router();
 // Trigger nodemon restart
@@ -169,6 +180,33 @@ router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, as
     await car.save();
 
     clearCache('/api/cars');
+
+    // Send Push Notification
+    if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+      try {
+        const subscriptions = await Subscription.find();
+        const payload = JSON.stringify({
+          title: 'New Car Listed!',
+          body: `${car.make} ${car.model} just listed. Check it out now!`,
+          url: `/cars/${car.slug}`
+        });
+
+        const notifications = subscriptions.map(sub => 
+          webpush.sendNotification(sub, payload).catch(err => {
+            if (err.statusCode === 410 || err.statusCode === 404) {
+              // Subscription has expired or is no longer valid
+              return Subscription.deleteOne({ _id: sub._id });
+            }
+            console.error('Error sending push notification:', err);
+          })
+        );
+        
+        // Don't await this, let it run in the background
+        Promise.all(notifications);
+      } catch (err) {
+        console.error('Failed to send push notifications:', err);
+      }
+    }
 
     res.status(201).json(car);
   } catch (error) {

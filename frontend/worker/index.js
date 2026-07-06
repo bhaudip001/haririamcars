@@ -14,3 +14,32 @@ self.addEventListener('fetch', (event) => {
     event.stopImmediatePropagation();
   }
 });
+
+self.addEventListener('push', function(event) {
+  let data = {};
+  if (event.data) {
+    try { data = event.data.json(); } catch (e) { data = { title: event.data.text() }; }
+  }
+  const title = data.title || 'Hariram Motors';
+  const options = {
+    body: data.body || 'You have a new update!',
+    icon: '/logo-192.jpg',
+    badge: '/logo-48.jpg',
+    data: { url: data.url || '/' }
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+      const url = event.notification.data.url || '/';
+      for (let i = 0; i < clientList.length; i++) {
+        const client = clientList[i];
+        if (client.url.includes(url) && 'focus' in client) return client.focus();
+      }
+      if (clients.openWindow) return clients.openWindow(url);
+    })
+  );
+});

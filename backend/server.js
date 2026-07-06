@@ -37,6 +37,7 @@ import siteSettingRoutes from './routes/siteSetting.routes.js';
 import uploadRoutes from './routes/upload.routes.js';
 import brandRoutes from './routes/brand.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
+import subscriptionRoutes from './routes/subscription.routes.js';
 
 // ── Initialize Express ──
 const app = express();
@@ -242,6 +243,7 @@ app.use('/api/site-settings', siteSettingRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/notifications', subscriptionRoutes);
 
 // ── 404 Handler ──
 app.use((req, res) => {

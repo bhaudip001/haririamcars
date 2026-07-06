@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import PageTransition from './PageTransition';
+import LiveTicker from './LiveTicker';
+import PushNotificationManager from './PushNotificationManager';
 
 export default function AppLayoutWrapper({ children }) {
   const pathname = usePathname();
@@ -23,7 +25,13 @@ export default function AppLayoutWrapper({ children }) {
 
   return (
     <>
-      {!isAdmin && <Navbar />}
+      <PushNotificationManager />
+      {!isAdmin && (
+        <>
+          <LiveTicker />
+          <Navbar />
+        </>
+      )}
       <main className={isAdmin ? "" : "min-h-screen"}>
         <PageTransition>{children}</PageTransition>
       </main>
