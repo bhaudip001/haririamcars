@@ -1,1 +1,0 @@
-self.addEventListener("fetch",a=>{let t=new URL(a.request.url);(t.searchParams.has("sw_ignore")||"res.cloudinary.com"===t.hostname&&t.pathname.includes("/video/"))&&a.stopImmediatePropagation(),(t.pathname.startsWith("/admin")||t.pathname.startsWith("/backend")||t.pathname.startsWith("/api")||t.pathname.startsWith("/catalog/"))&&a.stopImmediatePropagation()});
