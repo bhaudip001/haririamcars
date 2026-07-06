@@ -8,7 +8,7 @@ export const metadata = {
     url: 'https://www.hariramcars.com/contact',
     type: 'website',
     images: [{
-      url: '/logo.jpeg',
+      url: '/3.png',
       width: 1200,
       height: 630,
       alt: 'Contact Hariram Motors',
@@ -18,7 +18,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Contact Hariram Motors | Surat',
     description: 'Call, WhatsApp or visit us in Surat.',
-    images: ['/logo.jpeg'],
+    images: ['/3.png'],
   },
 };
 

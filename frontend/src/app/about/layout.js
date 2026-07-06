@@ -8,7 +8,7 @@ export const metadata = {
     url: 'https://www.hariramcars.com/about',
     type: 'website',
     images: [{
-      url: '/logo.jpeg',
+      url: '/3.png',
       width: 1200,
       height: 630,
       alt: 'About Hariram Motors',
@@ -18,7 +18,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'About Hariram Motors | Trusted Car Dealer in Surat',
     description: 'Learn about Hariram Motors (Hariram Cars) — Surat\'s most trusted pre-owned car dealer since 2020.',
-    images: ['/logo.jpeg'],
+    images: ['/3.png'],
   },
 };
 

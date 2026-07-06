@@ -10,7 +10,7 @@ export const metadata = {
     url: 'https://www.hariramcars.com/catalog',
     type: 'website',
     images: [{
-      url: '/logo.jpeg',
+      url: '/3.png',
       width: 1200,
       height: 630,
       alt: 'Browse Cars at Hariram Motors',
@@ -20,7 +20,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Browse Cars | Hariram Motors',
     description: '150+ certified cars. Filter by brand, budget, fuel.',
-    images: ['/logo.jpeg'],
+    images: ['/3.png'],
   },
 };
 

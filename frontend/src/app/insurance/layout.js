@@ -9,7 +9,7 @@ export const metadata = {
     url: 'https://www.hariramcars.com/insurance',
     type: 'website',
     images: [{
-      url: '/logo.jpeg',
+      url: '/3.png',
       width: 1200,
       height: 630,
       alt: 'Best Car Insurance in Surat',
@@ -19,7 +19,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Best Car Insurance in Surat | Hariram Motors',
     description: 'Get the best comprehensive and third-party car insurance quotes in Surat. Zero depreciation cover, cashless repairs at 5000+ garages.',
-    images: ['/logo.jpeg'],
+    images: ['/3.png'],
   },
 };
 
