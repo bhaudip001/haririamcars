@@ -24,7 +24,7 @@ export const metadata = {
     title: 'Hariram Cars | Top Car Dealer for Second-Hand Cars in Surat',
     description: 'Welcome to Hariram Motors (Hariram Cars). Buy or sell second-hand motors and certified pre-owned cars in Surat.',
     url: 'https://www.hariramcars.com/',
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
+    images: [{ url: '/logo.jpeg', width: 1200, height: 630 }],
   },
 };
 
