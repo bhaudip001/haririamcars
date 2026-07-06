@@ -40,7 +40,7 @@ export async function generateMetadata({ params }) {
           '/upload/',
           '/upload/w_1200,h_630,c_fill,q_auto,f_auto/'
         )
-      : '/3.png';
+      : '/logo-192.jpg';
 
     return {
       title,
