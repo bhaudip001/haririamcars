@@ -55,15 +55,6 @@ export default function LiveTicker() {
             <span className="text-[13px] sm:text-[15px] font-medium text-white/90">
               Hurry Up! This deal won't last long.
             </span>
-            <Link 
-              href={`/cars/${latestCar.slug}`} 
-              className="ml-4 sm:ml-6 bg-white text-[#6d28d9] px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-sm font-bold hover:bg-gray-100 transition-colors shadow-sm flex items-center gap-1 active:scale-95"
-            >
-              View Details
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
           </div>
         </div>
       </div>
