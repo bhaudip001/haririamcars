@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { api } from '@/lib/api';
+import api from '@/lib/api';
 
 export default function LiveTicker() {
   const [latestCar, setLatestCar] = useState(null);

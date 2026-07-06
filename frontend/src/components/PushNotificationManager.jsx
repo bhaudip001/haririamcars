@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { urlBase64ToUint8Array } from '@/lib/utils';
-import { api } from '@/lib/api';
+import api from '@/lib/api';
 
 export default function PushNotificationManager() {
   const [isSubscribed, setIsSubscribed] = useState(false);
