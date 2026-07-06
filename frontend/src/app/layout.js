@@ -106,7 +106,7 @@ export const metadata = {
     title: 'Hariram Motors | Used & pre-owned cars in Surat',
     description: 'Surat\'s most trusted destination for used & pre-owned cars.',
     images: [{
-      url: '/logo-192.jpg',
+      url: '/logo-512.jpg',
       alt: 'Hariram Motors — Verified Cars in Surat',
     }],
   },
@@ -114,7 +114,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Hariram Motors | Used & pre-owned cars in Surat',
     description: 'Buy or sell certified used & pre-owned cars in Surat.',
-    images: ['/logo-192.jpg'],
+    images: ['/logo-512.jpg'],
   },
   robots: {
     index: true,
@@ -138,10 +138,10 @@ export const metadata = {
       { url: '/logo-32.jpg', sizes: '32x32', type: 'image/jpeg' },
       { url: '/logo-48.jpg', sizes: '48x48', type: 'image/jpeg' },
       { url: '/logo-96.jpg', sizes: '96x96', type: 'image/jpeg' },
-      { url: '/logo-192.jpg', sizes: '192x192', type: 'image/jpeg' },
+      { url: '/logo-512.jpg', sizes: '192x192', type: 'image/jpeg' },
     ],
     shortcut: '/logo-48.jpg',
-    apple: '/logo-192.jpg',
+    apple: '/logo-512.jpg',
   },
 };
 

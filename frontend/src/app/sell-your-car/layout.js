@@ -9,7 +9,7 @@ export const metadata = {
     url: 'https://www.hariramcars.com/sell-your-car',
     type: 'website',
     images: [{
-      url: '/logo-192.jpg',
+      url: '/logo-512.jpg',
       alt: 'Sell your car in just 29 Minutes',
     }],
   },
@@ -17,7 +17,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Sell your car in just 29 Minutes in Surat | Hariram Motors',
     description: 'Sell your car in just 29 minutes! Hariram Motors offers the best market price for second-hand motors in Surat with instant payment and zero paperwork.',
-    images: ['/logo-192.jpg'],
+    images: ['/logo-512.jpg'],
   },
 };
 
