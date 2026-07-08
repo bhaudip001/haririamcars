@@ -14,6 +14,7 @@ export default function AdminInventoryPage() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [deleteModal, setDeleteModal] = useState({ isOpen: false, carId: null });
 
   const fetchCars = async (p = 1) => {
     setLoading(true);
@@ -29,7 +30,12 @@ export default function AdminInventoryPage() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchCars(); }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchCars(1);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search]);
 
   const handleShareCatalog = async () => {
     const text = `Hello! Check out our complete range of available verified cars here:\n${window.location.origin}/catalog`;
@@ -56,17 +62,22 @@ export default function AdminInventoryPage() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchCars(1);
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm('Delete this car permanently?')) return;
+  const confirmDelete = (id) => {
+    setDeleteModal({ isOpen: true, carId: id });
+  };
+
+  const handleDelete = async () => {
+    if (!deleteModal.carId) return;
     try {
-      await api.delete(`/cars/${id}`);
+      await api.delete(`/cars/${deleteModal.carId}`);
       toast.success('Car deleted');
+      setDeleteModal({ isOpen: false, carId: null });
       fetchCars(page);
-    } catch {
-      toast.error('Failed to delete');
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Failed to delete');
+      setDeleteModal({ isOpen: false, carId: null });
     }
   };
 
@@ -170,7 +181,7 @@ export default function AdminInventoryPage() {
                       <Link href={`/admin/inventory/edit/${car._id}`} className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[rgba(226,176,74,0.1)] rounded-lg transition-colors">
                         <Edit size={16} />
                       </Link>
-                      <button onClick={() => handleDelete(car._id)} className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-accent-red)] hover:bg-[rgba(248,113,113,0.1)] rounded-lg transition-colors">
+                      <button onClick={() => confirmDelete(car._id)} className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-accent-red)] hover:bg-[rgba(248,113,113,0.1)] rounded-lg transition-colors">
                         <Trash2 size={16} />
                       </button>
                     </div>
@@ -227,7 +238,7 @@ export default function AdminInventoryPage() {
                   <Link href={`/admin/inventory/edit/${car._id}`} className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[rgba(226,176,74,0.1)] rounded-lg transition-colors">
                     <Edit size={16} />
                   </Link>
-                  <button onClick={() => handleDelete(car._id)} className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-accent-red)] hover:bg-[rgba(248,113,113,0.1)] rounded-lg transition-colors">
+                  <button onClick={() => confirmDelete(car._id)} className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-accent-red)] hover:bg-[rgba(248,113,113,0.1)] rounded-lg transition-colors">
                     <Trash2 size={16} />
                   </button>
                 </div>
@@ -245,6 +256,29 @@ export default function AdminInventoryPage() {
               {i + 1}
             </button>
           ))}
+        </div>
+      )}
+      {/* Delete Confirmation Modal */}
+      {deleteModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-[var(--color-bg-dark)] border border-[var(--color-border)] rounded-xl p-6 max-w-sm w-full shadow-2xl">
+            <h3 className="text-lg font-bold mb-2">Delete Car</h3>
+            <p className="text-[var(--color-text-muted)] text-sm mb-6">Are you sure you want to delete this car permanently? This action cannot be undone.</p>
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={() => setDeleteModal({ isOpen: false, carId: null })}
+                className="btn-secondary !py-2 !px-4 !text-sm"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleDelete}
+                className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
