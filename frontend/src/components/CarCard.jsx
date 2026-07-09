@@ -8,6 +8,7 @@ import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateB
 
 export default function CarCard({ car, index = 0, priority = false }) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   if (!car) return null;
 
@@ -46,7 +47,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
 
           {/* Main Image - Now using object-contain to prevent cutting off */}
           <Image
-            src={getOptimizedImage(imageUrl, 600)}
+            src={imgError ? '/placeholder-car.svg' : getOptimizedImage(imageUrl, 600)}
             alt={title}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -54,6 +55,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
             placeholder="blur"
             blurDataURL={generateBlurPlaceholder()}
             onLoad={() => setIsLoaded(true)}
+            onError={() => { setImgError(true); setIsLoaded(true); }}
             className={`object-cover group-hover:scale-110 transition-all duration-700 ${isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}
           />
 

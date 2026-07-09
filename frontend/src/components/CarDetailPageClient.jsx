@@ -545,6 +545,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                       quality={95}
                       priority={isAdjacent}
                       onLoad={() => setLoadedImages(prev => ({ ...prev, [idx]: true }))}
+                      onError={() => setLoadedImages(prev => ({ ...prev, [idx]: true }))}
                     />
                   </div>
                 );
