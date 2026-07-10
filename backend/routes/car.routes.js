@@ -188,7 +188,7 @@ router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, as
         const payload = JSON.stringify({
           title: 'New Car Listed!',
           body: `${car.make} ${car.model} just listed. Check it out now!`,
-          url: `/cars/${car.slug}`
+          url: `/catalog/${car.slug}`
         });
 
         const notifications = subscriptions.map(sub => 

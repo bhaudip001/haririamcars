@@ -12,16 +12,6 @@ export default function AppLayoutWrapper({ children }) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin');
 
-  // Forcefully unregister any old Service Workers to clear stale caches
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (let registration of registrations) {
-          registration.unregister();
-        }
-      });
-    }
-  }, []);
 
   return (
     <>
