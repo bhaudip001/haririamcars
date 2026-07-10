@@ -405,7 +405,7 @@ export default function AddCar() {
       if (photos.length > 0) {
         toast.loading(`Preparing to upload ${photos.length} photos...`, { id: 'upload-toast' });
         const { default: imageCompression } = await import('browser-image-compression');
-        const options = { maxSizeMB: 5, maxWidthOrHeight: 2048, useWebWorker: true };
+        const options = { maxSizeMB: 1.5, maxWidthOrHeight: 1920, useWebWorker: true, initialQuality: 0.9 };
         
         const sigRes = await api.get('/upload/signature');
         const { signature, timestamp, api_key, cloud_name } = sigRes.data;
@@ -449,6 +449,7 @@ export default function AddCar() {
           uploadData.append('timestamp', timestamp);
           uploadData.append('signature', signature);
           uploadData.append('folder', 'hariram-motors/cars');
+          uploadData.append('transformation', 'w_1920,c_limit,q_auto:best,f_webp');
 
           const cloudinaryRes = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
             method: 'POST',

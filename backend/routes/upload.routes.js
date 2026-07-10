@@ -8,7 +8,11 @@ router.get('/signature', protect, adminOnly, (req, res) => {
   try {
     const timestamp = Math.round(new Date().getTime() / 1000);
     const signature = cloudinary.utils.api_sign_request(
-      { timestamp, folder: 'hariram-motors/cars' },
+      { 
+        timestamp, 
+        folder: 'hariram-motors/cars',
+        transformation: 'w_1920,c_limit,q_auto:best,f_webp'
+      },
       process.env.CLOUDINARY_API_SECRET
     );
     
