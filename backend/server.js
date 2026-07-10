@@ -48,6 +48,7 @@ app.set('trust proxy', 1);
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'https://www.hariramcars.com',
+  'https://hariramcars.com',
   'http://localhost:3000',
   'http://localhost:3001',
 ].filter(Boolean);
@@ -57,6 +58,7 @@ app.use(
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) return callback(null, true);
+      if (origin.endsWith('.vercel.app')) return callback(null, true);
       console.warn(`CORS blocked request from: ${origin}`);
       const error = new Error(`CORS blocked: ${origin} not allowed`);
       error.statusCode = 403;
