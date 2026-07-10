@@ -10,7 +10,7 @@ export default async function CarDetailLayout({ children, params }) {
   
   let car = null;
   try {
-    const res = await fetch(`${baseUrl}/cars/${slug}`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${baseUrl}/cars/${slug}`, { cache: 'no-store' });
     if (res.ok) {
       const responseData = await res.json();
       car = responseData.data || responseData;

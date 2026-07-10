@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import CarDetailPageClient from '@/components/CarDetailPageClient';
 import { extractImageUrl } from '@/lib/utils';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
 
   try {
     const res = await fetch(`${baseUrl}/cars/${slug}`, {
-      next: { revalidate: 60 },
+      cache: 'no-store'
     });
     if (!res.ok) return { title: 'Car Not Found' };
 
@@ -78,19 +78,19 @@ async function getCarData(slug) {
     baseUrl = 'https://www.hariramcars.com/backend/server.js?path=api';
   }
   try {
-    const res = await fetch(`${baseUrl}/cars/${slug}`, { next: { revalidate: 60 } });
+    const res = await fetch(`${baseUrl}/cars/${slug}`, { cache: 'no-store' });
     if (!res.ok) return { car: null, similarCars: [] };
     
     const responseData = await res.json();
     const car = responseData.data || responseData;
     
     // Fetch similar cars
-    let similarRes = await fetch(`${baseUrl}/cars?make=${car.make}&status=available&limit=4`, { next: { revalidate: 60 } });
+    let similarRes = await fetch(`${baseUrl}/cars?make=${car.make}&status=available&limit=4`, { cache: 'no-store' });
     let similarData = similarRes.ok ? await similarRes.json() : { cars: [] };
     let filtered = (similarData.cars || []).filter(c => c._id !== car._id);
     
     if (filtered.length === 0) {
-      similarRes = await fetch(`${baseUrl}/cars?status=available&limit=4`, { next: { revalidate: 60 } });
+      similarRes = await fetch(`${baseUrl}/cars?status=available&limit=4`, { cache: 'no-store' });
       similarData = similarRes.ok ? await similarRes.json() : { cars: [] };
       filtered = (similarData.cars || []).filter(c => c._id !== car._id);
     }

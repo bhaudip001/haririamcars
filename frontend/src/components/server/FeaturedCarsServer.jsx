@@ -11,7 +11,7 @@ async function getFeaturedCars() {
 
   try {
     const res = await fetch(`${baseUrl}/cars?limit=8&status=available&featured=true`, {
-      next: { tags: ['cars'], revalidate: 300 }
+      cache: 'no-store'
     });
     if (!res.ok) return [];
     const data = await res.json();

@@ -9,7 +9,7 @@ async function getBanners() {
   
   try {
     const res = await fetch(`${baseUrl}/promo-banners?active=true`, {
-      next: { tags: ['banners'], revalidate: 300 }
+      cache: 'no-store'
     });
     if (!res.ok) return [];
     return await res.json();
