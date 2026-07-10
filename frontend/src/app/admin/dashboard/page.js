@@ -5,7 +5,7 @@ import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalL
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
-import { extractImageUrl, getOptimizedImage } from '@/lib/utils';
+import { extractImageUrl } from '@/lib/utils';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({ cars: 0, messages: 0, unread: 0, sellRequests: 0, customers: 0 });
@@ -54,7 +54,7 @@ export default function AdminDashboard() {
         if (analyticsRes.status === 'fulfilled') {
           setTrafficData(analyticsRes.value.data || []);
         }
-      } catch {}
+      } catch { }
       setLoading(false);
     };
     fetch();
@@ -95,12 +95,12 @@ export default function AdminDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-500">
-      
+
       {/* Verified Header */}
       <div className="relative overflow-hidden rounded-2xl p-6 bg-gradient-to-r from-[#1a1a2e] to-[#0d0d16] border border-white/5 shadow-2xl">
         <div className="absolute top-0 right-0 w-48 h-48 bg-purple-500/20 blur-[80px] rounded-full pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-pink-500/10 blur-[60px] rounded-full pointer-events-none"></div>
-        
+
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 tracking-tight" style={{ fontFamily: 'var(--font-outfit)' }}>
@@ -167,7 +167,7 @@ export default function AdminDashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
                 <XAxis dataKey="name" stroke="rgba(255,255,255,0.2)" fontSize={12} tickLine={false} axisLine={false} />
                 <YAxis stroke="rgba(255,255,255,0.2)" fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: '#1a1a24', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff' }}
                   itemStyle={{ color: '#fff', fontSize: '12px' }}
                 />
@@ -196,27 +196,27 @@ export default function AdminDashboard() {
         <div className="p-0 sm:p-1">
           {loading ? (
             <div className="p-4 space-y-3">
-              {[1,2,3].map(i => <div key={i} className="h-16 bg-white/5 rounded-xl animate-pulse" />)}
+              {[1, 2, 3].map(i => <div key={i} className="h-16 bg-white/5 rounded-xl animate-pulse" />)}
             </div>
           ) : featuredCars.length > 0 ? (
             <div className="flex flex-col">
               {featuredCars.map((car) => (
                 <div key={car._id} className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 mx-2 my-1 rounded-xl hover:bg-white/[0.03] transition-colors border border-transparent hover:border-white/5">
-                  
+
                   <div className="flex flex-row items-center gap-3 w-full sm:w-auto flex-1 min-w-0">
                     {/* Thumbnail */}
                     <div className="w-16 h-12 sm:w-24 sm:h-14 bg-[#1a1a24] rounded-lg overflow-hidden relative shrink-0 flex items-center justify-center border border-white/5">
                       <Car size={18} className="text-gray-600 absolute" />
                       {car.images?.[0] && (
-                        <img 
-                          src={getOptimizedImage(extractImageUrl(car.images[0]), 200)} 
-                          alt="" 
-                          className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500" 
+                        <img
+                          src={extractImageUrl(car.images[0])}
+                          alt=""
+                          className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500"
                           onError={(e) => { e.target.style.opacity = '0'; }}
                         />
                       )}
                     </div>
-                    
+
                     {/* Info */}
                     <div className="flex-1 min-w-0 flex flex-col justify-center">
                       <h3 className="text-sm font-bold text-white truncate group-hover:text-purple-400 transition-colors">
@@ -236,8 +236,8 @@ export default function AdminDashboard() {
 
                   {/* Actions */}
                   <div className="w-full sm:w-auto flex items-center justify-end sm:opacity-0 group-hover:opacity-100 transition-opacity gap-1.5 border-t border-white/5 sm:border-t-0 pt-2 sm:pt-0">
-                    <a 
-                      href={`/catalog/${car.slug}`} 
+                    <a
+                      href={`/catalog/${car.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400 border border-transparent transition-all"
@@ -245,21 +245,21 @@ export default function AdminDashboard() {
                     >
                       <Eye size={14} />
                     </a>
-                    <button 
+                    <button
                       onClick={() => handleRemoveFromFeatured(car._id)}
                       className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg bg-white/5 hover:bg-orange-500/20 text-gray-400 hover:text-orange-400 border border-transparent transition-all"
                       title="Remove from homescreen"
                     >
                       <Home size={14} />
                     </button>
-                    <a 
-                      href={`/admin/inventory/edit/${car._id}`} 
+                    <a
+                      href={`/admin/inventory/edit/${car._id}`}
                       className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg bg-white/5 hover:bg-blue-500/20 text-gray-400 hover:text-blue-400 border border-transparent transition-all"
                       title="Edit Vehicle"
                     >
                       <Edit size={14} />
                     </a>
-                    <button 
+                    <button
                       onClick={() => handleDelete(car._id)}
                       className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 border border-transparent transition-all"
                       title="Delete Vehicle"
@@ -282,7 +282,7 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
-      
+
     </div>
   );
 }

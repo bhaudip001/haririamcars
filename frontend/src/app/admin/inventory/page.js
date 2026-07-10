@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Plus, Search, Trash2, Edit, Eye, Share2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
-import { formatPrice, extractImageUrl, getOptimizedImage } from '@/lib/utils';
+import { formatPrice, extractImageUrl } from '@/lib/utils';
 
 export default function AdminInventoryPage() {
   const [cars, setCars] = useState([]);
@@ -39,7 +39,7 @@ export default function AdminInventoryPage() {
 
   const handleShareCatalog = async () => {
     const text = `Hello! Check out our complete range of available verified cars here:\n${window.location.origin}/catalog`;
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -51,7 +51,7 @@ export default function AdminInventoryPage() {
         console.log('Error sharing', err);
       }
     }
-    
+
     try {
       await navigator.clipboard.writeText(text);
       toast.success('Catalog link copied to clipboard!');
@@ -148,10 +148,10 @@ export default function AdminInventoryPage() {
                           <span className="text-[10px]">No img</span>
                         </div>
                         {car.images && car.images.length > 0 && (
-                          <img 
-                            src={getOptimizedImage(extractImageUrl(car.images[0]), 200)}
-                            alt="" 
-                            className="w-full h-full object-cover relative z-10" 
+                          <img
+                            src={extractImageUrl(car.images[0])}
+                            alt=""
+                            className="w-full h-full object-cover relative z-10"
                             onError={(e) => { e.target.style.opacity = '0'; }}
                           />
                         )}
@@ -204,10 +204,10 @@ export default function AdminInventoryPage() {
                     <span className="text-[10px]">No img</span>
                   </div>
                   {car.images?.[0] && (
-                    <img 
-                      src={getOptimizedImage(extractImageUrl(car.images[0]), 200)}
-                      alt="" 
-                      className="w-full h-full object-cover relative z-10" 
+                    <img
+                      src={extractImageUrl(car.images[0])}
+                      alt=""
+                      className="w-full h-full object-cover relative z-10"
                       onError={(e) => { e.target.style.opacity = '0'; }}
                     />
                   )}
@@ -217,7 +217,7 @@ export default function AdminInventoryPage() {
                   <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{car.kms?.toLocaleString()} km • {car.fuelType}</p>
                 </div>
               </div>
-              
+
               <div className="flex justify-between items-center border-t border-[var(--color-border)] pt-3">
                 <div className="flex items-center gap-3">
                   <span className="text-[var(--color-primary)] font-medium text-sm">
@@ -265,13 +265,13 @@ export default function AdminInventoryPage() {
             <h3 className="text-lg font-bold mb-2">Delete Car</h3>
             <p className="text-[var(--color-text-muted)] text-sm mb-6">Are you sure you want to delete this car permanently? This action cannot be undone.</p>
             <div className="flex justify-end gap-3">
-              <button 
+              <button
                 onClick={() => setDeleteModal({ isOpen: false, carId: null })}
                 className="btn-secondary !py-2 !px-4 !text-sm"
               >
                 Cancel
               </button>
-              <button 
+              <button
                 onClick={handleDelete}
                 className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors"
               >

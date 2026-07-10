@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, Upload, Link as LinkIcon, Image as ImageIcon, X } from 'lucide-react';
-import { getOptimizedImage } from '@/lib/utils';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
@@ -21,7 +20,7 @@ export default function AdminBannersPage() {
     try {
       const res = await api.get('/promo-banners/all');
       setBanners(res.data || []);
-    } catch {}
+    } catch { }
     setLoading(false);
   };
 
@@ -34,7 +33,7 @@ export default function AdminBannersPage() {
     try {
       const { default: imageCompression } = await import('browser-image-compression');
       const options = { maxSizeMB: 1.5, maxWidthOrHeight: 1920, useWebWorker: true };
-      
+
       const compressedDesktop = await imageCompression(desktopImage, options);
       const compressedMobile = await imageCompression(mobileImage, options);
 
@@ -43,7 +42,7 @@ export default function AdminBannersPage() {
       if (link) fd.append('link', link);
       fd.append('desktopImage', compressedDesktop, desktopImage.name || 'desktop.jpg');
       fd.append('mobileImage', compressedMobile, mobileImage.name || 'mobile.jpg');
-      
+
       await api.post('/promo-banners', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
       toast.success('Banner added successfully!');
       setTitle(''); setLink(''); setDesktopImage(null); setMobileImage(null);
@@ -58,7 +57,7 @@ export default function AdminBannersPage() {
       await api.put(`/promo-banners/${id}`, { isActive: !isActive });
       toast.success(isActive ? 'Banner deactivated' : 'Banner activated');
       fetch();
-    } catch {}
+    } catch { }
   };
 
   const handleDelete = async (id) => {
@@ -67,7 +66,7 @@ export default function AdminBannersPage() {
       await api.delete(`/promo-banners/${id}`);
       toast.success('Banner deleted');
       fetch();
-    } catch {}
+    } catch { }
   };
 
   const ImagePreview = ({ file, label, onClear, onChange }) => (
@@ -105,7 +104,7 @@ export default function AdminBannersPage() {
       {showForm && (
         <form onSubmit={handleSubmit} className="glass-card p-6 mb-8 animate-in fade-in slide-in-from-top-4 duration-300">
           <h2 className="text-xl font-bold text-white mb-6">Create New Banner</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div className="space-y-4">
               <div>
@@ -147,17 +146,17 @@ export default function AdminBannersPage() {
         ) : banners.length > 0 ? (
           banners.map((b) => (
             <div key={b._id} className="glass-card flex flex-col overflow-hidden group hover:border-purple-500/30 transition-all duration-300">
-              
+
               {/* Image Previews */}
               <div className="flex w-full h-40 bg-[#0a0a10] relative">
                 {/* Desktop View (takes up 2/3) */}
                 <div className="w-2/3 h-full relative border-r border-white/10">
-                  <img src={getOptimizedImage(b.desktopImageUrl, 400)} alt={b.title || 'Desktop'} className="w-full h-full object-cover" />
+                  <img src={b.desktopImageUrl} alt={b.title || 'Desktop'} className="w-full h-full object-cover" />
                   <div className="absolute top-2 left-2 bg-black/60 backdrop-blur text-[10px] uppercase font-bold px-2 py-1 rounded text-white tracking-wider z-10">Desktop</div>
                 </div>
                 {/* Mobile View (takes up 1/3) */}
                 <div className="w-1/3 h-full relative bg-[#1a1a24]">
-                  <img src={getOptimizedImage(b.mobileImageUrl, 400)} alt={b.title || 'Mobile'} className="w-full h-full object-cover" />
+                  <img src={b.mobileImageUrl} alt={b.title || 'Mobile'} className="w-full h-full object-cover" />
                   <div className="absolute top-2 left-2 bg-black/60 backdrop-blur text-[10px] uppercase font-bold px-2 py-1 rounded text-white tracking-wider z-10">Mobile</div>
                 </div>
 

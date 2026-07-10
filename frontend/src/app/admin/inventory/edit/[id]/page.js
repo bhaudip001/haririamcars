@@ -19,7 +19,6 @@ import {
 import { useForm, useFieldArray } from 'react-hook-form';
 import Link from 'next/link';
 import api from '@/lib/api';
-import { getOptimizedImage } from '@/lib/utils';
 
 // Feature Manager Component for Key-Value pairs
 function FeatureManager({ control, register, errors }) {
@@ -73,9 +72,9 @@ function FeatureManager({ control, register, errors }) {
           </div>
         ))}
       </div>
-      
+
       {fields.length === 0 && (
-        <div 
+        <div
           onClick={() => append({ key: '', value: '' })}
           className="py-8 border-2 border-dashed border-gray-100 rounded-2xl flex flex-col items-center justify-center text-text-muted/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.01] cursor-pointer transition-all"
         >
@@ -219,8 +218,8 @@ function DropZone({
           flex flex-col items-center justify-center text-center
           transition-all duration-200
           ${isDragging
-              ? 'border-primary bg-primary/5 scale-[1.01]'
-              : 'border-gray-200 bg-background hover:border-primary/30 hover:bg-primary/[0.02]'
+            ? 'border-primary bg-primary/5 scale-[1.01]'
+            : 'border-gray-200 bg-background hover:border-primary/30 hover:bg-primary/[0.02]'
           }
         `}
       >
@@ -247,13 +246,13 @@ function DropZone({
       {/* File Preview Grid */}
       {(existingImages.length > 0 || files.length > 0) && (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-3">
-          
+
           {/* Existing Images */}
           {existingImages.map((img, index) => {
             const isMain = index === 0;
             return (
               <div key={`existing-${index}`} className="relative group bg-background rounded-xl overflow-hidden border border-gray-100 aspect-[4/3]">
-                <img src={getOptimizedImage(img.url, 400)} alt="Existing" className="w-full h-full object-cover" />
+                <img src={img.url} alt="Existing" className="w-full h-full object-cover" />
                 {isMain ? (
                   <div className="absolute top-2 left-2 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">MAIN</div>
                 ) : (
@@ -288,11 +287,11 @@ function DropZone({
             <div key={`new-${index}`} className="relative group bg-background rounded-xl overflow-hidden border border-gray-100 aspect-[4/3]">
               <img src={URL.createObjectURL(file)} alt={file.name} className="w-full h-full object-cover" />
               {existingImages.length === 0 && index === 0 ? (
-                 <div className="absolute top-2 left-2 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">MAIN</div>
+                <div className="absolute top-2 left-2 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">MAIN</div>
               ) : (
-                 <div className="absolute top-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">NEW</div>
+                <div className="absolute top-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">NEW</div>
               )}
-              
+
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
                 <div className="flex items-center gap-1">
                   {onMovePhotoLeft && index > 0 && (
@@ -326,7 +325,7 @@ export default function EditCarPage() {
   const params = useParams();
   const { id } = params;
   const router = useRouter();
-  
+
   const {
     register,
     handleSubmit,
@@ -380,26 +379,26 @@ export default function EditCarPage() {
         const res = await api.get(`/cars/${id}`, { signal: abortController.signal });
         const data = res.data;
         const badges = data.badges || [];
-        
+
         reset({
-          make: data.make || '', model: data.model || '', 
+          make: data.make || '', model: data.model || '',
           manufacturingYear: data.year || data.manufacturingYear || '',
-          registerYear: data.registerYear || '', price: data.price || '', 
-          kmDriven: data.kms || '', fuelType: data.fuelType || '', 
+          registerYear: data.registerYear || '', price: data.price || '',
+          kmDriven: data.kms || '', fuelType: data.fuelType || '',
           transmission: data.transmission || '', ownership: data.owner || '', insurance: data.insurance || '',
-          bodyType: data.bodyType || '', variant: data.variant || '', 
-          color: data.color || '', registration: data.registration || '', 
+          bodyType: data.bodyType || '', variant: data.variant || '',
+          color: data.color || '', registration: data.registration || '',
           description: data.description || '',
-          isCertified: badges.includes('Certified'), 
+          isCertified: badges.includes('Certified'),
           isPetipack: badges.includes('Peti-pack'),
-          validVimo: badges.includes('Valid Vimo'), 
+          validVimo: badges.includes('Valid Vimo'),
           loanAvailable: data.loanAvailable === 'true' || data.loanAvailable === true,
           isKmGenuine: data.isKmGenuine === 'true' || data.isKmGenuine === true,
-          features: Array.isArray(data.features) && data.features.length > 0 
-            ? data.features.map(f => typeof f === 'string' ? { key: f, value: '' } : f) 
+          features: Array.isArray(data.features) && data.features.length > 0
+            ? data.features.map(f => typeof f === 'string' ? { key: f, value: '' } : f)
             : [{ key: '', value: '' }],
         });
-        
+
         if (data.images && data.images.length > 0) {
           setExistingImages(data.images);
         }
@@ -423,7 +422,7 @@ export default function EditCarPage() {
       formData.append('model', data.model);
       if (data.manufacturingYear) {
         formData.append('manufacturingYear', data.manufacturingYear);
-        formData.append('year', data.manufacturingYear); 
+        formData.append('year', data.manufacturingYear);
       }
       if (data.registerYear) formData.append('registerYear', data.registerYear);
       if (data.price) formData.append('price', String(data.price).replace(/,/g, ''));
@@ -438,18 +437,18 @@ export default function EditCarPage() {
       formData.append('registration', data.registration);
       formData.append('description', data.description);
       formData.append('status', 'available');
-      
+
       const badges = [];
       if (data.isCertified) badges.push('Certified');
       if (data.isPetipack) badges.push('Peti-pack');
       if (data.validVimo) badges.push('Valid Vimo');
-      
+
       let uploadedImages = [];
       if (photos.length > 0) {
         toast.loading(`Preparing to upload ${photos.length} photos...`, { id: 'upload-toast' });
         const { default: imageCompression } = await import('browser-image-compression');
         const options = { maxSizeMB: 5, maxWidthOrHeight: 2048, useWebWorker: true };
-        
+
         const sigRes = await api.get('/upload/signature');
         const { signature, timestamp, api_key, cloud_name } = sigRes.data;
 
@@ -517,7 +516,7 @@ export default function EditCarPage() {
 
       if (existingImages.length === 0 && uploadedImages.length === 0) {
         toast.error('Please ensure the car has at least one image.');
-        return; 
+        return;
       }
 
       const payload = {
@@ -571,7 +570,7 @@ export default function EditCarPage() {
     setPhotos((prev) => [...prev, ...newFiles]);
   };
   const removePhoto = (index) => setPhotos((prev) => prev.filter((_, i) => i !== index));
-  
+
   const removeExistingPhoto = (index) => {
     const imageToRemove = existingImages[index];
     if (imageToRemove?.publicId) {
@@ -675,7 +674,7 @@ export default function EditCarPage() {
                 options={modelsForSelectedMake}
               />
             ) : (
-               <FormSelect
+              <FormSelect
                 label="Model"
                 register={register('model', { required: 'Model is required' })}
                 error={errors.model}
@@ -686,7 +685,7 @@ export default function EditCarPage() {
             <FormInput label="Mfg. Year" type="number" register={register('manufacturingYear', { min: { value: 1990, message: 'Invalid year' } })} error={errors.manufacturingYear} placeholder="e.g. 2022" />
             <FormInput label="Reg. Year" type="number" register={register('registerYear', { min: { value: 1990, message: 'Invalid year' } })} error={errors.registerYear} placeholder="e.g. 2023" />
             <FormInput label="Price" type="text" register={register('price', { validate: v => !v || !isNaN(Number(String(v).replace(/,/g, ''))) || 'Invalid price' })} error={errors.price} placeholder="e.g. 5,85,000" prefix="₹" />
-            
+
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="font-body text-sm font-semibold text-text">KMs Driven</label>
@@ -712,7 +711,7 @@ export default function EditCarPage() {
             <FormInput label="Color" register={register('color')} error={errors.color} placeholder="e.g. Polar White" />
             <FormInput label="Registration" register={register('registration')} error={errors.registration} placeholder="e.g. GJ-05" />
           </div>
-          
+
           <div className="grid grid-cols-1 gap-5 mt-5">
             <FormTextarea label="Description" register={register('description')} error={errors.description} placeholder="Detailed description of the car..." rows={4} />
           </div>

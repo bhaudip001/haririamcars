@@ -69,7 +69,7 @@ const uploadToCloudinary = async (buffer, folder = 'hariram-motors') => {
         public_id: uniqueId,
         resource_type: 'image',
         transformation: [
-          { width: 1920, crop: 'limit', quality: 'auto', fetch_format: 'auto' },
+          { quality: 'auto', fetch_format: 'auto' },
           { strip_exif: true },  // Remove EXIF data (privacy)
         ],
         allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
