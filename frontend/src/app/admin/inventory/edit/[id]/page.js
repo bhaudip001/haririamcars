@@ -19,6 +19,7 @@ import {
 import { useForm, useFieldArray } from 'react-hook-form';
 import Link from 'next/link';
 import api from '@/lib/api';
+import { getOptimizedImage } from '@/lib/utils';
 
 // Feature Manager Component for Key-Value pairs
 function FeatureManager({ control, register, errors }) {
@@ -252,7 +253,7 @@ function DropZone({
             const isMain = index === 0;
             return (
               <div key={`existing-${index}`} className="relative group bg-background rounded-xl overflow-hidden border border-gray-100 aspect-[4/3]">
-                <img src={img.url} alt="Existing" className="w-full h-full object-cover" />
+                <img src={getOptimizedImage(img.url, 400)} alt="Existing" className="w-full h-full object-cover" />
                 {isMain ? (
                   <div className="absolute top-2 left-2 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">MAIN</div>
                 ) : (

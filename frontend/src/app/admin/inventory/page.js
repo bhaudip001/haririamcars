@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Plus, Search, Trash2, Edit, Eye, Share2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
-import { formatPrice, extractImageUrl } from '@/lib/utils';
+import { formatPrice, extractImageUrl, getOptimizedImage } from '@/lib/utils';
 
 export default function AdminInventoryPage() {
   const [cars, setCars] = useState([]);
@@ -149,7 +149,7 @@ export default function AdminInventoryPage() {
                         </div>
                         {car.images && car.images.length > 0 && (
                           <img
-                            src={extractImageUrl(car.images[0])}
+                            src={getOptimizedImage(extractImageUrl(car.images[0]), 200)}
                             alt=""
                             className="w-full h-full object-cover relative z-10"
                             onError={(e) => { e.target.style.opacity = '0'; }}
@@ -205,7 +205,7 @@ export default function AdminInventoryPage() {
                   </div>
                   {car.images?.[0] && (
                     <img
-                      src={extractImageUrl(car.images[0])}
+                      src={getOptimizedImage(extractImageUrl(car.images[0]), 200)}
                       alt=""
                       className="w-full h-full object-cover relative z-10"
                       onError={(e) => { e.target.style.opacity = '0'; }}

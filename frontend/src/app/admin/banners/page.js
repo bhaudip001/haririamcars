@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, Upload, Link as LinkIcon, Image as ImageIcon, X } from 'lucide-react';
+import { getOptimizedImage } from '@/lib/utils';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
@@ -151,12 +152,12 @@ export default function AdminBannersPage() {
               <div className="flex w-full h-40 bg-[#0a0a10] relative">
                 {/* Desktop View (takes up 2/3) */}
                 <div className="w-2/3 h-full relative border-r border-white/10">
-                  <img src={b.desktopImageUrl} alt={b.title || 'Desktop'} className="w-full h-full object-cover" />
+                  <img src={getOptimizedImage(b.desktopImageUrl, 400)} alt={b.title || 'Desktop'} className="w-full h-full object-cover" />
                   <div className="absolute top-2 left-2 bg-black/60 backdrop-blur text-[10px] uppercase font-bold px-2 py-1 rounded text-white tracking-wider z-10">Desktop</div>
                 </div>
                 {/* Mobile View (takes up 1/3) */}
                 <div className="w-1/3 h-full relative bg-[#1a1a24]">
-                  <img src={b.mobileImageUrl} alt={b.title || 'Mobile'} className="w-full h-full object-cover" />
+                  <img src={getOptimizedImage(b.mobileImageUrl, 400)} alt={b.title || 'Mobile'} className="w-full h-full object-cover" />
                   <div className="absolute top-2 left-2 bg-black/60 backdrop-blur text-[10px] uppercase font-bold px-2 py-1 rounded text-white tracking-wider z-10">Mobile</div>
                 </div>
 
