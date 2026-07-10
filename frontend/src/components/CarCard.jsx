@@ -36,25 +36,36 @@ export default function CarCard({ car, index = 0, priority = false }) {
       try {
         let fileArray = [];
         
-        // Try to fetch the main image to share it natively as a real photo
-        if (imageUrl) {
-          const loadingToast = toast.loading('Preparing HD Photo...', {
-            style: { borderRadius: '10px', background: '#333', color: '#fff' }
-          });
-          try {
-            // Fetch a high-quality version of the image
-            const response = await fetch(getOptimizedImage(imageUrl, 800));
-            const blob = await response.blob();
-            const file = new File([blob], `${car.slug}.jpg`, { type: blob.type || 'image/jpeg' });
-            
-            // Check if the browser supports sharing this file
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-              fileArray = [file];
+        // Try to fetch all images to share them natively as real photos
+        if (images && images.length > 0) {
+          const validImageUrls = images.map(img => extractImageUrl(img)).filter(url => url);
+          
+          if (validImageUrls.length > 0) {
+            const loadingToast = toast.loading(`Preparing ${validImageUrls.length} HD Photos...`, {
+              style: { borderRadius: '10px', background: '#333', color: '#fff' }
+            });
+            try {
+              // Fetch all images concurrently
+              const fetchPromises = validImageUrls.map(async (url, idx) => {
+                const response = await fetch(getOptimizedImage(url, 800));
+                const blob = await response.blob();
+                return new File([blob], `${car.slug}-${idx + 1}.jpg`, { type: blob.type || 'image/jpeg' });
+              });
+              
+              const fetchedFiles = await Promise.all(fetchPromises);
+              
+              // Check if the browser supports sharing this array of files
+              if (navigator.canShare && navigator.canShare({ files: fetchedFiles })) {
+                fileArray = fetchedFiles;
+              } else if (fetchedFiles.length > 0 && navigator.canShare && navigator.canShare({ files: [fetchedFiles[0]] })) {
+                // Fallback: If it rejects multiple files, try to share just the first one
+                fileArray = [fetchedFiles[0]];
+              }
+            } catch (fetchErr) {
+              console.error('Failed to fetch images for sharing:', fetchErr);
+            } finally {
+              toast.dismiss(loadingToast);
             }
-          } catch (fetchErr) {
-            console.error('Failed to fetch image for sharing:', fetchErr);
-          } finally {
-            toast.dismiss(loadingToast);
           }
         }
 
