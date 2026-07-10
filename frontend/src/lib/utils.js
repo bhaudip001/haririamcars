@@ -38,13 +38,45 @@ export function getCarInquiryLink(car, phone) {
   return getWhatsAppLink(phone, message);
 }
 
+// Extract Image URL safely from various formats
+export function extractImageUrl(img) {
+  if (!img) return null;
+  if (typeof img === 'string') {
+    // Check if it's a JSON string by mistake
+    if (img.startsWith('{') && img.includes('url')) {
+      try {
+        const parsed = JSON.parse(img);
+        return parsed.url || parsed.secure_url || null;
+      } catch (e) {
+        return img;
+      }
+    }
+    return img;
+  }
+  if (typeof img === 'object') {
+    return img.url || img.secure_url || img.src || null;
+  }
+  return null;
+}
+
 // Get Cloudinary optimized URL
 export function getOptimizedImage(url, width = 800) {
-  if (!url || typeof url !== 'string') return '/placeholder-car.svg';
-  if (url.includes('cloudinary.com')) {
-    return url.replace('/upload/', `/upload/w_${width},q_auto,f_auto/`);
+  let safeUrl = extractImageUrl(url);
+  if (!safeUrl || typeof safeUrl !== 'string') return '/placeholder-car.svg';
+  
+  // Ensure HTTPS for Next.js Image component
+  if (safeUrl.startsWith('http://')) {
+    safeUrl = safeUrl.replace('http://', 'https://');
   }
-  return url;
+
+  if (safeUrl.includes('cloudinary.com')) {
+    // Avoid double transforming if already transformed
+    if (safeUrl.includes('/upload/w_') || safeUrl.includes('/upload/q_') || safeUrl.includes('/upload/f_')) {
+      return safeUrl;
+    }
+    return safeUrl.replace('/upload/', `/upload/w_${width},q_auto,f_auto/`);
+  }
+  return safeUrl;
 }
 
 // Generate blur data URL for Next.js Image

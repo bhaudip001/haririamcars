@@ -1,3 +1,4 @@
+import { extractImageUrl } from '@/lib/utils';
 
 export default async function CarDetailLayout({ children, params }) {
   const resolvedParams = await params;
@@ -61,7 +62,7 @@ export default async function CarDetailLayout({ children, params }) {
                   "name": "Hariram Motors"
                 }
               },
-              "image": car.images?.[0]?.url || '',
+              "image": car.images?.[0] ? extractImageUrl(car.images[0]) : '',
               "url": `https://www.hariramcars.com/catalog/${slug}`
             }).replace(/</g, '\\u003c')
           }}

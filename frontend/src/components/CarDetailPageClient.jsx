@@ -11,7 +11,7 @@ import {
   IconArrowRight, IconX, IconChevronLeft, IconChevronRight
 } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
-import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder } from '@/lib/utils';
+import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder, extractImageUrl } from '@/lib/utils';
 import { staggerContainer, fadeInLeft } from '@/lib/animations';
 import CarCard from '@/components/CarCard';
 import dynamic from 'next/dynamic';
@@ -222,7 +222,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                       return (
                         <Image
                           key={idx}
-                          src={getOptimizedImage(img.url, 1200)}
+                          src={getOptimizedImage(extractImageUrl(img), 1200)}
                           alt={`${title} ${idx + 1}`}
                           fill
                           placeholder="blur"
@@ -263,7 +263,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                       onClick={() => setActiveImageIdx(idx)}
                       className={`shrink-0 w-32 aspect-video rounded-xl overflow-hidden border-2 transition-all duration-300 snap-start relative ${activeImageIdx === idx ? 'border-purple-500 opacity-100 shadow-[0_0_15px_rgba(168,85,247,0.4)] scale-[0.98]' : 'border-transparent opacity-70 hover:opacity-100'}`}
                     >
-                      <Image src={getOptimizedImage(img.url, 300)} alt={`${title} ${idx + 1}`} fill sizes="(max-width: 768px) 33vw, 20vw" placeholder="blur" blurDataURL={generateBlurPlaceholder()} className="object-cover" />
+                      <Image src={getOptimizedImage(extractImageUrl(img), 300)} alt={`${title} ${idx + 1}`} fill sizes="(max-width: 768px) 33vw, 20vw" placeholder="blur" blurDataURL={generateBlurPlaceholder()} className="object-cover" />
                     </button>
                   ))}
                 </div>
@@ -536,7 +536,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                       </div>
                     )}
                     <Image
-                      src={getOptimizedImage(img.url, 1920)}
+                      src={getOptimizedImage(extractImageUrl(img), 1920)}
                       alt={`${title} fullscreen ${idx + 1}`}
                       fill
                       placeholder="blur"

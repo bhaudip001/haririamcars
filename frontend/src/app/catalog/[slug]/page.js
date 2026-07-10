@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import CarDetailPageClient from '@/components/CarDetailPageClient';
+import { extractImageUrl } from '@/lib/utils';
 
 export const revalidate = 60;
 
@@ -35,8 +36,9 @@ export async function generateMetadata({ params }) {
     const title = `${name} for Sale in Surat`;
     const description = car.description
       || `Buy ${name}${price ? ` at ${price}` : ''}${km ? `, ${km} driven` : ''}, ${car.fuelType || ''} at Hariram Motors, Surat. Certified, documented, best price.`;
-    const image = car.images?.[0]?.url
-      ? car.images[0].url.replace(
+    const extractedImg = car.images?.[0] ? extractImageUrl(car.images[0]) : null;
+    const image = extractedImg
+      ? extractedImg.replace(
           '/upload/',
           '/upload/w_1200,h_630,c_fill,q_auto,f_auto/'
         )
@@ -113,7 +115,7 @@ export default async function CarDetailPageServer({ params }) {
     '@context': 'https://schema.org',
     '@type': 'Vehicle',
     name: car.title || `${car.year} ${car.make} ${car.model}`,
-    image: car.images?.[0]?.url || 'https://www.hariramcars.com/logo.jpeg',
+    image: (car.images?.[0] ? extractImageUrl(car.images[0]) : null) || 'https://www.hariramcars.com/logo.jpeg',
     description: car.description || `Buy ${car.year} ${car.make} ${car.model} at Hariram Motors.`,
     brand: {
       '@type': 'Brand',

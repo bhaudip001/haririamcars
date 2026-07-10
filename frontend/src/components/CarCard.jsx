@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { IconBrandWhatsapp } from '@tabler/icons-react';
-import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder } from '@/lib/utils';
+import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder, extractImageUrl } from '@/lib/utils';
 
 export default function CarCard({ car, index = 0, priority = false }) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -15,7 +15,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
   const displayYear = car.registerYear || car.year;
   const title = `${car.make} ${car.model}${displayYear ? ` (${displayYear})` : ''}`.trim();
   const images = car.images || [];
-  const imageUrl = images.length > 0 ? (images[0].url || images[0]) : null;
+  const imageUrl = images.length > 0 ? extractImageUrl(images[0]) : null;
 
   const targetBadges = ['Certified', 'Peti-pack', 'Valid Vimo'];
   const photoBadges = [];
