@@ -5,7 +5,7 @@ import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalL
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
-import { extractImageUrl } from '@/lib/utils';
+import { extractImageUrl, getOptimizedImage } from '@/lib/utils';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({ cars: 0, messages: 0, unread: 0, sellRequests: 0, customers: 0 });
@@ -209,7 +209,7 @@ export default function AdminDashboard() {
                       <Car size={18} className="text-gray-600 absolute" />
                       {car.images?.[0] && (
                         <img 
-                          src={extractImageUrl(car.images[0])} 
+                          src={getOptimizedImage(extractImageUrl(car.images[0]), 200)} 
                           alt="" 
                           className="w-full h-full object-cover relative z-10 group-hover:scale-105 transition-transform duration-500" 
                           onError={(e) => { e.target.style.opacity = '0'; }}
