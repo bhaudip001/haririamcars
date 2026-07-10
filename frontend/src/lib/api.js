@@ -74,7 +74,7 @@ api.interceptors.response.use(
     }
 
     // Handle network errors
-    if (!error.response) {
+    if (!error.response && !axios.isCancel(error) && error.name !== 'CanceledError' && error.code !== 'ERR_CANCELED') {
       console.error('Network error — check your connection');
     }
 
