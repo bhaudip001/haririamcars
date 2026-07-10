@@ -29,15 +29,49 @@ export default function CarCard({ car, index = 0, priority = false }) {
 
     const shareUrl = `${window.location.origin}/catalog/${car.slug}`;
     const shareTitle = `${car.make} ${car.model} (${displayYear})`;
-    const shareText = `Check out this amazing ${shareTitle} at Hariram Motors for ${formatPrice(car.price)}!`;
+    // Include the URL in the text so WhatsApp puts it in the image caption!
+    const shareText = `Check out this amazing ${shareTitle} at Hariram Motors for ${formatPrice(car.price)}!\n\n${shareUrl}`;
 
     if (navigator.share) {
       try {
-        await navigator.share({
+        let fileArray = [];
+        
+        // Try to fetch the main image to share it natively as a real photo
+        if (imageUrl) {
+          const loadingToast = toast.loading('Preparing HD Photo...', {
+            style: { borderRadius: '10px', background: '#333', color: '#fff' }
+          });
+          try {
+            // Fetch a high-quality version of the image
+            const response = await fetch(getOptimizedImage(imageUrl, 800));
+            const blob = await response.blob();
+            const file = new File([blob], `${car.slug}.jpg`, { type: blob.type || 'image/jpeg' });
+            
+            // Check if the browser supports sharing this file
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              fileArray = [file];
+            }
+          } catch (fetchErr) {
+            console.error('Failed to fetch image for sharing:', fetchErr);
+          } finally {
+            toast.dismiss(loadingToast);
+          }
+        }
+
+        const shareData = {
           title: shareTitle,
           text: shareText,
-          url: shareUrl,
-        });
+        };
+
+        // If we successfully created the file, share it!
+        if (fileArray.length > 0) {
+          shareData.files = fileArray;
+        } else {
+          // Fallback to normal URL sharing if image fetch failed
+          shareData.url = shareUrl; 
+        }
+
+        await navigator.share(shareData);
       } catch (err) {
         if (err.name !== 'AbortError') {
           copyFallback(shareUrl);
