@@ -29,48 +29,17 @@ export default function CarCard({ car, index = 0, priority = false }) {
 
     const shareUrl = `${window.location.origin}/catalog/${car.slug}`;
     const shareTitle = `${car.make} ${car.model} (${displayYear})`;
-    // Include the URL in the text so WhatsApp puts it in the image caption!
-    const shareText = `Check out this amazing ${shareTitle} at Hariram Motors for ${formatPrice(car.price)}!\n\n${shareUrl}`;
+    
+    // Improved, highly professional text designed specifically for WhatsApp formatting
+    const shareText = `🚗 ✨ *Hariram Motors Premium Inventory* ✨ 🚗\n\nCheck out this beautifully maintained *${shareTitle}*!\n💰 Price: *${formatPrice(car.price)}*\n\nClick the link below for full details and more photos:`;
 
     if (navigator.share) {
       try {
-        let fileArray = [];
-        
-        // Fetch only the 1 Main Image so it downloads instantly (bypassing the 1-second security rule)
-        if (imageUrl) {
-          const loadingToast = toast.loading('Preparing HD Photo...', {
-            style: { borderRadius: '10px', background: '#333', color: '#fff' }
-          });
-          try {
-            const response = await fetch(getOptimizedImage(imageUrl, 800));
-            const blob = await response.blob();
-            const file = new File([blob], `${car.slug}.jpg`, { type: blob.type || 'image/jpeg' });
-            
-            // Check if the browser supports sharing this single file
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-              fileArray = [file];
-            }
-          } catch (fetchErr) {
-            console.error('Failed to fetch image for sharing:', fetchErr);
-          } finally {
-            toast.dismiss(loadingToast);
-          }
-        }
-
-        const shareData = {
+        await navigator.share({
           title: shareTitle,
           text: shareText,
-        };
-
-        // If we successfully created the file, share it!
-        if (fileArray.length > 0) {
-          shareData.files = fileArray;
-        } else {
-          // Fallback to normal URL sharing if image fetch failed
-          shareData.url = shareUrl; 
-        }
-
-        await navigator.share(shareData);
+          url: shareUrl, // WhatsApp will automatically pull the car's photo for the preview thumbnail using this URL
+        });
       } catch (err) {
         if (err.name !== 'AbortError') {
           copyFallback(shareUrl);
