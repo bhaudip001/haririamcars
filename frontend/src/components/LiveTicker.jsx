@@ -26,15 +26,15 @@ export default function LiveTicker() {
   return (
     <>
       <style>{`
-        @keyframes ticker-scroll {
+        @keyframes live-ticker-scroll {
           0% { transform: translateX(100vw); }
           100% { transform: translateX(-100%); }
         }
-        .animate-ticker {
-          animation: ticker-scroll 20s linear infinite;
+        .animate-live-ticker {
+          animation: live-ticker-scroll 20s linear infinite;
         }
         /* Pause animation on hover for better readability */
-        .ticker-container:hover .animate-ticker {
+        .ticker-container:hover .animate-live-ticker {
           animation-play-state: paused;
         }
       `}</style>
@@ -47,7 +47,7 @@ export default function LiveTicker() {
         
         {/* Marquee Container */}
         <div className="flex-1 overflow-hidden relative h-full flex items-center">
-          <div className="animate-ticker flex whitespace-nowrap items-center w-max pl-4">
+          <div className="animate-live-ticker flex whitespace-nowrap items-center w-max pl-4">
             <span className="text-[13px] sm:text-[15px] font-medium tracking-wide">
               🔥 Just Listed: <strong className="text-[#fde047] ml-1">{latestCar.make} {latestCar.model} {latestCar.year ? `(${latestCar.year})` : ''}</strong>
             </span>
