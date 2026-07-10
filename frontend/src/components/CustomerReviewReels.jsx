@@ -8,12 +8,12 @@ import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import ReelVideo from '@/components/ReelVideo';
 
 const videos = [
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-reviews/IMG_5503.mp4', name: 'Raithatha Sagarbhai', car: 'Polo 2016' },
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-reviews/IMG_5504.mp4', name: 'Jogani Sandipbhai', car: '2021 Venue' },
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-reviews/IMG_5505.mp4', name: 'Rathod Siddhrajsinh', car: 'Hexa 2018' },
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-reviews/IMG_5507.mp4', name: 'Mehrotra Rajatbhai', car: '2017 Honda city' },
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-reviews/IMG_5511.mp4', name: 'Durgeshbhai Santram Marathe', car: 'Ecosport 2017' },
-  { src: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/hariram-motors-reviews/IMG_5513.mp4', name: 'Joy Anjirwala', car: '2012 Innova' }
+  { src: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783673032/IMG_5503_dyr71m.mp4', name: 'Raithatha Sagarbhai', car: 'Polo 2016' },
+  { src: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783673398/IMG_5504_n0ncmo.mp4', name: 'Jogani Sandipbhai', car: '2021 Venue' },
+  { src: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783673477/IMG_5505_vtjbjl.mp4', name: 'Rathod Siddhrajsinh', car: 'Hexa 2018' },
+  { src: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783673977/IMG_5507_j18xsw.mp4', name: 'Mehrotra Rajatbhai', car: '2017 Honda city' },
+  { src: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783674021/IMG_5511_g5wtwz.mp4', name: 'Durgeshbhai Santram Marathe', car: 'Ecosport 2017' },
+  { src: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783674109/IMG_5513_zdktl8.mp4', name: 'Joy Anjirwala', car: '2012 Innova' }
 ];
 
 export default function CustomerReviewReels() {

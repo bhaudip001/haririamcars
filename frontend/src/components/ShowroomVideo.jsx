@@ -12,7 +12,7 @@ export default function ShowroomVideo() {
   // Play video on intersection and handle global mute
   useEffect(() => {
     const handleOtherVideoUnmuted = (e) => {
-      if (e.detail.src !== "https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781839047/hariram-motors-videos/showroom_video.mp4") {
+      if (e.detail.src !== "https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.mp4") {
         setIsMuted(true);
         if (videoRef.current) {
           videoRef.current.muted = true;
@@ -67,7 +67,7 @@ export default function ShowroomVideo() {
     }
 
     if (!newMutedState) {
-      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781839047/hariram-motors-videos/showroom_video.mp4" } }));
+      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.mp4" } }));
     }
   };
 
@@ -101,14 +101,14 @@ export default function ShowroomVideo() {
         >
           <video
             ref={videoRef}
-            src="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_mp4/v1781839047/hariram-motors-videos/showroom_video.mp4?sw_ignore=true"
+            src="https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.mp4?sw_ignore=true"
             className="w-full h-full object-cover"
             autoPlay
             loop
             muted={isMuted}
             playsInline
             preload="metadata"
-            poster="https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto,so_1/v1781839047/hariram-motors-videos/showroom_video.jpg"
+            poster="https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto,so_1/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.jpg"
           />
 
           {/* Mute Toggle */}

@@ -11,35 +11,35 @@ export default function DeliveryReelClient({ initialReels }) {
   const reels = initialReels && initialReels.length > 0 ? initialReels : [
     {
       id: 1,
-      videoSrc: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781787590/IMG_5502_zo5slm.mp4',
+      videoSrc: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783673823/IMG_5502_gfptsa.mp4',
       customerName: 'Bhimabhai shamla',
       carModel: 'Creta 2020',
       review: '',
     },
     {
       id: 2,
-      videoSrc: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781787957/hariram-motors-videos/IMG_5506.mp4',
+      videoSrc: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783672811/AQOUDnqeoA_KSMqNKrsawxWAmSfllvqNQGYlNdmIpiATmmvWRMuBNmsiXDnTGkf8oUw12Qg4nJnJrvS108OmriWWZY91XYZ1Q4V9R34_yfx01k.mp4',
       customerName: 'Ajudiya Rameshbhai',
       carModel: 'Endeavour 2018',
       review: '',
     },
     {
       id: 3,
-      videoSrc: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781788203/hariram-motors-videos/IMG_5509.mp4',
+      videoSrc: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783672957/IMG_5509_yv5enm.mp4',
       customerName: 'Arjunbhai Kavithiya',
       carModel: 'Slavia 2022',
       review: '',
     },
     {
       id: 4,
-      videoSrc: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781788441/hariram-motors-videos/IMG_5510.mp4',
+      videoSrc: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783673356/IMG_5510_lfmf6a.mp4',
       customerName: 'Natha Ram',
       carModel: 'Brezza 2020',
       review: '',
     },
     {
       id: 5,
-      videoSrc: 'https://res.cloudinary.com/dvo48lu7g/video/upload/q_auto,f_auto/v1781788601/hariram-motors-videos/IMG_5514.mp4',
+      videoSrc: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783673836/IMG_5514_pmarqf.mp4',
       customerName: 'Der Rajubhai',
       carModel: 'Verna 2021',
       review: '',
@@ -146,7 +146,7 @@ function ReelCard({ reel }) {
       <video
         ref={videoRef}
         src={reel.videoSrc.replace('f_auto', 'f_mp4') + '?sw_ignore=true'}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain"
         autoPlay
         loop
         muted={isMuted}
