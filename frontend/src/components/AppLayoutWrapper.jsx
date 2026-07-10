@@ -28,8 +28,8 @@ export default function AppLayoutWrapper({ children }) {
       <PushNotificationManager />
       {!isAdmin && (
         <>
-          <LiveTicker />
           <Navbar />
+          <LiveTicker />
         </>
       )}
       <main className={isAdmin ? "" : "min-h-screen"}>

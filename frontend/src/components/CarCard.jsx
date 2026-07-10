@@ -1,15 +1,13 @@
 'use client';
 import Link from 'next/link';
-import Image from 'next/image';
+import CarImage from './CarImage';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { IconBrandWhatsapp } from '@tabler/icons-react';
+import { IconBrandWhatsapp, IconShare } from '@tabler/icons-react';
+import toast from 'react-hot-toast';
 import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder, extractImageUrl } from '@/lib/utils';
 
 export default function CarCard({ car, index = 0, priority = false }) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [imgError, setImgError] = useState(false);
-
   if (!car) return null;
 
   const displayYear = car.registerYear || car.year;
@@ -25,6 +23,42 @@ export default function CarCard({ car, index = 0, priority = false }) {
     photoBadges.push(...car.features.filter(f => targetBadges.some(tag => f.toLowerCase().includes(tag.toLowerCase()))));
   }
 
+  const handleShare = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const shareUrl = `${window.location.origin}/catalog/${car.slug}`;
+    const shareTitle = `${car.make} ${car.model} (${displayYear})`;
+    const shareText = `Check out this amazing ${shareTitle} at Hariram Motors for ${formatPrice(car.price)}!`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          copyFallback(shareUrl);
+        }
+      }
+    } else {
+      copyFallback(shareUrl);
+    }
+  };
+
+  const copyFallback = (url) => {
+    navigator.clipboard.writeText(url);
+    toast.success('Link Copied!', {
+      style: {
+        borderRadius: '10px',
+        background: '#333',
+        color: '#fff',
+      },
+    });
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -39,24 +73,13 @@ export default function CarCard({ car, index = 0, priority = false }) {
       <div className="flex flex-col h-full relative">
         {/* Image Area */}
         <div className="relative aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-black/10 dark:bg-[#1a1a2e]">
-          {!isLoaded && (
-            <div className="absolute inset-0 z-10 animate-pulse bg-gray-200 dark:bg-white/10" />
-          )}
-
-
-
           {/* Main Image - Now using object-contain to prevent cutting off */}
-          <Image
-            src={imgError ? '/placeholder-car.svg' : getOptimizedImage(imageUrl, 600)}
+          <CarImage
+            src={imageUrl ? getOptimizedImage(imageUrl, 600) : null}
             alt={title}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             priority={priority}
-            placeholder="blur"
-            blurDataURL={generateBlurPlaceholder()}
-            onLoad={() => setIsLoaded(true)}
-            onError={() => { setImgError(true); setIsLoaded(true); }}
-            className={`object-cover group-hover:scale-110 transition-all duration-700 ${isLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}`}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover group-hover:scale-110 transition-all duration-700"
           />
 
           {/* Top Left Badge */}
@@ -73,6 +96,15 @@ export default function CarCard({ car, index = 0, priority = false }) {
               ))
             )}
           </div>
+
+          {/* Top Right Share Button */}
+          <button 
+            onClick={handleShare}
+            title="Share this car"
+            className="absolute top-2 right-2 md:top-3 md:right-3 z-20 bg-white/20 hover:bg-white/40 dark:bg-black/40 dark:hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-md transition-all active:scale-95 shadow-lg border border-white/30 pointer-events-auto"
+          >
+            <IconShare size={18} stroke={2.5} />
+          </button>
         </div>
 
         {/* Card Body */}
