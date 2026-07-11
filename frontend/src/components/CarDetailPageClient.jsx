@@ -238,6 +238,29 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                     >
                       <IconMaximize size={24} />
                     </button>
+
+                    {images.length > 1 && (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
+                          }}
+                          className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white p-2 md:p-2.5 rounded-full backdrop-blur-md transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-lg border border-white/20"
+                        >
+                          <IconChevronLeft size={24} />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveImageIdx(prev => (prev === images.length - 1 ? 0 : prev + 1));
+                          }}
+                          className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white p-2 md:p-2.5 rounded-full backdrop-blur-md transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-lg border border-white/20"
+                        >
+                          <IconChevronRight size={24} />
+                        </button>
+                      </>
+                    )}
                   </>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-600 bg-white/5">No Image Available</div>
