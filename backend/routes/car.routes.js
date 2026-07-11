@@ -208,6 +208,17 @@ router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, as
       }
     }
 
+    // Auto-swap logic for featured cars limit (8 max)
+    if (car.isFeatured) {
+      const featuredCars = await Car.find({ isFeatured: true }).sort({ updatedAt: 1 });
+      if (featuredCars.length > 8) {
+        const carsToUnfeature = featuredCars.slice(0, featuredCars.length - 8);
+        for (const c of carsToUnfeature) {
+          await Car.findByIdAndUpdate(c._id, { isFeatured: false });
+        }
+      }
+    }
+
     res.status(201).json(car);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -257,6 +268,19 @@ router.put('/:id', protect, adminOnly, upload.array('images', 25), async (req, r
 
     Object.assign(car, updateData);
     await car.save();
+
+    // Auto-swap logic for featured cars limit (8 max)
+    if (car.isFeatured) {
+      const featuredCars = await Car.find({ isFeatured: true }).sort({ updatedAt: 1 });
+      if (featuredCars.length > 8) {
+        const carsToUnfeature = featuredCars.slice(0, featuredCars.length - 8);
+        for (const c of carsToUnfeature) {
+          if (c._id.toString() !== car._id.toString()) {
+            await Car.findByIdAndUpdate(c._id, { isFeatured: false });
+          }
+        }
+      }
+    }
 
     clearCache('/api/cars');
 
