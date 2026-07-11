@@ -3,7 +3,7 @@ import Link from 'next/link';
 import CarImage from './CarImage';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { IconBrandWhatsapp, IconShare, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { IconBrandWhatsapp, IconShare } from '@tabler/icons-react';
 import toast from 'react-hot-toast';
 import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder, extractImageUrl } from '@/lib/utils';
 
@@ -13,8 +13,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
   const displayYear = car.registerYear || car.year;
   const title = `${car.make} ${car.model}${displayYear ? ` (${displayYear})` : ''}`.trim();
   const images = car.images || [];
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const imageUrl = images.length > 0 ? extractImageUrl(images[currentImageIndex]) : null;
+  const imageUrl = images.length > 0 ? extractImageUrl(images[0]) : null;
 
   const targetBadges = ['Certified', 'Peti-pack', 'Valid Vimo'];
   const photoBadges = [];
@@ -75,57 +74,15 @@ export default function CarCard({ car, index = 0, priority = false }) {
 
       <div className="flex flex-col h-full relative">
         {/* Image Area */}
-        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-black/10 dark:bg-[#1a1a2e] group/image">
+        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-t-2xl bg-black/10 dark:bg-[#1a1a2e]">
           {/* Main Image - Now using object-contain to prevent cutting off */}
           <CarImage
             src={imageUrl ? getOptimizedImage(imageUrl, 600) : null}
-            alt={`${title} - Image ${currentImageIndex + 1}`}
+            alt={title}
             priority={priority}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover group-hover:scale-110 transition-all duration-700"
           />
-
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-                }}
-                className="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 z-20 bg-black/30 hover:bg-black/60 dark:bg-black/50 dark:hover:bg-black/80 text-white p-1 md:p-1.5 rounded-full backdrop-blur-md opacity-0 group-hover/image:opacity-100 transition-all pointer-events-auto border border-white/20"
-                aria-label="Previous image"
-              >
-                <IconChevronLeft size={18} stroke={2.5} />
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-                }}
-                className="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 z-20 bg-black/30 hover:bg-black/60 dark:bg-black/50 dark:hover:bg-black/80 text-white p-1 md:p-1.5 rounded-full backdrop-blur-md opacity-0 group-hover/image:opacity-100 transition-all pointer-events-auto border border-white/20"
-                aria-label="Next image"
-              >
-                <IconChevronRight size={18} stroke={2.5} />
-              </button>
-              
-              {/* Pagination dots */}
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1 pointer-events-none">
-                 {images.slice(0, 7).map((_, idx) => {
-                    // Show dots for up to 7 images. If more, just show the current relative position, 
-                    // or just show simple dots for all (maybe limit to 5 dots for visual cleanlines).
-                    // For now, let's show all dots if < 10, otherwise just a few.
-                    return (
-                      <div 
-                        key={idx} 
-                        className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all shadow-sm ${idx === currentImageIndex % 7 ? 'bg-white scale-110' : 'bg-white/40'}`}
-                      />
-                    );
-                 })}
-              </div>
-            </>
-          )}
 
           {/* Top Left Badge */}
           <div className="absolute top-2 left-2 md:top-3 md:left-3 right-2 md:right-auto z-10 flex flex-wrap gap-1.5 md:gap-2">
@@ -161,11 +118,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
           {/* Specs Row */}
           <div className="flex flex-nowrap items-center gap-1 sm:gap-1.5 md:gap-2 text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs md:text-sm mt-auto whitespace-nowrap overflow-hidden font-medium transition-colors">
             <span>{car.fuelType || 'N/A'}</span>
-            <span className="text-gray-300 dark:text-gray-600 sm:hidden">|</span>
-            <span className="text-gray-400 dark:text-gray-600 hidden sm:inline">•</span>
             <span>{car.transmission || 'N/A'}</span>
-            <span className="text-gray-300 dark:text-gray-600 sm:hidden">|</span>
-            <span className="text-gray-400 dark:text-gray-600 hidden sm:inline">•</span>
             <span className="truncate">{car.kms ? formatKms(car.kms) : 'N/A'}</span>
           </div>
 
