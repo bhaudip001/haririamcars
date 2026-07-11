@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalLink, Trash2, Home, Edit, Eye, Activity } from 'lucide-react';
+import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalLink, Trash2, Home, Edit, Eye, Activity, HardDrive, Database } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
@@ -12,6 +12,7 @@ export default function AdminDashboard() {
   const [isMobile, setIsMobile] = useState(true);
 
   const [trafficData, setTrafficData] = useState([]);
+  const [storageStats, setStorageStats] = useState(null);
   const [featuredCars, setFeaturedCars] = useState([]);
   const [featuredTotal, setFeaturedTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -31,13 +32,14 @@ export default function AdminDashboard() {
 
     const fetch = async () => {
       try {
-        const [carsRes, msgRes, sellRes, custRes, featuredRes, analyticsRes] = await Promise.allSettled([
+        const [carsRes, msgRes, sellRes, custRes, featuredRes, analyticsRes, storageRes] = await Promise.allSettled([
           api.get('/cars?limit=1'), // Just for total count
           api.get('/messages?limit=1'),
           api.get('/sell-requests?limit=1'),
           api.get('/happy-customers/all'),
           api.get('/cars?limit=5&featured=true'),
-          api.get('/analytics/summary')
+          api.get('/analytics/summary'),
+          api.get('/analytics/storage')
         ]);
 
         setStats({
@@ -53,6 +55,9 @@ export default function AdminDashboard() {
         }
         if (analyticsRes.status === 'fulfilled') {
           setTrafficData(analyticsRes.value.data || []);
+        }
+        if (storageRes.status === 'fulfilled') {
+          setStorageStats(storageRes.value.data);
         }
       } catch { }
       setLoading(false);
@@ -175,6 +180,63 @@ export default function AdminDashboard() {
               </AreaChart>
             </ResponsiveContainer>
           )}
+        </div>
+      </div>
+
+      {/* System Storage Health */}
+      <div className="bg-[#12121a] border border-white/5 rounded-2xl overflow-hidden shadow-xl p-4 sm:p-5">
+        <div className="mb-6">
+          <h2 className="text-base font-bold text-white flex items-center gap-2">
+            <HardDrive size={18} className="text-emerald-400" />
+            System Storage Health
+          </h2>
+          <p className="text-xs text-gray-400 mt-0.5">Live storage usage for database and media assets.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* MongoDB */}
+          <div className="bg-white/[0.02] border border-white/5 rounded-xl p-4">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Database size={14} className="text-emerald-500" /> Database (MongoDB)
+              </h3>
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${storageStats && storageStats.mongodb.percentage > 80 ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                {storageStats ? `${storageStats.mongodb.percentage}% Used` : 'Loading...'}
+              </span>
+            </div>
+            <div className="w-full bg-[#1a1a24] rounded-full h-2.5 mb-2 overflow-hidden">
+              <div 
+                className={`h-2.5 rounded-full ${storageStats && storageStats.mongodb.percentage > 80 ? 'bg-red-500' : 'bg-emerald-500'}`}
+                style={{ width: `${storageStats ? Math.min(storageStats.mongodb.percentage, 100) : 0}%` }}
+              ></div>
+            </div>
+            <div className="flex justify-between text-[11px] text-gray-400">
+              <span>Used: {storageStats ? `${storageStats.mongodb.usedMB} MB` : '0 MB'}</span>
+              <span>Free: {storageStats ? `${(storageStats.mongodb.totalMB - storageStats.mongodb.usedMB).toFixed(2)} MB` : '0 MB'}</span>
+            </div>
+          </div>
+
+          {/* Cloudinary */}
+          <div className="bg-white/[0.02] border border-white/5 rounded-xl p-4">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <HardDrive size={14} className="text-blue-500" /> Media (Cloudinary)
+              </h3>
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${storageStats && storageStats.cloudinary.percentage > 80 ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                {storageStats ? `${storageStats.cloudinary.percentage}% Used` : 'Loading...'}
+              </span>
+            </div>
+            <div className="w-full bg-[#1a1a24] rounded-full h-2.5 mb-2 overflow-hidden">
+              <div 
+                className={`h-2.5 rounded-full ${storageStats && storageStats.cloudinary.percentage > 80 ? 'bg-red-500' : 'bg-blue-500'}`}
+                style={{ width: `${storageStats ? Math.min(storageStats.cloudinary.percentage, 100) : 0}%` }}
+              ></div>
+            </div>
+            <div className="flex justify-between text-[11px] text-gray-400">
+              <span>Used: {storageStats ? `${storageStats.cloudinary.usedGB} GB` : '0 GB'}</span>
+              <span>Free: {storageStats ? `${(storageStats.cloudinary.totalGB - storageStats.cloudinary.usedGB).toFixed(2)} GB` : '0 GB'}</span>
+            </div>
+          </div>
         </div>
       </div>
 

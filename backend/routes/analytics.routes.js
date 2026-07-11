@@ -1,4 +1,6 @@
 import express from 'express';
+import mongoose from 'mongoose';
+import { cloudinary } from '../config/cloudinary.js';
 import Analytics from '../models/Analytics.js';
 
 const router = express.Router();
@@ -74,6 +76,42 @@ router.get('/summary', async (req, res) => {
 
     res.status(200).json(result);
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// @route   GET /api/analytics/storage
+// @desc    Get MongoDB and Cloudinary storage stats
+// @access  Public
+router.get('/storage', async (req, res) => {
+  try {
+    // MongoDB Stats
+    const db = mongoose.connection.db;
+    const dbStats = await db.stats();
+    const mongoUsedMB = dbStats.storageSize / (1024 * 1024);
+    const mongoTotalMB = 512;
+    const mongoPercentage = (mongoUsedMB / mongoTotalMB) * 100;
+
+    // Cloudinary Stats
+    const clStats = await cloudinary.api.usage();
+    const clUsedGB = clStats.storage.usage / (1024 * 1024 * 1024);
+    const clTotalGB = 25;
+    const clPercentage = (clUsedGB / clTotalGB) * 100;
+
+    res.status(200).json({
+      mongodb: {
+        usedMB: parseFloat(mongoUsedMB.toFixed(2)),
+        totalMB: mongoTotalMB,
+        percentage: parseFloat(mongoPercentage.toFixed(2))
+      },
+      cloudinary: {
+        usedGB: parseFloat(clUsedGB.toFixed(2)),
+        totalGB: clTotalGB,
+        percentage: parseFloat(clPercentage.toFixed(2))
+      }
+    });
+  } catch (err) {
+    console.error('Storage stats error:', err);
     res.status(500).json({ error: err.message });
   }
 });
