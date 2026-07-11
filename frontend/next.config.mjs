@@ -25,9 +25,7 @@ const nextConfig = {
 
   // Image optimization
   images: {
-    unoptimized: false,
-    loader: 'custom',
-    loaderFile: './src/lib/cloudinaryLoader.js',
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',

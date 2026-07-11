@@ -69,13 +69,8 @@ export function getOptimizedImage(url, width = 800) {
     safeUrl = safeUrl.replace('http://', 'https://');
   }
 
-  if (safeUrl.includes('cloudinary.com')) {
-    // Avoid double transforming if already transformed
-    if (safeUrl.includes('/upload/w_') || safeUrl.includes('/upload/q_') || safeUrl.includes('/upload/f_')) {
-      return safeUrl;
-    }
-    return safeUrl.replace('/upload/', `/upload/w_${width},q_auto,f_auto/`);
-  }
+  // We are now serving raw, pre-optimized images to save Cloudinary transformations
+  // and Vercel limits. No dynamic resizing is injected.
   return safeUrl;
 }
 
