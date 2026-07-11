@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalLink, Trash2, Home, Edit, Eye, Activity, HardDrive, Database } from 'lucide-react';
+import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalLink, Trash2, Home, Edit, Eye, Activity, HardDrive, Database, AlertTriangle } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
@@ -192,6 +192,20 @@ export default function AdminDashboard() {
           </h2>
           <p className="text-xs text-gray-400 mt-0.5">Live storage usage for database and media assets.</p>
         </div>
+
+        {storageStats && (storageStats.mongodb.percentage >= 80 || storageStats.cloudinary.percentage >= 80) && (
+          <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3 animate-pulse">
+            <div className="p-2 bg-red-500/20 rounded-lg shrink-0">
+              <AlertTriangle size={18} className="text-red-400" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-red-400">Critical Storage Warning</h3>
+              <p className="text-xs text-red-300 mt-1 leading-relaxed">
+                Your system storage has exceeded 80% capacity. To prevent the website from crashing, please capture a screenshot of this and <strong>contact your developer team immediately</strong> to upgrade or clear storage.
+              </p>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* MongoDB */}
