@@ -10,7 +10,7 @@ async function getFeaturedCars() {
   }
 
   try {
-    const res = await fetch(`${baseUrl}/cars?limit=8&status=available&featured=true`, {
+    const res = await fetch(`${baseUrl}/cars?limit=6&status=available&featured=true`, {
       next: { revalidate: 15 }
     });
     if (!res.ok) return [];
@@ -39,7 +39,7 @@ export default async function FeaturedCarsServer() {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
       {cars.length > 0 ? (
-        cars.map((car, i) => (
+        cars.slice(0, 6).map((car, i) => (
           <CarCard key={car._id} car={car} index={i} priority={i < 2} />
         ))
       ) : (
