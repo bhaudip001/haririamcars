@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import PageTransition from './PageTransition';
-import LiveTicker from './LiveTicker';
 import PushNotificationManager from './PushNotificationManager';
 
 export default function AppLayoutWrapper({ children }) {
@@ -19,7 +18,6 @@ export default function AppLayoutWrapper({ children }) {
       {!isAdmin && (
         <>
           <Navbar />
-          <LiveTicker />
         </>
       )}
       <main className={isAdmin ? "" : "min-h-screen"}>

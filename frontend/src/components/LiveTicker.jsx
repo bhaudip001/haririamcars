@@ -38,21 +38,21 @@ export default function LiveTicker() {
           animation-play-state: paused;
         }
       `}</style>
-      <div className="ticker-container bg-gradient-to-r from-[#6d28d9] via-[#4c1d95] to-[#6d28d9] text-white overflow-hidden relative flex items-center h-10 sm:h-12 w-full z-30 shadow-md border-b border-white/10">
+      <div className="ticker-container bg-gradient-to-r from-[#6d28d9] via-[#4c1d95] to-[#6d28d9] text-white overflow-hidden relative flex items-center h-8 sm:h-10 w-full z-30 shadow-md border-b border-white/10">
         {/* Live Badge Overlay */}
-        <div className="absolute left-0 bg-red-600 text-white z-10 px-3 sm:px-5 h-full flex items-center font-['Outfit'] font-bold text-[11px] sm:text-sm uppercase tracking-wider shadow-[8px_0_15px_rgba(0,0,0,0.4)]">
-          <span className="w-2 h-2 rounded-full bg-white animate-pulse mr-2"></span>
+        <div className="absolute left-0 bg-red-600 text-white z-10 px-3 sm:px-4 h-full flex items-center font-['Outfit'] font-bold text-[10px] sm:text-[12px] uppercase tracking-wider shadow-[8px_0_15px_rgba(0,0,0,0.4)]">
+          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse mr-2"></span>
           Live
         </div>
         
         {/* Marquee Container */}
         <div className="flex-1 overflow-hidden relative h-full flex items-center">
           <div className="animate-live-ticker flex whitespace-nowrap items-center w-max pl-4">
-            <span className="text-[13px] sm:text-[15px] font-medium tracking-wide">
+            <span className="text-[12px] sm:text-[13px] font-medium tracking-wide">
               🔥 Just Listed: <strong className="text-[#fde047] ml-1">{latestCar.make} {latestCar.model} {latestCar.year ? `(${latestCar.year})` : ''}</strong>
             </span>
             <span className="mx-3 text-white/50">•</span>
-            <span className="text-[13px] sm:text-[15px] font-medium text-white/90">
+            <span className="text-[12px] sm:text-[13px] font-medium text-white/90">
               Hurry Up! This deal won't last long.
             </span>
           </div>

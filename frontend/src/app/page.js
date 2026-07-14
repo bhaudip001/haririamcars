@@ -15,6 +15,7 @@ import GoogleReviewsSkeleton from '@/components/skeletons/GoogleReviewsSkeleton'
 import DynamicGoogleReviews from '@/components/client/DynamicGoogleReviews';
 import CustomerReviewReels from '@/components/CustomerReviewReels';
 import ShowroomVideo from '@/components/ShowroomVideo';
+import LiveTicker from '@/components/LiveTicker';
 
 export const metadata = {
   title: 'Hariram Cars | Top Car Dealer for Second-Hand Cars in Surat',
@@ -33,8 +34,18 @@ export default function HomePage() {
     <>
       <HeroSection />
 
+      {/* MOBILE LIVE TICKER - ABOVE VIDEO */}
+      <div className="block md:hidden">
+        <LiveTicker />
+      </div>
+
       {/* SHOWROOM VIDEO SECTION */}
       <ShowroomVideo />
+
+      {/* DESKTOP LIVE TICKER - BELOW VIDEO, ABOVE INVENTORY */}
+      <div className="hidden md:block">
+        <LiveTicker />
+      </div>
 
       {/* ════ UNIFIED SHOWROOM BACKGROUND (SECTIONS 3 & 4) ════ */}
       <div className="relative w-full overflow-hidden bg-[#f4f4f8] dark:bg-transparent transition-colors duration-500">

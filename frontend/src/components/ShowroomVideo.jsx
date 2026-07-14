@@ -72,7 +72,7 @@ export default function ShowroomVideo() {
   };
 
   return (
-    <section className="py-10 md:py-16 relative overflow-hidden bg-white dark:bg-[#0a0a12] transition-colors duration-500">
+    <section className="py-10 md:pt-28 md:pb-16 relative overflow-hidden bg-white dark:bg-[#0a0a12] transition-colors duration-500">
       {/* Decorative background blur */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-purple-500/5 dark:bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
 
