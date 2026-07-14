@@ -156,6 +156,14 @@ router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, as
   try {
     const carData = { ...req.body };
 
+    const isNowFeatured = carData.isFeatured === 'true' || carData.isFeatured === true;
+    if (isNowFeatured) {
+      const featuredCount = await Car.countDocuments({ isFeatured: true });
+      if (featuredCount >= 8) {
+        return res.status(400).json({ error: 'Maximum of 8 cars can be shown on home page' });
+      }
+    }
+
     // Parse features and badges if sent as JSON string
     if (typeof carData.features === 'string') {
       try { carData.features = JSON.parse(carData.features); } catch { /* keep as is */ }
@@ -208,17 +216,6 @@ router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, as
       }
     }
 
-    // Auto-swap logic for featured cars limit (8 max)
-    if (car.isFeatured) {
-      const featuredCars = await Car.find({ isFeatured: true }).sort({ updatedAt: 1 });
-      if (featuredCars.length > 8) {
-        const carsToUnfeature = featuredCars.slice(0, featuredCars.length - 8);
-        for (const c of carsToUnfeature) {
-          await Car.findByIdAndUpdate(c._id, { isFeatured: false });
-        }
-      }
-    }
-
     res.status(201).json(car);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -232,6 +229,14 @@ router.put('/:id', protect, adminOnly, upload.array('images', 25), async (req, r
     if (!car) return res.status(404).json({ error: 'Car not found' });
 
     const updateData = { ...req.body };
+
+    const isNowFeatured = updateData.isFeatured === 'true' || updateData.isFeatured === true;
+    if (isNowFeatured && !car.isFeatured) {
+      const featuredCount = await Car.countDocuments({ isFeatured: true });
+      if (featuredCount >= 8) {
+        return res.status(400).json({ error: 'Maximum of 8 cars can be shown on home page' });
+      }
+    }
 
     if (typeof updateData.features === 'string') {
       try { updateData.features = JSON.parse(updateData.features); } catch { /* keep as is */ }
@@ -268,19 +273,6 @@ router.put('/:id', protect, adminOnly, upload.array('images', 25), async (req, r
 
     Object.assign(car, updateData);
     await car.save();
-
-    // Auto-swap logic for featured cars limit (8 max)
-    if (car.isFeatured) {
-      const featuredCars = await Car.find({ isFeatured: true }).sort({ updatedAt: 1 });
-      if (featuredCars.length > 8) {
-        const carsToUnfeature = featuredCars.slice(0, featuredCars.length - 8);
-        for (const c of carsToUnfeature) {
-          if (c._id.toString() !== car._id.toString()) {
-            await Car.findByIdAndUpdate(c._id, { isFeatured: false });
-          }
-        }
-      }
-    }
 
     clearCache('/api/cars');
 

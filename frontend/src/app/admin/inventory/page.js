@@ -88,8 +88,9 @@ export default function AdminInventoryPage() {
       await api.put(`/cars/${car._id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       toast.success(car.isFeatured ? 'Removed from Home' : 'Added to Home');
       fetchCars(page);
-    } catch {
-      toast.error('Failed to update status');
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Failed to update status');
+      fetchCars(page); // Re-fetch to reset the toggle UI
     }
   };
 

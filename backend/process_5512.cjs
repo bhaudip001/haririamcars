@@ -22,7 +22,7 @@ ffmpeg(inputPath)
   .videoBitrate('1500k')
   .on('end', async () => {
     console.log(`✅ Finished compressing: ${outputPath}`);
-    
+
     // Check new size
     const stats = fs.statSync(outputPath);
     const sizeMB = stats.size / (1024 * 1024);
