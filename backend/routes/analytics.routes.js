@@ -40,6 +40,32 @@ router.post('/track', async (req, res) => {
   }
 });
 
+// @route   POST /api/analytics/app-install
+// @desc    Track app installation
+// @access  Public
+router.post('/app-install', async (req, res) => {
+  try {
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
+    let analytics = await Analytics.findOne({ date: today });
+    if (!analytics) {
+      analytics = new Analytics({ 
+        date: today, 
+        appInstalls: 1 
+      });
+    } else {
+      analytics.appInstalls = (analytics.appInstalls || 0) + 1;
+    }
+    
+    await analytics.save();
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error('App install tracking error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // @route   GET /api/analytics/summary
 // @desc    Get traffic summary for the last 30 days
 // @access  Public
@@ -75,6 +101,21 @@ router.get('/summary', async (req, res) => {
     }
 
     res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// @route   GET /api/analytics/app-installs/total
+// @desc    Get total app installs across all time
+// @access  Public
+router.get('/app-installs/total', async (req, res) => {
+  try {
+    const result = await Analytics.aggregate([
+      { $group: { _id: null, totalInstalls: { $sum: "$appInstalls" } } }
+    ]);
+    const total = result.length > 0 ? result[0].totalInstalls : 0;
+    res.status(200).json({ total });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

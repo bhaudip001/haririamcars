@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalLink, Trash2, Home, Edit, Eye, Activity, HardDrive, Database, AlertTriangle } from 'lucide-react';
+import { Car, MessageSquare, HandCoins, Users, TrendingUp, ArrowRight, ExternalLink, Trash2, Home, Edit, Eye, Activity, HardDrive, Database, AlertTriangle, Download } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
 import { extractImageUrl, getOptimizedImage } from '@/lib/utils';
 
 export default function AdminDashboard() {
-  const [stats, setStats] = useState({ cars: 0, messages: 0, unread: 0, sellRequests: 0, customers: 0 });
+  const [stats, setStats] = useState({ cars: 0, messages: 0, unread: 0, sellRequests: 0, customers: 0, appInstalls: 0 });
   const [isMobile, setIsMobile] = useState(true);
 
   const [trafficData, setTrafficData] = useState([]);
@@ -32,14 +32,15 @@ export default function AdminDashboard() {
 
     const fetch = async () => {
       try {
-        const [carsRes, msgRes, sellRes, custRes, featuredRes, analyticsRes, storageRes] = await Promise.allSettled([
+        const [carsRes, msgRes, sellRes, custRes, featuredRes, analyticsRes, storageRes, appInstallsRes] = await Promise.allSettled([
           api.get('/cars?limit=1'), // Just for total count
           api.get('/messages?limit=1'),
           api.get('/sell-requests?limit=1'),
           api.get('/happy-customers/all'),
           api.get('/cars?limit=5&featured=true'),
           api.get('/analytics/summary'),
-          api.get('/analytics/storage')
+          api.get('/analytics/storage'),
+          api.get('/analytics/app-installs/total')
         ]);
 
         setStats({
@@ -48,6 +49,7 @@ export default function AdminDashboard() {
           unread: msgRes.status === 'fulfilled' ? msgRes.value.data.unreadCount : 0,
           sellRequests: sellRes.status === 'fulfilled' ? sellRes.value.data.total : 0,
           customers: custRes.status === 'fulfilled' ? custRes.value.data.length : 0,
+          appInstalls: appInstallsRes.status === 'fulfilled' ? appInstallsRes.value.data.total : 0,
         });
         if (featuredRes.status === 'fulfilled') {
           setFeaturedCars(featuredRes.value.data.cars || []);
@@ -96,6 +98,7 @@ export default function AdminDashboard() {
     { icon: MessageSquare, label: 'New Messages', value: stats.unread, subtext: `${stats.messages} total received`, color: 'text-blue-400', bg: 'bg-blue-500/10', glow: 'shadow-[0_0_30px_rgba(96,165,250,0.15)]' },
     { icon: HandCoins, label: 'Sell Requests', value: stats.sellRequests, subtext: 'Pending evaluations', color: 'text-emerald-400', bg: 'bg-emerald-500/10', glow: 'shadow-[0_0_30px_rgba(52,211,153,0.15)]' },
     { icon: Users, label: 'Testimonials', value: stats.customers, subtext: 'Happy customers', color: 'text-pink-400', bg: 'bg-pink-500/10', glow: 'shadow-[0_0_30px_rgba(244,114,182,0.15)]' },
+    { icon: Download, label: 'App Installs', value: stats.appInstalls, subtext: 'Total PWA installations', color: 'text-orange-400', bg: 'bg-orange-500/10', glow: 'shadow-[0_0_30px_rgba(249,115,22,0.15)]' },
   ];
 
   return (
@@ -120,7 +123,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
         {cards.map((card, idx) => (
           <div key={idx} className={`relative overflow-hidden bg-[#12121a] border border-white/5 rounded-2xl p-4 sm:p-5 hover:-translate-y-1 transition-all duration-300 ${card.glow}`}>
             <div className="flex items-start justify-between mb-2 sm:mb-3">

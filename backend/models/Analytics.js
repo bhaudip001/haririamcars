@@ -14,6 +14,10 @@ const analyticsSchema = new mongoose.Schema({
     type: Number, 
     default: 0 
   },
+  appInstalls: {
+    type: Number,
+    default: 0
+  },
   ips: [{ 
     type: String 
   }]

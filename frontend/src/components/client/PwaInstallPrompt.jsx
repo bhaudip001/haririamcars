@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { Download, X } from 'lucide-react';
 import Image from 'next/image';
+import api from '@/lib/api';
 
 export default function PwaInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -41,6 +42,8 @@ export default function PwaInstallPrompt() {
       setIsInstalled(true);
       setShowPrompt(false);
       setDeferredPrompt(null);
+      // Track installation
+      api.post('/analytics/app-install').catch(console.error);
     });
 
     // Automatically show the prompt shortly after page load/refresh
@@ -76,6 +79,8 @@ export default function PwaInstallPrompt() {
       setDeferredPrompt(null);
       window.globalDeferredPrompt = null;
       setIsInstalled(true);
+      // Track installation here as well in case appinstalled event is flaky
+      api.post('/analytics/app-install').catch(console.error);
     } else {
       // User cancelled the prompt dialog itself, handle as dismiss
       handleDismiss();
