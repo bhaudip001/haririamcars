@@ -48,17 +48,11 @@ router.post('/app-install', async (req, res) => {
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
 
-    let analytics = await Analytics.findOne({ date: today });
-    if (!analytics) {
-      analytics = new Analytics({ 
-        date: today, 
-        appInstalls: 1 
-      });
-    } else {
-      analytics.appInstalls = (analytics.appInstalls || 0) + 1;
-    }
-    
-    await analytics.save();
+    await Analytics.findOneAndUpdate(
+      { date: today },
+      { $inc: { appInstalls: 1 } },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
     res.status(200).json({ success: true });
   } catch (err) {
     console.error('App install tracking error:', err);

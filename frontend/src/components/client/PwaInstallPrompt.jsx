@@ -41,7 +41,7 @@ export default function PwaInstallPrompt() {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-    window.addEventListener('appinstalled', () => {
+    const handleAppInstalled = () => {
       setIsInstalled(true);
       setShowPrompt(false);
       setDeferredPrompt(null);
@@ -50,7 +50,9 @@ export default function PwaInstallPrompt() {
         localStorage.setItem('appInstalledTracked', 'true');
         api.post('/analytics/app-install').catch(console.error);
       }
-    });
+    };
+
+    window.addEventListener('appinstalled', handleAppInstalled);
 
     // Automatically show the prompt shortly after page load/refresh if iOS or if we already have the prompt
     const initialTimer = setTimeout(() => {
@@ -63,6 +65,7 @@ export default function PwaInstallPrompt() {
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
       clearTimeout(initialTimer);
     };
   }, []);
