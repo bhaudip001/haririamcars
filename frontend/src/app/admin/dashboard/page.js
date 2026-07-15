@@ -97,7 +97,6 @@ export default function AdminDashboard() {
     { icon: Car, label: 'Total Inventory', value: stats.cars, subtext: 'Active Listings', color: 'text-purple-400', bg: 'bg-purple-500/10', glow: 'shadow-[0_0_30px_rgba(168,85,247,0.15)]' },
     { icon: MessageSquare, label: 'New Messages', value: stats.unread, subtext: `${stats.messages} total received`, color: 'text-blue-400', bg: 'bg-blue-500/10', glow: 'shadow-[0_0_30px_rgba(96,165,250,0.15)]' },
     { icon: HandCoins, label: 'Sell Requests', value: stats.sellRequests, subtext: 'Pending evaluations', color: 'text-emerald-400', bg: 'bg-emerald-500/10', glow: 'shadow-[0_0_30px_rgba(52,211,153,0.15)]' },
-    { icon: Users, label: 'Testimonials', value: stats.customers, subtext: 'Happy customers', color: 'text-pink-400', bg: 'bg-pink-500/10', glow: 'shadow-[0_0_30px_rgba(244,114,182,0.15)]' },
     { icon: Download, label: 'App Installs', value: stats.appInstalls, subtext: 'Total PWA installations', color: 'text-orange-400', bg: 'bg-orange-500/10', glow: 'shadow-[0_0_30px_rgba(249,115,22,0.15)]' },
   ];
 
@@ -123,7 +122,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {cards.map((card, idx) => (
           <div key={idx} className={`relative overflow-hidden bg-[#12121a] border border-white/5 rounded-2xl p-4 sm:p-5 hover:-translate-y-1 transition-all duration-300 ${card.glow}`}>
             <div className="flex items-start justify-between mb-2 sm:mb-3">
