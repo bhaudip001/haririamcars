@@ -30,6 +30,9 @@ export default function PwaInstallPrompt() {
       e.preventDefault();
       setDeferredPrompt(e);
       window.globalDeferredPrompt = e;
+      if (!window.matchMedia('(display-mode: standalone)').matches) {
+        setShowPrompt(true);
+      }
     };
 
     if (window.globalDeferredPrompt) {
@@ -49,10 +52,12 @@ export default function PwaInstallPrompt() {
       }
     });
 
-    // Automatically show the prompt shortly after page load/refresh
+    // Automatically show the prompt shortly after page load/refresh if iOS or if we already have the prompt
     const initialTimer = setTimeout(() => {
       if (!window.matchMedia('(display-mode: standalone)').matches) {
-        setShowPrompt(true);
+        if (isIosDevice || window.globalDeferredPrompt) {
+          setShowPrompt(true);
+        }
       }
     }, 1500);
 
@@ -99,7 +104,9 @@ export default function PwaInstallPrompt() {
     // As requested: wait exactly 2 minutes (120,000ms) and pop it back up!
     setTimeout(() => {
       if (!window.matchMedia('(display-mode: standalone)').matches) {
-        setShowPrompt(true);
+        if (isIOS || window.globalDeferredPrompt) {
+          setShowPrompt(true);
+        }
       }
     }, 120000);
   };
