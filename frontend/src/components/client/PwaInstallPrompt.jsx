@@ -42,8 +42,11 @@ export default function PwaInstallPrompt() {
       setIsInstalled(true);
       setShowPrompt(false);
       setDeferredPrompt(null);
-      // Track installation
-      api.post('/analytics/app-install').catch(console.error);
+      // Track installation only once per device
+      if (!localStorage.getItem('appInstalledTracked')) {
+        localStorage.setItem('appInstalledTracked', 'true');
+        api.post('/analytics/app-install').catch(console.error);
+      }
     });
 
     // Automatically show the prompt shortly after page load/refresh
@@ -80,7 +83,10 @@ export default function PwaInstallPrompt() {
       window.globalDeferredPrompt = null;
       setIsInstalled(true);
       // Track installation here as well in case appinstalled event is flaky
-      api.post('/analytics/app-install').catch(console.error);
+      if (!localStorage.getItem('appInstalledTracked')) {
+        localStorage.setItem('appInstalledTracked', 'true');
+        api.post('/analytics/app-install').catch(console.error);
+      }
     } else {
       // User cancelled the prompt dialog itself, handle as dismiss
       handleDismiss();
