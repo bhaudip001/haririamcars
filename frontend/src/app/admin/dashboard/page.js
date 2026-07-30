@@ -238,19 +238,19 @@ export default function AdminDashboard() {
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <HardDrive size={14} className="text-blue-500" /> Media (Cloudinary)
               </h3>
-              <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${storageStats && storageStats.cloudinary.percentage > 80 ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'}`}>
-                {storageStats ? `${storageStats.cloudinary.percentage}% Used` : 'Loading...'}
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${storageStats && (storageStats.cloudinary.percentage > 80 || storageStats.cloudinary.error) ? 'bg-red-500/20 text-red-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                {storageStats ? (storageStats.cloudinary.error ? 'Account Blocked' : `${storageStats.cloudinary.percentage}% Used`) : 'Loading...'}
               </span>
             </div>
             <div className="w-full bg-[#1a1a24] rounded-full h-2.5 mb-2 overflow-hidden">
               <div 
-                className={`h-2.5 rounded-full ${storageStats && storageStats.cloudinary.percentage > 80 ? 'bg-red-500' : 'bg-blue-500'}`}
-                style={{ width: `${storageStats ? Math.min(storageStats.cloudinary.percentage, 100) : 0}%` }}
+                className={`h-2.5 rounded-full ${storageStats && (storageStats.cloudinary.percentage > 80 || storageStats.cloudinary.error) ? 'bg-red-500' : 'bg-blue-500'}`}
+                style={{ width: `${storageStats && !storageStats.cloudinary.error ? Math.min(storageStats.cloudinary.percentage, 100) : 0}%` }}
               ></div>
             </div>
             <div className="flex justify-between text-[11px] text-gray-400">
-              <span>Used: {storageStats ? `${storageStats.cloudinary.usedGB} GB` : '0 GB'}</span>
-              <span>Free: {storageStats ? `${(storageStats.cloudinary.totalGB - storageStats.cloudinary.usedGB).toFixed(2)} GB` : '0 GB'}</span>
+              <span>Used: {storageStats && !storageStats.cloudinary.error ? `${storageStats.cloudinary.usedGB} GB` : '0 GB'}</span>
+              <span>Free: {storageStats && !storageStats.cloudinary.error ? `${(storageStats.cloudinary.totalGB - storageStats.cloudinary.usedGB).toFixed(2)} GB` : '0 GB'}</span>
             </div>
           </div>
         </div>

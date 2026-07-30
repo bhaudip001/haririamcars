@@ -128,10 +128,19 @@ router.get('/storage', async (req, res) => {
     const mongoPercentage = (mongoUsedMB / mongoTotalMB) * 100;
 
     // Cloudinary Stats
-    const clStats = await cloudinary.api.usage();
-    const clUsedGB = clStats.storage.usage / (1024 * 1024 * 1024);
+    let clUsedGB = 0;
     const clTotalGB = 25;
-    const clPercentage = (clUsedGB / clTotalGB) * 100;
+    let clPercentage = 0;
+    let clError = false;
+
+    try {
+      const clStats = await cloudinary.api.usage();
+      clUsedGB = clStats.storage.usage / (1024 * 1024 * 1024);
+      clPercentage = (clUsedGB / clTotalGB) * 100;
+    } catch (err) {
+      console.error('Cloudinary API error:', err.message || err);
+      clError = true;
+    }
 
     res.status(200).json({
       mongodb: {
@@ -142,7 +151,8 @@ router.get('/storage', async (req, res) => {
       cloudinary: {
         usedGB: parseFloat(clUsedGB.toFixed(2)),
         totalGB: clTotalGB,
-        percentage: parseFloat(clPercentage.toFixed(2))
+        percentage: parseFloat(clPercentage.toFixed(2)),
+        error: clError
       }
     });
   } catch (err) {
