@@ -15,22 +15,27 @@ export default function ShowroomVideo() {
 
   useEffect(() => {
     let intervalId;
+    let isDestroyed = false;
 
     const initPlayer = () => {
+      if (isDestroyed) return true; // Stop if unmounted
       if (!window.YT || !window.YT.Player) return false;
       if (!playerContainerRef.current) return false;
       
+      // If we already have a player, clean it up
       if (playerRef.current) {
-         playerRef.current.destroy();
+         try { playerRef.current.destroy(); } catch(e) {}
       }
 
       // Create a fresh div for the player to replace
+      const playerId = 'showroom-yt-' + Math.random().toString(36).substring(7);
       const playerDiv = document.createElement('div');
+      playerDiv.id = playerId;
       playerDiv.className = 'w-full h-full';
       playerContainerRef.current.innerHTML = '';
       playerContainerRef.current.appendChild(playerDiv);
 
-      playerRef.current = new window.YT.Player(playerDiv, {
+      playerRef.current = new window.YT.Player(playerId, {
         videoId: 'Y2ZcHOgOJN0',
         playerVars: {
           autoplay: 1,
@@ -45,6 +50,7 @@ export default function ShowroomVideo() {
         },
         events: {
           onReady: (event) => {
+            if (isDestroyed) return;
             setIsReady(true);
             event.target.playVideo();
           },
@@ -57,43 +63,33 @@ export default function ShowroomVideo() {
           }
         }
       });
-      return true;
+      return true; // Successfully started initialization
     };
 
-    const checkAndInitPlayer = () => {
+    // Inject script if not present
+    if (!window.YT && !document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      if (firstScriptTag && firstScriptTag.parentNode) {
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      } else {
+        document.head.appendChild(tag);
+      }
+    }
+    
+    // Continuously poll until it successfully initializes
+    intervalId = setInterval(() => {
       if (initPlayer()) {
         clearInterval(intervalId);
       }
-    };
-
-    if (window.YT && window.YT.Player) {
-      initPlayer();
-    } else {
-      // Inject script if not present
-      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        if (firstScriptTag && firstScriptTag.parentNode) {
-          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        } else {
-          document.head.appendChild(tag);
-        }
-      }
-      
-      intervalId = setInterval(checkAndInitPlayer, 100);
-      
-      const originalCallback = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = () => {
-        if (originalCallback) originalCallback();
-        checkAndInitPlayer();
-      };
-    }
+    }, 250);
 
     return () => {
+      isDestroyed = true;
       clearInterval(intervalId);
       if (playerRef.current) {
-        playerRef.current.destroy();
+        try { playerRef.current.destroy(); } catch(e) {}
         playerRef.current = null;
       }
     };
