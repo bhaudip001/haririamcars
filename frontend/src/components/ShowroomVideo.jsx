@@ -12,16 +12,11 @@ export default function ShowroomVideo() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Load YouTube Iframe API if not already loaded
-    if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    }
+    let intervalId;
 
     const initPlayer = () => {
-      if (!window.YT || !window.YT.Player) return;
+      if (!window.YT || !window.YT.Player) return false;
+      if (!document.getElementById('showroom-youtube-player')) return false;
       
       if (playerRef.current) {
          playerRef.current.destroy();
@@ -54,12 +49,37 @@ export default function ShowroomVideo() {
           }
         }
       });
+      return true;
+    };
+
+    const checkAndInitPlayer = () => {
+      if (initPlayer()) {
+        clearInterval(intervalId);
+      }
     };
 
     if (window.YT && window.YT.Player) {
       initPlayer();
     } else {
-      window.onYouTubeIframeAPIReady = initPlayer;
+      // Inject script if not present
+      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        if (firstScriptTag && firstScriptTag.parentNode) {
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        } else {
+          document.head.appendChild(tag);
+        }
+      }
+      
+      intervalId = setInterval(checkAndInitPlayer, 100);
+      
+      const originalCallback = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (originalCallback) originalCallback();
+        checkAndInitPlayer();
+      };
     }
 
     return () => {
