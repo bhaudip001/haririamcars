@@ -503,7 +503,7 @@ export default function EditCarPage() {
             finalUrl = finalUrl.replace(/\.heic$|\.heif$/i, '.jpg');
           }
 
-          newlyUploaded.push({
+          uploadedImages.push({
             url: finalUrl,
             publicId: imgbbRes.data.id
           });
