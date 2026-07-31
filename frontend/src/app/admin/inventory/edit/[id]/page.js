@@ -477,36 +477,14 @@ export default function EditCarPage() {
             toast.dismiss('heic-convert');
           }
 
-          if (heicFailed) {
-            toast.loading(`Sending ${photo.name} to server for deep conversion...`, { id: 'heic-convert' });
-            try {
-              const backendFormData = new FormData();
-              backendFormData.append('image', photo);
-              const backendRes = await api.post('/upload/heic-to-imgbb', backendFormData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-              });
-              
-              if (backendRes.data && backendRes.data.success) {
-                uploadedImages.push({
-                  url: backendRes.data.data.url,
-                  publicId: backendRes.data.data.id
-                });
-                toast.dismiss('heic-convert');
-                toast.success(`${photo.name} converted and uploaded successfully!`);
-                continue; // Skip the regular upload process since it's already done
-              } else {
-                throw new Error('Server conversion failed');
-              }
-            } catch (backendErr) {
-              toast.dismiss('heic-convert');
-              console.error('HEIC backend conversion error:', backendErr);
-              toast.error(`Failed to convert ${photo.name} to JPG. Please convert it manually or use a standard format.`, { duration: 6000 });
-              continue; // Skip this photo
-            }
-          }
-
           let compressed;
-          compressed = await imageCompression(fileToUpload, options);
+          if (heicFailed) {
+            // ImgBB natively supports HEIC and converts it to AVIF automatically on their servers.
+            // We just need to bypass the browser image compression because canvas can't read HEIC.
+            compressed = photo; 
+          } else {
+            compressed = await imageCompression(fileToUpload, options);
+          }
 
           const uploadData = new FormData();
           uploadData.append('image', compressed);
