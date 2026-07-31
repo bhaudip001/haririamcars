@@ -32,11 +32,10 @@ export default function HeroSection() {
   }, [isMobileSearchOpen]);
 
   useEffect(() => {
-    let isMounted = true;
     const fetchMetadata = async () => {
       try {
         const res = await api.get('/cars/filters');
-        if (isMounted && res.data && res.data.data) {
+        if (res.data && res.data.data) {
           const fetchedMakes = res.data.data.makes || [];
           const fetchedMap = res.data.data.brandModelMap || [];
 
@@ -48,17 +47,12 @@ export default function HeroSection() {
           setAvailableModels(allModels);
         }
       } catch (error) {
-        if (isMounted) console.error('Failed to fetch car metadata', error);
+        console.error('Failed to fetch car metadata', error);
       } finally {
-        if (isMounted) setIsLoading(false);
+        setIsLoading(false);
       }
     };
-
     fetchMetadata();
-    
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
   const handleBrandChange = (e) => {
