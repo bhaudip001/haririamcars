@@ -187,7 +187,7 @@ export default function HeroSection() {
           />
         </motion.div>
         {/* Deep cinematic vignette gradient */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0a0a12] via-[#0a0a12]/30 to-[#0a0a12]/70"></div>
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0a0a12]/90 via-[#0a0a12]/20 to-[#0a0a12]/30"></div>
 
         {/* Mobile Content Overlay */}
         <div className="absolute inset-x-0 top-[10%] z-10 px-6 flex flex-col items-start text-left">
