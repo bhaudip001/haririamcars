@@ -1,6 +1,5 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { cloudinary } from '../config/cloudinary.js';
 import Analytics from '../models/Analytics.js';
 
 const router = express.Router();
@@ -127,21 +126,7 @@ router.get('/storage', async (req, res) => {
     const mongoTotalMB = 512;
     const mongoPercentage = (mongoUsedMB / mongoTotalMB) * 100;
 
-    // Cloudinary Stats
-    let clUsedGB = 0;
-    const clTotalGB = 25;
-    let clPercentage = 0;
-    let clError = false;
-
-    try {
-      const clStats = await cloudinary.api.usage();
-      clUsedGB = clStats.storage.usage / (1024 * 1024 * 1024);
-      clPercentage = (clUsedGB / clTotalGB) * 100;
-    } catch (err) {
-      console.error('Cloudinary API error:', err.message || err);
-      clError = true;
-    }
-
+    // Media Stats (ImgBB - Unlimited)
     res.status(200).json({
       mongodb: {
         usedMB: parseFloat(mongoUsedMB.toFixed(2)),
@@ -149,10 +134,11 @@ router.get('/storage', async (req, res) => {
         percentage: parseFloat(mongoPercentage.toFixed(2))
       },
       cloudinary: {
-        usedGB: parseFloat(clUsedGB.toFixed(2)),
-        totalGB: clTotalGB,
-        percentage: parseFloat(clPercentage.toFixed(2)),
-        error: clError
+        usedGB: 0,
+        totalGB: 'Unlimited',
+        percentage: 0,
+        error: false,
+        unlimited: true
       }
     });
   } catch (err) {

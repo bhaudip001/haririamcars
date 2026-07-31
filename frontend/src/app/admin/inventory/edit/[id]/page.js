@@ -451,7 +451,7 @@ export default function EditCarPage() {
         const options = { maxSizeMB: 1.5, maxWidthOrHeight: 1920, useWebWorker: true, initialQuality: 0.9 };
 
         const sigRes = await api.get('/upload/signature');
-        const { signature, timestamp, api_key, cloud_name } = sigRes.data;
+        const { api_key } = sigRes.data;
 
         for (let i = 0; i < photos.length; i++) {
           let photo = photos[i];
@@ -487,30 +487,25 @@ export default function EditCarPage() {
           }
 
           const uploadData = new FormData();
-          uploadData.append('file', compressed);
-          uploadData.append('api_key', api_key);
-          uploadData.append('timestamp', timestamp);
-          uploadData.append('signature', signature);
-          uploadData.append('folder', 'hariram-motors/cars');
-          uploadData.append('transformation', 'w_1920,c_limit,q_auto:best,f_webp');
-
-          const cloudinaryRes = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+          uploadData.append('image', compressed);
+          
+          const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${api_key}`, {
             method: 'POST',
             body: uploadData,
           }).then(res => res.json());
 
-          if (cloudinaryRes.error) {
-            throw new Error(cloudinaryRes.error.message);
+          if (!imgbbRes.success) {
+            throw new Error(imgbbRes.error?.message || 'Upload failed');
           }
 
-          let finalUrl = cloudinaryRes.secure_url;
+          let finalUrl = imgbbRes.data.url;
           if (heicFailed) {
             finalUrl = finalUrl.replace(/\.heic$|\.heif$/i, '.jpg');
           }
 
-          uploadedImages.push({
+          newlyUploaded.push({
             url: finalUrl,
-            publicId: cloudinaryRes.public_id
+            publicId: imgbbRes.data.id
           });
         }
         toast.dismiss('upload-toast');

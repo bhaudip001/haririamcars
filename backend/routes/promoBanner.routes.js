@@ -1,7 +1,7 @@
 import express from 'express';
 import PromoBanner from '../models/PromoBanner.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
-import { upload, uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
+import { upload, uploadToImgBB, deleteFromImgBB } from '../config/imgbb.js';
 import { cache, clearCache } from '../middleware/cache.js';
 
 const router = express.Router();
@@ -35,12 +35,12 @@ router.post('/', protect, adminOnly, upload.fields([
     const data = { ...req.body };
 
     if (req.files?.desktopImage?.[0]) {
-      const result = await uploadToCloudinary(req.files.desktopImage[0].buffer, 'hariram-motors/banners');
+      const result = await uploadToImgBB(req.files.desktopImage[0].buffer);
       data.desktopImageUrl = result.secure_url;
       data.desktopPublicId = result.public_id;
     }
     if (req.files?.mobileImage?.[0]) {
-      const result = await uploadToCloudinary(req.files.mobileImage[0].buffer, 'hariram-motors/banners');
+      const result = await uploadToImgBB(req.files.mobileImage[0].buffer);
       data.mobileImageUrl = result.secure_url;
       data.mobilePublicId = result.public_id;
     }
@@ -63,14 +63,14 @@ router.put('/:id', protect, adminOnly, upload.fields([
     if (!banner) return res.status(404).json({ error: 'Banner not found' });
 
     if (req.files?.desktopImage?.[0]) {
-      if (banner.desktopPublicId) await deleteFromCloudinary(banner.desktopPublicId);
-      const result = await uploadToCloudinary(req.files.desktopImage[0].buffer, 'hariram-motors/banners');
+      if (banner.desktopPublicId) await deleteFromImgBB(banner.desktopPublicId);
+      const result = await uploadToImgBB(req.files.desktopImage[0].buffer);
       banner.desktopImageUrl = result.secure_url;
       banner.desktopPublicId = result.public_id;
     }
     if (req.files?.mobileImage?.[0]) {
-      if (banner.mobilePublicId) await deleteFromCloudinary(banner.mobilePublicId);
-      const result = await uploadToCloudinary(req.files.mobileImage[0].buffer, 'hariram-motors/banners');
+      if (banner.mobilePublicId) await deleteFromImgBB(banner.mobilePublicId);
+      const result = await uploadToImgBB(req.files.mobileImage[0].buffer);
       banner.mobileImageUrl = result.secure_url;
       banner.mobilePublicId = result.public_id;
     }
@@ -93,8 +93,8 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
     const banner = await PromoBanner.findById(req.params.id);
     if (!banner) return res.status(404).json({ error: 'Banner not found' });
-    if (banner.desktopPublicId) await deleteFromCloudinary(banner.desktopPublicId);
-    if (banner.mobilePublicId) await deleteFromCloudinary(banner.mobilePublicId);
+    if (banner.desktopPublicId) await deleteFromImgBB(banner.desktopPublicId);
+    if (banner.mobilePublicId) await deleteFromImgBB(banner.mobilePublicId);
     await PromoBanner.findByIdAndDelete(req.params.id);
     clearCache('/api/promo-banners');
     res.json({ message: 'Banner deleted' });

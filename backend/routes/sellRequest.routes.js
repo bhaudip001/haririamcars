@@ -1,7 +1,7 @@
 import express from 'express';
 import SellRequest from '../models/SellRequest.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
-import { upload, uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
+import { upload, uploadToImgBB, deleteFromImgBB } from '../config/imgbb.js';
 import { validateSellRequest } from '../middleware/validate.js';
 
 const router = express.Router();
@@ -11,10 +11,10 @@ router.post('/', upload.array('photos', 10), validateSellRequest, async (req, re
   try {
     const data = { ...req.body };
 
-    // Upload photos to Cloudinary
+    // Upload photos to ImgBB
     if (req.files && req.files.length > 0) {
       const uploadPromises = req.files.map(file =>
-        uploadToCloudinary(file.buffer, 'hariram-motors/sell-requests')
+        uploadToImgBB(file.buffer)
       );
       const results = await Promise.all(uploadPromises);
       data.photos = results.map(r => ({ url: r.secure_url, publicId: r.public_id }));
@@ -67,11 +67,11 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
     const request = await SellRequest.findById(req.params.id);
     if (!request) return res.status(404).json({ error: 'Request not found' });
 
-    // Delete associated photos from Cloudinary to free up storage
+    // Delete associated photos from ImgBB to free up storage
     if (request.photos && request.photos.length > 0) {
       for (const photo of request.photos) {
         if (photo.publicId) {
-          await deleteFromCloudinary(photo.publicId);
+          await deleteFromImgBB(photo.publicId);
         }
       }
     }

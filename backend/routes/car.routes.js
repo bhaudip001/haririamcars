@@ -1,7 +1,7 @@
 import express from 'express';
 import Car from '../models/Car.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
-import { upload, uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary.js';
+import { upload, uploadToImgBB, deleteFromImgBB } from '../config/imgbb.js';
 import { validateCar } from '../middleware/validate.js';
 import { cache, clearCache } from '../middleware/cache.js';
 import webpush from 'web-push';
@@ -172,10 +172,10 @@ router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, as
       try { carData.badges = JSON.parse(carData.badges); } catch { /* keep as is */ }
     }
 
-    // Upload images to Cloudinary
+    // Upload images to ImgBB
     if (req.files && req.files.length > 0) {
       const uploadPromises = req.files.map(file =>
-        uploadToCloudinary(file.buffer, 'hariram-motors/cars')
+        uploadToImgBB(file.buffer)
       );
       const results = await Promise.all(uploadPromises);
       carData.images = results.map(r => ({ url: r.secure_url, publicId: r.public_id }));
@@ -254,7 +254,7 @@ router.put('/:id', protect, adminOnly, upload.array('images', 25), async (req, r
     // Upload new images
     if (req.files && req.files.length > 0) {
       const uploadPromises = req.files.map(file =>
-        uploadToCloudinary(file.buffer, 'hariram-motors/cars')
+        uploadToImgBB(file.buffer)
       );
       const results = await Promise.all(uploadPromises);
       const newImages = results.map(r => ({ url: r.secure_url, publicId: r.public_id }));
@@ -265,9 +265,9 @@ router.put('/:id', protect, adminOnly, upload.array('images', 25), async (req, r
     if (updateData.deletedImages) {
       const deleted = typeof updateData.deletedImages === 'string'
         ? JSON.parse(updateData.deletedImages) : updateData.deletedImages;
-      for (const publicId of deleted) {
-        await deleteFromCloudinary(publicId);
-      }
+      const deletePromises = deleted.map(publicId => {
+        return deleteFromImgBB(publicId);
+      });
       delete updateData.deletedImages;
     }
 
@@ -288,11 +288,11 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
     const car = await Car.findById(req.params.id);
     if (!car) return res.status(404).json({ error: 'Car not found' });
 
-    // Delete images from Cloudinary
-    for (const img of car.images) {
-      if (img.publicId) await deleteFromCloudinary(img.publicId);
-    }
-
+    // Delete images from ImgBB
+    const deletePromises = car.images.map(img => {
+      if (img.publicId) return deleteFromImgBB(img.publicId);
+      return Promise.resolve();
+    });
     await Car.findByIdAndDelete(req.params.id);
     clearCache('/api/cars');
     res.json({ message: 'Car deleted successfully' });

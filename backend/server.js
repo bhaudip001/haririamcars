@@ -15,7 +15,7 @@ import connectDB from './config/db.js';
 import { sanitizeInputs } from './middleware/validate.js';
 
 // ── Environment Validation ──
-const requiredEnvs = ['MONGODB_URI', 'JWT_SECRET', 'CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
+const requiredEnvs = ['MONGODB_URI', 'JWT_SECRET', 'IMGBB_API_KEY'];
 requiredEnvs.forEach((envName) => {
   if (!process.env[envName]) {
     console.error(`❌ CRITICAL: ${envName} is missing in environment variables.`);
