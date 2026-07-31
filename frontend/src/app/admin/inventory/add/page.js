@@ -419,9 +419,14 @@ export default function AddCar() {
           if (isHeic) {
             toast.loading(`Converting ${photo.name}...`, { id: 'heic-convert' });
             try {
-              const { heicToJpeg } = await import('heic-converter');
-              const convertedBlob = await heicToJpeg(photo, { quality: 0.95 });
-              fileToUpload = new File([convertedBlob], photo.name.replace(/\.heic$|\.heif$/i, '.jpg'), { type: 'image/jpeg' });
+              const heic2any = (await import('heic2any')).default;
+              const convertedBlob = await heic2any({
+                blob: photo,
+                toType: 'image/jpeg',
+                quality: 0.95
+              });
+              const singleBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+              fileToUpload = new File([singleBlob], photo.name.replace(/\.heic$|\.heif$/i, '.jpg'), { type: 'image/jpeg' });
             } catch (err) {
               console.error('HEIC frontend conversion error:', err);
               heicFailed = true;
