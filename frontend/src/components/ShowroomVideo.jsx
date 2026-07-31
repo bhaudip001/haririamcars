@@ -5,17 +5,77 @@ import { motion } from 'framer-motion';
 import { Play, Volume2, VolumeX } from 'lucide-react';
 
 export default function ShowroomVideo() {
-  const videoRef = useRef(null);
+  const containerRef = useRef(null);
+  const playerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    // Load YouTube Iframe API if not already loaded
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
+
+    const initPlayer = () => {
+      if (!window.YT || !window.YT.Player) return;
+      
+      if (playerRef.current) {
+         playerRef.current.destroy();
+      }
+
+      playerRef.current = new window.YT.Player('showroom-youtube-player', {
+        videoId: 'Y2ZcHOgOJN0',
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          rel: 0,
+          showinfo: 0,
+          mute: 1,
+          loop: 1,
+          playlist: 'Y2ZcHOgOJN0',
+          playsinline: 1,
+          modestbranding: 1
+        },
+        events: {
+          onReady: (event) => {
+            setIsReady(true);
+            event.target.playVideo();
+          },
+          onStateChange: (event) => {
+            if (event.data === window.YT.PlayerState.PLAYING) {
+              setIsPlaying(true);
+            } else if (event.data === window.YT.PlayerState.PAUSED || event.data === window.YT.PlayerState.ENDED) {
+              setIsPlaying(false);
+            }
+          }
+        }
+      });
+    };
+
+    if (window.YT && window.YT.Player) {
+      initPlayer();
+    } else {
+      window.onYouTubeIframeAPIReady = initPlayer;
+    }
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.destroy();
+      }
+    };
+  }, []);
 
   // Play video on intersection and handle global mute
   useEffect(() => {
     const handleOtherVideoUnmuted = (e) => {
-      if (e.detail.src !== "https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.mp4") {
+      if (e.detail.src !== "showroom-video") {
         setIsMuted(true);
-        if (videoRef.current) {
-          videoRef.current.muted = true;
+        if (playerRef.current && playerRef.current.mute) {
+          playerRef.current.mute();
         }
       }
     };
@@ -24,50 +84,52 @@ export default function ShowroomVideo() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          if (!playerRef.current || !playerRef.current.playVideo) return;
           if (entry.isIntersecting) {
-            videoRef.current?.play().catch(() => setIsPlaying(false));
-            setIsPlaying(true);
+            playerRef.current.playVideo();
           } else {
-            videoRef.current?.pause();
-            setIsPlaying(false);
+            playerRef.current.pauseVideo();
           }
         });
       },
       { threshold: 0.5 }
     );
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
     }
 
     return () => {
       window.removeEventListener('video-unmuted', handleOtherVideoUnmuted);
       observer.disconnect();
     };
-  }, []);
+  }, [isReady]);
 
   const togglePlay = (e) => {
     e.stopPropagation();
+    if (!playerRef.current) return;
     if (isPlaying) {
-      videoRef.current?.pause();
-      setIsPlaying(false);
+      playerRef.current.pauseVideo();
     } else {
-      videoRef.current?.play();
-      setIsPlaying(true);
+      playerRef.current.playVideo();
     }
   };
 
   const toggleMute = (e) => {
     e.stopPropagation();
+    if (!playerRef.current) return;
+    
     const newMutedState = !isMuted;
-
-    if (videoRef.current) {
-      videoRef.current.muted = newMutedState;
-      setIsMuted(newMutedState);
+    
+    if (newMutedState) {
+      playerRef.current.mute();
+    } else {
+      playerRef.current.unMute();
     }
+    setIsMuted(newMutedState);
 
     if (!newMutedState) {
-      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.mp4" } }));
+      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "showroom-video" } }));
     }
   };
 
@@ -92,6 +154,7 @@ export default function ShowroomVideo() {
         </div>
 
         <motion.div
+          ref={containerRef}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "0px" }}
@@ -99,17 +162,17 @@ export default function ShowroomVideo() {
           className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-video"
           onClick={togglePlay}
         >
-          <video
-            ref={videoRef}
-            src="https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.mp4?sw_ignore=true"
-            className="w-full h-full object-cover"
-            autoPlay
-            loop
-            muted={isMuted}
-            playsInline
-            preload="metadata"
-            poster="https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto,so_1/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.jpg"
-          />
+          <div className="w-full h-full absolute inset-0 pointer-events-none scale-[1.2]">
+            <div id="showroom-youtube-player" className="w-full h-full" />
+          </div>
+
+          {/* Fallback Poster (shown while loading) */}
+          <div className={`absolute inset-0 bg-black transition-opacity duration-700 ${isReady ? 'opacity-0 pointer-events-none' : 'opacity-100 z-10'}`}>
+            <img src="https://img.youtube.com/vi/Y2ZcHOgOJN0/maxresdefault.jpg" alt="Showroom" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 flex items-center justify-center">
+               <div className="w-10 h-10 border-2 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
+            </div>
+          </div>
 
           {/* Mute Toggle */}
           <button
