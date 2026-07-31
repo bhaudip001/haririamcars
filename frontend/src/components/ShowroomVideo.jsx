@@ -1,9 +1,76 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Play, Volume2, VolumeX } from 'lucide-react';
 
 export default function ShowroomVideo() {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+
+  // Play video on intersection and handle global mute
+  useEffect(() => {
+    const handleOtherVideoUnmuted = (e) => {
+      if (e.detail.src !== "https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.mp4") {
+        setIsMuted(true);
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+        }
+      }
+    };
+    window.addEventListener('video-unmuted', handleOtherVideoUnmuted);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            videoRef.current?.play().catch(() => setIsPlaying(false));
+            setIsPlaying(true);
+          } else {
+            videoRef.current?.pause();
+            setIsPlaying(false);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('video-unmuted', handleOtherVideoUnmuted);
+      observer.disconnect();
+    };
+  }, []);
+
+  const togglePlay = (e) => {
+    e.stopPropagation();
+    if (isPlaying) {
+      videoRef.current?.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current?.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = (e) => {
+    e.stopPropagation();
+    const newMutedState = !isMuted;
+
+    if (videoRef.current) {
+      videoRef.current.muted = newMutedState;
+      setIsMuted(newMutedState);
+    }
+
+    if (!newMutedState) {
+      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.mp4" } }));
+    }
+  };
+
   return (
     <section className="py-10 md:pt-28 md:pb-16 relative overflow-hidden bg-white dark:bg-[#0a0a12] transition-colors duration-500">
       {/* Decorative background blur */}
@@ -29,16 +96,32 @@ export default function ShowroomVideo() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "0px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black aspect-video pointer-events-none"
+          className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-video"
+          onClick={togglePlay}
         >
-          <iframe
-            className="w-full h-full absolute top-0 left-0 scale-[1.1]"
-            src="https://www.youtube.com/embed/Y2ZcHOgOJN0?autoplay=1&mute=1&loop=1&playlist=Y2ZcHOgOJN0&controls=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&iv_load_policy=3"
-            title="Hariram Motors Showroom"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          ></iframe>
+          <video
+            ref={videoRef}
+            src="https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.mp4?sw_ignore=true"
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted={isMuted}
+            playsInline
+            preload="metadata"
+            poster="https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto,so_1/v1783675062/hariram-motors/videos/jt6m5xqw10yv1kijqqab.jpg"
+          />
+
+          {/* Mute Toggle */}
+          <button
+            onClick={toggleMute}
+            className="absolute top-4 right-4 md:top-6 md:right-6 z-20 w-8 h-8 md:w-12 md:h-12 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition shadow-lg opacity-100"
+          >
+            {isMuted ? (
+              <VolumeX className="w-4 h-4 md:w-6 md:h-6 text-white" />
+            ) : (
+              <Volume2 className="w-4 h-4 md:w-6 md:h-6 text-white" />
+            )}
+          </button>
         </motion.div>
       </div>
     </section>
