@@ -11,18 +11,26 @@ export default function ShowroomVideo() {
   const [isMuted, setIsMuted] = useState(true);
   const [isReady, setIsReady] = useState(false);
 
+  const playerContainerRef = useRef(null);
+
   useEffect(() => {
     let intervalId;
 
     const initPlayer = () => {
       if (!window.YT || !window.YT.Player) return false;
-      if (!document.getElementById('showroom-youtube-player')) return false;
+      if (!playerContainerRef.current) return false;
       
       if (playerRef.current) {
          playerRef.current.destroy();
       }
 
-      playerRef.current = new window.YT.Player('showroom-youtube-player', {
+      // Create a fresh div for the player to replace
+      const playerDiv = document.createElement('div');
+      playerDiv.className = 'w-full h-full';
+      playerContainerRef.current.innerHTML = '';
+      playerContainerRef.current.appendChild(playerDiv);
+
+      playerRef.current = new window.YT.Player(playerDiv, {
         videoId: 'Y2ZcHOgOJN0',
         playerVars: {
           autoplay: 1,
@@ -83,8 +91,10 @@ export default function ShowroomVideo() {
     }
 
     return () => {
+      clearInterval(intervalId);
       if (playerRef.current) {
         playerRef.current.destroy();
+        playerRef.current = null;
       }
     };
   }, []);
@@ -182,8 +192,7 @@ export default function ShowroomVideo() {
           className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-video"
           onClick={togglePlay}
         >
-          <div className="w-full h-full absolute inset-0 pointer-events-none scale-[1.2]">
-            <div id="showroom-youtube-player" className="w-full h-full" />
+          <div className="w-full h-full absolute inset-0 pointer-events-none scale-[1.2]" ref={playerContainerRef}>
           </div>
 
           {/* Fallback Poster (shown while loading) */}
