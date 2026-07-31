@@ -11,14 +11,14 @@ export default function DeliveryReelClient({ initialReels }) {
   const reels = initialReels && initialReels.length > 0 ? initialReels : [
     {
       id: 1,
-      videoSrc: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783673823/IMG_5502_gfptsa.mp4',
+      videoSrc: 'https://youtube.com/shorts/obMCnOQtSIc',
       customerName: 'Bhimabhai shamla',
       carModel: 'Creta 2020',
       review: '',
     },
     {
       id: 2,
-      videoSrc: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783672811/AQOUDnqeoA_KSMqNKrsawxWAmSfllvqNQGYlNdmIpiATmmvWRMuBNmsiXDnTGkf8oUw12Qg4nJnJrvS108OmriWWZY91XYZ1Q4V9R34_yfx01k.mp4',
+      videoSrc: 'https://youtube.com/shorts/s4GQFcr5N3U',
       customerName: 'Ajudiya Rameshbhai',
       carModel: 'Endeavour 2018',
       review: '',
@@ -86,13 +86,27 @@ export default function DeliveryReelClient({ initialReels }) {
   );
 }
 
-function ReelCard({ reel }) {
+function ReelCard({ reel, index }) {
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(index === 0);
   const [isMuted, setIsMuted] = useState(true);
+
+  const isYouTube = reel.videoSrc && (reel.videoSrc.includes('youtube.com') || reel.videoSrc.includes('youtu.be'));
+  let youtubeId = '';
+  if (isYouTube) {
+    if (reel.videoSrc.includes('/shorts/')) {
+      youtubeId = reel.videoSrc.split('/shorts/')[1].split('?')[0];
+    } else if (reel.videoSrc.includes('youtu.be/')) {
+      youtubeId = reel.videoSrc.split('youtu.be/')[1].split('?')[0];
+    } else if (reel.videoSrc.includes('v=')) {
+      youtubeId = reel.videoSrc.split('v=')[1].split('&')[0];
+    }
+  }
 
   // Play video on intersection (when it comes into view)
   useEffect(() => {
+    if (isYouTube) return;
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -116,10 +130,11 @@ function ReelCard({ reel }) {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [isYouTube]);
 
   const togglePlay = (e) => {
     e.stopPropagation();
+    if (isYouTube) return;
     if (isPlaying) {
       videoRef.current?.pause();
       setIsPlaying(false);
@@ -131,6 +146,7 @@ function ReelCard({ reel }) {
 
   const toggleMute = (e) => {
     e.stopPropagation();
+    if (isYouTube) return;
     if (videoRef.current) {
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
@@ -143,21 +159,31 @@ function ReelCard({ reel }) {
       onClick={togglePlay}
     >
       {/* Video Element */}
-      <video
-        ref={videoRef}
-        src={reel.videoSrc.replace('f_auto', 'f_mp4') + '?sw_ignore=true'}
-        className="w-full h-full object-contain"
-        autoPlay
-        loop
-        muted={isMuted}
+      {isYouTube ? (
+        <iframe
+          className="w-full h-full object-contain absolute inset-0"
+          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=1&rel=0&modestbranding=1&playsinline=1`}
+          title={reel.customerName}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        ></iframe>
+      ) : (
+        <video
+          ref={videoRef}
+          src={reel.videoSrc.replace('f_auto', 'f_mp4') + '?sw_ignore=true'}
+          className="w-full h-full object-contain"
+          autoPlay={index === 0}
+          loop
+          muted={isMuted}
+          playsInline
+          preload="metadata"
+          poster={reel.videoSrc ? reel.videoSrc.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
+        />
+      )}
 
-        playsInline
-        preload="metadata"
-        poster={reel.videoSrc ? reel.videoSrc.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
-      />
-
-      {/* Play/Pause Overlay */}
-      {!isPlaying && (
+      {/* Play/Pause Overlay (Only for HTML5 Video) */}
+      {!isPlaying && !isYouTube && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-10">
           <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40">
             <Play className="w-6 h-6 text-white ml-1" fill="currentColor" />
@@ -165,17 +191,19 @@ function ReelCard({ reel }) {
         </div>
       )}
 
-      {/* Mute/Unmute Button */}
-      <button 
-        onClick={toggleMute}
-        className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition"
-      >
-        {isMuted ? (
-          <VolumeX className="w-4 h-4 text-white" />
-        ) : (
-          <Volume2 className="w-4 h-4 text-white" />
-        )}
-      </button>
+      {/* Mute/Unmute Button (Only for HTML5 Video) */}
+      {!isYouTube && (
+        <button 
+          onClick={toggleMute}
+          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition"
+        >
+          {isMuted ? (
+            <VolumeX className="w-4 h-4 text-white" />
+          ) : (
+            <Volume2 className="w-4 h-4 text-white" />
+          )}
+        </button>
+      )}
 
       {/* Content Overlay (Bottom gradient) */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-10 flex flex-col justify-end p-5">
