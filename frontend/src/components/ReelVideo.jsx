@@ -213,19 +213,17 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
         </div>
       )}
       
-      {/* Mute Button - Top Right (Only for HTML5 Video) */}
-      {!isYouTube && (
-        <button
-          onClick={toggleMute}
-          className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition shadow-sm opacity-100"
-        >
-          {isMuted ? (
-            <VolumeX className="w-4 h-4 text-white" />
-          ) : (
-            <Volume2 className="w-4 h-4 text-white" />
-          )}
-        </button>
-      )}
+      {/* Mute Button - Top Right */}
+      <button
+        onClick={toggleMute}
+        className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition shadow-sm opacity-100"
+      >
+        {isMuted ? (
+          <VolumeX className="w-4 h-4 text-white" />
+        ) : (
+          <Volume2 className="w-4 h-4 text-white" />
+        )}
+      </button>
     </div>
   );
 }
