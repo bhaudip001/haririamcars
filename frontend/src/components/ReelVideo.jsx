@@ -78,6 +78,8 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
 
       ytPlayerRef.current = new window.YT.Player(playerId, {
         videoId: youtubeId,
+        width: '100%',
+        height: '100%',
         playerVars: {
           autoplay: 1,
           controls: 0,

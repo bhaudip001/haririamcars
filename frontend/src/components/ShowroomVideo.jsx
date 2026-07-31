@@ -37,6 +37,8 @@ export default function ShowroomVideo() {
 
       playerRef.current = new window.YT.Player(playerId, {
         videoId: 'Y2ZcHOgOJN0',
+        width: '100%',
+        height: '100%',
         playerVars: {
           autoplay: 1,
           controls: 0,
