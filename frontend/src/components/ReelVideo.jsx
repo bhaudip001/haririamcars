@@ -125,14 +125,14 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
         ) : (
           <video
             ref={videoRef}
-            src={src.replace('f_auto', 'f_mp4') + '?sw_ignore=true'}
+            src={src.includes('cloudinary.com') ? src.replace('f_auto', 'f_mp4') + '?sw_ignore=true' : src}
             className="w-full h-full object-contain transition-opacity duration-700"
             muted={isMuted}
             autoPlay
             loop
             playsInline
             preload="metadata"
-            poster={src ? src.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
+            poster={src && src.includes('cloudinary.com') ? src.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
           />
         )
       ) : (
