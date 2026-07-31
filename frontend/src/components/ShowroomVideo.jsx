@@ -11,112 +11,21 @@ export default function ShowroomVideo() {
   const [isMuted, setIsMuted] = useState(true);
   const [isReady, setIsReady] = useState(false);
 
-  const playerContainerRef = useRef(null);
+  const iframeRef = useRef(null);
 
+  // 1. Play video on intersection and handle global playback
   useEffect(() => {
-    let intervalId;
-    let isDestroyed = false;
-
-    const initPlayer = () => {
-      if (isDestroyed) return true; // Stop if unmounted
-      if (!window.YT || !window.YT.Player) return false;
-      if (!playerContainerRef.current) return false;
-      
-      // If we already have a player, clean it up
-      if (playerRef.current) {
-         try { playerRef.current.destroy(); } catch(e) {}
-      }
-
-      // Create a fresh div for the player to replace
-      const playerId = 'showroom-yt-' + Math.random().toString(36).substring(7);
-      const playerDiv = document.createElement('div');
-      playerDiv.id = playerId;
-      playerDiv.className = 'w-full h-full';
-      playerContainerRef.current.innerHTML = '';
-      playerContainerRef.current.appendChild(playerDiv);
-
-      playerRef.current = new window.YT.Player(playerId, {
-        videoId: 'Y2ZcHOgOJN0',
-        width: '100%',
-        height: '100%',
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          rel: 0,
-          showinfo: 0,
-          mute: 1,
-          loop: 1,
-          playlist: 'Y2ZcHOgOJN0',
-          playsinline: 1,
-          modestbranding: 1
-        },
-        events: {
-          onReady: (event) => {
-            if (isDestroyed) return;
-            setIsReady(true);
-            event.target.playVideo();
-          },
-          onStateChange: (event) => {
-            if (event.data === window.YT.PlayerState.PLAYING) {
-              setIsPlaying(true);
-            } else if (event.data === window.YT.PlayerState.PAUSED || event.data === window.YT.PlayerState.ENDED) {
-              setIsPlaying(false);
-            }
-          }
-        }
-      });
-      return true; // Successfully started initialization
-    };
-
-    // Inject script if not present
-    if (!window.YT && !document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      if (firstScriptTag && firstScriptTag.parentNode) {
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-      } else {
-        document.head.appendChild(tag);
-      }
-    }
-    
-    // Continuously poll until it successfully initializes
-    intervalId = setInterval(() => {
-      if (initPlayer()) {
-        clearInterval(intervalId);
-      }
-    }, 250);
-
-    return () => {
-      isDestroyed = true;
-      clearInterval(intervalId);
-      if (playerRef.current) {
-        try { playerRef.current.destroy(); } catch(e) {}
-        playerRef.current = null;
-      }
-    };
-  }, []);
-
-  // Play video on intersection and handle global mute
-  useEffect(() => {
-    const handleOtherVideoUnmuted = (e) => {
-      if (e.detail.src !== "showroom-video") {
-        setIsMuted(true);
-        if (playerRef.current && playerRef.current.mute) {
-          playerRef.current.mute();
-        }
-      }
-    };
-    window.addEventListener('video-unmuted', handleOtherVideoUnmuted);
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (!playerRef.current || !playerRef.current.playVideo) return;
+          if (!iframeRef.current) return;
           if (entry.isIntersecting) {
-            playerRef.current.playVideo();
+            iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            setIsPlaying(true);
+            window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: 'showroom-video' } }));
           } else {
-            playerRef.current.pauseVideo();
+            iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            setIsPlaying(false);
           }
         });
       },
@@ -127,36 +36,64 @@ export default function ShowroomVideo() {
       observer.observe(containerRef.current);
     }
 
-    return () => {
-      window.removeEventListener('video-unmuted', handleOtherVideoUnmuted);
-      observer.disconnect();
+    return () => observer.disconnect();
+  }, []);
+
+  // 2. Listen for other videos playing (so we can pause)
+  useEffect(() => {
+    const handleGlobalPlay = (e) => {
+      if (e.detail.id !== 'showroom-video') {
+        if (iframeRef.current) {
+          iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+          setIsPlaying(false);
+        }
+      }
     };
-  }, [isReady]);
+    
+    // Legacy support for mute sync if needed
+    const handleOtherVideoUnmuted = (e) => {
+      if (e.detail.src !== "showroom-video") {
+        setIsMuted(true);
+        if (iframeRef.current) {
+          iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"mute","args":""}', '*');
+        }
+      }
+    };
+
+    window.addEventListener('global-video-play', handleGlobalPlay);
+    window.addEventListener('video-unmuted', handleOtherVideoUnmuted);
+    
+    return () => {
+      window.removeEventListener('global-video-play', handleGlobalPlay);
+      window.removeEventListener('video-unmuted', handleOtherVideoUnmuted);
+    };
+  }, []);
 
   const togglePlay = (e) => {
     e.stopPropagation();
-    if (!playerRef.current) return;
+    if (!iframeRef.current) return;
+    
     if (isPlaying) {
-      playerRef.current.pauseVideo();
+      iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      setIsPlaying(false);
     } else {
-      playerRef.current.playVideo();
+      iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      setIsPlaying(true);
+      window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: 'showroom-video' } }));
     }
   };
 
   const toggleMute = (e) => {
     e.stopPropagation();
-    if (!playerRef.current) return;
+    if (!iframeRef.current) return;
     
     const newMutedState = !isMuted;
+    setIsMuted(newMutedState);
     
     if (newMutedState) {
-      playerRef.current.mute();
+      iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"mute","args":""}', '*');
     } else {
-      playerRef.current.unMute();
-    }
-    setIsMuted(newMutedState);
-
-    if (!newMutedState) {
+      iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
       window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src: "showroom-video" } }));
     }
   };
@@ -190,7 +127,17 @@ export default function ShowroomVideo() {
           className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black cursor-pointer aspect-video"
           onClick={togglePlay}
         >
-          <div className="w-full h-full absolute inset-0 pointer-events-none scale-[1.2]" ref={playerContainerRef}>
+          <div className="w-full h-full absolute inset-0 pointer-events-none scale-[1.2]">
+            <iframe
+              ref={iframeRef}
+              className="w-full h-full object-cover"
+              src="https://www.youtube.com/embed/Y2ZcHOgOJN0?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=Y2ZcHOgOJN0&controls=0&rel=0&modestbranding=1&playsinline=1"
+              title="Showroom Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              onLoad={() => setIsReady(true)}
+            ></iframe>
           </div>
 
           {/* Fallback Poster (shown while loading) */}

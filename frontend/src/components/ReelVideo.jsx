@@ -56,43 +56,72 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
     };
   }, []);
 
-  // Handle global mute
-  useEffect(() => {
-    const handleOtherVideoUnmuted = (e) => {
-      if (e.detail.src !== src) {
-        setIsMuted(true);
-        if (videoRef.current) {
-          videoRef.current.muted = true;
-        }
-      }
-    };
-
-    window.addEventListener('video-unmuted', handleOtherVideoUnmuted);
-    return () => {
-      window.removeEventListener('video-unmuted', handleOtherVideoUnmuted);
-    };
-  }, [src]);
+  const iframeRef = useRef(null);
 
   // Handle auto-play only when visible to prevent website hanging
   useEffect(() => {
-    if (!shouldLoad || !videoRef.current) return;
+    if (!shouldLoad) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            videoRef.current?.play().catch(() => {});
+            if (isYouTube && iframeRef.current) {
+              iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            } else if (!isYouTube && videoRef.current) {
+              videoRef.current.play().catch(() => {});
+            }
+            window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
           } else {
-            videoRef.current?.pause();
+            if (isYouTube && iframeRef.current) {
+              iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            } else if (!isYouTube && videoRef.current) {
+              videoRef.current.pause();
+            }
           }
         });
       },
       { threshold: 0.5 }
     );
 
-    observer.observe(videoRef.current);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    
     return () => observer.disconnect();
-  }, [shouldLoad]);
+  }, [shouldLoad, isYouTube, src]);
+
+  // Handle global mute and global play
+  useEffect(() => {
+    const handleOtherVideoUnmuted = (e) => {
+      if (e.detail.src !== src) {
+        setIsMuted(true);
+        if (isYouTube && iframeRef.current) {
+          iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"mute","args":""}', '*');
+        } else if (!isYouTube && videoRef.current) {
+          videoRef.current.muted = true;
+        }
+      }
+    };
+
+    const handleGlobalPlay = (e) => {
+      if (e.detail.id !== src) {
+        if (isYouTube && iframeRef.current) {
+          iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        } else if (!isYouTube && videoRef.current) {
+          videoRef.current.pause();
+        }
+      }
+    };
+
+    window.addEventListener('video-unmuted', handleOtherVideoUnmuted);
+    window.addEventListener('global-video-play', handleGlobalPlay);
+    
+    return () => {
+      window.removeEventListener('video-unmuted', handleOtherVideoUnmuted);
+      window.removeEventListener('global-video-play', handleGlobalPlay);
+    };
+  }, [src, isYouTube]);
 
   const toggleMute = (e) => {
     e.preventDefault();
@@ -101,7 +130,13 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
     const newMutedState = !isMuted;
     setIsMuted(newMutedState);
     
-    if (videoRef.current) {
+    if (isYouTube && iframeRef.current) {
+      if (newMutedState) {
+        iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"mute","args":""}', '*');
+      } else {
+        iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+      }
+    } else if (!isYouTube && videoRef.current) {
       videoRef.current.muted = newMutedState;
     }
 
@@ -110,13 +145,33 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
     }
   };
 
+  const togglePlay = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (isYouTube && iframeRef.current) {
+      // For YouTube, it's safer to just send play, but if we want toggle, we can't easily read state without API.
+      // So we just rely on intersection for youtube, or we can send play if they click.
+      iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
+    } else if (!isYouTube && videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play().catch(() => {});
+        window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  };
+
   return (
-    <div ref={containerRef} className={`relative w-full h-full bg-black ${className}`}>
+    <div ref={containerRef} className={`relative w-full h-full bg-black ${className}`} onClick={togglePlay}>
       {shouldLoad ? (
         isYouTube ? (
           <iframe
-            className="w-full h-full object-contain absolute inset-0"
-            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=1&rel=0&modestbranding=1&playsinline=1`}
+            ref={iframeRef}
+            className="w-full h-full object-contain absolute inset-0 pointer-events-none"
+            src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=1&rel=0&modestbranding=1&playsinline=1`}
             title={customerName || "Customer Review"}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
