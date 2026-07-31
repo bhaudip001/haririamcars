@@ -9,6 +9,19 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
   const [isMuted, setIsMuted] = useState(true);
   const [shouldLoad, setShouldLoad] = useState(false);
 
+  // Check if it's a YouTube URL
+  const isYouTube = src && (src.includes('youtube.com') || src.includes('youtu.be'));
+  let youtubeId = '';
+  if (isYouTube) {
+    if (src.includes('/shorts/')) {
+      youtubeId = src.split('/shorts/')[1].split('?')[0];
+    } else if (src.includes('youtu.be/')) {
+      youtubeId = src.split('youtu.be/')[1].split('?')[0];
+    } else if (src.includes('v=')) {
+      youtubeId = src.split('v=')[1].split('&')[0];
+    }
+  }
+
   // Lazy load video element when it comes within viewport, with a fallback
   useEffect(() => {
     let isLoaded = false;
@@ -100,18 +113,28 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
   return (
     <div ref={containerRef} className={`relative w-full h-full bg-black ${className}`}>
       {shouldLoad ? (
-        <video
-          ref={videoRef}
-          src={src.replace('f_auto', 'f_mp4') + '?sw_ignore=true'}
-          className="w-full h-full object-contain transition-opacity duration-700"
-          muted={isMuted}
-
-          autoPlay
-          loop
-          playsInline
-          preload="metadata"
-          poster={src ? src.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
-        />
+        isYouTube ? (
+          <iframe
+            className="w-full h-full object-contain absolute inset-0"
+            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=1&rel=0&modestbranding=1&playsinline=1`}
+            title={customerName || "Customer Review"}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          ></iframe>
+        ) : (
+          <video
+            ref={videoRef}
+            src={src.replace('f_auto', 'f_mp4') + '?sw_ignore=true'}
+            className="w-full h-full object-contain transition-opacity duration-700"
+            muted={isMuted}
+            autoPlay
+            loop
+            playsInline
+            preload="metadata"
+            poster={src ? src.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
+          />
+        )
       ) : (
         <div className="w-full h-full flex items-center justify-center absolute inset-0">
           <div className="w-8 h-8 border-2 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
@@ -135,17 +158,19 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
         </div>
       )}
       
-      {/* Mute Button - Top Right */}
-      <button
-        onClick={toggleMute}
-        className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition shadow-sm opacity-100"
-      >
-        {isMuted ? (
-          <VolumeX className="w-4 h-4 text-white" />
-        ) : (
-          <Volume2 className="w-4 h-4 text-white" />
-        )}
-      </button>
+      {/* Mute Button - Top Right (Only for HTML5 Video) */}
+      {!isYouTube && (
+        <button
+          onClick={toggleMute}
+          className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition shadow-sm opacity-100"
+        >
+          {isMuted ? (
+            <VolumeX className="w-4 h-4 text-white" />
+          ) : (
+            <Volume2 className="w-4 h-4 text-white" />
+          )}
+        </button>
+      )}
     </div>
   );
 }
