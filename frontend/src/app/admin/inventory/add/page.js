@@ -430,7 +430,7 @@ export default function AddCar() {
               fileToUpload = new File([singleBlob], photo.name.replace(/\.heic$|\.heif$/i, '.jpg'), { type: 'image/jpeg' });
             } catch (err) {
               console.error('HEIC conversion error:', err);
-              toast.error(`Failed to convert ${photo.name}, uploading original directly.`, { id: 'heic-convert' });
+              toast.error(`Failed to convert ${photo.name} to JPG. Please convert it manually or upload a different format.`, { id: 'heic-convert', duration: 5000 });
               heicFailed = true;
             }
             toast.dismiss('heic-convert');
@@ -438,7 +438,8 @@ export default function AddCar() {
 
           let compressed;
           if (heicFailed) {
-            compressed = fileToUpload; // Skip browser compression if HEIC conversion fails
+            toast.dismiss('upload-toast');
+            continue; // Skip this photo if HEIC conversion fails
           } else {
             compressed = await imageCompression(fileToUpload, options);
           }
@@ -456,9 +457,6 @@ export default function AddCar() {
           }
 
           let finalUrl = imgbbRes.data.url;
-          if (heicFailed) {
-            finalUrl = finalUrl.replace(/\.heic$|\.heif$/i, '.jpg');
-          }
 
           uploadedImages.push({
             url: finalUrl,
