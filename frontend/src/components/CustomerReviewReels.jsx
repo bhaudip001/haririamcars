@@ -10,9 +10,9 @@ import ReelVideo from '@/components/ReelVideo';
 const videos = [
   { src: 'https://youtube.com/shorts/_gY_36dpHhE', name: 'Raithatha Sagarbhai', car: 'Polo 2016' },
   { src: 'https://youtube.com/shorts/x14OP1BmQFA', name: 'Jogani Sandipbhai', car: '2021 Venue' },
-  { src: '/customer review/Video-8005.mp4', name: 'Happy Customer', car: '' },
-  { src: '/customer review/Video-31572.mp4', name: 'Happy Customer', car: '' },
-  { src: '/customer review/Video-41824.mp4', name: 'Happy Customer', car: '' }
+  { src: 'https://youtube.com/shorts/N4PWzk6RW9g', name: 'Happy Customer', car: '' },
+  { src: 'https://youtube.com/shorts/oXHjAwILggY', name: 'Happy Customer', car: '' },
+  { src: 'https://youtube.com/shorts/MljU7CehX8o', name: 'Happy Customer', car: '' }
 ];
 
 export default function CustomerReviewReels() {
