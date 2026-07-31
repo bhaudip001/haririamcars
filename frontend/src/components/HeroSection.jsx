@@ -466,12 +466,12 @@ export default function HeroSection() {
         transition={{ duration: 0.5, delay: 1.2 }}
         className="hidden md:block absolute bottom-0 translate-y-1/2 left-0 right-0 px-8 md:px-12 z-40"
       >
-        <div className="max-w-6xl mx-auto bg-white/90 dark:bg-[#0a0a12]/40 backdrop-blur-3xl border border-gray-200 dark:border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1),0_0_32px_rgba(147,51,234,0.05)] dark:shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6),0_0_32px_rgba(147,51,234,0.15)] rounded-[2rem] p-4 lg:p-6 transition-colors duration-500">
+        <div className="max-w-6xl mx-auto bg-white dark:bg-[#0a0a12] border border-gray-100 dark:border-white/5 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.08),0_0_30px_rgba(147,51,234,0.05)] dark:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.6),0_0_30px_rgba(147,51,234,0.15)] rounded-[2rem] p-4 lg:p-6 transition-colors duration-500">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 items-end">
             {/* Brand */}
             <div className="relative group">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none z-10 transition-transform duration-300 group-focus-within:scale-110">
-                <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 shadow-sm group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
                   <Car className="w-5 h-5" />
                 </div>
               </div>
@@ -479,20 +479,20 @@ export default function HeroSection() {
                 value={selectedBrand}
                 onChange={handleBrandChange}
                 disabled={isLoading}
-                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border-2 border-gray-200 dark:border-white/10 bg-gray-50/80 dark:bg-[#12121f]/80 text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white dark:focus:bg-[#12121f] outline-none transition-all duration-300 disabled:opacity-50 cursor-pointer text-base truncate"
+                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-[#12121f] text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/10 focus:border-purple-400 focus:bg-white dark:focus:bg-[#161622] outline-none transition-all duration-300 disabled:opacity-50 cursor-pointer text-base truncate"
               >
                 <option value="">{isLoading ? 'Loading...' : 'Select Brand'}</option>
                 {availableBrands.map(brand => (
                   <option key={brand} value={brand}>{brand}</option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-slate-400 pointer-events-none group-focus-within:text-purple-600 dark:group-focus-within:text-purple-400 transition-colors" />
+              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-slate-500 pointer-events-none group-focus-within:text-purple-600 dark:group-focus-within:text-purple-400 transition-colors" />
             </div>
 
             {/* Model */}
             <div className="relative group">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none z-10 transition-transform duration-300 group-focus-within:scale-110">
-                <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 shadow-sm group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
                   <Settings2 className="w-5 h-5" />
                 </div>
               </div>
@@ -500,27 +500,27 @@ export default function HeroSection() {
                 value={selectedModel}
                 onChange={(e) => setSelectedModel(e.target.value)}
                 disabled={isLoading || availableModels.length === 0}
-                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border-2 border-gray-200 dark:border-white/10 bg-gray-50/80 dark:bg-[#12121f]/80 text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white dark:focus:bg-[#12121f] outline-none transition-all duration-300 disabled:opacity-50 cursor-pointer text-base truncate"
+                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-[#12121f] text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/10 focus:border-purple-400 focus:bg-white dark:focus:bg-[#161622] outline-none transition-all duration-300 disabled:opacity-50 cursor-pointer text-base truncate"
               >
                 <option value="">{isLoading ? 'Loading...' : 'Select Model'}</option>
                 {availableModels.map(model => (
                   <option key={model} value={model}>{model}</option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-slate-400 pointer-events-none group-focus-within:text-purple-600 dark:group-focus-within:text-purple-400 transition-colors" />
+              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-slate-500 pointer-events-none group-focus-within:text-purple-600 dark:group-focus-within:text-purple-400 transition-colors" />
             </div>
 
             {/* Budget */}
             <div className="relative group">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none z-10 transition-transform duration-300 group-focus-within:scale-110">
-                <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20 shadow-sm group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
+                <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
                   <Wallet className="w-5 h-5" />
                 </div>
               </div>
               <select
                 value={selectedBudget}
                 onChange={(e) => setSelectedBudget(e.target.value)}
-                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border-2 border-gray-200 dark:border-white/10 bg-gray-50/80 dark:bg-[#12121f]/80 text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 focus:bg-white dark:focus:bg-[#12121f] outline-none transition-all duration-300 cursor-pointer text-base truncate"
+                className="appearance-none w-full h-16 pl-16 pr-12 rounded-2xl border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-[#12121f] text-black dark:text-white font-bold focus:ring-4 focus:ring-purple-500/10 focus:border-purple-400 focus:bg-white dark:focus:bg-[#161622] outline-none transition-all duration-300 cursor-pointer text-base truncate"
               >
                 <option value="">Any Budget</option>
                 <option value="0-500000">Under ₹5 Lakh</option>
@@ -528,7 +528,7 @@ export default function HeroSection() {
                 <option value="1000000-2000000">₹10 Lakh - ₹20 Lakh</option>
                 <option value="2000000-99999999">Above ₹20 Lakh</option>
               </select>
-              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-slate-400 pointer-events-none group-focus-within:text-purple-600 dark:group-focus-within:text-purple-400 transition-colors" />
+              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-slate-500 pointer-events-none group-focus-within:text-purple-600 dark:group-focus-within:text-purple-400 transition-colors" />
             </div>
 
             {/* Search Button */}
