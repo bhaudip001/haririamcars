@@ -153,7 +153,7 @@ export default function HeroSection() {
             className="w-full h-full relative"
           >
             <Image
-              src="/image.png"
+              src="/IMG_7914.JPEG"
               alt="Buy Verified Used & Pre-Owned Cars in Surat - Hariram Motors"
               fill
               priority
