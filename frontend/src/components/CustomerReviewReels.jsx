@@ -13,7 +13,7 @@ const videos = [
   { src: 'https://youtube.com/shorts/aL0ApRMtn7Y', name: 'Rathod Siddhrajsinh', car: 'Hexa 2018' },
   { src: 'https://youtube.com/shorts/9bxZw9NgBFc', name: 'Mehrotra Rajatbhai', car: '2017 Honda city' },
   { src: 'https://youtube.com/shorts/ytEN97-Q7U4', name: 'Durgeshbhai Santram Marathe', car: 'Ecosport 2017' },
-  { src: 'https://res.cloudinary.com/urhqjeae/video/upload/q_auto,f_auto/v1783674109/IMG_5513_zdktl8.mp4', name: 'Joy Anjirwala', car: '2012 Innova' }
+  { src: 'https://youtube.com/shorts/6flimKwlMFY', name: 'Joy Anjirwala', car: '2012 Innova' }
 ];
 
 export default function CustomerReviewReels() {
