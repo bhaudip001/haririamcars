@@ -458,29 +458,11 @@ export default function EditCarPage() {
           toast.loading(`Uploading photo ${i + 1}/${photos.length}...`, { id: 'upload-toast' });
           let fileToUpload = photo;
           let isHeic = photo.name.toLowerCase().endsWith('.heic') || photo.name.toLowerCase().endsWith('.heif');
-          let heicFailed = false;
-          if (isHeic) {
-            toast.loading(`Converting ${photo.name}...`, { id: 'heic-convert' });
-            try {
-              const heic2any = (await import('heic2any')).default;
-              const convertedBlob = await heic2any({
-                blob: photo,
-                toType: 'image/jpeg',
-                quality: 0.95
-              });
-              const singleBlob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
-              fileToUpload = new File([singleBlob], photo.name.replace(/\.heic$|\.heif$/i, '.jpg'), { type: 'image/jpeg' });
-            } catch (err) {
-              console.error('HEIC frontend conversion error:', err);
-              heicFailed = true;
-            }
-            toast.dismiss('heic-convert');
-          }
 
           let compressed;
-          if (heicFailed) {
+          if (isHeic) {
             // ImgBB natively supports HEIC and converts it to AVIF automatically on their servers.
-            // We just need to bypass the browser image compression because canvas can't read HEIC.
+            // We bypass heic2any completely to avoid libheif console errors and bypass browser-image-compression because canvas can't read HEIC.
             compressed = photo; 
           } else {
             compressed = await imageCompression(fileToUpload, options);
