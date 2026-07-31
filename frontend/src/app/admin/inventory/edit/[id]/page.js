@@ -459,7 +459,6 @@ export default function EditCarPage() {
           let fileToUpload = photo;
           let isHeic = photo.name.toLowerCase().endsWith('.heic') || photo.name.toLowerCase().endsWith('.heif');
           let heicFailed = false;
-
           if (isHeic) {
             toast.loading(`Converting ${photo.name}...`, { id: 'heic-convert' });
             try {
@@ -467,20 +466,42 @@ export default function EditCarPage() {
               const convertedBlob = await heicToJpeg(photo, { quality: 0.95 });
               fileToUpload = new File([convertedBlob], photo.name.replace(/\.heic$|\.heif$/i, '.jpg'), { type: 'image/jpeg' });
             } catch (err) {
-              console.error('HEIC conversion error:', err);
-              toast.error(`Failed to convert ${photo.name} to JPG. Please convert it manually or upload a different format.`, { id: 'heic-convert', duration: 5000 });
+              console.error('HEIC frontend conversion error:', err);
               heicFailed = true;
             }
             toast.dismiss('heic-convert');
           }
 
-          let compressed;
           if (heicFailed) {
-            toast.dismiss('upload-toast');
-            continue; // Skip this photo if HEIC conversion fails
-          } else {
-            compressed = await imageCompression(fileToUpload, options);
+            toast.loading(`Sending ${photo.name} to server for deep conversion...`, { id: 'heic-convert' });
+            try {
+              const backendFormData = new FormData();
+              backendFormData.append('image', photo);
+              const backendRes = await api.post('/upload/heic-to-imgbb', backendFormData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+              });
+              
+              if (backendRes.data && backendRes.data.success) {
+                uploadedImages.push({
+                  url: backendRes.data.data.url,
+                  publicId: backendRes.data.data.id
+                });
+                toast.dismiss('heic-convert');
+                toast.success(`${photo.name} converted and uploaded successfully!`);
+                continue; // Skip the regular upload process since it's already done
+              } else {
+                throw new Error('Server conversion failed');
+              }
+            } catch (backendErr) {
+              toast.dismiss('heic-convert');
+              console.error('HEIC backend conversion error:', backendErr);
+              toast.error(`Failed to convert ${photo.name} to JPG. Please convert it manually or use a standard format.`, { duration: 6000 });
+              continue; // Skip this photo
+            }
           }
+
+          let compressed;
+          compressed = await imageCompression(fileToUpload, options);
 
           const uploadData = new FormData();
           uploadData.append('image', compressed);
