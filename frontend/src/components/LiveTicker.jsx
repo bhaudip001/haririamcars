@@ -38,9 +38,9 @@ export default function LiveTicker() {
           animation-play-state: paused;
         }
       `}</style>
-      <div className="ticker-container bg-gradient-to-r from-[#6d28d9] via-[#4c1d95] to-[#6d28d9] text-white overflow-hidden relative flex items-center h-8 sm:h-10 w-full z-30 shadow-md border-b border-white/10">
+      <div className="ticker-container opacity-80 bg-gradient-to-r from-[#6d28d9] via-[#4c1d95] to-[#6d28d9] text-white overflow-hidden relative flex items-center h-8 sm:h-10 w-full z-30 shadow-md border-b border-white/10">
         {/* Live Badge Overlay */}
-        <div className="absolute left-0 bg-red-600 text-white z-10 px-3 sm:px-4 h-full flex items-center font-['Outfit'] font-bold text-[10px] sm:text-[12px] uppercase tracking-wider shadow-[8px_0_15px_rgba(0,0,0,0.4)]">
+        <div className="absolute left-0 bg-red-600/90 text-white z-10 px-3 sm:px-4 h-full flex items-center font-['Outfit'] font-bold text-[10px] sm:text-[12px] uppercase tracking-wider shadow-[8px_0_15px_rgba(0,0,0,0.4)]">
           <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse mr-2"></span>
           Live
         </div>
