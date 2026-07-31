@@ -29,11 +29,11 @@ export default function ShowroomVideo() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "0px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black aspect-video"
+          className="relative rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 dark:shadow-black/50 border border-gray-200 dark:border-white/10 group bg-black aspect-video pointer-events-none"
         >
           <iframe
-            className="w-full h-full absolute top-0 left-0"
-            src="https://www.youtube.com/embed/Y2ZcHOgOJN0?autoplay=1&mute=1&loop=1&playlist=Y2ZcHOgOJN0&controls=1&rel=0&modestbranding=1&playsinline=1"
+            className="w-full h-full absolute top-0 left-0 scale-[1.1]"
+            src="https://www.youtube.com/embed/Y2ZcHOgOJN0?autoplay=1&mute=1&loop=1&playlist=Y2ZcHOgOJN0&controls=0&rel=0&modestbranding=1&playsinline=1&disablekb=1&fs=0&iv_load_policy=3"
             title="Hariram Motors Showroom"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
