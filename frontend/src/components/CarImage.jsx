@@ -31,6 +31,7 @@ export default function CarImage({ src, alt, className, priority = false, sizes 
         fill
         sizes={sizes}
         priority={priority}
+        loading={priority ? undefined : "lazy"}
         placeholder="blur"
         blurDataURL={generateBlurPlaceholder()}
         onLoad={() => setIsLoaded(true)}

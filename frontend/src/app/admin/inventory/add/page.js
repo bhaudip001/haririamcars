@@ -403,45 +403,27 @@ export default function AddCar() {
     try {
       let uploadedImages = [];
       if (photos.length > 0) {
-        toast.loading(`Preparing to upload ${photos.length} photos...`, { id: 'upload-toast' });
-        const { default: imageCompression } = await import('browser-image-compression');
-        const options = { maxSizeMB: 0.08, maxWidthOrHeight: 1280, useWebWorker: true, initialQuality: 0.8, fileType: 'image/webp' };
+        toast.loading(`Uploading ${photos.length} photos...`, { id: 'upload-toast' });
         
-        const sigRes = await api.get('/upload/signature');
-        const { api_key } = sigRes.data;
-
+        // We now upload directly to the backend which handles sharp compression + ImageKit
         for (let i = 0; i < photos.length; i++) {
           let photo = photos[i];
           toast.loading(`Uploading photo ${i + 1}/${photos.length}...`, { id: 'upload-toast' });
-          let fileToUpload = photo;
-          let isHeic = photo.name.toLowerCase().endsWith('.heic') || photo.name.toLowerCase().endsWith('.heif');
-
-          let compressed;
-          if (isHeic) {
-            // ImgBB natively supports HEIC and converts it to AVIF automatically on their servers.
-            // We bypass heic2any completely to avoid libheif console errors and bypass browser-image-compression because canvas can't read HEIC.
-            compressed = photo; 
-          } else {
-            compressed = await imageCompression(fileToUpload, options);
-          }
 
           const uploadData = new FormData();
-          uploadData.append('image', compressed);
+          uploadData.append('image', photo);
           
-          const imgbbRes = await fetch(`https://api.imgbb.com/1/upload?key=${api_key}`, {
-            method: 'POST',
-            body: uploadData,
-          }).then(res => res.json());
+          const uploadRes = await api.post('/upload/imagekit', uploadData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
 
-          if (!imgbbRes.success) {
-            throw new Error(imgbbRes.error?.message || 'Upload failed');
+          if (!uploadRes.data.success) {
+            throw new Error(uploadRes.data.message || 'Upload failed');
           }
 
-          let finalUrl = imgbbRes.data.url;
-
           uploadedImages.push({
-            url: finalUrl,
-            publicId: imgbbRes.data.id
+            url: uploadRes.data.url,
+            publicId: uploadRes.data.publicId
           });
         }
         toast.dismiss('upload-toast');
