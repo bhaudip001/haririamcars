@@ -115,7 +115,7 @@ router.get('/app-installs/total', async (req, res) => {
 });
 
 // @route   GET /api/analytics/storage
-// @desc    Get MongoDB and Cloudinary storage stats
+// @desc    Get MongoDB and ImageKit storage stats
 // @access  Public
 router.get('/storage', async (req, res) => {
   try {
@@ -126,19 +126,52 @@ router.get('/storage', async (req, res) => {
     const mongoTotalMB = 512;
     const mongoPercentage = (mongoUsedMB / mongoTotalMB) * 100;
 
-    // Media Stats (ImgBB - Unlimited)
+    // ImageKit Stats
+    let ikUsedGB = 0;
+    let ikBandwidthGB = 0;
+    
+    if (process.env.IMAGEKIT_PRIVATE_KEY) {
+      try {
+        const fetch = (await import('node-fetch')).default;
+        
+        // ImageKit requires date range for usage API. Let's get the last 30 days.
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - 30);
+        
+        const startStr = startDate.toISOString().split('T')[0];
+        const endStr = endDate.toISOString().split('T')[0];
+        
+        const ikAuth = Buffer.from(process.env.IMAGEKIT_PRIVATE_KEY + ':').toString('base64');
+        const ikRes = await fetch(`https://api.imagekit.io/v1/accounts/usage?startDate=${startStr}&endDate=${endStr}`, {
+          headers: {
+            'Authorization': `Basic ${ikAuth}`,
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (ikRes.ok) {
+          const ikData = await ikRes.json();
+          // Convert bytes to GB
+          ikUsedGB = (ikData.mediaLibraryStorageBytes || 0) / (1024 * 1024 * 1024);
+          ikBandwidthGB = (ikData.bandwidthBytes || 0) / (1024 * 1024 * 1024);
+        }
+      } catch (ikErr) {
+        console.error('Failed to fetch ImageKit stats:', ikErr);
+      }
+    }
+
     res.status(200).json({
       mongodb: {
         usedMB: parseFloat(mongoUsedMB.toFixed(2)),
         totalMB: mongoTotalMB,
         percentage: parseFloat(mongoPercentage.toFixed(2))
       },
-      cloudinary: {
-        usedGB: 0,
-        totalGB: 'Unlimited',
-        percentage: 0,
-        error: false,
-        unlimited: true
+      cloudinary: { // Keeping the key as cloudinary for frontend compatibility
+        usedGB: parseFloat(ikUsedGB.toFixed(4)),
+        bandwidthGB: parseFloat(ikBandwidthGB.toFixed(4)),
+        totalGB: 3,
+        bandwidthTotalGB: 20
       }
     });
   } catch (err) {

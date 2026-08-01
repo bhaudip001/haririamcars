@@ -263,18 +263,18 @@ export default function AdminDashboard() {
               <div className="flex justify-between items-center mb-2">
                 <span className="text-[11px] text-gray-400 font-medium uppercase tracking-wider">Monthly Bandwidth</span>
                 <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400">
-                  0.00% Used
+                  {storageStats ? ((storageStats.cloudinary?.bandwidthGB || 0) / 20 * 100).toFixed(2) : 0}% Used
                 </span>
               </div>
               <div className="w-full bg-[#1a1a24] rounded-full h-2.5 mb-2 overflow-hidden">
                 <div 
                   className="h-2.5 rounded-full bg-emerald-500"
-                  style={{ width: `0%` }}
+                  style={{ width: `${storageStats ? Math.min(((storageStats.cloudinary?.bandwidthGB || 0) / 20 * 100), 100) : 0}%` }}
                 ></div>
               </div>
               <div className="flex justify-between text-[11px] text-gray-400">
-                <span>Used: 0 GB</span>
-                <span>Free: 20.00 GB</span>
+                <span>Used: {storageStats?.cloudinary?.bandwidthGB || 0} GB</span>
+                <span>Free: {(20 - (storageStats?.cloudinary?.bandwidthGB || 0)).toFixed(2)} GB</span>
               </div>
             </div>
           </div>
