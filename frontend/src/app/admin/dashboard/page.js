@@ -232,14 +232,14 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Media (ImgBB & YouTube) */}
+          {/* Media (ImageKit & YouTube) */}
           <div className="bg-white/[0.02] border border-emerald-500/20 rounded-xl p-4">
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <HardDrive size={14} className="text-emerald-500" /> Media (ImgBB & YouTube)
+                <HardDrive size={14} className="text-emerald-500" /> Media (ImageKit)
               </h3>
               <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400">
-                Lifetime Free
+                20 GB Fixed Limit
               </span>
             </div>
             <div className="w-full bg-[#1a1a24] rounded-full h-2.5 mb-2 overflow-hidden flex">
@@ -247,9 +247,13 @@ export default function AdminDashboard() {
                 <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
               </div>
             </div>
-            <div className="flex justify-between text-[11px] text-gray-400">
+            <div className="flex justify-between text-[11px] text-gray-400 mb-3">
               <span>Used: {storageStats?.cloudinary?.usedGB || 0} GB</span>
-              <span className="text-emerald-400 font-bold">Free: Unlimited Space</span>
+              <span className="text-emerald-400 font-bold">Max Storage: 20 GB</span>
+            </div>
+            <div className="pt-3 border-t border-white/5 flex justify-between items-center">
+              <span className="text-[11px] text-gray-400">Monthly Bandwidth Limit</span>
+              <span className="text-xs font-bold text-emerald-400">20 GB / Month</span>
             </div>
           </div>
         </div>
