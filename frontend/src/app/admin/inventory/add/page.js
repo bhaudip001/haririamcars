@@ -405,7 +405,7 @@ export default function AddCar() {
       if (photos.length > 0) {
         toast.loading(`Preparing to upload ${photos.length} photos...`, { id: 'upload-toast' });
         const { default: imageCompression } = await import('browser-image-compression');
-        const options = { maxSizeMB: 1.5, maxWidthOrHeight: 1920, useWebWorker: true, initialQuality: 0.9 };
+        const options = { maxSizeMB: 0.05, maxWidthOrHeight: 1024, useWebWorker: true, initialQuality: 0.7 };
         
         const sigRes = await api.get('/upload/signature');
         const { api_key } = sigRes.data;
