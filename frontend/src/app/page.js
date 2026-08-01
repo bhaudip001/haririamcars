@@ -53,18 +53,18 @@ export default function HomePage() {
         <div className="absolute inset-0 dark:hidden pointer-events-none z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
           <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
-          <div className="absolute -top-[20%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent rotate-[35deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90 z-0"></div>
-          <div className="absolute top-[40%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent -rotate-[15deg] transform-gpu blur-[30px] opacity-70 z-0"></div>
-          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-purple-200/30 rounded-full blur-[140px] mix-blend-multiply animate-pulse-ring"></div>
-          <div className="absolute bottom-[10%] right-[-10%] w-[700px] h-[700px] bg-pink-100/40 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
+          <div className="absolute -top-[20%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent rotate-[35deg] transform-gpu opacity-90 z-0"></div>
+          <div className="absolute top-[40%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent -rotate-[15deg] transform-gpu opacity-70 z-0"></div>
+          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(233,213,255,0.3) 0%, transparent 70%)' }}></div>
+          <div className="absolute bottom-[10%] right-[-10%] w-[700px] h-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(252,231,243,0.4) 0%, transparent 70%)' }}></div>
         </div>
         <div className="hidden dark:block absolute inset-0 pointer-events-none z-0">
           <div className="absolute inset-0 bg-[#0a0a12]"></div>
           <div className="absolute inset-0 opacity-[0.05] blueprint-grid"></div>
-          <div className="absolute -top-[20%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-purple-600/10 to-transparent rotate-[35deg] transform-gpu blur-[30px] shadow-[0_0_120px_rgba(168,85,247,0.15)] z-0"></div>
-          <div className="absolute top-[40%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-blue-600/10 to-transparent -rotate-[15deg] transform-gpu blur-[40px] z-0"></div>
-          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-purple-600/10 rounded-full blur-[140px] mix-blend-screen animate-pulse-ring"></div>
-          <div className="absolute bottom-[10%] right-[-10%] w-[700px] h-[700px] bg-blue-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
+          <div className="absolute -top-[20%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-purple-900/10 to-transparent rotate-[35deg] transform-gpu z-0"></div>
+          <div className="absolute top-[40%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-blue-900/10 to-transparent -rotate-[15deg] transform-gpu z-0"></div>
+          <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(147,51,234,0.1) 0%, transparent 70%)' }}></div>
+          <div className="absolute bottom-[10%] right-[-10%] w-[700px] h-[700px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)' }}></div>
         </div>
 
         {/* <DealershipServices /> */}
@@ -100,18 +100,18 @@ export default function HomePage() {
         <div className="absolute inset-0 dark:hidden pointer-events-none z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
           <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
-          <div className="absolute top-[10%] -right-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent -rotate-[25deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90 z-0"></div>
-          <div className="absolute top-[60%] -left-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent rotate-[15deg] transform-gpu blur-[30px] opacity-70 z-0"></div>
-          <div className="absolute top-[20%] right-[10%] w-[600px] h-[600px] bg-blue-200/30 rounded-full blur-[140px] mix-blend-multiply animate-pulse-ring"></div>
-          <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-purple-200/30 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
+          <div className="absolute top-[10%] -right-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent -rotate-[25deg] transform-gpu opacity-90 z-0"></div>
+          <div className="absolute top-[60%] -left-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent rotate-[15deg] transform-gpu opacity-70 z-0"></div>
+          <div className="absolute top-[20%] right-[10%] w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(191,219,254,0.3) 0%, transparent 70%)' }}></div>
+          <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(233,213,255,0.3) 0%, transparent 70%)' }}></div>
         </div>
         <div className="hidden dark:block absolute inset-0 pointer-events-none z-0">
           <div className="absolute inset-0 bg-[#0a0a12]"></div>
           <div className="absolute inset-0 opacity-[0.05] blueprint-grid"></div>
-          <div className="absolute top-[10%] -right-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-blue-600/10 to-transparent -rotate-[25deg] transform-gpu blur-[30px] shadow-[0_0_120px_rgba(59,130,246,0.15)] z-0"></div>
-          <div className="absolute top-[60%] -left-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-purple-600/10 to-transparent rotate-[15deg] transform-gpu blur-[40px] z-0"></div>
-          <div className="absolute top-[20%] right-[10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px] mix-blend-screen animate-pulse-ring"></div>
-          <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-purple-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
+          <div className="absolute top-[10%] -right-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-blue-900/10 to-transparent -rotate-[25deg] transform-gpu z-0"></div>
+          <div className="absolute top-[60%] -left-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-purple-900/10 to-transparent rotate-[15deg] transform-gpu z-0"></div>
+          <div className="absolute top-[20%] right-[10%] w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)' }}></div>
+          <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(147,51,234,0.1) 0%, transparent 70%)' }}></div>
         </div>
 
         <Suspense fallback={<BannerSkeleton />}>

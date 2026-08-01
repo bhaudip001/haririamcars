@@ -450,34 +450,31 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
   return (
     <div className="min-h-screen bg-[#f4f4f8] dark:bg-transparent relative transition-colors duration-500 w-full flex flex-col">
       {/* Light Mode: Massive Unified Verified Background */}
-      <div className="fixed inset-0 dark:hidden pointer-events-none z-0">
+      <div className="fixed inset-0 dark:hidden pointer-events-none z-0 bg-[#f4f4f8]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#f4f4f8] via-white to-[#f4f4f8] opacity-80"></div>
         <div className="absolute inset-0 opacity-[0.03] blueprint-grid"></div>
 
         {/* Sweeping Showroom Lights */}
-        <div className="absolute top-[10%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent rotate-[35deg] transform-gpu blur-[20px] shadow-[0_0_120px_rgba(255,255,255,0.8)] opacity-90"></div>
-        <div className="absolute top-[60%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent -rotate-[15deg] transform-gpu blur-[30px] opacity-70"></div>
+        <div className="absolute top-[10%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-white/80 to-transparent rotate-[35deg] transform-gpu opacity-90"></div>
+        <div className="absolute top-[60%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-white/60 to-transparent -rotate-[15deg] transform-gpu opacity-70"></div>
 
-        {/* Majestic Glow Orbs */}
-        <div className="absolute top-[5%] right-[10%] w-[600px] h-[600px] bg-purple-200/30 rounded-full blur-[140px] mix-blend-multiply animate-pulse-ring"></div>
-        <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-pink-100/40 rounded-full blur-[150px] mix-blend-multiply animate-float-card"></div>
+        {/* Majestic Glow Orbs - Optimized with radial gradients instead of expensive blurs */}
+        <div className="absolute top-[5%] right-[10%] w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(233,213,255,0.4) 0%, transparent 70%)' }}></div>
+        <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(252,231,243,0.5) 0%, transparent 70%)' }}></div>
       </div>
 
       {/* Dark Mode: Massive Unified Verified Background */}
-      <div className="hidden dark:block fixed inset-0 pointer-events-none z-0">
-        {/* Deep Space Base */}
+      <div className="hidden dark:block fixed inset-0 pointer-events-none z-0 bg-[#0a0a12]">
         <div className="absolute inset-0 bg-[#0a0a12]"></div>
-
-        {/* Neon Blueprint Grid */}
         <div className="absolute inset-0 opacity-[0.05] blueprint-grid"></div>
 
         {/* Sweeping Showroom Lights (Dark) */}
-        <div className="absolute top-[10%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-purple-600/10 to-transparent rotate-[35deg] transform-gpu blur-[30px] shadow-[0_0_120px_rgba(168,85,247,0.15)] z-0"></div>
-        <div className="absolute top-[60%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-blue-600/10 to-transparent -rotate-[15deg] transform-gpu blur-[40px] z-0"></div>
+        <div className="absolute top-[10%] -left-[20%] w-[140%] h-[400px] bg-gradient-to-r from-transparent via-purple-900/10 to-transparent rotate-[35deg] transform-gpu z-0"></div>
+        <div className="absolute top-[60%] -right-[30%] w-[160%] h-[300px] bg-gradient-to-r from-transparent via-blue-900/10 to-transparent -rotate-[15deg] transform-gpu z-0"></div>
 
-        {/* Majestic Glow Orbs */}
-        <div className="absolute top-[5%] right-[10%] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[140px] mix-blend-screen animate-pulse-ring"></div>
-        <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[150px] mix-blend-screen animate-float-card"></div>
+        {/* Majestic Glow Orbs - Optimized */}
+        <div className="absolute top-[5%] right-[10%] w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(147,51,234,0.15) 0%, transparent 70%)' }}></div>
+        <div className="absolute bottom-[20%] left-[10%] w-[800px] h-[800px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)' }}></div>
       </div>
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 flex flex-col md:flex-row gap-8 relative z-10">
