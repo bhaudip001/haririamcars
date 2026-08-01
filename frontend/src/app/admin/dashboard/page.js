@@ -239,7 +239,7 @@ export default function AdminDashboard() {
                 <HardDrive size={14} className="text-emerald-500" /> Media (ImageKit)
               </h3>
               <span className="text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400">
-                20 GB Fixed Limit
+                3 GB Fixed Limit
               </span>
             </div>
             <div className="w-full bg-[#1a1a24] rounded-full h-2.5 mb-2 overflow-hidden flex">
@@ -249,7 +249,7 @@ export default function AdminDashboard() {
             </div>
             <div className="flex justify-between text-[11px] text-gray-400 mb-3">
               <span>Used: {storageStats?.cloudinary?.usedGB || 0} GB</span>
-              <span className="text-emerald-400 font-bold">Max Storage: 20 GB</span>
+              <span className="text-emerald-400 font-bold">Max Storage: 3 GB</span>
             </div>
             <div className="pt-3 border-t border-white/5 flex justify-between items-center">
               <span className="text-[11px] text-gray-400">Monthly Bandwidth Limit</span>
