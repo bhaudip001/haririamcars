@@ -1,7 +1,7 @@
 import express from 'express';
 import Car from '../models/Car.js';
 import { protect, adminOnly } from '../middleware/authMiddleware.js';
-import { upload, uploadToImgBB, deleteFromImgBB } from '../config/imgbb.js';
+import { upload, uploadToImageKit, deleteFromImageKit } from '../config/imagekit.js';
 import { validateCar } from '../middleware/validate.js';
 import { cache, clearCache } from '../middleware/cache.js';
 import webpush from 'web-push';
@@ -172,13 +172,15 @@ router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, as
       try { carData.badges = JSON.parse(carData.badges); } catch { /* keep as is */ }
     }
 
-    // Upload images to ImgBB
+    // Process and upload images sequentially to prevent RAM exhaustion
     if (req.files && req.files.length > 0) {
-      const uploadPromises = req.files.map(file =>
-        uploadToImgBB(file.buffer)
-      );
-      const results = await Promise.all(uploadPromises);
-      carData.images = results.map(r => ({ url: r.secure_url, publicId: r.public_id }));
+      const uploadedImages = [];
+      for (const file of req.files) {
+        // Sequentially pipe buffer to sharp, compress, and upload
+        const result = await uploadToImageKit(file.buffer, file.originalname);
+        uploadedImages.push({ url: result.secure_url, publicId: result.public_id });
+      }
+      carData.images = uploadedImages;
     }
 
     const car = await Car.create(carData);
@@ -192,7 +194,7 @@ router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, as
     // Send Push Notification
     if (process.env.VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
       try {
-        const subscriptions = await Subscription.find();
+        const subscriptions = await Subscription.find().lean();
         const payload = JSON.stringify({
           title: 'New Car Listed!',
           body: `${car.make} ${car.model} just listed. Check it out now!`,
@@ -209,8 +211,8 @@ router.post('/', protect, adminOnly, upload.array('images', 25), validateCar, as
           })
         );
         
-        // Don't await this, let it run in the background
-        Promise.all(notifications);
+        // Await this to ensure it completes before serverless function exits
+        await Promise.all(notifications);
       } catch (err) {
         console.error('Failed to send push notifications:', err);
       }
@@ -251,23 +253,24 @@ router.put('/:id', protect, adminOnly, upload.array('images', 25), async (req, r
       delete updateData.existingImages;
     }
 
-    // Upload new images
+    // Upload new images sequentially to protect RAM
     if (req.files && req.files.length > 0) {
-      const uploadPromises = req.files.map(file =>
-        uploadToImgBB(file.buffer)
-      );
-      const results = await Promise.all(uploadPromises);
-      const newImages = results.map(r => ({ url: r.secure_url, publicId: r.public_id }));
-      updateData.images = [...(updateData.images || []), ...newImages];
+      const uploadedImages = [];
+      for (const file of req.files) {
+        const result = await uploadToImageKit(file.buffer, file.originalname);
+        uploadedImages.push({ url: result.secure_url, publicId: result.public_id });
+      }
+      updateData.images = [...(updateData.images || []), ...uploadedImages];
     }
 
-    // Handle deleted images
+    // Handle deleted images (sequential deletion for stability)
     if (updateData.deletedImages) {
       const deleted = typeof updateData.deletedImages === 'string'
         ? JSON.parse(updateData.deletedImages) : updateData.deletedImages;
-      const deletePromises = deleted.map(publicId => {
-        return deleteFromImgBB(publicId);
-      });
+      
+      for (const publicId of deleted) {
+        if (publicId) await deleteFromImageKit(publicId);
+      }
       delete updateData.deletedImages;
     }
 
@@ -288,11 +291,15 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
     const car = await Car.findById(req.params.id);
     if (!car) return res.status(404).json({ error: 'Car not found' });
 
-    // Delete images from ImgBB
-    const deletePromises = car.images.map(img => {
-      if (img.publicId) return deleteFromImgBB(img.publicId);
-      return Promise.resolve();
-    });
+    // Delete images sequentially to prevent rate limits
+    if (car.images && car.images.length > 0) {
+      for (const img of car.images) {
+        if (img.publicId) {
+          await deleteFromImageKit(img.publicId);
+        }
+      }
+    }
+
     await Car.findByIdAndDelete(req.params.id);
     clearCache('/api/cars');
     res.json({ message: 'Car deleted successfully' });

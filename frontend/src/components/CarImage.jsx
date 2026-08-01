@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { IconCarOff } from '@tabler/icons-react';
 import { generateBlurPlaceholder } from '@/lib/utils';
+import imagekitLoader from '@/lib/imagekitLoader';
 
 export default function CarImage({ src, alt, className, priority = false, sizes }) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,6 +27,7 @@ export default function CarImage({ src, alt, className, priority = false, sizes 
         <div className="absolute inset-0 z-10 animate-pulse bg-gray-200 dark:bg-white/10" />
       )}
       <Image
+        loader={imagekitLoader}
         src={src}
         alt={alt}
         fill
