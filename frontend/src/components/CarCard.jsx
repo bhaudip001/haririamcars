@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import CarImage from './CarImage';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { IconBrandWhatsapp, IconShare } from '@tabler/icons-react';
 import toast from 'react-hot-toast';
 import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder, extractImageUrl } from '@/lib/utils';
@@ -62,13 +61,8 @@ export default function CarCard({ car, index = 0, priority = false }) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.05 }}
-      className="group relative flex flex-col w-full h-full bg-white dark:bg-[rgba(18,18,31,0.95)] rounded-2xl border border-gray-200 dark:border-white/10 hover:border-purple-300 dark:hover:border-purple-500/50 shadow-md dark:shadow-none hover:shadow-xl dark:hover:shadow-purple-900/20 hover:scale-[1.02] transition-all duration-300"
+    <div
+      className="group relative flex flex-col w-full h-full bg-white dark:bg-[rgba(18,18,31,0.95)] rounded-2xl border border-gray-200 dark:border-white/10 hover:border-purple-300 dark:hover:border-purple-500/50 shadow-md dark:shadow-none hover:shadow-xl dark:hover:shadow-purple-900/20 hover:-translate-y-1.5 hover:scale-[1.01] transition-all duration-300"
     >
       <Link href={`/catalog/${car.slug}`} className="absolute inset-0 z-10 focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#12121f] outline-none rounded-2xl" aria-label={`View details of ${title}`} />
 
@@ -154,6 +148,6 @@ export default function CarCard({ car, index = 0, priority = false }) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
