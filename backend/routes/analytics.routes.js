@@ -132,7 +132,7 @@ router.get('/storage', async (req, res) => {
     
     if (process.env.IMAGEKIT_PRIVATE_KEY) {
       try {
-        const fetch = (await import('node-fetch')).default;
+        const axios = (await import('axios')).default;
         
         // ImageKit requires date range for usage API. Let's get the last 30 days.
         const endDate = new Date();
@@ -143,21 +143,21 @@ router.get('/storage', async (req, res) => {
         const endStr = endDate.toISOString().split('T')[0];
         
         const ikAuth = Buffer.from(process.env.IMAGEKIT_PRIVATE_KEY + ':').toString('base64');
-        const ikRes = await fetch(`https://api.imagekit.io/v1/accounts/usage?startDate=${startStr}&endDate=${endStr}`, {
+        const ikRes = await axios.get(`https://api.imagekit.io/v1/accounts/usage?startDate=${startStr}&endDate=${endStr}`, {
           headers: {
             'Authorization': `Basic ${ikAuth}`,
             'Accept': 'application/json'
           }
         });
         
-        if (ikRes.ok) {
-          const ikData = await ikRes.json();
+        if (ikRes.status === 200 && ikRes.data) {
+          const ikData = ikRes.data;
           // Convert bytes to GB
           ikUsedGB = (ikData.mediaLibraryStorageBytes || 0) / (1024 * 1024 * 1024);
           ikBandwidthGB = (ikData.bandwidthBytes || 0) / (1024 * 1024 * 1024);
         }
       } catch (ikErr) {
-        console.error('Failed to fetch ImageKit stats:', ikErr);
+        console.error('Failed to fetch ImageKit stats via axios:', ikErr.message);
       }
     }
 
