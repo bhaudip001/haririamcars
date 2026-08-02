@@ -140,11 +140,17 @@ export default function ShowroomVideo() {
             ></iframe>
           </div>
 
-          {/* Fallback Poster (shown while loading) */}
-          <div className={`absolute inset-0 bg-black transition-opacity duration-700 ${isReady ? 'opacity-0 pointer-events-none' : 'opacity-100 z-10'}`}>
-            <img src="https://img.youtube.com/vi/Y2ZcHOgOJN0/maxresdefault.jpg" alt="Showroom" className="w-full h-full object-cover" />
+          {/* Fallback Poster & Paused Overlay */}
+          <div className={`absolute inset-0 bg-black transition-opacity duration-500 ${isReady && isPlaying ? 'opacity-0 pointer-events-none' : 'opacity-100 z-10'}`}>
+            <img src="https://img.youtube.com/vi/Y2ZcHOgOJN0/maxresdefault.jpg" alt="Showroom" className={`w-full h-full object-cover ${!isPlaying && isReady ? 'opacity-60' : 'opacity-100'}`} />
             <div className="absolute inset-0 flex items-center justify-center">
-               <div className="w-10 h-10 border-2 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
+               {!isReady ? (
+                 <div className="w-10 h-10 border-2 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
+               ) : (
+                 <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 shadow-xl cursor-pointer hover:bg-white/30 transition">
+                   <Play className="w-8 h-8 text-white ml-1.5" fill="currentColor" />
+                 </div>
+               )}
             </div>
           </div>
 
