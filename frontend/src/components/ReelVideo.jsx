@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Play } from 'lucide-react';
 
 export default function ReelVideo({ src, customerName, carModel, className = "" }) {
   const containerRef = useRef(null);
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(true);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Check if it's a YouTube URL
   const isYouTube = src && (src.includes('youtube.com') || src.includes('youtu.be'));
@@ -71,6 +72,7 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
             } else if (!isYouTube && videoRef.current) {
               videoRef.current.play().catch(() => {});
             }
+            setIsPlaying(true);
             window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
           } else {
             if (isYouTube && iframeRef.current) {
@@ -78,6 +80,7 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
             } else if (!isYouTube && videoRef.current) {
               videoRef.current.pause();
             }
+            setIsPlaying(false);
           }
         });
       },
@@ -111,6 +114,7 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
         } else if (!isYouTube && videoRef.current) {
           videoRef.current.pause();
         }
+        setIsPlaying(false);
       }
     };
 
@@ -149,18 +153,22 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
     e.preventDefault();
     e.stopPropagation();
     
-    if (isYouTube && iframeRef.current) {
-      // For YouTube, it's safer to just send play, but if we want toggle, we can't easily read state without API.
-      // So we just rely on intersection for youtube, or we can send play if they click.
-      iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-      window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
-    } else if (!isYouTube && videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play().catch(() => {});
-        window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
-      } else {
+    if (isPlaying) {
+      if (isYouTube && iframeRef.current) {
+        iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      } else if (!isYouTube && videoRef.current) {
         videoRef.current.pause();
       }
+      setIsPlaying(false);
+    } else {
+      if (isYouTube && iframeRef.current) {
+        iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
+      } else if (!isYouTube && videoRef.current) {
+        videoRef.current.play().catch(() => {});
+        window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
+      }
+      setIsPlaying(true);
     }
   };
 
@@ -171,7 +179,7 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
           <iframe
             ref={iframeRef}
             className="w-full h-full object-contain absolute inset-0 pointer-events-none"
-            src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=1&rel=0&modestbranding=1&playsinline=1`}
+            src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1`}
             title={customerName || "Customer Review"}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -197,7 +205,17 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100 pointer-events-none transition-opacity duration-300" />
       
+      {/* Play/Pause Overlay */}
+      {!isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-10 pointer-events-none">
+          <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40">
+            <Play className="w-6 h-6 text-white ml-1" fill="currentColor" />
+          </div>
+        </div>
+      )}
+      
       {/* Customer Info Overlay */}
+      {/*
       {(customerName || carModel) && (
         <div className="absolute bottom-6 left-4 right-4 z-20 text-white pointer-events-none">
           {customerName && (
@@ -212,6 +230,7 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
           )}
         </div>
       )}
+      */}
       
       {/* Mute Button - Top Right */}
       <button

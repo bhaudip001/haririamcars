@@ -88,6 +88,7 @@ export default function DeliveryReelClient({ initialReels }) {
 
 function ReelCard({ reel, index }) {
   const videoRef = useRef(null);
+  const iframeRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(index === 0);
   const [isMuted, setIsMuted] = useState(true);
 
@@ -105,19 +106,22 @@ function ReelCard({ reel, index }) {
 
   // Play video on intersection (when it comes into view)
   useEffect(() => {
-    if (isYouTube) return;
-    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            videoRef.current?.play().catch(() => {
-               // Auto-play might be blocked, that's fine
-               setIsPlaying(false);
-            });
+            if (isYouTube) {
+              iframeRef.current?.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            } else {
+              videoRef.current?.play().catch(() => {});
+            }
             setIsPlaying(true);
           } else {
-            videoRef.current?.pause();
+            if (isYouTube) {
+              iframeRef.current?.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            } else {
+              videoRef.current?.pause();
+            }
             setIsPlaying(false);
           }
         });
@@ -128,41 +132,90 @@ function ReelCard({ reel, index }) {
     if (videoRef.current) {
       observer.observe(videoRef.current);
     }
+    // Also observe a container for YouTube since iframe might not be directly observable or we can just observe the wrapper.
+    // Actually, we need a wrapper ref to observe since we don't have videoRef.
+    // But wait, the outer div doesn't have a ref. Let's add it.
+  }, [isYouTube]);
+
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (isYouTube) {
+              iframeRef.current?.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            } else {
+              videoRef.current?.play().catch(() => {});
+            }
+            setIsPlaying(true);
+          } else {
+            if (isYouTube) {
+              iframeRef.current?.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            } else {
+              videoRef.current?.pause();
+            }
+            setIsPlaying(false);
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     return () => observer.disconnect();
   }, [isYouTube]);
 
   const togglePlay = (e) => {
     e.stopPropagation();
-    if (isYouTube) return;
     if (isPlaying) {
-      videoRef.current?.pause();
+      if (isYouTube) {
+        iframeRef.current?.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      } else {
+        videoRef.current?.pause();
+      }
       setIsPlaying(false);
     } else {
-      videoRef.current?.play();
+      if (isYouTube) {
+        iframeRef.current?.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      } else {
+        videoRef.current?.play();
+      }
       setIsPlaying(true);
     }
   };
 
   const toggleMute = (e) => {
     e.stopPropagation();
-    if (isYouTube) return;
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
+    const newMuted = !isMuted;
+    if (isYouTube) {
+      if (newMuted) {
+        iframeRef.current?.contentWindow?.postMessage('{"event":"command","func":"mute","args":""}', '*');
+      } else {
+        iframeRef.current?.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
+      }
+    } else if (videoRef.current) {
+      videoRef.current.muted = newMuted;
     }
+    setIsMuted(newMuted);
   };
 
   return (
     <div 
+      ref={containerRef}
       className="relative w-full h-[500px] sm:h-[568px] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer shadow-xl shadow-black/50 border border-white/10"
       onClick={togglePlay}
     >
       {/* Video Element */}
       {isYouTube ? (
         <iframe
-          className="w-full h-full object-contain absolute inset-0"
-          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=1&rel=0&modestbranding=1&playsinline=1`}
+          ref={iframeRef}
+          className="w-full h-full object-contain absolute inset-0 pointer-events-none"
+          src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1`}
           title={reel.customerName}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -182,8 +235,8 @@ function ReelCard({ reel, index }) {
         />
       )}
 
-      {/* Play/Pause Overlay (Only for HTML5 Video) */}
-      {!isPlaying && !isYouTube && (
+      {/* Play/Pause Overlay */}
+      {!isPlaying && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-10">
           <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40">
             <Play className="w-6 h-6 text-white ml-1" fill="currentColor" />
@@ -191,27 +244,27 @@ function ReelCard({ reel, index }) {
         </div>
       )}
 
-      {/* Mute/Unmute Button (Only for HTML5 Video) */}
-      {!isYouTube && (
-        <button 
-          onClick={toggleMute}
-          className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition"
-        >
-          {isMuted ? (
-            <VolumeX className="w-4 h-4 text-white" />
-          ) : (
-            <Volume2 className="w-4 h-4 text-white" />
-          )}
-        </button>
-      )}
+      {/* Mute/Unmute Button */}
+      <button 
+        onClick={toggleMute}
+        className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition"
+      >
+        {isMuted ? (
+          <VolumeX className="w-4 h-4 text-white" />
+        ) : (
+          <Volume2 className="w-4 h-4 text-white" />
+        )}
+      </button>
 
       {/* Content Overlay (Bottom gradient) */}
+      {/*
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none z-10 flex flex-col justify-end p-5">
         <div className="mt-auto">
           <h4 className="text-white font-semibold text-sm md:text-base">{reel.customerName}</h4>
           <p className="text-gray-300 text-xs md:text-sm">{reel.carModel}</p>
         </div>
       </div>
+      */}
     </div>
   );
 }
