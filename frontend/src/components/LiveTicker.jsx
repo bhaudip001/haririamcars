@@ -80,7 +80,7 @@ export default function LiveTicker() {
           <div className="flex items-center text-[14px] sm:text-[16px] group-hover:scale-[1.01] transition-transform duration-300">
             <span className="font-semibold text-white/90 tracking-wide text-center sm:text-left">
               We've just added a 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#cebdff] via-[#ffb784] to-[#cebdff] bg-[length:200%_auto] animate-pulse font-black mx-1.5 text-[15px] sm:text-[18px] drop-shadow-[0_0_10px_rgba(255,183,132,0.4)]">
+              <span className="text-[#ffb784] animate-pulse font-black mx-1.5 text-[15px] sm:text-[18px] drop-shadow-[0_0_10px_rgba(255,183,132,0.4)]">
                 {latestCar.make} {latestCar.model} {latestCar.year ? `(${latestCar.year})` : ''}
               </span>
               to our showroom!
