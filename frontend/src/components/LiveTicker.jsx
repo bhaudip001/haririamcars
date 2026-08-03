@@ -26,35 +26,72 @@ export default function LiveTicker() {
   return (
     <>
       <style>{`
-        @keyframes live-ticker-scroll {
-          0% { transform: translateX(100vw); }
-          100% { transform: translateX(-100%); }
+        @keyframes shine {
+          0% { left: -150%; }
+          15% { left: 150%; }
+          100% { left: 150%; }
         }
-        .animate-live-ticker {
-          animation: live-ticker-scroll 20s linear infinite;
+        .shimmer-effect::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -150%;
+          width: 50%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+          transform: skewX(-25deg);
+          animation: shine 5s infinite;
+          pointer-events: none;
+          z-index: 20;
         }
-        /* Pause animation on hover for better readability */
-        .ticker-container:hover .animate-live-ticker {
-          animation-play-state: paused;
+        @keyframes glow-pulse {
+          0%, 100% { box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); border-bottom-color: rgba(124, 58, 237, 0.4); }
+          50% { box-shadow: 0 0 25px rgba(255, 183, 132, 0.4); border-bottom-color: rgba(255, 183, 132, 0.6); }
+        }
+        .animate-glow-pulse {
+          animation: glow-pulse 3.5s infinite;
+        }
+        @keyframes float-badge {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px) scale(1.02); }
+        }
+        .animate-float-badge {
+          animation: float-badge 2.5s ease-in-out infinite;
         }
       `}</style>
-      <div className="ticker-container opacity-80 bg-gradient-to-r from-[#6d28d9] via-[#4c1d95] to-[#6d28d9] text-white overflow-hidden relative flex items-center h-8 sm:h-10 w-full z-30 shadow-md border-b border-white/10">
-        {/* Live Badge Overlay */}
-        <div className="absolute left-0 bg-red-600/90 text-white z-10 px-3 sm:px-4 h-full flex items-center font-['Outfit'] font-bold text-[10px] sm:text-[12px] uppercase tracking-wider shadow-[8px_0_15px_rgba(0,0,0,0.4)]">
-          <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse mr-2"></span>
-          Live
+
+      <div className="relative flex justify-center items-center py-3 sm:py-3.5 w-full z-30 overflow-hidden bg-[#0a0a12] border-b animate-glow-pulse shimmer-effect group cursor-pointer">
+        {/* Animated background gradient blob */}
+        <div className="absolute inset-0 opacity-40">
+          <div className="absolute top-0 left-1/4 w-1/2 h-full bg-gradient-to-r from-transparent via-[#7c3aed] to-transparent blur-2xl transform group-hover:scale-125 transition-transform duration-700 animate-pulse"></div>
         </div>
-        
-        {/* Marquee Container */}
-        <div className="flex-1 overflow-hidden relative h-full flex items-center">
-          <div className="animate-live-ticker flex whitespace-nowrap items-center w-max pl-4">
-            <span className="text-[12px] sm:text-[13px] font-medium tracking-wide">
-              🔥 Just Listed: <strong className="text-[#fde047] ml-1">{latestCar.make} {latestCar.model} {latestCar.year ? `(${latestCar.year})` : ''}</strong>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center w-full max-w-5xl gap-3 sm:gap-6 relative z-10 px-4">
+          {/* Floating Glowing Badge */}
+          <div className="animate-float-badge glass-card px-3.5 py-1.5 rounded-full text-[11px] sm:text-[13px] font-extrabold uppercase tracking-widest flex items-center shrink-0 shadow-[0_0_15px_rgba(124,58,237,0.5)] border border-[#7c3aed]/60 bg-gradient-to-r from-[#7c3aed]/80 to-[#4f319c]/80 text-white">
+            <span className="relative flex h-2 w-2 mr-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffb784] opacity-100"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ffb784]"></span>
             </span>
-            <span className="mx-3 text-white/50">•</span>
-            <span className="text-[12px] sm:text-[13px] font-medium text-white/90">
-              Hurry Up! This deal won't last long.
+            <span>Just Arrived</span>
+          </div>
+          
+          {/* Content */}
+          <div className="flex items-center text-[14px] sm:text-[16px] group-hover:scale-[1.01] transition-transform duration-300">
+            <span className="font-semibold text-white/90 tracking-wide text-center sm:text-left">
+              We've just added a 
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#cebdff] via-[#ffb784] to-[#cebdff] bg-[length:200%_auto] animate-pulse font-black mx-1.5 text-[15px] sm:text-[18px] drop-shadow-[0_0_10px_rgba(255,183,132,0.4)]">
+                {latestCar.make} {latestCar.model} {latestCar.year ? `(${latestCar.year})` : ''}
+              </span>
+              to our showroom!
             </span>
+            
+            <Link href="/catalog" className="hidden sm:flex ml-5 items-center text-[#ffb784] text-[14px] font-bold hover:text-white transition-colors bg-white/10 px-3 py-1 rounded-full border border-white/20 backdrop-blur-md">
+              View Details
+              <svg className="w-4 h-4 ml-1.5 transform group-hover:translate-x-2 group-hover:scale-110 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
           </div>
         </div>
       </div>
