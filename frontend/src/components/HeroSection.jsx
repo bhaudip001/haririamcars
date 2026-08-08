@@ -139,7 +139,7 @@ export default function HeroSection() {
   const backgroundY = useTransform(scrollY, [0, 500], [0, 150]);
 
   return (
-    <header className="relative flex flex-col h-[480px] sm:h-[550px] md:h-auto md:min-h-[85vh] md:flex-row md:items-center font-['Inter',sans-serif] bg-[#050508] z-20 overflow-visible">
+    <header className={`relative flex flex-col h-[480px] sm:h-[550px] md:h-auto md:min-h-[85vh] md:flex-row md:items-center font-['Inter',sans-serif] bg-[#050508] overflow-visible ${isMobileSearchOpen ? 'z-50' : 'z-20'}`}>
 
       {/* ════════════════════════════════════════════════════════════════
           DESKTOP BACKGROUND (Hidden on mobile)
