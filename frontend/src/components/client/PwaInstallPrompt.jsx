@@ -21,7 +21,8 @@ export default function PwaInstallPrompt() {
     setIsIOS(isIosDevice);
 
     // Check if already installed
-    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+    const isStandalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+    if (isStandalone) {
       setIsInstalled(true);
       return;
     }
@@ -30,7 +31,7 @@ export default function PwaInstallPrompt() {
       e.preventDefault();
       setDeferredPrompt(e);
       window.globalDeferredPrompt = e;
-      if (!window.matchMedia('(display-mode: standalone)').matches) {
+      if (!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) && window.navigator.standalone !== true) {
         setShowPrompt(true);
       }
     };
@@ -56,7 +57,7 @@ export default function PwaInstallPrompt() {
 
     // Automatically show the prompt shortly after page load/refresh if iOS or if we already have the prompt
     const initialTimer = setTimeout(() => {
-      if (!window.matchMedia('(display-mode: standalone)').matches) {
+      if (!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) && window.navigator.standalone !== true) {
         if (isIosDevice || window.globalDeferredPrompt) {
           setShowPrompt(true);
         }
@@ -106,7 +107,7 @@ export default function PwaInstallPrompt() {
     
     // As requested: wait exactly 2 minutes (120,000ms) and pop it back up!
     setTimeout(() => {
-      if (!window.matchMedia('(display-mode: standalone)').matches) {
+      if (!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) && window.navigator.standalone !== true) {
         if (isIOS || window.globalDeferredPrompt) {
           setShowPrompt(true);
         }
