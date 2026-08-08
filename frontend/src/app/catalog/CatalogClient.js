@@ -23,6 +23,7 @@ export default function CatalogClient() {
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [make, setMake] = useState(searchParams.get('make') || '');
   const [fuelType, setFuelType] = useState(searchParams.get('fuelType') || '');
+  const [transmission, setTransmission] = useState(searchParams.get('transmission') || '');
   const [bodyType, setBodyType] = useState(searchParams.get('bodyType') || '');
   const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '');
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '');
@@ -35,6 +36,7 @@ export default function CatalogClient() {
       if (search) params.set('search', search);
       if (make) params.set('make', make);
       if (fuelType) params.set('fuelType', fuelType);
+      if (transmission) params.set('transmission', transmission);
       if (bodyType) params.set('bodyType', bodyType);
       if (minPrice) params.set('minPrice', minPrice);
       if (maxPrice) params.set('maxPrice', maxPrice);
@@ -52,7 +54,7 @@ export default function CatalogClient() {
     } finally {
       setLoading(false);
     }
-  }, [search, make, fuelType, bodyType, minPrice, maxPrice, sort]);
+  }, [search, make, fuelType, transmission, bodyType, minPrice, maxPrice, sort]);
 
   useEffect(() => {
     api.get('/cars/brands').then(res => setBrands(res.data || [])).catch(() => {});
@@ -63,11 +65,11 @@ export default function CatalogClient() {
   }, [fetchCars]);
 
   const clearFilters = () => {
-    setSearch(''); setMake(''); setFuelType(''); setBodyType('');
+    setSearch(''); setMake(''); setFuelType(''); setTransmission(''); setBodyType('');
     setMinPrice(''); setMaxPrice(''); setSort('');
   };
 
-  const hasActiveFilters = search || make || fuelType || bodyType || minPrice || maxPrice;
+  const hasActiveFilters = search || make || fuelType || transmission || bodyType || minPrice || maxPrice;
 
   const handleShareCatalog = async () => {
     const text = `Hello! Check out Hariram Motors' complete range of available verified cars here:\n${window.location.origin}/catalog`;
@@ -141,7 +143,7 @@ export default function CatalogClient() {
             onClick={() => setShowFilters(!showFilters)}
             className="btn-outline !py-3 md:hidden"
           >
-            <SlidersHorizontal size={16} /> Filters {hasActiveFilters && `(${[make, fuelType, bodyType, minPrice, maxPrice].filter(Boolean).length})`}
+            <SlidersHorizontal size={16} /> Filters {hasActiveFilters && `(${[make, fuelType, transmission, bodyType, minPrice, maxPrice].filter(Boolean).length})`}
           </button>
         </div>
 
@@ -175,6 +177,16 @@ export default function CatalogClient() {
                   <option value="">All Types</option>
                   {['Petrol', 'Diesel', 'CNG', 'Electric', 'Hybrid'].map(f => (
                     <option key={f} value={f}>{f}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="input-label">Transmission</label>
+                <select value={transmission} onChange={(e) => setTransmission(e.target.value)} className="input-field">
+                  <option value="">All Types</option>
+                  {['Manual', 'Automatic', 'AMT', 'CVT', 'DCT'].map(t => (
+                    <option key={t} value={t}>{t}</option>
                   ))}
                 </select>
               </div>
