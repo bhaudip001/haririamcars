@@ -22,6 +22,8 @@ function CatalogContent() {
 
   const [selectedMakes, setSelectedMakes] = useState(searchParams.get('make') ? searchParams.get('make').split(',') : []);
   const [selectedFuels, setSelectedFuels] = useState(searchParams.get('fuelType') ? searchParams.get('fuelType').split(',') : []);
+  const [transmissions, setTransmissions] = useState(['Manual', 'Automatic', 'AMT', 'CVT', 'DCT']);
+  const [selectedTransmissions, setSelectedTransmissions] = useState(searchParams.get('transmission') ? searchParams.get('transmission').split(',') : []);
   const [selectedBodyTypes, setSelectedBodyTypes] = useState(searchParams.get('bodyType') ? searchParams.get('bodyType').split(',') : []);
   const [minPrice, setMinPrice] = useState(searchParams.get('minPrice') || '');
   const [maxPrice, setMaxPrice] = useState(searchParams.get('maxPrice') || '');
@@ -58,6 +60,7 @@ function CatalogContent() {
 
       if (selectedMakes.length > 0) params.append('make', selectedMakes.join(','));
       if (selectedFuels.length > 0) params.append('fuelType', selectedFuels.join(','));
+      if (selectedTransmissions.length > 0) params.append('transmission', selectedTransmissions.join(','));
       if (selectedBodyTypes.length > 0) params.append('bodyType', selectedBodyTypes.join(','));
       if (minPrice !== '' && minPrice !== null) params.append('minPrice', minPrice);
       if (maxPrice !== '' && maxPrice !== null) params.append('maxPrice', maxPrice);
@@ -94,7 +97,7 @@ function CatalogContent() {
       controller.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedMakes, selectedFuels, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam]);
+  }, [selectedMakes, selectedFuels, selectedTransmissions, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam]);
 
   const hasHandledReload = useRef(false);
 
@@ -111,6 +114,7 @@ function CatalogContent() {
           // Synchronously clear states so the UI updates instantly
           setSelectedMakes([]);
           setSelectedFuels([]);
+          setSelectedTransmissions([]);
           setSelectedBodyTypes([]);
           setMinPrice('');
           setMaxPrice('');
@@ -124,6 +128,7 @@ function CatalogContent() {
 
     setSelectedMakes(searchParams.get('make') ? searchParams.get('make').split(',') : []);
     setSelectedFuels(searchParams.get('fuelType') ? searchParams.get('fuelType').split(',') : []);
+    setSelectedTransmissions(searchParams.get('transmission') ? searchParams.get('transmission').split(',') : []);
     setSelectedBodyTypes(searchParams.get('bodyType') ? searchParams.get('bodyType').split(',') : []);
     setMinPrice(searchParams.get('minPrice') || '');
     setMaxPrice(searchParams.get('maxPrice') || '');
@@ -161,6 +166,9 @@ const FiltersContent = ({
   fuelTypes,
   selectedFuels,
   setSelectedFuels,
+  transmissions,
+  selectedTransmissions,
+  setSelectedTransmissions,
 }) => {
   const exactMin = Number(globalMinPrice) || 0;
   const exactMax = Number(globalMaxPrice) || 5000000; 
@@ -211,6 +219,7 @@ const FiltersContent = ({
     setSelectedMakes([]);
     setSelectedBodyTypes([]);
     setSelectedFuels([]);
+    setSelectedTransmissions([]);
     setMinPrice('');
     setMaxPrice('');
   };
@@ -363,6 +372,32 @@ const FiltersContent = ({
           ))}
         </div>
       </div>
+
+      {/* Transmission Type */}
+      {transmissions && transmissions.length > 0 && (
+        <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Transmission</h4>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedTransmissions([])}
+              aria-pressed={selectedTransmissions.length === 0}
+              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedTransmissions.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+            >
+              All
+            </button>
+            {transmissions.map(transmission => (
+              <button
+                key={transmission}
+                onClick={() => toggleArrayItem(setSelectedTransmissions, transmission, selectedTransmissions)}
+                aria-pressed={selectedTransmissions.includes(transmission)}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedTransmissions.includes(transmission) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+              >
+                {transmission}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -371,6 +406,7 @@ const FiltersContent = ({
 const MobileFiltersWrapper = ({ onClose, ...props }) => {
   const [tempMakes, setTempMakes] = useState(props.selectedMakes);
   const [tempFuels, setTempFuels] = useState(props.selectedFuels);
+  const [tempTransmissions, setTempTransmissions] = useState(props.selectedTransmissions);
   const [tempBodyTypes, setTempBodyTypes] = useState(props.selectedBodyTypes);
   const [tempMinPrice, setTempMinPrice] = useState(props.minPrice);
   const [tempMaxPrice, setTempMaxPrice] = useState(props.maxPrice);
@@ -378,6 +414,7 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
   const handleApply = () => {
     props.setSelectedMakes(tempMakes);
     props.setSelectedFuels(tempFuels);
+    props.setSelectedTransmissions(tempTransmissions);
     props.setSelectedBodyTypes(tempBodyTypes);
     props.setMinPrice(tempMinPrice);
     props.setMaxPrice(tempMaxPrice);
@@ -387,6 +424,7 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
   const handleClear = () => {
     setTempMakes([]);
     setTempFuels([]);
+    setTempTransmissions([]);
     setTempBodyTypes([]);
     setTempMinPrice('');
     setTempMaxPrice('');
@@ -425,6 +463,8 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
           setSelectedMakes={setTempMakes}
           selectedFuels={tempFuels}
           setSelectedFuels={setTempFuels}
+          selectedTransmissions={tempTransmissions}
+          setSelectedTransmissions={setTempTransmissions}
           selectedBodyTypes={tempBodyTypes}
           setSelectedBodyTypes={setTempBodyTypes}
           minPrice={tempMinPrice}
@@ -534,6 +574,9 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
                   fuelTypes={fuelTypes}
                   selectedFuels={selectedFuels}
                   setSelectedFuels={setSelectedFuels}
+                  transmissions={transmissions}
+                  selectedTransmissions={selectedTransmissions}
+                  setSelectedTransmissions={setSelectedTransmissions}
                 />
               </motion.div>
             </>
