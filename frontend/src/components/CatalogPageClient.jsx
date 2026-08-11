@@ -536,6 +536,9 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
             fuelTypes={fuelTypes}
             selectedFuels={selectedFuels}
             setSelectedFuels={setSelectedFuels}
+            transmissions={transmissions}
+            selectedTransmissions={selectedTransmissions}
+            setSelectedTransmissions={setSelectedTransmissions}
           />
         </aside>
 
