@@ -106,9 +106,9 @@ function CatalogContent() {
     if (typeof window !== 'undefined' && !hasHandledReload.current) {
       hasHandledReload.current = true;
       const navEntries = performance.getEntriesByType('navigation');
-      const isReload = (navEntries.length > 0 && navEntries[0].type === 'reload') || 
-                       (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
-      
+      const isReload = (navEntries.length > 0 && navEntries[0].type === 'reload') ||
+        (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+
       if (isReload) {
         if (searchParams.toString() !== '') {
           // Synchronously clear states so the UI updates instantly
@@ -119,7 +119,7 @@ function CatalogContent() {
           setMinPrice('');
           setMaxPrice('');
           setSearchQuery('');
-          
+
           router.replace('/catalog', { scroll: false });
           return;
         }
@@ -150,341 +150,341 @@ function CatalogContent() {
 
 
 
-const FiltersContent = ({
-  globalMinPrice,
-  globalMaxPrice,
-  minPrice,
-  setMinPrice,
-  maxPrice,
-  setMaxPrice,
-  makes,
-  selectedMakes,
-  setSelectedMakes,
-  bodyTypes,
-  selectedBodyTypes,
-  setSelectedBodyTypes,
-  fuelTypes,
-  selectedFuels,
-  setSelectedFuels,
-  transmissions,
-  selectedTransmissions,
-  setSelectedTransmissions,
-}) => {
-  const exactMin = Number(globalMinPrice) || 0;
-  const exactMax = Number(globalMaxPrice) || 5000000; 
-  
-  // Mathematically snap slider bounds beyond actual max so users can scale properly
-  const minBound = Math.floor(exactMin / 10000) * 10000;
-  const maxBound = Math.ceil(exactMax / 10000) * 10000;
+  const FiltersContent = ({
+    globalMinPrice,
+    globalMaxPrice,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    makes,
+    selectedMakes,
+    setSelectedMakes,
+    bodyTypes,
+    selectedBodyTypes,
+    setSelectedBodyTypes,
+    fuelTypes,
+    selectedFuels,
+    setSelectedFuels,
+    transmissions,
+    selectedTransmissions,
+    setSelectedTransmissions,
+  }) => {
+    const exactMin = Number(globalMinPrice) || 0;
+    const exactMax = Number(globalMaxPrice) || 5000000;
 
-  // Use filter's budget or fallback to overall bounds
-  const parsedMin = Number(minPrice);
-  const currentMin = !isNaN(parsedMin) && minPrice !== '' && minPrice !== null ? parsedMin : minBound;
-  const parsedMax = Number(maxPrice);
-  const currentMax = !isNaN(parsedMax) && maxPrice !== '' && maxPrice !== null ? parsedMax : maxBound;
+    // Mathematically snap slider bounds beyond actual max so users can scale properly
+    const minBound = Math.floor(exactMin / 10000) * 10000;
+    const maxBound = Math.ceil(exactMax / 10000) * 10000;
 
-  // Local state for ultra-smooth native scrolling without debounce lag
-  const [localMin, setLocalMin] = useState(currentMin);
-  const [localMax, setLocalMax] = useState(currentMax);
+    // Use filter's budget or fallback to overall bounds
+    const parsedMin = Number(minPrice);
+    const currentMin = !isNaN(parsedMin) && minPrice !== '' && minPrice !== null ? parsedMin : minBound;
+    const parsedMax = Number(maxPrice);
+    const currentMax = !isNaN(parsedMax) && maxPrice !== '' && maxPrice !== null ? parsedMax : maxBound;
 
-  // Sync local state when external state changes (e.g. clear filters)
-  useEffect(() => {
-    setLocalMin(currentMin);
-    setLocalMax(currentMax);
-  }, [currentMin, currentMax]);
+    // Local state for ultra-smooth native scrolling without debounce lag
+    const [localMin, setLocalMin] = useState(currentMin);
+    const [localMax, setLocalMax] = useState(currentMax);
 
-  // Format currency
-  const formatINR = (val) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(val);
-  };
+    // Sync local state when external state changes (e.g. clear filters)
+    useEffect(() => {
+      setLocalMin(currentMin);
+      setLocalMax(currentMax);
+    }, [currentMin, currentMax]);
 
-  const getPercent = (value) => {
-    if (maxBound === minBound) return 0;
-    return Math.round(((value - minBound) / (maxBound - minBound)) * 100);
-  };
+    // Format currency
+    const formatINR = (val) => {
+      return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        maximumFractionDigits: 0
+      }).format(val);
+    };
 
-  const localMinPercent = getPercent(localMin);
-  const localMaxPercent = getPercent(localMax);
+    const getPercent = (value) => {
+      if (maxBound === minBound) return 0;
+      return Math.round(((value - minBound) / (maxBound - minBound)) * 100);
+    };
 
-  const handleDragEnd = () => {
-    setMinPrice(localMin);
-    setMaxPrice(localMax);
-  };
+    const localMinPercent = getPercent(localMin);
+    const localMaxPercent = getPercent(localMax);
 
-  const clearFilters = () => {
-    setSelectedMakes([]);
-    setSelectedBodyTypes([]);
-    setSelectedFuels([]);
-    setSelectedTransmissions([]);
-    setMinPrice('');
-    setMaxPrice('');
-  };
+    const handleDragEnd = () => {
+      setMinPrice(localMin);
+      setMaxPrice(localMax);
+    };
 
-  const toggleArrayItem = (setter, item, arr) => {
-    if (arr.includes(item)) setter(arr.filter(i => i !== item));
-    else setter([...arr, item]);
-  };
+    const clearFilters = () => {
+      setSelectedMakes([]);
+      setSelectedBodyTypes([]);
+      setSelectedFuels([]);
+      setSelectedTransmissions([]);
+      setMinPrice('');
+      setMaxPrice('');
+    };
 
-  return (
-    <div className="space-y-8 pb-20 md:pb-0 transition-colors duration-500">
-      <div className="hidden md:flex justify-between items-center border-b border-gray-200 dark:border-white/10 pb-4">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Advanced Filters</h3>
-        <button onClick={clearFilters} className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors whitespace-nowrap">Clear All</button>
-      </div>
+    const toggleArrayItem = (setter, item, arr) => {
+      if (arr.includes(item)) setter(arr.filter(i => i !== item));
+      else setter([...arr, item]);
+    };
 
-      {/* Price Range / BUDGET */}
-      <div className="flex flex-col gap-5 pt-2 md:pt-0 pb-2 transition-colors">
-        <div className="flex justify-between items-center">
-          <h3 className="font-bold text-sm text-gray-500 dark:text-gray-400 tracking-widest uppercase">Budget</h3>
+    return (
+      <div className="space-y-8 pb-20 md:pb-0 transition-colors duration-500">
+        <div className="hidden md:flex justify-between items-center border-b border-gray-200 dark:border-white/10 pb-4">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white" style={{ fontFamily: 'var(--font-outfit)' }}>Advanced Filters</h3>
+          <button onClick={clearFilters} className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors whitespace-nowrap">Clear All</button>
         </div>
 
-        <div className="flex items-center justify-between font-bold text-[15px] text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 px-4 py-2.5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm">
-          <span>{formatINR(localMin)}</span>
-          <span className="text-gray-400">-</span>
-          <span>{formatINR(localMax)}</span>
-        </div>
+        {/* Price Range / BUDGET */}
+        <div className="flex flex-col gap-5 pt-2 md:pt-0 pb-2 transition-colors">
+          <div className="flex justify-between items-center">
+            <h3 className="font-bold text-sm text-gray-500 dark:text-gray-400 tracking-widest uppercase">Budget</h3>
+          </div>
 
-        <div className="relative w-full h-8 flex items-center group mt-2">
-          {/* Track Background */}
-          <div className="absolute w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+          <div className="flex items-center justify-between font-bold text-[15px] text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 px-4 py-2.5 rounded-xl border border-gray-100 dark:border-white/10 shadow-sm">
+            <span>{formatINR(localMin)}</span>
+            <span className="text-gray-400">-</span>
+            <span>{formatINR(localMax)}</span>
+          </div>
 
-          {/* Track Active Highlight */}
-          <div
-            className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-75"
-            style={{
-              left: `${localMinPercent}%`,
-              width: `${localMaxPercent - localMinPercent}%`
-            }}
-          ></div>
+          <div className="relative w-full h-8 flex items-center group mt-2">
+            {/* Track Background */}
+            <div className="absolute w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
 
-          {/* Min Slider */}
-          <input
-            type="range"
-            aria-label="Minimum Budget"
-            min={minBound}
-            max={maxBound}
-            value={localMin}
-            step={10000}
-            onChange={(e) => {
-              const value = Math.min(Number(e.target.value), localMax - 10000);
-              setLocalMin(value);
-            }}
-            onMouseUp={handleDragEnd}
-            onTouchEnd={handleDragEnd}
-            className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
-          />
+            {/* Track Active Highlight */}
+            <div
+              className="absolute h-1.5 bg-purple-500 rounded-full transition-all duration-75"
+              style={{
+                left: `${localMinPercent}%`,
+                width: `${localMaxPercent - localMinPercent}%`
+              }}
+            ></div>
 
-          {/* Max Slider */}
-          <input
-            type="range"
-            aria-label="Maximum Budget"
-            min={minBound}
-            max={maxBound}
-            value={localMax}
-            step={10000}
-            onChange={(e) => {
-              const value = Math.max(Number(e.target.value), localMin + 10000);
-              setLocalMax(value);
-            }}
-            onMouseUp={handleDragEnd}
-            onTouchEnd={handleDragEnd}
-            className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
-          />
-        </div>
-      </div>
+            {/* Min Slider */}
+            <input
+              type="range"
+              aria-label="Minimum Budget"
+              min={minBound}
+              max={maxBound}
+              value={localMin}
+              step={10000}
+              onChange={(e) => {
+                const value = Math.min(Number(e.target.value), localMax - 10000);
+                setLocalMin(value);
+              }}
+              onMouseUp={handleDragEnd}
+              onTouchEnd={handleDragEnd}
+              className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
+            />
 
-      {/* Brand Filter */}
-      {makes.length > 0 && (
-        <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Brand</h4>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setSelectedMakes([])}
-              aria-pressed={selectedMakes.length === 0}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-            >
-              All Brands
-            </button>
-            {makes.map(make => (
-              <button
-                key={make}
-                onClick={() => toggleArrayItem(setSelectedMakes, make, selectedMakes)}
-                aria-pressed={selectedMakes.includes(make)}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.includes(make) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-              >
-                {make}
-              </button>
-            ))}
+            {/* Max Slider */}
+            <input
+              type="range"
+              aria-label="Maximum Budget"
+              min={minBound}
+              max={maxBound}
+              value={localMax}
+              step={10000}
+              onChange={(e) => {
+                const value = Math.max(Number(e.target.value), localMin + 10000);
+                setLocalMax(value);
+              }}
+              onMouseUp={handleDragEnd}
+              onTouchEnd={handleDragEnd}
+              className="absolute w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-[22px] [&::-webkit-slider-thumb]:h-[22px] [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:ring-1 [&::-webkit-slider-thumb]:ring-black/5 hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform z-20 cursor-pointer"
+            />
           </div>
         </div>
-      )}
 
-      {/* Body Type Filter */}
-      {bodyTypes.length > 0 && (
-        <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Body Type</h4>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setSelectedBodyTypes([])}
-              aria-pressed={selectedBodyTypes.length === 0}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-            >
-              All Types
-            </button>
-            {bodyTypes.map(type => (
+        {/* Brand Filter */}
+        {makes.length > 0 && (
+          <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+            <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Brand</h4>
+            <div className="flex flex-wrap gap-2">
               <button
-                key={type}
-                onClick={() => toggleArrayItem(setSelectedBodyTypes, type, selectedBodyTypes)}
-                aria-pressed={selectedBodyTypes.includes(type)}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.includes(type) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+                onClick={() => setSelectedMakes([])}
+                aria-pressed={selectedMakes.length === 0}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
               >
-                {type}
+                All Brands
               </button>
-            ))}
+              {makes.map(make => (
+                <button
+                  key={make}
+                  onClick={() => toggleArrayItem(setSelectedMakes, make, selectedMakes)}
+                  aria-pressed={selectedMakes.includes(make)}
+                  className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedMakes.includes(make) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+                >
+                  {make}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Fuel Type */}
-      <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-        <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Fuel Type</h4>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setSelectedFuels([])}
-            aria-pressed={selectedFuels.length === 0}
-            className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-          >
-            All
-          </button>
-          {fuelTypes.map(fuel => (
-            <button
-              key={fuel}
-              onClick={() => toggleArrayItem(setSelectedFuels, fuel, selectedFuels)}
-              aria-pressed={selectedFuels.includes(fuel)}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.includes(fuel) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
-            >
-              {fuel}
-            </button>
-          ))}
-        </div>
-      </div>
+        {/* Body Type Filter */}
+        {bodyTypes.length > 0 && (
+          <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+            <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Body Type</h4>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setSelectedBodyTypes([])}
+                aria-pressed={selectedBodyTypes.length === 0}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+              >
+                All Types
+              </button>
+              {bodyTypes.map(type => (
+                <button
+                  key={type}
+                  onClick={() => toggleArrayItem(setSelectedBodyTypes, type, selectedBodyTypes)}
+                  aria-pressed={selectedBodyTypes.includes(type)}
+                  className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedBodyTypes.includes(type) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
-      {/* Transmission Type */}
-      {transmissions && transmissions.length > 0 && (
+        {/* Fuel Type */}
         <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
-          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Transmission</h4>
+          <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Fuel Type</h4>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setSelectedTransmissions([])}
-              aria-pressed={selectedTransmissions.length === 0}
-              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedTransmissions.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+              onClick={() => setSelectedFuels([])}
+              aria-pressed={selectedFuels.length === 0}
+              className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
             >
               All
             </button>
-            {transmissions.map(transmission => (
+            {fuelTypes.map(fuel => (
               <button
-                key={transmission}
-                onClick={() => toggleArrayItem(setSelectedTransmissions, transmission, selectedTransmissions)}
-                aria-pressed={selectedTransmissions.includes(transmission)}
-                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedTransmissions.includes(transmission) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+                key={fuel}
+                onClick={() => toggleArrayItem(setSelectedFuels, fuel, selectedFuels)}
+                aria-pressed={selectedFuels.includes(fuel)}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedFuels.includes(fuel) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
               >
-                {transmission}
+                {fuel}
               </button>
             ))}
           </div>
         </div>
-      )}
-    </div>
-  );
-};
 
-// Wrapper for mobile filters to buffer state changes until "Apply Filters" is clicked
-const MobileFiltersWrapper = ({ onClose, ...props }) => {
-  const [tempMakes, setTempMakes] = useState(props.selectedMakes);
-  const [tempFuels, setTempFuels] = useState(props.selectedFuels);
-  const [tempTransmissions, setTempTransmissions] = useState(props.selectedTransmissions);
-  const [tempBodyTypes, setTempBodyTypes] = useState(props.selectedBodyTypes);
-  const [tempMinPrice, setTempMinPrice] = useState(props.minPrice);
-  const [tempMaxPrice, setTempMaxPrice] = useState(props.maxPrice);
-
-  const handleApply = () => {
-    props.setSelectedMakes(tempMakes);
-    props.setSelectedFuels(tempFuels);
-    props.setSelectedTransmissions(tempTransmissions);
-    props.setSelectedBodyTypes(tempBodyTypes);
-    props.setMinPrice(tempMinPrice);
-    props.setMaxPrice(tempMaxPrice);
-    onClose();
-  };
-
-  const handleClear = () => {
-    setTempMakes([]);
-    setTempFuels([]);
-    setTempTransmissions([]);
-    setTempBodyTypes([]);
-    setTempMinPrice('');
-    setTempMaxPrice('');
-  };
-
-  return (
-    <div className="flex flex-col h-full max-h-[85dvh]">
-      <div className="flex justify-center pt-3 pb-2 flex-shrink-0">
-        <div className="w-12 h-1.5 bg-gray-300 dark:bg-white/20 rounded-full transition-colors" />
+        {/* Transmission Type */}
+        {transmissions && transmissions.length > 0 && (
+          <div className="border-t border-gray-200 dark:border-white/10 pt-6 transition-colors">
+            <h4 className="font-bold text-black dark:text-white mb-3 transition-colors">Transmission</h4>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setSelectedTransmissions([])}
+                aria-pressed={selectedTransmissions.length === 0}
+                className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedTransmissions.length === 0 ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+              >
+                All
+              </button>
+              {transmissions.map(transmission => (
+                <button
+                  key={transmission}
+                  onClick={() => toggleArrayItem(setSelectedTransmissions, transmission, selectedTransmissions)}
+                  aria-pressed={selectedTransmissions.includes(transmission)}
+                  className={`px-4 py-3 md:py-1.5 rounded-full text-sm md:text-xs font-bold tracking-wide transition-colors ${selectedTransmissions.includes(transmission) ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-purple-300 dark:hover:border-white/20 hover:bg-purple-50 dark:hover:bg-white/10 hover:text-purple-700 dark:hover:text-white shadow-sm dark:shadow-none transition-all duration-300'}`}
+                >
+                  {transmission}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+    );
+  };
 
-      <div className="px-6 pb-4 flex items-center justify-between border-b border-gray-200 dark:border-white/10 transition-colors flex-shrink-0">
-        <h2 className="text-xl font-bold text-black dark:text-white tracking-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h2>
-        <div className="flex items-center gap-4">
+  // Wrapper for mobile filters to buffer state changes until "Apply Filters" is clicked
+  const MobileFiltersWrapper = ({ onClose, ...props }) => {
+    const [tempMakes, setTempMakes] = useState(props.selectedMakes);
+    const [tempFuels, setTempFuels] = useState(props.selectedFuels);
+    const [tempTransmissions, setTempTransmissions] = useState(props.selectedTransmissions);
+    const [tempBodyTypes, setTempBodyTypes] = useState(props.selectedBodyTypes);
+    const [tempMinPrice, setTempMinPrice] = useState(props.minPrice);
+    const [tempMaxPrice, setTempMaxPrice] = useState(props.maxPrice);
+
+    const handleApply = () => {
+      props.setSelectedMakes(tempMakes);
+      props.setSelectedFuels(tempFuels);
+      props.setSelectedTransmissions(tempTransmissions);
+      props.setSelectedBodyTypes(tempBodyTypes);
+      props.setMinPrice(tempMinPrice);
+      props.setMaxPrice(tempMaxPrice);
+      onClose();
+    };
+
+    const handleClear = () => {
+      setTempMakes([]);
+      setTempFuels([]);
+      setTempTransmissions([]);
+      setTempBodyTypes([]);
+      setTempMinPrice('');
+      setTempMaxPrice('');
+    };
+
+    return (
+      <div className="flex flex-col h-full max-h-[85dvh]">
+        <div className="flex justify-center pt-3 pb-2 flex-shrink-0">
+          <div className="w-12 h-1.5 bg-gray-300 dark:bg-white/20 rounded-full transition-colors" />
+        </div>
+
+        <div className="px-6 pb-4 flex items-center justify-between border-b border-gray-200 dark:border-white/10 transition-colors flex-shrink-0">
+          <h2 className="text-xl font-bold text-black dark:text-white tracking-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Filters</h2>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleClear}
+              className="flex items-center gap-1.5 text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors"
+            >
+              <IconRefresh size={16} />
+              Clear All
+            </button>
+            <button
+              aria-label="Close Filters"
+              onClick={onClose}
+              className="p-2 bg-gray-100 dark:bg-white/5 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
+            >
+              <IconX className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-6 py-6">
+          <FiltersContent
+            {...props}
+            selectedMakes={tempMakes}
+            setSelectedMakes={setTempMakes}
+            selectedFuels={tempFuels}
+            setSelectedFuels={setTempFuels}
+            selectedTransmissions={tempTransmissions}
+            setSelectedTransmissions={setTempTransmissions}
+            selectedBodyTypes={tempBodyTypes}
+            setSelectedBodyTypes={setTempBodyTypes}
+            minPrice={tempMinPrice}
+            setMinPrice={setTempMinPrice}
+            maxPrice={tempMaxPrice}
+            setMaxPrice={setTempMaxPrice}
+          />
+        </div>
+
+        <div className="p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f0f1e] flex-shrink-0 transition-colors duration-500" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 1rem))' }}>
           <button
-            onClick={handleClear}
-            className="flex items-center gap-1.5 text-sm font-bold text-blue-600 dark:text-blue-400 hover:text-blue-800 transition-colors"
+            onClick={handleApply}
+            className="w-full h-[52px] bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all shadow-[0_10px_25px_rgba(147,51,234,0.4)]"
           >
-            <IconRefresh size={16} />
-            Clear All
-          </button>
-          <button
-            aria-label="Close Filters"
-            onClick={onClose}
-            className="p-2 bg-gray-100 dark:bg-white/5 rounded-full text-gray-600 dark:text-white/70 hover:text-black dark:hover:text-white transition-colors"
-          >
-            <IconX className="w-5 h-5" />
+            Apply Filters
           </button>
         </div>
       </div>
-
-      <div className="flex-1 overflow-y-auto px-6 py-6">
-        <FiltersContent
-          {...props}
-          selectedMakes={tempMakes}
-          setSelectedMakes={setTempMakes}
-          selectedFuels={tempFuels}
-          setSelectedFuels={setTempFuels}
-          selectedTransmissions={tempTransmissions}
-          setSelectedTransmissions={setTempTransmissions}
-          selectedBodyTypes={tempBodyTypes}
-          setSelectedBodyTypes={setTempBodyTypes}
-          minPrice={tempMinPrice}
-          setMinPrice={setTempMinPrice}
-          maxPrice={tempMaxPrice}
-          setMaxPrice={setTempMaxPrice}
-        />
-      </div>
-
-      <div className="p-6 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#0f0f1e] flex-shrink-0 transition-colors duration-500" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 1rem))' }}>
-        <button
-          onClick={handleApply}
-          className="w-full h-[52px] bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all shadow-[0_10px_25px_rgba(147,51,234,0.4)]"
-        >
-          Apply Filters
-        </button>
-      </div>
-    </div>
-  );
-};
+    );
+  };
 
 
   return (
@@ -588,7 +588,7 @@ const MobileFiltersWrapper = ({ onClose, ...props }) => {
 
         {/* Catalog Grid Area */}
         <div className="flex-grow flex flex-col space-y-6 relative">
-          
+
           {/* Mobile Filter Button - Sticky like Sadguru */}
           <div className="md:hidden sticky top-[72px] z-40 w-full">
             <button
