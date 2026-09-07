@@ -8,9 +8,10 @@ import {
   IconArrowLeft, IconMaximize, IconCalendarMonth, IconDashboard,
   IconGasStation, IconManualGearbox, IconUser, IconMapPin,
   IconShieldCheck, IconBrandWhatsapp, IconPhoneCall, IconInfoCircle,
-  IconArrowRight, IconX, IconChevronLeft, IconChevronRight
+  IconArrowRight, IconX, IconChevronLeft, IconChevronRight, IconShare, IconDownload
 } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
+import toast from 'react-hot-toast';
 import { formatPrice, formatKms, getOptimizedImage, getCarInquiryLink, generateBlurPlaceholder, extractImageUrl } from '@/lib/utils';
 import imagekitLoader from '@/lib/imagekitLoader';
 import { staggerContainer, fadeInLeft } from '@/lib/animations';
@@ -82,6 +83,91 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
     if (isRightSwipe) {
       setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
     }
+  };
+
+  const handleShareImages = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!images || images.length === 0) {
+      toast.error('No images available');
+      return;
+    }
+
+    const toastId = toast.loading('Preparing images for sharing...');
+    const shareTitle = `${car.make} ${car.model} (${car.registerYear || car.year})`;
+
+    try {
+      const filesArray = [];
+      const numImages = Math.min(images.length, 10);
+      
+      for (let i = 0; i < numImages; i++) {
+        const url = extractImageUrl(images[i]);
+        const optimizedUrl = getOptimizedImage(url, 800);
+        const response = await fetch(optimizedUrl);
+        const blob = await response.blob();
+        const file = new File([blob], `${car.make}-${car.model}-image-${i + 1}.jpg`, {
+          type: blob.type || 'image/jpeg',
+        });
+        filesArray.push(file);
+      }
+
+      if (navigator.canShare && navigator.canShare({ files: filesArray })) {
+        await navigator.share({
+          files: filesArray,
+          title: shareTitle,
+          text: `Check out this ${shareTitle}!`,
+        });
+        toast.success('Shared successfully!', { id: toastId });
+      } else {
+        toast.error('Direct image sharing not supported on this device. Use the download button instead.', { id: toastId });
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        toast.error('Failed to share images.', { id: toastId });
+      } else {
+        toast.dismiss(toastId);
+      }
+    }
+  };
+
+  const handleDownloadImages = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!images || images.length === 0) {
+      toast.error('No images available');
+      return;
+    }
+
+    toast.success('Downloading images... Please allow multiple downloads if prompted.', { duration: 5000 });
+
+    images.forEach((img, i) => {
+      setTimeout(async () => {
+        try {
+          const url = extractImageUrl(img);
+          const response = await fetch(getOptimizedImage(url, 1200));
+          const blob = await response.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.download = `${car.make}-${car.model}-${i + 1}.jpg`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+          const url = extractImageUrl(img);
+          const link = document.createElement('a');
+          link.href = getOptimizedImage(url, 1200);
+          link.download = `${car.make}-${car.model}-${i + 1}.jpg`;
+          link.target = '_blank';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }, i * 600);
+    });
   };
 
   if (loading) {
@@ -188,12 +274,29 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
       </div>
 
       <main className="flex-grow pt-8 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 mb-8 text-sm font-medium text-gray-500 dark:text-gray-400">
-          <button onClick={() => router.back()} className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center gap-1 group">
+        {/* Top Header / App Bar */}
+        <nav className="flex items-center justify-between gap-2 mb-6">
+          <button onClick={() => router.back()} className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 font-bold transition-colors flex items-center gap-1.5 group bg-white/50 dark:bg-black/20 px-4 py-2 rounded-full border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-sm text-sm">
             <IconArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             Back to Catalog
           </button>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleShareImages}
+              className="bg-white/90 hover:bg-white dark:bg-white/10 dark:hover:bg-white/20 text-purple-700 dark:text-purple-300 px-3 py-1.5 md:px-4 md:py-2 rounded-full backdrop-blur-md transition-all active:scale-95 shadow-sm border border-purple-200/60 dark:border-purple-500/30 flex items-center gap-1.5 group"
+            >
+              <IconShare size={16} stroke={2.5} className="group-hover:scale-110 transition-transform" />
+              <span className="text-xs md:text-sm font-bold tracking-wide">Share</span>
+            </button>
+            <button
+              onClick={handleDownloadImages}
+              className="bg-white/90 hover:bg-white dark:bg-white/10 dark:hover:bg-white/20 text-blue-700 dark:text-blue-300 px-3 py-1.5 md:px-4 md:py-2 rounded-full backdrop-blur-md transition-all active:scale-95 shadow-sm border border-blue-200/60 dark:border-blue-500/30 flex items-center gap-1.5 group"
+            >
+              <IconDownload size={16} stroke={2.5} className="group-hover:scale-110 transition-transform" />
+              <span className="text-xs md:text-sm font-bold tracking-wide">Save</span>
+            </button>
+          </div>
         </nav>
 
         {/* 2 Column Layout */}
@@ -209,7 +312,8 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="relative aspect-[4/3] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-gray-100 dark:bg-[#12121f] border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] group"
+                onClick={() => setIsLightboxOpen(true)}
+                className="cursor-pointer relative aspect-[4/3] sm:aspect-[16/9] rounded-2xl overflow-hidden bg-gray-100 dark:bg-[#12121f] border border-gray-200 dark:border-white/10 shadow-sm dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] group"
               >
                 {images.length > 0 ? (
                   <>
@@ -235,11 +339,21 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                       );
                     })}
                     <button
-                      onClick={() => setIsLightboxOpen(true)}
-                      className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black/80 text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-lg border border-white/20"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsLightboxOpen(true);
+                      }}
+                      className="absolute bottom-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white p-1.5 md:p-2 rounded-lg md:rounded-full backdrop-blur-md transition-all shadow-sm border border-white/20"
                     >
-                      <IconMaximize size={24} />
+                      <IconMaximize size={16} stroke={2} />
                     </button>
+                    
+                    {/* Image Counter Badge */}
+                    {images.length > 1 && (
+                      <div className="absolute top-3 left-3 z-20 bg-black/60 text-white px-2.5 py-1 rounded-full backdrop-blur-md shadow-sm border border-white/20 text-[10px] sm:text-[11px] font-bold tracking-wider flex items-center gap-1.5 pointer-events-none">
+                        {activeImageIdx + 1} / {images.length}
+                      </div>
+                    )}
 
                     {images.length > 1 && (
                       <>
@@ -519,6 +633,24 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
               <IconArrowLeft size={20} stroke={2} />
               <span className="font-bold tracking-wider text-sm uppercase">Back</span>
             </button>
+
+            {/* Lightbox Top-Right Share/Download */}
+            <div className="absolute top-12 md:top-6 right-4 md:right-6 flex items-center gap-2 md:gap-3" style={{ zIndex: 9999 }}>
+              <button
+                onClick={(e) => { e.stopPropagation(); handleShareImages(e); }}
+                className="text-white hover:text-purple-400 transition-colors px-3 py-1.5 md:px-4 md:py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full backdrop-blur-md shadow-lg flex items-center gap-1.5"
+              >
+                <IconShare size={16} stroke={2} />
+                <span className="font-bold tracking-wider text-xs md:text-sm uppercase">Share</span>
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); handleDownloadImages(e); }}
+                className="text-white hover:text-blue-400 transition-colors px-3 py-1.5 md:px-4 md:py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full backdrop-blur-md shadow-lg flex items-center gap-1.5"
+              >
+                <IconDownload size={16} stroke={2} />
+                <span className="font-bold tracking-wider text-xs md:text-sm uppercase">Save</span>
+              </button>
+            </div>
 
             <button
               aria-label="Previous Image"
