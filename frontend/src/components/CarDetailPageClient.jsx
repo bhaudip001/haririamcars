@@ -276,9 +276,9 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
       <main className="flex-grow pt-8 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10">
         {/* Top Header / App Bar */}
         <nav className="flex items-center justify-between gap-2 mb-6">
-          <button onClick={() => router.back()} className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 font-bold transition-colors flex items-center gap-1.5 group bg-white/50 dark:bg-black/20 px-4 py-2 rounded-full border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-sm text-sm">
-            <IconArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Catalog
+          <button onClick={() => router.back()} className="text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 font-bold transition-colors flex items-center gap-1.5 group bg-white/90 dark:bg-black/20 px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-gray-200 dark:border-white/10 shadow-sm backdrop-blur-sm text-xs md:text-sm whitespace-nowrap">
+            <IconArrowLeft size={16} stroke={2.5} className="group-hover:-translate-x-1 transition-transform" />
+            Back <span className="hidden sm:inline">to Catalog</span>
           </button>
 
           <div className="flex items-center gap-2">
@@ -628,10 +628,10 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 setIsLightboxOpen(false);
               }}
               style={{ zIndex: 9999 }}
-              className="absolute top-12 md:top-6 left-4 md:left-6 text-white hover:text-purple-400 transition-colors px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full backdrop-blur-md flex items-center gap-2 shadow-lg"
+              className="absolute top-12 md:top-6 left-4 md:left-6 text-white hover:text-purple-400 transition-colors px-3 py-1.5 md:px-4 md:py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full backdrop-blur-md flex items-center gap-1.5 shadow-lg whitespace-nowrap"
             >
-              <IconArrowLeft size={20} stroke={2} />
-              <span className="font-bold tracking-wider text-sm uppercase">Back</span>
+              <IconArrowLeft size={16} stroke={2} />
+              <span className="font-bold tracking-wider text-xs md:text-sm uppercase">Back</span>
             </button>
 
             {/* Lightbox Top-Right Share/Download */}
