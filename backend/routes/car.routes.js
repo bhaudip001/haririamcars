@@ -59,11 +59,24 @@ router.get('/', cache(5), async (req, res) => {
       if (maxYear) filter.year.$lte = Number(maxYear);
     }
 
-    const baseSort = sort === 'price_asc' ? { price: 1 }
-      : sort === 'price_desc' ? { price: -1 }
-      : sort === 'year_desc' ? { year: -1 }
-      : sort === 'year_asc' ? { year: 1 }
-      : { createdAt: -1 };
+    let baseSort = { createdAt: -1 };
+    if (sort === 'price_asc' || sort === 'price') {
+      baseSort = { price: 1 };
+    } else if (sort === 'price_desc' || sort === '-price') {
+      baseSort = { price: -1 };
+    } else if (sort === 'year_desc' || sort === '-year') {
+      baseSort = { year: -1 };
+    } else if (sort === 'year_asc' || sort === 'year') {
+      baseSort = { year: 1 };
+    } else if (sort === 'kms_asc' || sort === 'kms') {
+      baseSort = { kms: 1 };
+    } else if (sort === 'kms_desc' || sort === '-kms') {
+      baseSort = { kms: -1 };
+    } else if (sort === 'oldest' || sort === 'createdAt') {
+      baseSort = { createdAt: 1 };
+    } else {
+      baseSort = { createdAt: -1 };
+    }
     
     const sortOption = { ...baseSort, _id: -1 };
 

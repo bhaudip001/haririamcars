@@ -156,13 +156,16 @@ function CatalogContent() {
   };
 
   const isInitialMount = useRef(true);
+  const prevSearchRef = useRef(searchQuery);
 
   // Re-fetch on filter changes (resets to page 1)
   useEffect(() => {
     const controller = new AbortController();
 
-    // Fetch immediately on initial mount, debounce typing/filter adjustments
-    const delay = isInitialMount.current ? 0 : 350;
+    // Fetch immediately on initial mount or sort/filter change; debounce text search typing (300ms)
+    const isTyping = prevSearchRef.current !== searchQuery;
+    prevSearchRef.current = searchQuery;
+    const delay = isInitialMount.current || !isTyping ? 0 : 300;
     isInitialMount.current = false;
 
     const debounceTimer = setTimeout(() => {
@@ -730,11 +733,11 @@ function CatalogContent() {
                     onChange={(e) => setSortParam(e.target.value)}
                     className="w-full appearance-none h-[52px] md:h-auto bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-2.5 text-black dark:text-white font-medium focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 cursor-pointer text-base md:text-sm transition-colors shadow-sm dark:shadow-none"
                   >
-                    <option value="-createdAt" className="text-black">Recently Added</option>
-                    <option value="price" className="text-black">Price: Low to High</option>
-                    <option value="-price" className="text-black">Price: High to Low</option>
-                    <option value="-year" className="text-black">Year: Newest First</option>
-                    <option value="kms" className="text-black">Kilometers: Low to High</option>
+                    <option value="-createdAt" className="bg-white dark:bg-[#12121f] text-gray-900 dark:text-white">Recently Added</option>
+                    <option value="price" className="bg-white dark:bg-[#12121f] text-gray-900 dark:text-white">Price: Low to High</option>
+                    <option value="-price" className="bg-white dark:bg-[#12121f] text-gray-900 dark:text-white">Price: High to Low</option>
+                    <option value="-year" className="bg-white dark:bg-[#12121f] text-gray-900 dark:text-white">Year: Newest First</option>
+                    <option value="kms" className="bg-white dark:bg-[#12121f] text-gray-900 dark:text-white">Kilometers: Low to High</option>
                   </select>
                   <IconChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
                 </div>
