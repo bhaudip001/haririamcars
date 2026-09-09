@@ -71,20 +71,39 @@ export default function ShowroomVideo() {
         player = new window.YT.Player('showroom-yt-iframe', {
           events: {
             onReady: (e) => {
-              playerRef.current = e.target;
-              e.target.mute();
-              e.target.playVideo();
+              try {
+                const target = e?.target || player;
+                if (target && typeof target.playVideo === 'function') {
+                  playerRef.current = target;
+                  if (typeof target.mute === 'function') target.mute();
+                  target.playVideo();
+                }
+              } catch (_) {}
             },
             onStateChange: (e) => {
-              // State 2 = PAUSED: auto-resume immediately so it plays continuously with ZERO pause icons
-              if (e.data === 2) {
-                e.target.playVideo();
-              }
-              // State 0 = ENDED: seek to 0 and loop immediately
-              if (e.data === 0) {
-                e.target.seekTo(0);
-                e.target.playVideo();
-              }
+              try {
+                const target = e?.target || playerRef.current || player;
+                // State 2 = PAUSED: auto-resume immediately so it plays continuously with ZERO pause icons
+                if (e?.data === 2) {
+                  if (target && typeof target.playVideo === 'function') {
+                    target.playVideo();
+                  } else if (iframeRef.current) {
+                    iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                  }
+                }
+                // State 0 = ENDED: seek to 0 and loop immediately
+                if (e?.data === 0) {
+                  if (target && typeof target.seekTo === 'function') {
+                    target.seekTo(0);
+                  }
+                  if (target && typeof target.playVideo === 'function') {
+                    target.playVideo();
+                  } else if (iframeRef.current) {
+                    iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"seekTo","args":[0, true]}', '*');
+                    iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                  }
+                }
+              } catch (_) {}
             },
           },
         });
