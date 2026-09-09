@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { IconSparkles } from '@tabler/icons-react';
 import api from '@/lib/api';
 import { formatPrice } from '@/lib/utils';
 
@@ -41,7 +40,7 @@ export default function LiveTicker() {
           left: -150%;
           width: 45%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
           transform: skewX(-20deg);
           animation: shine 5.5s infinite;
           pointer-events: none;
@@ -54,15 +53,22 @@ export default function LiveTicker() {
         .animate-pulse-slow {
           animation: pulse-slow 3s ease-in-out infinite;
         }
+        @keyframes bar-wave {
+          0%, 100% { transform: scaleY(0.4); opacity: 0.45; }
+          50% { transform: scaleY(1); opacity: 1; }
+        }
+        .animate-bar-1 { animation: bar-wave 1.2s ease-in-out infinite; }
+        .animate-bar-2 { animation: bar-wave 1.2s ease-in-out infinite 0.2s; }
+        .animate-bar-3 { animation: bar-wave 1.2s ease-in-out infinite 0.4s; }
       `}</style>
 
-      <div className="w-full py-2.5 sm:py-5 px-3.5 sm:px-6 lg:px-8 relative z-20">
-        <div className="relative max-w-6xl mx-auto">
-          {/* Multi-tone ambient backlight aura matching Showroom Video */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/35 via-fuchsia-500/25 to-indigo-600/35 rounded-2xl sm:rounded-[32px] blur-lg sm:blur-xl opacity-70 dark:opacity-85 pointer-events-none" />
+      <div className="w-full py-3 sm:py-5 px-4 sm:px-6 lg:px-8 relative z-20">
+        <div className="relative max-w-5xl mx-auto">
+          {/* Multi-tone ambient atmosphere aura matching Showroom Video */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/30 via-fuchsia-500/20 to-indigo-600/30 rounded-2xl md:rounded-full blur-xl opacity-80 pointer-events-none" />
 
           {/* Main Card Container */}
-          <div className="relative flex items-center w-full min-h-[48px] sm:min-h-[76px] px-3 sm:px-7 py-2 sm:py-3.5 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#0c0a18] via-[#141029] to-[#0c0a18] border border-purple-500/25 dark:border-white/15 shadow-[0_10px_35px_rgba(0,0,0,0.6),0_0_25px_rgba(168,85,247,0.18)] overflow-hidden shimmer-effect select-none">
+          <div className="relative flex items-center w-full rounded-2xl md:rounded-full bg-gradient-to-r from-[#090815] via-[#100c22] to-[#090815] border border-white/[0.12] shadow-[0_20px_50px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden shimmer-effect select-none">
 
             {/* Glowing background gradient core in center */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden flex justify-center items-center">
@@ -70,100 +76,102 @@ export default function LiveTicker() {
               <div className="absolute w-[35%] sm:w-[22%] h-full bg-fuchsia-500/15 blur-[28px] rounded-[100%] animate-pulse-slow mix-blend-screen"></div>
             </div>
 
-            {/* ══════════════ MOBILE VIEW (< 640px): Two-Tier Precision Cockpit Card ══════════════ */}
-            <div className="flex sm:hidden flex-col w-full gap-2 z-10 py-0.5">
-              {/* Top Row: Live Status Pill (Left) + Glowing Price Badge (Right) */}
+            {/* Precision Laser Top Highlight */}
+            <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-purple-400/80 to-transparent pointer-events-none" />
+
+            {/* ══════════════ MOBILE VIEW (< 768px): Executive Telemetry HUD ══════════════ */}
+            <div className="flex md:hidden flex-col w-full px-4 py-3.5 relative z-10">
+              {/* Telemetry Status Bar: Live Radar & Frequency Bars (Left) + Gemstone Price (Right) */}
               <div className="flex items-center justify-between w-full">
-                {/* Left: Live Radar Beacon */}
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-purple-600/30 via-fuchsia-600/25 to-purple-600/30 border border-purple-400/40 shadow-[0_0_10px_rgba(168,85,247,0.25)] backdrop-blur-md">
+                {/* Left: Integrated Live Telemetry Beacon (No bulky pill button) */}
+                <div className="inline-flex items-center gap-2">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_6px_#34d399]"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
                   </span>
-                  <span className="text-[10px] font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-white whitespace-nowrap">
+                  {/* Dynamic soundwave frequency bars */}
+                  <div className="flex items-center gap-[2px] h-3">
+                    <span className="w-[2px] h-2.5 rounded-full bg-emerald-400/70 animate-bar-1 origin-bottom"></span>
+                    <span className="w-[2px] h-3.5 rounded-full bg-emerald-400 animate-bar-2 origin-bottom"></span>
+                    <span className="w-[2px] h-2 rounded-full bg-emerald-400/80 animate-bar-3 origin-bottom"></span>
+                  </div>
+                  <span className="text-[10.5px] font-black uppercase tracking-[0.22em] text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-purple-200">
                     Just Arrived
                   </span>
                 </div>
 
-                {/* Right: Glowing Emerald Price Badge */}
+                {/* Right: Radiant Emerald Gemstone Price */}
                 {latestCar.price && (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 text-emerald-400 font-black text-xs shadow-[0_0_10px_rgba(52,211,153,0.3)] whitespace-nowrap">
-                    {formatPrice(latestCar.price)}
-                  </span>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-300 font-extrabold text-xs shadow-[0_0_12px_rgba(16,185,129,0.2)] backdrop-blur-md">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]"></span>
+                    <span>{formatPrice(latestCar.price)}</span>
+                  </div>
                 )}
               </div>
 
-              {/* Bottom Row: Full Uncut Car Name & Year */}
-              <div className="flex items-center justify-between w-full px-0.5 pt-1 border-t border-white/[0.08]">
-                <div className="flex items-center gap-1.5 text-left flex-wrap">
-                  <span className="text-white font-black text-[14px] tracking-tight drop-shadow-[0_1px_8px_rgba(255,255,255,0.25)]">
+              {/* Hero Announcement Copy: Natural flowing typography with zero awkward wrapping */}
+              <div className="text-left mt-2 px-0.5">
+                <p className="text-white/70 text-[13.5px] leading-snug font-normal">
+                  We&apos;ve just added a{' '}
+                  <span className="text-white font-extrabold text-[15.5px] tracking-tight drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]">
                     {latestCar.make} {latestCar.model}
-                  </span>
+                  </span>{' '}
                   {carYear && (
-                    <span className="px-2 py-0.5 rounded-md bg-white/10 text-purple-200 font-bold text-[10.5px] border border-white/10">
-                      {carYear}
+                    <span className="text-purple-300 font-bold text-[13.5px]">
+                      ({carYear})
                     </span>
-                  )}
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-purple-300/70 flex items-center gap-1">
-                  <IconSparkles size={11} className="text-purple-400" />
-                  Showroom
-                </span>
+                  )}{' '}
+                  to our showroom!
+                </p>
               </div>
             </div>
 
-            {/* ══════════════ DESKTOP VIEW (>= 640px): High-End Showroom Announcement ══════════════ */}
-            <div className="hidden sm:flex items-center justify-between w-full gap-4 z-10">
-              {/* Left Side: Live Radar Beacon & Badge */}
-              <div className="flex items-center gap-2.5 flex-shrink-0">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-600/25 via-fuchsia-600/20 to-purple-600/25 border border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.3)] backdrop-blur-md">
+            {/* ══════════════ DESKTOP VIEW (>= 768px): Panoramic Luxury Ribbon ══════════════ */}
+            <div className="hidden md:flex items-center justify-between gap-6 px-8 py-3.5 relative z-10 w-full">
+              {/* Left Side: Live Radar Beacon & Frequency Telemetry */}
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.1] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-xl">
                   <span className="relative flex h-2.5 w-2.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_8px_#10b981]"></span>
                   </span>
-                  <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-white drop-shadow-sm">
+                  {/* Live Frequency bars */}
+                  <div className="flex items-center gap-[2.5px] h-3.5">
+                    <span className="w-[2px] h-3 rounded-full bg-emerald-400/70 animate-bar-1 origin-bottom"></span>
+                    <span className="w-[2px] h-4 rounded-full bg-emerald-400 animate-bar-2 origin-bottom"></span>
+                    <span className="w-[2px] h-2.5 rounded-full bg-emerald-400/80 animate-bar-3 origin-bottom"></span>
+                  </div>
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-white/90">
                     Just Arrived
                   </span>
                 </div>
-                <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-purple-300/70">
-                  <IconSparkles size={13} className="text-purple-400" />
-                  To Showroom
-                </span>
               </div>
 
-              {/* Center: Car Details with Premium Typography & Glowing Price */}
-              <div className="flex-1 flex items-center justify-center text-center min-w-0 px-2">
-                <div className="flex items-center gap-2 flex-wrap justify-center leading-relaxed">
-                  <span className="text-white/75 text-[15px] font-normal tracking-wide">
-                    We&apos;ve just added a
-                  </span>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-50 to-white font-black text-lg lg:text-xl tracking-tight drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)] px-1">
+              {/* Center: Car Details with Premium Typography */}
+              <div className="flex-1 flex items-center justify-center text-center px-2">
+                <p className="text-white/70 text-[15px] font-normal tracking-wide">
+                  We&apos;ve just added a{' '}
+                  <span className="text-white font-black text-[18px] lg:text-[19px] tracking-tight drop-shadow-[0_2px_14px_rgba(255,255,255,0.35)] px-1">
                     {latestCar.make} {latestCar.model}
-                  </span>
+                  </span>{' '}
                   {carYear && (
-                    <span className="px-2.5 py-0.5 rounded-md bg-white/10 text-purple-200 text-xs font-bold border border-white/10 shadow-sm">
+                    <span className="text-purple-300 font-bold text-[14px] mx-0.5">
                       ({carYear})
                     </span>
-                  )}
-                  <span className="text-white/75 text-[15px] font-normal tracking-wide pl-1">
-                    to our showroom!
-                  </span>
-                  {latestCar.price && (
-                    <span className="ml-2.5 inline-flex items-center px-4 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 text-emerald-400 font-black text-sm lg:text-base shadow-[0_0_15px_rgba(52,211,153,0.35)] drop-shadow">
-                      {formatPrice(latestCar.price)}
-                    </span>
-                  )}
-                </div>
+                  )}{' '}
+                  to our showroom!
+                </p>
               </div>
 
-              {/* Right: Subtle Automotive Glowing Pulse Bars (Telemetry Balance) */}
-              <div className="hidden lg:flex items-center gap-1.5 flex-shrink-0 opacity-70">
-                <span className="w-1 h-3.5 rounded-full bg-purple-400/50 animate-pulse"></span>
-                <span className="w-1 h-5 rounded-full bg-purple-400/80 animate-pulse delay-75"></span>
-                <span className="w-1 h-6 rounded-full bg-fuchsia-400 animate-pulse delay-150"></span>
-                <span className="w-1 h-5 rounded-full bg-purple-400/80 animate-pulse delay-75"></span>
-                <span className="w-1 h-3.5 rounded-full bg-purple-400/50 animate-pulse"></span>
-              </div>
+              {/* Right: Gemstone Emerald Price */}
+              {latestCar.price && (
+                <div className="flex-shrink-0">
+                  <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-300 font-black text-[15px] shadow-[0_0_20px_rgba(16,185,129,0.2)] backdrop-blur-xl">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]"></span>
+                    {formatPrice(latestCar.price)}
+                  </div>
+                </div>
+              )}
             </div>
 
           </div>
