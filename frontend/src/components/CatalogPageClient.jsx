@@ -1,11 +1,18 @@
 'use client';
 
-import { useState, useEffect, useRef, Suspense } from 'react';
+import { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { IconSearch, IconFilter, IconChevronDown, IconX, IconRefresh } from '@tabler/icons-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CarCard from '@/components/CarCard';
 import api from '@/lib/api';
+
+const areArraysEqual = (a, b) => {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  if (a.length !== b.length) return false;
+  return a.every((val, idx) => val === b[idx]);
+};
 
 function CatalogContent() {
   const searchParams = useSearchParams();
@@ -32,7 +39,12 @@ function CatalogContent() {
 
   // Data State
   // Responsive batch size: 10 cars on mobile (< 768px) for 2-column grid, 9 cars on laptop/desktop (>= 768px) for 3-column grid
-  const [pageSize, setPageSize] = useState(9);
+  const [pageSize, setPageSize] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768 ? 10 : 9;
+    }
+    return 10;
+  });
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [cars, setCars] = useState([]);
@@ -43,8 +55,7 @@ function CatalogContent() {
   // Responsive batch size detector (10 on mobile, 9 on laptop/desktop)
   useEffect(() => {
     const updateBatchSize = () => {
-      const isMobile = window.innerWidth < 768;
-      const targetSize = isMobile ? 10 : 9;
+      const targetSize = window.innerWidth < 768 ? 10 : 9;
       setPageSize(prev => (prev !== targetSize ? targetSize : prev));
     };
 
@@ -65,6 +76,24 @@ function CatalogContent() {
       }
     }).catch(console.error);
   }, []);
+
+  // Helper to update URL query params silently for sharing/bookmarking filters WITHOUT triggering Next.js router re-renders
+  const updateURL = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams();
+    if (selectedMakes.length > 0) params.append('make', selectedMakes.join(','));
+    if (selectedFuels.length > 0) params.append('fuelType', selectedFuels.join(','));
+    if (selectedTransmissions.length > 0) params.append('transmission', selectedTransmissions.join(','));
+    if (selectedBodyTypes.length > 0) params.append('bodyType', selectedBodyTypes.join(','));
+    if (minPrice !== '' && minPrice !== null) params.append('minPrice', minPrice);
+    if (maxPrice !== '' && maxPrice !== null) params.append('maxPrice', maxPrice);
+    if (searchQuery) params.append('search', searchQuery);
+    if (sortParam && sortParam !== '-createdAt') params.append('sort', sortParam);
+
+    const qs = params.toString();
+    const newUrl = qs ? `/catalog?${qs}` : '/catalog';
+    window.history.replaceState(null, '', newUrl);
+  }, [selectedMakes, selectedFuels, selectedTransmissions, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam]);
 
   // Fetch Cars (supports initial load, filter change, and 'Load More')
   const fetchCars = async (signal = undefined, pageToFetch = 1, isLoadMore = false, limitToFetch = pageSize) => {
@@ -89,8 +118,10 @@ function CatalogContent() {
       if (searchQuery) params.append('search', searchQuery);
       if (sortParam) params.append('sort', sortParam);
 
-      // Update URL silently
-      router.replace(`/catalog?${params.toString()}`, { scroll: false });
+      // Only update URL parameters on fresh filter/search, NEVER on load more
+      if (!isLoadMore) {
+        updateURL();
+      }
 
       const res = await api.get(`/cars?${params.toString()}`, { signal });
       if (res.data) {
@@ -120,23 +151,31 @@ function CatalogContent() {
 
   const handleLoadMore = () => {
     if (loadingMore || loading || cars.length >= total) return;
-    fetchCars(undefined, page + 1, true, pageSize);
+    const nextPage = page + 1;
+    fetchCars(undefined, nextPage, true, pageSize);
   };
 
-  // Re-fetch on filter or batch size changes (resets to page 1)
+  const isInitialMount = useRef(true);
+
+  // Re-fetch on filter changes (resets to page 1)
   useEffect(() => {
     const controller = new AbortController();
+
+    // Fetch immediately on initial mount, debounce typing/filter adjustments
+    const delay = isInitialMount.current ? 0 : 350;
+    isInitialMount.current = false;
+
     const debounceTimer = setTimeout(() => {
       const currentLimit = typeof window !== 'undefined' && window.innerWidth < 768 ? 10 : 9;
       fetchCars(controller.signal, 1, false, currentLimit);
-    }, 500);
+    }, delay);
 
     return () => {
       clearTimeout(debounceTimer);
       controller.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedMakes, selectedFuels, selectedTransmissions, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam, pageSize]);
+  }, [selectedMakes, selectedFuels, selectedTransmissions, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam]);
 
   const hasHandledReload = useRef(false);
 
@@ -159,21 +198,40 @@ function CatalogContent() {
           setMaxPrice('');
           setSearchQuery('');
 
-          router.replace('/catalog', { scroll: false });
+          window.history.replaceState(null, '', '/catalog');
           return;
         }
       }
     }
 
-    setSelectedMakes(searchParams.get('make') ? searchParams.get('make').split(',') : []);
-    setSelectedFuels(searchParams.get('fuelType') ? searchParams.get('fuelType').split(',') : []);
-    setSelectedTransmissions(searchParams.get('transmission') ? searchParams.get('transmission').split(',') : []);
-    setSelectedBodyTypes(searchParams.get('bodyType') ? searchParams.get('bodyType').split(',') : []);
-    setMinPrice(searchParams.get('minPrice') || '');
-    setMaxPrice(searchParams.get('maxPrice') || '');
-    setSearchQuery(searchParams.get('search') || '');
-    setSortParam(searchParams.get('sort') || '-createdAt');
-  }, [searchParams, router]);
+    const urlMake = searchParams.get('make');
+    const newMakes = urlMake ? urlMake.split(',') : [];
+    setSelectedMakes(prev => areArraysEqual(prev, newMakes) ? prev : newMakes);
+
+    const urlFuel = searchParams.get('fuelType');
+    const newFuels = urlFuel ? urlFuel.split(',') : [];
+    setSelectedFuels(prev => areArraysEqual(prev, newFuels) ? prev : newFuels);
+
+    const urlTrans = searchParams.get('transmission');
+    const newTrans = urlTrans ? urlTrans.split(',') : [];
+    setSelectedTransmissions(prev => areArraysEqual(prev, newTrans) ? prev : newTrans);
+
+    const urlBody = searchParams.get('bodyType');
+    const newBody = urlBody ? urlBody.split(',') : [];
+    setSelectedBodyTypes(prev => areArraysEqual(prev, newBody) ? prev : newBody);
+
+    const newMin = searchParams.get('minPrice') || '';
+    setMinPrice(prev => prev === newMin ? prev : newMin);
+
+    const newMax = searchParams.get('maxPrice') || '';
+    setMaxPrice(prev => prev === newMax ? prev : newMax);
+
+    const newSearch = searchParams.get('search') || '';
+    setSearchQuery(prev => prev === newSearch ? prev : newSearch);
+
+    const newSort = searchParams.get('sort') || '-createdAt';
+    setSortParam(prev => prev === newSort ? prev : newSort);
+  }, [searchParams]);
 
   // Lock body scroll when mobile filter is open
   useEffect(() => {
@@ -705,8 +763,8 @@ function CatalogContent() {
                 ))}
               </div>
 
-              {/* View More Cars Button */}
-              {cars.length < total && (
+              {/* View More Cars Button & Progress Counter */}
+              {cars.length < total ? (
                 <div className="flex flex-col items-center justify-center pt-2 pb-6">
                   <button
                     onClick={handleLoadMore}
@@ -731,7 +789,15 @@ function CatalogContent() {
                     Showing {cars.length} of {total} available cars
                   </p>
                 </div>
-              )}
+              ) : total > 0 ? (
+                <div className="flex flex-col items-center justify-center pt-2 pb-6">
+                  <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+                    <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                      Showing all {total} available cars
+                    </span>
+                  </div>
+                </div>
+              ) : null}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl transition-colors shadow-sm dark:shadow-none">
