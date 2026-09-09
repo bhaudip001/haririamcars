@@ -31,13 +31,27 @@ function CatalogContent() {
   const [sortParam, setSortParam] = useState(searchParams.get('sort') || '-createdAt');
 
   // Data State
-  const PAGE_SIZE = 9;
+  // Responsive batch size: 10 cars on mobile (< 768px) for 2-column grid, 9 cars on laptop/desktop (>= 768px) for 3-column grid
+  const [pageSize, setPageSize] = useState(9);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [total, setTotal] = useState(0);
+
+  // Responsive batch size detector (10 on mobile, 9 on laptop/desktop)
+  useEffect(() => {
+    const updateBatchSize = () => {
+      const isMobile = window.innerWidth < 768;
+      const targetSize = isMobile ? 10 : 9;
+      setPageSize(prev => (prev !== targetSize ? targetSize : prev));
+    };
+
+    updateBatchSize();
+    window.addEventListener('resize', updateBatchSize);
+    return () => window.removeEventListener('resize', updateBatchSize);
+  }, []);
 
   // Fetch Filters metadata
   useEffect(() => {
@@ -53,7 +67,7 @@ function CatalogContent() {
   }, []);
 
   // Fetch Cars (supports initial load, filter change, and 'Load More')
-  const fetchCars = async (signal = undefined, pageToFetch = 1, isLoadMore = false) => {
+  const fetchCars = async (signal = undefined, pageToFetch = 1, isLoadMore = false, limitToFetch = pageSize) => {
     if (isLoadMore) {
       setLoadingMore(true);
     } else {
@@ -63,7 +77,7 @@ function CatalogContent() {
     try {
       const params = new URLSearchParams();
       params.append('page', pageToFetch);
-      params.append('limit', PAGE_SIZE);
+      params.append('limit', limitToFetch);
       params.append('status', 'available'); // Only show available cars in catalog
 
       if (selectedMakes.length > 0) params.append('make', selectedMakes.join(','));
@@ -106,14 +120,15 @@ function CatalogContent() {
 
   const handleLoadMore = () => {
     if (loadingMore || loading || cars.length >= total) return;
-    fetchCars(undefined, page + 1, true);
+    fetchCars(undefined, page + 1, true, pageSize);
   };
 
-  // Re-fetch on filter changes (resets to page 1)
+  // Re-fetch on filter or batch size changes (resets to page 1)
   useEffect(() => {
     const controller = new AbortController();
     const debounceTimer = setTimeout(() => {
-      fetchCars(controller.signal, 1, false);
+      const currentLimit = typeof window !== 'undefined' && window.innerWidth < 768 ? 10 : 9;
+      fetchCars(controller.signal, 1, false, currentLimit);
     }, 500);
 
     return () => {
@@ -121,7 +136,7 @@ function CatalogContent() {
       controller.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedMakes, selectedFuels, selectedTransmissions, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam]);
+  }, [selectedMakes, selectedFuels, selectedTransmissions, selectedBodyTypes, minPrice, maxPrice, searchQuery, sortParam, pageSize]);
 
   const hasHandledReload = useRef(false);
 
@@ -672,7 +687,7 @@ function CatalogContent() {
           {/* Grid */}
           {loading ? (
             <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
-              {[...Array(PAGE_SIZE)].map((_, i) => (
+              {[...Array(pageSize)].map((_, i) => (
                 <div key={i} className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden animate-pulse h-[360px] transition-colors">
                   <div className="aspect-[4/3] bg-gray-100 dark:bg-white/5 transition-colors" />
                   <div className="p-4 space-y-3">
@@ -707,7 +722,7 @@ function CatalogContent() {
                       <>
                         <span>View More Cars</span>
                         <span className="text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-semibold">
-                          +{Math.min(PAGE_SIZE, total - cars.length)} more
+                          +{Math.min(pageSize, total - cars.length)} more
                         </span>
                       </>
                     )}
