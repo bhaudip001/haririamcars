@@ -28,7 +28,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
 
     const shareUrl = `${window.location.origin}/catalog/${car.slug}`;
     const shareTitle = `${car.make} ${car.model} (${displayYear})`;
-    
+
     // Improved, highly professional text designed specifically for WhatsApp formatting
     const shareText = `🚗 ✨ *Hariram Motors Premium Inventory* ✨ 🚗\n\nCheck out this beautifully maintained *${shareTitle}*!\n💰 Price: *${formatPrice(car.price)}*\n\nClick the link below for full details and more photos:`;
 
@@ -76,7 +76,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
       const filesArray = [];
       // Limit to 10 images for share API to prevent payload too large errors
       const numImages = Math.min(car.images.length, 10);
-      
+
       for (let i = 0; i < numImages; i++) {
         const url = extractImageUrl(car.images[i]);
         // Use optimized image for sharing to save bandwidth and prevent memory issues
@@ -184,7 +184,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
           {/* Top Right Buttons */}
           <div className="absolute top-2 right-2 md:top-3 md:right-3 z-20 flex flex-col gap-2 pointer-events-auto">
             {/* Share Link */}
-            <button 
+            <button
               onClick={handleShare}
               title="Share Link"
               className="bg-white/20 hover:bg-white/40 dark:bg-black/40 dark:hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-md transition-all active:scale-95 shadow-lg border border-white/30 flex items-center justify-center"
@@ -192,7 +192,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
               <IconShare size={18} stroke={2.5} />
             </button>
             {/* Share Images Directly (Hidden on mobile) */}
-            <button 
+            <button
               onClick={handleShareImages}
               title="Share Images to WhatsApp/Others"
               className="hidden md:flex bg-white/20 hover:bg-white/40 dark:bg-black/40 dark:hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-md transition-all active:scale-95 shadow-lg border border-white/30 items-center justify-center"
@@ -200,7 +200,7 @@ export default function CarCard({ car, index = 0, priority = false }) {
               <IconSend size={18} stroke={2.5} />
             </button>
             {/* Download Images (Hidden on mobile) */}
-            <button 
+            <button
               onClick={handleDownloadImages}
               title="Download All Images"
               className="hidden md:flex bg-white/20 hover:bg-white/40 dark:bg-black/40 dark:hover:bg-black/60 text-white p-2 rounded-full backdrop-blur-md transition-all active:scale-95 shadow-lg border border-white/30 items-center justify-center"
