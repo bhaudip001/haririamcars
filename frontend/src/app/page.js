@@ -69,7 +69,7 @@ export default function HomePage() {
 
         {/* <DealershipServices /> */}
 
-        <section className="py-10 md:py-14 lg:py-20 relative z-10 transition-colors duration-500 dark:bg-transparent">
+        <section className="pt-4 md:pt-6 pb-10 md:pb-14 lg:pb-20 relative z-10 transition-colors duration-500 dark:bg-transparent">
           <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 md:mb-12 gap-4">
               <div>

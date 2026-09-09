@@ -199,13 +199,13 @@ export default function LiveTicker() {
       {/* ═══════════════════════════════════════════════════════════════════════════
           LAPTOP / DESKTOP VIEW (>= 768px): Original Panoramic Luxury Ribbon Design
           ═══════════════════════════════════════════════════════════════════════════ */}
-      <div className="hidden md:block w-full py-4 sm:py-5 px-6 lg:px-8 relative z-20">
+      <div className="hidden md:block w-full py-1.5 md:py-2 px-6 lg:px-8 relative z-20">
         <div className="relative max-w-5xl mx-auto">
           {/* Multi-tone ambient atmosphere aura matching Showroom Video */}
           <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/30 via-fuchsia-500/20 to-indigo-600/30 rounded-full blur-xl opacity-80 pointer-events-none" />
 
           {/* Main Panoramic Card Container */}
-          <div className="relative flex items-center w-full rounded-full bg-gradient-to-r from-[#090815] via-[#100c22] to-[#090815] border border-white/[0.12] shadow-[0_20px_50px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden shimmer-effect select-none">
+          <div className="relative flex items-center w-full rounded-full bg-gradient-to-r from-[#090815] via-[#100c22] to-[#090815] border border-white/[0.12] shadow-[0_15px_35px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden shimmer-effect select-none">
 
             {/* Glowing background gradient core in center */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden flex justify-center items-center">
@@ -217,7 +217,7 @@ export default function LiveTicker() {
             <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-purple-400/80 to-transparent pointer-events-none" />
 
             {/* Panoramic Content Ribbon */}
-            <div className="flex items-center justify-between gap-6 px-8 py-3.5 relative z-10 w-full">
+            <div className="flex items-center justify-between gap-6 px-8 py-2.5 md:py-3 relative z-10 w-full">
               {/* Left Side: Live Radar Beacon & Frequency Telemetry */}
               <div className="flex items-center gap-3 flex-shrink-0">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.1] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-xl">

@@ -462,7 +462,7 @@ export default function ShowroomVideo() {
   }, [dimensions, isFullscreen, isRotated]);
 
   return (
-    <section className="py-12 md:pt-28 md:pb-20 relative overflow-hidden bg-white dark:bg-[#07070d] transition-colors duration-500">
+    <section className="py-12 md:pt-28 md:pb-6 relative overflow-hidden bg-white dark:bg-[#07070d] transition-colors duration-500">
       {/* Ambient background showroom spotlight glows */}
       <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[550px] h-[550px] bg-purple-600/10 dark:bg-purple-600/15 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[550px] h-[550px] bg-indigo-600/10 dark:bg-indigo-600/15 rounded-full blur-[140px] pointer-events-none" />
