@@ -59,8 +59,8 @@ export function extractImageUrl(img) {
   return null;
 }
 
-// Get Cloudinary optimized URL
-export function getOptimizedImage(url, width = 800) {
+// Get ImageKit optimized URL with automatic format and resizing
+export function getOptimizedImage(url, width = 800, quality = 75) {
   let safeUrl = extractImageUrl(url);
   if (!safeUrl || typeof safeUrl !== 'string') return '/placeholder-car.svg';
   
@@ -69,8 +69,14 @@ export function getOptimizedImage(url, width = 800) {
     safeUrl = safeUrl.replace('http://', 'https://');
   }
 
-  // We are now serving raw, pre-optimized images to save Cloudinary transformations
-  // and Vercel limits. No dynamic resizing is injected.
+  // ImageKit transformations are 100% free and unlimited.
+  // Transforming width, quality, and converting to WebP/AVIF saves up to 80% bandwidth.
+  if (safeUrl.includes('ik.imagekit.io')) {
+    if (safeUrl.includes('tr=')) return safeUrl;
+    const separator = safeUrl.includes('?') ? '&' : '?';
+    return `${safeUrl}${separator}tr=w-${width},q-${quality},f-auto`;
+  }
+
   return safeUrl;
 }
 

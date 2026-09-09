@@ -26,6 +26,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
   const [similarCars, setSimilarCars] = useState(initialSimilarCars || []);
   const [loading, setLoading] = useState(!initialCar);
   const [activeImageIdx, setActiveImageIdx] = useState(0);
+  const [visiblePhotoCount, setVisiblePhotoCount] = useState(10);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
@@ -64,6 +65,15 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
     };
   }, [car]);
 
+  // Escape key to close lightbox
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setIsLightboxOpen(false);
+    };
+    if (isLightboxOpen) window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen]);
+
   // Swipe Handlers
   const minSwipeDistance = 50;
   const onTouchStart = (e) => {
@@ -78,10 +88,18 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
     const isRightSwipe = distance < -minSwipeDistance;
 
     if (isLeftSwipe) {
-      setActiveImageIdx(prev => (prev === images.length - 1 ? 0 : prev + 1));
+      setActiveImageIdx(prev => {
+        const next = prev === images.length - 1 ? 0 : prev + 1;
+        if (next >= 8) setVisiblePhotoCount(images.length);
+        return next;
+      });
     }
     if (isRightSwipe) {
-      setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
+      setActiveImageIdx(prev => {
+        const next = prev === 0 ? images.length - 1 : prev - 1;
+        if (next >= 8) setVisiblePhotoCount(images.length);
+        return next;
+      });
     }
   };
 
@@ -218,15 +236,6 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
     });
   }
 
-  // Escape key to close lightbox
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setIsLightboxOpen(false);
-    };
-    if (isLightboxOpen) window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen]);
-
   // Normalize regular features to [{key, value}]
   const normalizedFeatures = [];
   (car.features || []).forEach(feat => {
@@ -318,9 +327,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 {images.length > 0 ? (
                   <>
                     {images.map((img, idx) => {
-                      const isAdjacent = Math.abs(idx - activeImageIdx) <= 1 ||
-                        (activeImageIdx === 0 && idx === images.length - 1) ||
-                        (activeImageIdx === images.length - 1 && idx === 0);
+                      const isAdjacent = Math.abs(idx - activeImageIdx) <= 1;
 
                       if (!isAdjacent && idx !== activeImageIdx) return null;
 
@@ -328,13 +335,13 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                         <Image
                           loader={imagekitLoader}
                           key={idx}
-                          src={getOptimizedImage(extractImageUrl(img), 1200)}
+                          src={getOptimizedImage(extractImageUrl(img), 1200, 75)}
                           alt={`${title} ${idx + 1}`}
                           fill
                           placeholder="blur"
                           blurDataURL={generateBlurPlaceholder()}
                           className={`object-contain transition-all duration-500 ${idx === activeImageIdx ? 'opacity-100 z-10 group-hover:scale-105' : 'opacity-0 z-0 pointer-events-none'}`}
-                          priority={isAdjacent}
+                          priority={idx === 0 && activeImageIdx === 0}
                         />
                       );
                     })}
@@ -360,7 +367,11 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
+                            setActiveImageIdx(prev => {
+                              const next = prev === 0 ? images.length - 1 : prev - 1;
+                              if (next >= 8) setVisiblePhotoCount(images.length);
+                              return next;
+                            });
                           }}
                           className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white p-2 md:p-2.5 rounded-full backdrop-blur-md transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-lg border border-white/20"
                         >
@@ -369,7 +380,11 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setActiveImageIdx(prev => (prev === images.length - 1 ? 0 : prev + 1));
+                            setActiveImageIdx(prev => {
+                              const next = prev === images.length - 1 ? 0 : prev + 1;
+                              if (next >= 8) setVisiblePhotoCount(images.length);
+                              return next;
+                            });
                           }}
                           className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white p-2 md:p-2.5 rounded-full backdrop-blur-md transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 shadow-lg border border-white/20"
                         >
@@ -382,8 +397,6 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                   <div className="w-full h-full flex items-center justify-center text-gray-600 bg-white/5">No Image Available</div>
                 )}
 
-
-
                 {isSold && (
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-[15deg] pointer-events-none z-10">
                     <div className="border-4 border-red-500 text-red-500 font-bold text-5xl md:text-7xl tracking-widest px-8 py-2 rounded-lg bg-[#0a0a12]/60 backdrop-blur-md shadow-[0_0_30px_rgba(239,68,68,0.4)]">
@@ -393,18 +406,53 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                 )}
               </motion.div>
 
-              {/* Thumbnail Strip */}
+              {/* Progressive Thumbnail Strip: Initially loads first 10, loads rest on scroll */}
               {images.length > 1 && (
-                <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-3 rounded-2xl shadow-sm flex gap-3 overflow-x-auto custom-scrollbar snap-x">
-                  {images.map((img, idx) => (
+                <div
+                  onScroll={(e) => {
+                    const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget;
+                    if (scrollLeft + clientWidth >= scrollWidth - 120) {
+                      if (visiblePhotoCount < images.length) {
+                        setVisiblePhotoCount(images.length);
+                      }
+                    }
+                  }}
+                  className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 p-3 rounded-2xl shadow-sm flex gap-3 overflow-x-auto custom-scrollbar snap-x"
+                >
+                  {images.slice(0, visiblePhotoCount).map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setActiveImageIdx(idx)}
                       className={`shrink-0 w-32 aspect-video rounded-xl overflow-hidden border-2 transition-all duration-300 snap-start relative ${activeImageIdx === idx ? 'border-purple-500 opacity-100 shadow-[0_0_15px_rgba(168,85,247,0.4)] scale-[0.98]' : 'border-transparent opacity-70 hover:opacity-100'}`}
                     >
-                      <Image loader={imagekitLoader} src={getOptimizedImage(extractImageUrl(img), 300)} alt={`${title} ${idx + 1}`} fill sizes="(max-width: 768px) 33vw, 20vw" placeholder="blur" blurDataURL={generateBlurPlaceholder()} className="object-cover" />
+                      <Image
+                        loader={imagekitLoader}
+                        src={getOptimizedImage(extractImageUrl(img), 240, 70)}
+                        alt={`${title} ${idx + 1}`}
+                        fill
+                        sizes="128px"
+                        loading="lazy"
+                        placeholder="blur"
+                        blurDataURL={generateBlurPlaceholder()}
+                        className="object-cover"
+                      />
                     </button>
                   ))}
+
+                  {/* Load more photos indicator/button if more than 10 photos */}
+                  {visiblePhotoCount < images.length && (
+                    <button
+                      onClick={() => setVisiblePhotoCount(images.length)}
+                      className="shrink-0 w-32 aspect-video rounded-xl bg-purple-50 dark:bg-purple-950/40 border-2 border-dashed border-purple-300 dark:border-purple-500/50 flex flex-col items-center justify-center text-purple-600 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/60 transition-all snap-start cursor-pointer group px-2"
+                    >
+                      <span className="text-sm font-bold group-hover:scale-110 transition-transform">
+                        +{images.length - visiblePhotoCount} More
+                      </span>
+                      <span className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
+                        Scroll or tap
+                      </span>
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -656,7 +704,11 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
               aria-label="Previous Image"
               onClick={(e) => {
                 e.stopPropagation();
-                setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
+                setActiveImageIdx(prev => {
+                  const next = prev === 0 ? images.length - 1 : prev - 1;
+                  if (next >= 8) setVisiblePhotoCount(images.length);
+                  return next;
+                });
               }}
               className="hidden md:flex absolute left-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-3 transition-all z-50 backdrop-blur-md"
             >
@@ -667,7 +719,11 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
               aria-label="Next Image"
               onClick={(e) => {
                 e.stopPropagation();
-                setActiveImageIdx(prev => (prev === images.length - 1 ? 0 : prev + 1));
+                setActiveImageIdx(prev => {
+                  const next = prev === images.length - 1 ? 0 : prev + 1;
+                  if (next >= 8) setVisiblePhotoCount(images.length);
+                  return next;
+                });
               }}
               className="hidden md:flex absolute right-12 top-1/2 -translate-y-1/2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-full p-3 transition-all z-50 backdrop-blur-md"
             >
@@ -679,9 +735,7 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
               onClick={(e) => e.stopPropagation()}
             >
               {images.map((img, idx) => {
-                const isAdjacent = Math.abs(idx - activeImageIdx) <= 1 ||
-                  (activeImageIdx === 0 && idx === images.length - 1) ||
-                  (activeImageIdx === images.length - 1 && idx === 0);
+                const isAdjacent = Math.abs(idx - activeImageIdx) <= 1;
 
                 if (!isAdjacent && idx !== activeImageIdx) return null;
 
@@ -694,14 +748,14 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                     )}
                     <Image
                       loader={imagekitLoader}
-                      src={getOptimizedImage(extractImageUrl(img), 1920)}
+                      src={getOptimizedImage(extractImageUrl(img), 1600, 80)}
                       alt={`${title} fullscreen ${idx + 1}`}
                       fill
                       placeholder="blur"
                       blurDataURL={generateBlurPlaceholder()}
                       className="object-contain relative z-10"
-                      quality={95}
-                      priority={isAdjacent}
+                      quality={80}
+                      priority={idx === activeImageIdx}
                       onLoad={() => setLoadedImages(prev => ({ ...prev, [idx]: true }))}
                       onError={() => setLoadedImages(prev => ({ ...prev, [idx]: true }))}
                     />
@@ -716,7 +770,11 @@ export default function CarDetailPageClient({ initialCar, initialSimilarCars }) 
                   aria-label="Previous Image"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setActiveImageIdx(prev => (prev === 0 ? images.length - 1 : prev - 1));
+                    setActiveImageIdx(prev => {
+                      const next = prev === 0 ? images.length - 1 : prev - 1;
+                      if (next >= 8) setVisiblePhotoCount(images.length);
+                      return next;
+                    });
                   }}
                   className="md:hidden text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-full p-2.5 backdrop-blur-md transition-colors"
                 >

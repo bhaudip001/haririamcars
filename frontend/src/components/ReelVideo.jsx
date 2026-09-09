@@ -1,16 +1,19 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { Volume2, VolumeX, Play } from 'lucide-react';
 
-export default function ReelVideo({ src, customerName, carModel, className = "" }) {
+export default function ReelVideo({ src, customerName, carModel, className = '' }) {
   const containerRef = useRef(null);
   const videoRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(true);
-  const [shouldLoad, setShouldLoad] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const iframeRef = useRef(null);
 
-  // Check if it's a YouTube URL
+  const [hasStarted, setHasStarted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+
+  // Extract YouTube ID if it's a YouTube URL
   const isYouTube = src && (src.includes('youtube.com') || src.includes('youtu.be'));
   let youtubeId = '';
   if (isYouTube) {
@@ -23,168 +26,152 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
     }
   }
 
-  // Lazy load video element when it comes within viewport, with a fallback
-  useEffect(() => {
-    let isLoaded = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShouldLoad(true);
-            isLoaded = true;
-            observer.disconnect();
-          }
-        });
-      },
-      { rootMargin: '100%', threshold: 0 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+  // Safe helper to send postMessage with array args to prevent YouTube apply() crashes
+  const sendYouTubeCommand = useCallback((func, args = []) => {
+    if (iframeRef.current?.contentWindow) {
+      try {
+        iframeRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func, args }),
+          '*'
+        );
+      } catch (_) {}
     }
-
-    // Fallback: If observer fails or user doesn't scroll, load anyway after 3s
-    const timer = setTimeout(() => {
-      if (!isLoaded) {
-        setShouldLoad(true);
-        observer.disconnect();
-      }
-    }, 3000);
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(timer);
-    };
   }, []);
 
-  const iframeRef = useRef(null);
+  // Safe pause and mute helper
+  const pauseAndMute = useCallback(() => {
+    if (isYouTube) {
+      sendYouTubeCommand('pauseVideo');
+      sendYouTubeCommand('mute');
+    } else if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.muted = true;
+    }
+    setIsPlaying(false);
+    setIsMuted(true);
+  }, [isYouTube, sendYouTubeCommand]);
 
-  // Handle auto-play only when visible to prevent website hanging
+  // 1. Auto pause and mute when scrolled out of view
   useEffect(() => {
-    if (!shouldLoad) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (isYouTube && iframeRef.current) {
-              iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-            } else if (!isYouTube && videoRef.current) {
-              videoRef.current.play().catch(() => {});
-            }
-            setIsPlaying(true);
-            window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
-          } else {
-            if (isYouTube && iframeRef.current) {
-              iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-            } else if (!isYouTube && videoRef.current) {
-              videoRef.current.pause();
-            }
-            setIsPlaying(false);
+          if (!entry.isIntersecting && isPlaying) {
+            pauseAndMute();
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.25 }
     );
 
     if (containerRef.current) {
       observer.observe(containerRef.current);
     }
-    
+
     return () => observer.disconnect();
-  }, [shouldLoad, isYouTube, src]);
+  }, [isPlaying, pauseAndMute]);
 
-  // Handle global mute and global play
+  // 2. Global event listeners: Pause when carousel changes slide or another video plays
   useEffect(() => {
-    const handleOtherVideoUnmuted = (e) => {
-      if (e.detail.src !== src) {
-        setIsMuted(true);
-        if (isYouTube && iframeRef.current) {
-          iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"mute","args":""}', '*');
-        } else if (!isYouTube && videoRef.current) {
-          videoRef.current.muted = true;
-        }
-      }
-    };
-
     const handleGlobalPlay = (e) => {
-      if (e.detail.id !== src) {
-        if (isYouTube && iframeRef.current) {
-          iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-        } else if (!isYouTube && videoRef.current) {
-          videoRef.current.pause();
-        }
-        setIsPlaying(false);
+      if (e.detail?.id !== src) {
+        pauseAndMute();
       }
     };
 
-    window.addEventListener('video-unmuted', handleOtherVideoUnmuted);
+    const handleStopAll = () => {
+      pauseAndMute();
+    };
+
     window.addEventListener('global-video-play', handleGlobalPlay);
-    
+    window.addEventListener('stop-all-reels', handleStopAll);
+
     return () => {
-      window.removeEventListener('video-unmuted', handleOtherVideoUnmuted);
       window.removeEventListener('global-video-play', handleGlobalPlay);
+      window.removeEventListener('stop-all-reels', handleStopAll);
     };
-  }, [src, isYouTube]);
+  }, [src, pauseAndMute]);
 
-  const toggleMute = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const newMutedState = !isMuted;
-    setIsMuted(newMutedState);
-    
-    if (isYouTube && iframeRef.current) {
-      if (newMutedState) {
-        iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"mute","args":""}', '*');
-      } else {
-        iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"unMute","args":""}', '*');
-      }
-    } else if (!isYouTube && videoRef.current) {
-      videoRef.current.muted = newMutedState;
+  // Click handler: Single click plays with audio / pauses
+  const handleTogglePlay = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
 
-    if (!newMutedState) {
-      window.dispatchEvent(new CustomEvent('video-unmuted', { detail: { src } }));
-    }
-  };
-
-  const togglePlay = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
     if (isPlaying) {
-      if (isYouTube && iframeRef.current) {
-        iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-      } else if (!isYouTube && videoRef.current) {
+      // Pause
+      if (isYouTube) {
+        sendYouTubeCommand('pauseVideo');
+      } else if (videoRef.current) {
         videoRef.current.pause();
       }
       setIsPlaying(false);
     } else {
-      if (isYouTube && iframeRef.current) {
-        iframeRef.current.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
-      } else if (!isYouTube && videoRef.current) {
-        videoRef.current.play().catch(() => {});
-        window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
+      // Start with sound
+      if (!hasStarted) {
+        setHasStarted(true);
       }
+
+      if (isYouTube) {
+        sendYouTubeCommand('unMute');
+        sendYouTubeCommand('playVideo');
+      } else if (!isYouTube && videoRef.current) {
+        videoRef.current.muted = false;
+        videoRef.current.play().catch(() => {});
+      }
+
       setIsPlaying(true);
+      setIsMuted(false);
+
+      // Stop any other playing reel
+      window.dispatchEvent(new CustomEvent('global-video-play', { detail: { id: src } }));
     }
   };
 
+  // Sound toggle (only toggles audio, strictly stops event bubbling so it NEVER pauses)
+  const toggleMute = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    const newMuted = !isMuted;
+    setIsMuted(newMuted);
+
+    if (isYouTube) {
+      sendYouTubeCommand(newMuted ? 'mute' : 'unMute');
+    } else if (videoRef.current) {
+      videoRef.current.muted = newMuted;
+    }
+  };
+
+  const posterUrl = isYouTube && youtubeId
+    ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
+    : (src && src.includes('cloudinary.com') ? src.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined);
+
   return (
-    <div ref={containerRef} className={`relative w-full h-full bg-black ${className}`} onClick={togglePlay}>
-      {shouldLoad ? (
+    <div
+      ref={containerRef}
+      className={`relative w-full h-full bg-black overflow-hidden group cursor-pointer select-none ${className}`}
+      onClick={handleTogglePlay}
+    >
+      {/* Video Content */}
+      {hasStarted ? (
         isYouTube ? (
           <iframe
             ref={iframeRef}
             className="w-full h-full object-contain absolute inset-0 pointer-events-none"
-            src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=${youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1`}
-            title={customerName || "Customer Review"}
+            src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&autoplay=1&mute=0&loop=1&playlist=${youtubeId}&controls=0&rel=0&modestbranding=1&playsinline=1`}
+            title={customerName || 'Customer Reel'}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
-          ></iframe>
+            onLoad={() => {
+              sendYouTubeCommand('unMute');
+              sendYouTubeCommand('playVideo');
+            }}
+          />
         ) : (
           <video
             ref={videoRef}
@@ -194,55 +181,71 @@ export default function ReelVideo({ src, customerName, carModel, className = "" 
             autoPlay
             loop
             playsInline
-            preload="metadata"
-            poster={src && src.includes('cloudinary.com') ? src.replace('f_auto', 'f_auto,so_1').replace(/\.(mp4|MOV|mov)$/i, '.jpg') : undefined}
+            preload="auto"
           />
         )
       ) : (
-        <div className="w-full h-full flex items-center justify-center absolute inset-0">
-          <div className="w-8 h-8 border-2 border-white/20 border-t-white/80 rounded-full animate-spin"></div>
-        </div>
+        /* Poster Image before first play */
+        posterUrl && (
+          <Image
+            src={posterUrl}
+            alt={customerName || 'Reel preview'}
+            fill
+            sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 28vw"
+            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            unoptimized
+          />
+        )
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100 pointer-events-none transition-opacity duration-300" />
-      
-      {/* Play/Pause Overlay */}
+
+      {/* Subtle Vignette Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+
+      {/* Center Play Button Overlay (Visible ONLY when paused / idle) */}
       {!isPlaying && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-10 pointer-events-none">
-          <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40">
-            <Play className="w-6 h-6 text-white ml-1" fill="currentColor" />
+        <div className="absolute inset-0 flex items-center justify-center bg-black/25 backdrop-blur-[1px] z-10 transition-all group-hover:bg-black/15 pointer-events-none">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 text-white flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.6)] border border-white/30 transform group-hover:scale-110 transition-all duration-300">
+            <Play className="w-7 h-7 text-white ml-1" fill="currentColor" />
           </div>
         </div>
       )}
-      
+
+      {/* Mute/Sound Toggle Button (Visible ONLY while playing, isolated from pause handler) */}
+      {isPlaying && (
+        <button
+          type="button"
+          onClick={toggleMute}
+          onPointerDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+          onTouchEnd={(e) => e.stopPropagation()}
+          aria-label={isMuted ? 'Unmute sound' : 'Mute sound'}
+          className="absolute top-3 right-3 z-30 w-10 h-10 rounded-full bg-black/70 backdrop-blur-md flex items-center justify-center border border-white/25 text-white hover:bg-black/90 transition-all shadow-xl active:scale-90 pointer-events-auto"
+        >
+          {isMuted ? (
+            <VolumeX className="w-4 h-4 text-red-400" />
+          ) : (
+            <Volume2 className="w-4 h-4 text-purple-400 animate-pulse" />
+          )}
+        </button>
+      )}
+
       {/* Customer Info Overlay */}
-      {/*
       {(customerName || carModel) && (
-        <div className="absolute bottom-6 left-4 right-4 z-20 text-white pointer-events-none">
-          {customerName && (
-            <h4 className="font-['Outfit'] font-bold text-lg leading-tight mb-1 drop-shadow-md">
-              {customerName}
-            </h4>
-          )}
-          {carModel && (
-            <p className="text-white/80 text-sm font-medium drop-shadow-md">
-              {carModel}
-            </p>
-          )}
+        <div className="absolute bottom-4 left-3 right-3 z-20 pointer-events-none">
+          <div className="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 shadow-lg inline-block max-w-full">
+            {customerName && (
+              <p className="font-bold text-xs sm:text-sm leading-tight text-white drop-shadow truncate">
+                {customerName}
+              </p>
+            )}
+            {carModel && (
+              <p className="text-[11px] text-purple-300 font-medium drop-shadow truncate">
+                {carModel}
+              </p>
+            )}
+          </div>
         </div>
       )}
-      */}
-      
-      {/* Mute Button - Top Right */}
-      <button
-        onClick={toggleMute}
-        className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-black/60 transition shadow-sm opacity-100"
-      >
-        {isMuted ? (
-          <VolumeX className="w-4 h-4 text-white" />
-        ) : (
-          <Volume2 className="w-4 h-4 text-white" />
-        )}
-      </button>
     </div>
   );
 }

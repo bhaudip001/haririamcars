@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { motion } from 'framer-motion';
 import { staggerContainer, fadeInUp } from '@/lib/animations';
@@ -17,6 +17,17 @@ const videos = [
 
 export default function CustomerDeliveryReels() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start', slidesToScroll: 1 });
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const handleSlide = () => {
+      window.dispatchEvent(new CustomEvent('stop-all-reels'));
+    };
+    emblaApi.on('select', handleSlide);
+    return () => {
+      emblaApi.off('select', handleSlide);
+    };
+  }, [emblaApi]);
 
   const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
   const scrollNext = () => emblaApi && emblaApi.scrollNext();

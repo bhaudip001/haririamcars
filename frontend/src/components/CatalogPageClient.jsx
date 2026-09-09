@@ -31,6 +31,9 @@ function CatalogContent() {
   const [sortParam, setSortParam] = useState(searchParams.get('sort') || '-createdAt');
 
   // Data State
+  const PAGE_SIZE = 9;
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -49,13 +52,18 @@ function CatalogContent() {
     }).catch(console.error);
   }, []);
 
-  // Fetch Cars
-  const fetchCars = async (signal = undefined) => {
-    setLoading(true);
+  // Fetch Cars (supports initial load, filter change, and 'Load More')
+  const fetchCars = async (signal = undefined, pageToFetch = 1, isLoadMore = false) => {
+    if (isLoadMore) {
+      setLoadingMore(true);
+    } else {
+      setLoading(true);
+    }
     setError(null);
     try {
       const params = new URLSearchParams();
-      params.append('limit', 1000);
+      params.append('page', pageToFetch);
+      params.append('limit', PAGE_SIZE);
       params.append('status', 'available'); // Only show available cars in catalog
 
       if (selectedMakes.length > 0) params.append('make', selectedMakes.join(','));
@@ -72,7 +80,17 @@ function CatalogContent() {
 
       const res = await api.get(`/cars?${params.toString()}`, { signal });
       if (res.data) {
-        setCars(res.data.cars || []);
+        if (isLoadMore) {
+          setCars(prev => {
+            const existingIds = new Set(prev.map(c => c._id));
+            const newUniqueCars = (res.data.cars || []).filter(c => !existingIds.has(c._id));
+            return [...prev, ...newUniqueCars];
+          });
+          setPage(pageToFetch);
+        } else {
+          setCars(res.data.cars || []);
+          setPage(1);
+        }
         setTotal(res.data.total || 0);
       }
     } catch (err) {
@@ -82,14 +100,20 @@ function CatalogContent() {
       }
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
 
-  // Re-fetch on filter changes
+  const handleLoadMore = () => {
+    if (loadingMore || loading || cars.length >= total) return;
+    fetchCars(undefined, page + 1, true);
+  };
+
+  // Re-fetch on filter changes (resets to page 1)
   useEffect(() => {
     const controller = new AbortController();
     const debounceTimer = setTimeout(() => {
-      fetchCars(controller.signal);
+      fetchCars(controller.signal, 1, false);
     }, 500);
 
     return () => {
@@ -605,7 +629,9 @@ function CatalogContent() {
             <div className="w-full flex items-center justify-between lg:w-auto lg:block">
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold text-black dark:text-white leading-tight transition-colors" style={{ fontFamily: 'var(--font-outfit)' }}>Verified Inventory</h1>
-                <p className="text-purple-400 mt-2 font-medium">Showing {total} available vehicles</p>
+                <p className="text-purple-400 mt-2 font-medium">
+                  Showing {cars.length > 0 ? Math.min(cars.length, total) : 0} of {total} available vehicles
+                </p>
               </div>
             </div>
 
@@ -646,7 +672,7 @@ function CatalogContent() {
           {/* Grid */}
           {loading ? (
             <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
-              {[...Array(6)].map((_, i) => (
+              {[...Array(PAGE_SIZE)].map((_, i) => (
                 <div key={i} className="bg-white dark:bg-[#12121f] border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden animate-pulse h-[360px] transition-colors">
                   <div className="aspect-[4/3] bg-gray-100 dark:bg-white/5 transition-colors" />
                   <div className="p-4 space-y-3">
@@ -657,10 +683,40 @@ function CatalogContent() {
               ))}
             </div>
           ) : cars.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
-              {cars.map((car, i) => (
-                <CarCard key={car._id} car={car} index={i} />
-              ))}
+            <div className="flex flex-col space-y-8">
+              <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+                {cars.map((car, i) => (
+                  <CarCard key={car._id} car={car} index={i} />
+                ))}
+              </div>
+
+              {/* View More Cars Button */}
+              {cars.length < total && (
+                <div className="flex flex-col items-center justify-center pt-2 pb-6">
+                  <button
+                    onClick={handleLoadMore}
+                    disabled={loadingMore}
+                    className="group relative inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full font-bold text-sm sm:text-base text-white bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 hover:from-purple-500 hover:via-purple-600 hover:to-indigo-500 shadow-lg shadow-purple-900/25 hover:shadow-purple-900/40 active:scale-[0.98] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed border border-purple-400/30 cursor-pointer"
+                  >
+                    {loadingMore ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>Loading more cars...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>View More Cars</span>
+                        <span className="text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-semibold">
+                          +{Math.min(PAGE_SIZE, total - cars.length)} more
+                        </span>
+                      </>
+                    )}
+                  </button>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2.5 font-medium">
+                    Showing {cars.length} of {total} available cars
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl transition-colors shadow-sm dark:shadow-none">
@@ -672,8 +728,8 @@ function CatalogContent() {
                   <h3 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2 transition-colors">Connection Error</h3>
                   <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-6">{error}</p>
                   <button
-                    onClick={() => fetchCars(1, false)}
-                    className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold transition-colors"
+                    onClick={() => fetchCars(undefined, 1, false)}
+                    className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full font-bold transition-colors cursor-pointer"
                   >
                     Try Again
                   </button>
@@ -682,7 +738,7 @@ function CatalogContent() {
                 <>
                   <IconSearch size={48} className="text-gray-400 dark:text-gray-500 mb-4 transition-colors" />
                   <h3 className="text-xl font-bold text-black dark:text-white mb-2 transition-colors">No vehicles found</h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-center max-w-md transition-colors">Try adjusting your filters or search criteria to find what you're looking for.</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-center max-w-md transition-colors">Try adjusting your filters or search criteria to find what you&apos;re looking for.</p>
                   <button
                     onClick={() => {
                       setSelectedMakes([]);

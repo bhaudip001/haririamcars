@@ -7,11 +7,12 @@ export default function imageKitLoader({ src, width, quality }) {
   // If the src is already an ImageKit URL, we can append transformations
   if (src.includes('ik.imagekit.io')) {
     // If it already has transformations, just return it
-    if (src.includes('?tr=')) return src;
+    if (src.includes('tr=')) return src;
 
-    // Apply the requested width and quality
-    const q = quality || 80;
-    return `${src}?tr=w-${width},q-${q}`;
+    // Apply the requested width, quality and auto-format (AVIF/WebP)
+    const q = quality || 75;
+    const separator = src.includes('?') ? '&' : '?';
+    return `${src}${separator}tr=w-${width},q-${q},f-auto`;
   }
 
   // If it's a relative path (local asset), just return it as is

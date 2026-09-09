@@ -13,6 +13,15 @@ const withPWA = withPWAInit({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
   customWorkerSrc: 'worker',
+  publicExcludes: [
+    '!**/*.{mp4,MP4,mov,MOV,webm,pdf,PDF}',
+    '!car delivery/**/*',
+    '!customer review/**/*',
+    '!151.png',
+    '!hero_chatgpt.png',
+    '!IMG_5512.*',
+    '!Video-*',
+  ],
 });
 
 /** @type {import('next').NextConfig} */
