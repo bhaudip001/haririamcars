@@ -54,13 +54,6 @@ export default function LiveTicker() {
         .animate-pulse-slow {
           animation: pulse-slow 3s ease-in-out infinite;
         }
-        @keyframes bar-wave {
-          0%, 100% { transform: scaleY(0.4); opacity: 0.45; }
-          50% { transform: scaleY(1); opacity: 1; }
-        }
-        .animate-bar-1 { animation: bar-wave 1.2s ease-in-out infinite; }
-        .animate-bar-2 { animation: bar-wave 1.2s ease-in-out infinite 0.2s; }
-        .animate-bar-3 { animation: bar-wave 1.2s ease-in-out infinite 0.4s; }
 
         @keyframes star-pulse {
           0%, 100% { transform: scale(1); opacity: 0.9; }
@@ -218,15 +211,17 @@ export default function LiveTicker() {
 
             {/* Panoramic Content Ribbon */}
             <div className="flex items-center justify-between gap-6 px-8 py-2.5 md:py-3 relative z-10 w-full">
-              {/* Left Side: Frequency Telemetry & Badge (Starting dot removed) */}
+              {/* Left Side: Luxury Sparkle Badge (Zero DJ feel, matches mobile theme) */}
               <div className="flex items-center gap-3 flex-shrink-0">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.1] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-xl">
-                  {/* Live Frequency bars */}
-                  <div className="flex items-center gap-[2.5px] h-3.5">
-                    <span className="w-[2px] h-3 rounded-full bg-emerald-400/70 animate-bar-1 origin-bottom"></span>
-                    <span className="w-[2px] h-4 rounded-full bg-emerald-400 animate-bar-2 origin-bottom"></span>
-                    <span className="w-[2px] h-2.5 rounded-full bg-emerald-400/80 animate-bar-3 origin-bottom"></span>
-                  </div>
+                  {/* Luxury 4-Point Sparkle Star */}
+                  <svg
+                    className="w-3.5 h-3.5 text-purple-400 animate-star drop-shadow-[0_0_6px_#c084fc]"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M12 0L14.8 9.2L24 12L14.8 14.8L12 24L9.2 14.8L0 12L9.2 9.2L12 0Z" />
+                  </svg>
                   <span className="text-xs font-black uppercase tracking-[0.2em] text-white/90">
                     Just Arrived
                   </span>
