@@ -64,7 +64,7 @@ export default function LiveTicker() {
 
         @keyframes star-pulse {
           0%, 100% { transform: scale(1); opacity: 0.9; }
-          50% { transform: scale(1.2); opacity: 1; filter: drop-shadow(0 0 8px #fbbf24); }
+          50% { transform: scale(1.2); opacity: 1; filter: drop-shadow(0 0 8px #c084fc); }
         }
         .animate-star {
           animation: star-pulse 2.5s ease-in-out infinite;
@@ -72,100 +72,103 @@ export default function LiveTicker() {
       `}</style>
 
       {/* ═══════════════════════════════════════════════════════════════════════════
-          MOBILE VIEW (< 768px): Compact Image-Mockup Showcase with Decreased Height
+          MOBILE VIEW (< 768px): Themed Image-Mockup Showcase (Purple/Fuchsia/Obsidian)
           ═══════════════════════════════════════════════════════════════════════════ */}
       <div className="block md:hidden w-full py-2.5 px-3 relative z-20">
         <div className="relative max-w-lg mx-auto">
-          {/* Ambient background glow */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-amber-500/15 to-blue-600/20 rounded-2xl blur-lg opacity-70 pointer-events-none" />
+          {/* Multi-tone ambient backlight aura matching website theme */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/30 via-fuchsia-500/20 to-indigo-600/30 rounded-2xl blur-lg opacity-80 pointer-events-none" />
 
-          {/* Compact Main Card (Slim Height) */}
-          <div className="relative w-full rounded-2xl bg-[#030712] border border-blue-900/30 shadow-[0_12px_35px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.1)] overflow-hidden shimmer-effect select-none py-3.5 px-3">
+          {/* Main Card: Obsidian glass container */}
+          <div className="relative w-full rounded-2xl bg-[#090815] border border-white/[0.12] shadow-[0_12px_35px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.15)] overflow-hidden shimmer-effect select-none py-3.5 px-3">
 
-            {/* Bottom-Left Wing: Golden-Amber Fluid Wave with Cobalt Blue Flare */}
+            {/* Precision Laser Top Highlight */}
+            <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-purple-400/80 to-transparent pointer-events-none" />
+
+            {/* Bottom-Left Wing: Royal Amethyst & Fuchsia Fluid Wave with Indigo Flare */}
             <div className="absolute bottom-0 left-0 w-24 h-16 pointer-events-none z-0 overflow-hidden">
               <svg viewBox="0 0 200 160" fill="none" className="w-full h-full" preserveAspectRatio="none">
                 <defs>
-                  <linearGradient id="blGoldGradMobile" x1="0%" y1="100%" x2="80%" y2="0%">
-                    <stop offset="0%" stopColor="#d97706" />
-                    <stop offset="50%" stopColor="#f59e0b" />
-                    <stop offset="100%" stopColor="#fbbf24" />
+                  <linearGradient id="blPurpleGradMobile" x1="0%" y1="100%" x2="80%" y2="0%">
+                    <stop offset="0%" stopColor="#6d28d9" />
+                    <stop offset="50%" stopColor="#9333ea" />
+                    <stop offset="100%" stopColor="#c026d3" />
                   </linearGradient>
-                  <filter id="blGlowMobile" x="-20%" y="-20%" width="140%" height="140%">
+                  <filter id="blPurpleGlowMobile" x="-20%" y="-20%" width="140%" height="140%">
                     <feGaussianBlur stdDeviation="5" result="blur" />
                   </filter>
                 </defs>
-                <path d="M -10 30 Q 60 75 160 170" stroke="#2563eb" strokeWidth="12" opacity="0.6" filter="url(#blGlowMobile)" />
-                <path d="M -10 30 Q 60 75 160 170" stroke="#38bdf8" strokeWidth="2" opacity="0.85" />
-                <path d="M -10 65 Q 45 110 125 170 L -10 170 Z" fill="url(#blGoldGradMobile)" opacity="0.95" />
-                <path d="M -10 65 Q 45 110 125 170" stroke="#fef08a" strokeWidth="2.5" opacity="0.9" />
+                <path d="M -10 30 Q 60 75 160 170" stroke="#6366f1" strokeWidth="12" opacity="0.6" filter="url(#blPurpleGlowMobile)" />
+                <path d="M -10 30 Q 60 75 160 170" stroke="#c084fc" strokeWidth="2" opacity="0.85" />
+                <path d="M -10 65 Q 45 110 125 170 L -10 170 Z" fill="url(#blPurpleGradMobile)" opacity="0.95" />
+                <path d="M -10 65 Q 45 110 125 170" stroke="#f0abfc" strokeWidth="2.5" opacity="0.9" />
               </svg>
             </div>
 
-            {/* Top-Right Wing: Golden-Amber Fluid Wave with Cobalt Blue Flare */}
+            {/* Top-Right Wing: Royal Amethyst & Fuchsia Fluid Wave with Indigo Flare */}
             <div className="absolute top-0 right-0 w-24 h-16 pointer-events-none z-0 overflow-hidden">
               <svg viewBox="0 0 200 160" fill="none" className="w-full h-full" preserveAspectRatio="none">
                 <defs>
-                  <linearGradient id="trGoldGradMobile" x1="100%" y1="0%" x2="20%" y2="100%">
-                    <stop offset="0%" stopColor="#fbbf24" />
-                    <stop offset="50%" stopColor="#f59e0b" />
-                    <stop offset="100%" stopColor="#d97706" />
+                  <linearGradient id="trPurpleGradMobile" x1="100%" y1="0%" x2="20%" y2="100%">
+                    <stop offset="0%" stopColor="#c026d3" />
+                    <stop offset="50%" stopColor="#9333ea" />
+                    <stop offset="100%" stopColor="#6d28d9" />
                   </linearGradient>
-                  <filter id="trGlowMobile" x="-20%" y="-20%" width="140%" height="140%">
+                  <filter id="trPurpleGlowMobile" x="-20%" y="-20%" width="140%" height="140%">
                     <feGaussianBlur stdDeviation="5" result="blur" />
                   </filter>
                 </defs>
-                <path d="M 210 130 Q 140 85 40 -10" stroke="#2563eb" strokeWidth="12" opacity="0.6" filter="url(#trGlowMobile)" />
-                <path d="M 210 130 Q 140 85 40 -10" stroke="#38bdf8" strokeWidth="2" opacity="0.85" />
-                <path d="M 210 95 Q 155 50 75 -10 L 210 -10 Z" fill="url(#trGoldGradMobile)" opacity="0.95" />
-                <path d="M 210 95 Q 155 50 75 -10" stroke="#fef08a" strokeWidth="2.5" opacity="0.9" />
+                <path d="M 210 130 Q 140 85 40 -10" stroke="#6366f1" strokeWidth="12" opacity="0.6" filter="url(#trPurpleGlowMobile)" />
+                <path d="M 210 130 Q 140 85 40 -10" stroke="#c084fc" strokeWidth="2" opacity="0.85" />
+                <path d="M 210 95 Q 155 50 75 -10 L 210 -10 Z" fill="url(#trPurpleGradMobile)" opacity="0.95" />
+                <path d="M 210 95 Q 155 50 75 -10" stroke="#f0abfc" strokeWidth="2.5" opacity="0.9" />
               </svg>
             </div>
 
-            {/* Dot Matrix (Top-Left 6x3) */}
-            <div className="absolute top-2.5 left-3 grid grid-cols-6 gap-1 opacity-20 pointer-events-none z-0">
+            {/* Dot Matrix (Top-Left 6x3) in Theme Purple Tint */}
+            <div className="absolute top-2.5 left-3 grid grid-cols-6 gap-1 opacity-25 pointer-events-none z-0">
               {[...Array(18)].map((_, i) => (
-                <span key={`tl-m-${i}`} className="w-0.5 h-0.5 rounded-full bg-slate-300" />
+                <span key={`tl-m-${i}`} className="w-0.5 h-0.5 rounded-full bg-purple-300" />
               ))}
             </div>
 
-            {/* Dot Matrix (Bottom-Right 6x3) */}
-            <div className="absolute bottom-2.5 right-3 grid grid-cols-6 gap-1 opacity-20 pointer-events-none z-0">
+            {/* Dot Matrix (Bottom-Right 6x3) in Theme Purple Tint */}
+            <div className="absolute bottom-2.5 right-3 grid grid-cols-6 gap-1 opacity-25 pointer-events-none z-0">
               {[...Array(18)].map((_, i) => (
-                <span key={`br-m-${i}`} className="w-0.5 h-0.5 rounded-full bg-slate-300" />
+                <span key={`br-m-${i}`} className="w-0.5 h-0.5 rounded-full bg-purple-300" />
               ))}
             </div>
 
             {/* Compact Content */}
             <div className="relative z-10 flex flex-col items-center justify-center text-center">
 
-              {/* 1. Header: Inline Sparkle + "— JUST ARRIVED —" */}
+              {/* 1. Header: Inline Sparkle + "— JUST ARRIVED —" in Brand Theme */}
               <div className="flex items-center justify-center gap-1.5 mb-1">
                 <svg
-                  className="w-3.5 h-3.5 text-amber-400 animate-star drop-shadow-[0_0_6px_#fbbf24]"
+                  className="w-3.5 h-3.5 text-purple-400 animate-star drop-shadow-[0_0_6px_#c084fc]"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
                   <path d="M12 0L14.8 9.2L24 12L14.8 14.8L12 24L9.2 14.8L0 12L9.2 9.2L12 0Z" />
                 </svg>
-                <span className="w-4 h-[1px] bg-gradient-to-r from-transparent to-amber-400"></span>
-                <span className="text-amber-400 font-extrabold text-[10.5px] tracking-[0.25em] uppercase drop-shadow-[0_0_6px_rgba(245,158,11,0.5)]">
+                <span className="w-4 h-[1px] bg-gradient-to-r from-transparent to-purple-400"></span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-white to-purple-200 font-extrabold text-[10.5px] tracking-[0.25em] uppercase drop-shadow-[0_0_6px_rgba(168,85,247,0.5)]">
                   Just Arrived
                 </span>
-                <span className="w-4 h-[1px] bg-gradient-to-l from-transparent to-amber-400"></span>
+                <span className="w-4 h-[1px] bg-gradient-to-l from-transparent to-purple-400"></span>
               </div>
 
               {/* 2. Car Name: Suzuki Ertiga */}
-              <h3 className="font-['Outfit'] font-black text-2xl tracking-tight leading-tight my-0.5 text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)]">
+              <h3 className="font-['Outfit'] font-black text-2xl tracking-tight leading-tight my-0.5 text-white drop-shadow-[0_2px_12px_rgba(255,255,255,0.3)]">
                 {latestCar.make} {latestCar.model}
               </h3>
 
-              {/* 3. Bottom Badges: [ 📅 2018 ] | [ 🏷️ | ₹7.50 Lakh ] */}
+              {/* 3. Bottom Badges: [ 📅 2018 ] | [ 🏷️ | ₹7.50 Lakh ] in Brand Theme */}
               <div className="flex items-center justify-center gap-2 mt-2">
                 {/* Year Badge */}
                 {carYear && (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#050c20]/90 border border-amber-400/80 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
-                    <IconCalendar size={14} className="text-amber-400 flex-shrink-0" stroke={2.2} />
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#120e29]/90 border border-purple-400/50 shadow-[0_0_10px_rgba(168,85,247,0.25)]">
+                    <IconCalendar size={14} className="text-purple-300 flex-shrink-0" stroke={2.2} />
                     <span className="text-white font-black text-xs tracking-tight">
                       {carYear}
                     </span>
@@ -174,12 +177,12 @@ export default function LiveTicker() {
 
                 {/* Subtle Divider */}
                 {carYear && latestCar.price && (
-                  <span className="w-px h-3.5 bg-slate-700/80"></span>
+                  <span className="w-px h-3.5 bg-white/20"></span>
                 )}
 
-                {/* Price Badge */}
+                {/* Price Badge: Radiant Emerald Gemstone (Matching Desktop Verified Price) */}
                 {latestCar.price && (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-slate-950 font-black text-xs tracking-tight shadow-[0_0_15px_rgba(245,158,11,0.4)] border border-amber-300">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-slate-950 font-black text-xs tracking-tight shadow-[0_0_15px_rgba(16,185,129,0.35)] border border-emerald-300">
                     <IconTag size={13} className="text-slate-950 flex-shrink-0" stroke={2.5} />
                     <span className="w-px h-3 bg-slate-950/30 mx-0.5"></span>
                     <span>{formatPrice(latestCar.price)}</span>
