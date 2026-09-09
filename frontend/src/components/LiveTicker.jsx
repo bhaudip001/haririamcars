@@ -218,13 +218,9 @@ export default function LiveTicker() {
 
             {/* Panoramic Content Ribbon */}
             <div className="flex items-center justify-between gap-6 px-8 py-2.5 md:py-3 relative z-10 w-full">
-              {/* Left Side: Live Radar Beacon & Frequency Telemetry */}
+              {/* Left Side: Frequency Telemetry & Badge (Starting dot removed) */}
               <div className="flex items-center gap-3 flex-shrink-0">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.1] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-xl">
-                  <span className="relative flex h-2.5 w-2.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_8px_#10b981]"></span>
-                  </span>
                   {/* Live Frequency bars */}
                   <div className="flex items-center gap-[2.5px] h-3.5">
                     <span className="w-[2px] h-3 rounded-full bg-emerald-400/70 animate-bar-1 origin-bottom"></span>
