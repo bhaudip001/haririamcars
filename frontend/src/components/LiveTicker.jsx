@@ -70,39 +70,46 @@ export default function LiveTicker() {
               <div className="absolute w-[35%] sm:w-[22%] h-full bg-fuchsia-500/15 blur-[28px] rounded-[100%] animate-pulse-slow mix-blend-screen"></div>
             </div>
 
-            {/* ══════════════ MOBILE VIEW (< 640px): 1 Sleek High-End Single-Row Bar ══════════════ */}
-            <div className="flex sm:hidden items-center justify-between w-full gap-2 z-10">
-              {/* Left: Live Beacon Tag */}
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-purple-600/30 via-fuchsia-600/25 to-purple-600/30 border border-purple-400/40 shadow-[0_0_10px_rgba(168,85,247,0.25)] backdrop-blur-md flex-shrink-0">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_6px_#34d399]"></span>
-                </span>
-                <span className="text-[10px] font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-white whitespace-nowrap">
-                  Just Arrived
-                </span>
+            {/* ══════════════ MOBILE VIEW (< 640px): Two-Tier Precision Cockpit Card ══════════════ */}
+            <div className="flex sm:hidden flex-col w-full gap-2 z-10 py-0.5">
+              {/* Top Row: Live Status Pill (Left) + Glowing Price Badge (Right) */}
+              <div className="flex items-center justify-between w-full">
+                {/* Left: Live Radar Beacon */}
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-purple-600/30 via-fuchsia-600/25 to-purple-600/30 border border-purple-400/40 shadow-[0_0_10px_rgba(168,85,247,0.25)] backdrop-blur-md">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_6px_#34d399]"></span>
+                  </span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-white whitespace-nowrap">
+                    Just Arrived
+                  </span>
+                </div>
+
+                {/* Right: Glowing Emerald Price Badge */}
+                {latestCar.price && (
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 text-emerald-400 font-black text-xs shadow-[0_0_10px_rgba(52,211,153,0.3)] whitespace-nowrap">
+                    {formatPrice(latestCar.price)}
+                  </span>
+                )}
               </div>
 
-              {/* Center: Car Name & Year (Luminous Single-Row Typography) */}
-              <div className="flex-1 min-w-0 text-center px-1">
-                <div className="truncate text-white font-extrabold text-[13px] tracking-tight drop-shadow-sm">
-                  <span>{latestCar.make} {latestCar.model}</span>
+              {/* Bottom Row: Full Uncut Car Name & Year */}
+              <div className="flex items-center justify-between w-full px-0.5 pt-1 border-t border-white/[0.08]">
+                <div className="flex items-center gap-1.5 text-left flex-wrap">
+                  <span className="text-white font-black text-[14px] tracking-tight drop-shadow-[0_1px_8px_rgba(255,255,255,0.25)]">
+                    {latestCar.make} {latestCar.model}
+                  </span>
                   {carYear && (
-                    <span className="ml-1 text-purple-300/90 font-bold text-[11px]">
-                      ({carYear})
+                    <span className="px-2 py-0.5 rounded-md bg-white/10 text-purple-200 font-bold text-[10.5px] border border-white/10">
+                      {carYear}
                     </span>
                   )}
                 </div>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-purple-300/70 flex items-center gap-1">
+                  <IconSparkles size={11} className="text-purple-400" />
+                  Showroom
+                </span>
               </div>
-
-              {/* Right: Glowing Emerald Price Badge */}
-              {latestCar.price && (
-                <div className="flex-shrink-0">
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 text-emerald-400 font-black text-[12px] shadow-[0_0_10px_rgba(52,211,153,0.3)] whitespace-nowrap">
-                    {formatPrice(latestCar.price)}
-                  </span>
-                </div>
-              )}
             </div>
 
             {/* ══════════════ DESKTOP VIEW (>= 640px): High-End Showroom Announcement ══════════════ */}
