@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { IconSparkles, IconCircleCheck } from '@tabler/icons-react';
+import { IconSparkles } from '@tabler/icons-react';
 import api from '@/lib/api';
-import { formatPrice, extractImageUrl, getOptimizedImage } from '@/lib/utils';
+import { formatPrice } from '@/lib/utils';
 
 export default function LiveTicker() {
   const [latestCar, setLatestCar] = useState(null);
@@ -24,18 +24,14 @@ export default function LiveTicker() {
 
   if (!latestCar) return null;
 
-  const rawImage = latestCar.images && latestCar.images.length > 0 ? latestCar.images[0] : null;
-  const imageUrl = rawImage ? extractImageUrl(rawImage) : null;
-  const thumbUrl = imageUrl ? getOptimizedImage(imageUrl, 200) : null;
   const carYear = latestCar.year || latestCar.registerYear;
-  const carTitle = `${latestCar.make} ${latestCar.model}${carYear ? ` (${carYear})` : ''}`;
 
   return (
     <>
       <style>{`
         @keyframes shine {
           0% { left: -150%; }
-          15% { left: 150%; }
+          18% { left: 150%; }
           100% { left: 150%; }
         }
         .shimmer-effect::after {
@@ -43,108 +39,107 @@ export default function LiveTicker() {
           position: absolute;
           top: 0;
           left: -150%;
-          width: 50%;
+          width: 45%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
-          transform: skewX(-25deg);
-          animation: shine 6s infinite;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+          transform: skewX(-20deg);
+          animation: shine 5.5s infinite;
           pointer-events: none;
           z-index: 30;
         }
-        @keyframes text-shimmer {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 0.9; transform: scale(1.05); }
         }
-        .animate-text-shimmer {
-          background-size: 200% auto;
-          animation: text-shimmer 4s linear infinite;
+        .animate-pulse-slow {
+          animation: pulse-slow 3s ease-in-out infinite;
         }
       `}</style>
 
       <div className="w-full py-3 sm:py-5 px-4 sm:px-6 lg:px-8 relative z-20">
         <div className="relative max-w-6xl mx-auto">
           {/* Multi-tone ambient backlight aura matching Showroom Video */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/30 via-pink-500/20 to-indigo-600/30 rounded-[24px] sm:rounded-[30px] blur-xl opacity-60 dark:opacity-75 transition-all duration-500 pointer-events-none" />
+          <div className="absolute -inset-1 bg-gradient-to-r from-purple-600/35 via-fuchsia-500/25 to-indigo-600/35 rounded-[26px] sm:rounded-[32px] blur-xl opacity-70 dark:opacity-85 pointer-events-none" />
 
-          {/* Main Card (Informational showcase banner - No link) */}
-          <div className="relative flex w-full min-h-[64px] sm:min-h-[76px] bg-gradient-to-r from-[#0d0d18]/95 via-[#131126]/95 to-[#0d0d18]/95 backdrop-blur-xl overflow-hidden items-center justify-between px-3.5 sm:px-6 py-2.5 sm:py-3 rounded-2xl sm:rounded-3xl border border-gray-200/80 dark:border-white/15 shadow-2xl shadow-purple-950/20 dark:shadow-black/70 shimmer-effect select-none">
+          {/* Main Card */}
+          <div className="relative flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 w-full min-h-[64px] sm:min-h-[76px] px-4 sm:px-7 py-3 sm:py-3.5 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#0c0a18] via-[#141029] to-[#0c0a18] border border-purple-500/25 dark:border-white/15 shadow-[0_10px_35px_rgba(0,0,0,0.6),0_0_25px_rgba(168,85,247,0.18)] overflow-hidden shimmer-effect select-none">
 
-            {/* Glowing background gradient orb in center */}
+            {/* Glowing background gradient core in center */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden flex justify-center items-center">
-              <div className="absolute w-[60%] sm:w-[40%] h-[200%] bg-purple-900/25 blur-[40px] rounded-[100%]"></div>
-              <div className="absolute w-[30%] sm:w-[20%] h-full bg-purple-500/15 blur-[25px] rounded-[100%] animate-pulse mix-blend-screen"></div>
+              <div className="absolute w-[65%] sm:w-[45%] h-[200%] bg-purple-900/30 blur-[45px] rounded-[100%]"></div>
+              <div className="absolute w-[35%] sm:w-[22%] h-full bg-fuchsia-500/15 blur-[28px] rounded-[100%] animate-pulse-slow mix-blend-screen"></div>
             </div>
 
-            {/* Left: Live Pulse Status Badge */}
-            <div className="flex items-center gap-2 sm:gap-3 z-10 flex-shrink-0">
-              <div className="flex items-center gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-purple-500/15 border border-purple-500/30 backdrop-blur-md shadow-[0_0_12px_rgba(168,85,247,0.25)]">
-                <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+            {/* Left Side: Live Radar Beacon & Badge */}
+            <div className="flex items-center gap-2.5 z-10 flex-shrink-0">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-600/25 via-fuchsia-600/20 to-purple-600/25 border border-purple-400/40 shadow-[0_0_15px_rgba(168,85,247,0.3)] backdrop-blur-md">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_8px_#34d399]"></span>
                 </span>
-                <span className="text-[10px] sm:text-[12px] font-black tracking-wider uppercase text-white drop-shadow-sm whitespace-nowrap">
+                <span className="text-[11px] sm:text-xs font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-white drop-shadow-sm">
                   Just Arrived
                 </span>
               </div>
-              <span className="hidden lg:inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-purple-300/80">
+              <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest text-purple-300/70">
                 <IconSparkles size={13} className="text-purple-400" />
-                Showroom Update
+                To Showroom
               </span>
             </div>
 
-            {/* Center: Car Details with Thumbnail */}
-            <div className="flex-1 flex items-center justify-center px-2 sm:px-4 z-10 min-w-0">
-              {/* Desktop Layout with explicit word spacing */}
-              <div className="hidden sm:flex items-center gap-3.5">
-                {thumbUrl && (
-                  <div className="relative w-14 h-10 rounded-lg overflow-hidden border border-white/20 shadow-md flex-shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={thumbUrl} alt={carTitle} className="w-full h-full object-cover" />
-                  </div>
-                )}
-                <div className="flex items-center gap-1.5 flex-wrap justify-center leading-tight">
-                  <span className="text-white/70 text-sm font-medium">
-                    We&apos;ve just added a
+            {/* Center: Car Details with Premium Typography & Glowing Price */}
+            <div className="flex-1 flex items-center justify-center text-center z-10 min-w-0 px-2">
+              {/* Desktop Layout */}
+              <div className="hidden sm:flex items-center gap-2 flex-wrap justify-center leading-relaxed">
+                <span className="text-white/75 text-[15px] font-normal tracking-wide">
+                  We&apos;ve just added a
+                </span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-50 to-white font-black text-lg lg:text-xl tracking-tight drop-shadow-[0_2px_12px_rgba(255,255,255,0.25)] px-1">
+                  {latestCar.make} {latestCar.model}
+                </span>
+                {carYear && (
+                  <span className="px-2.5 py-0.5 rounded-md bg-white/10 text-purple-200 text-xs font-bold border border-white/10 shadow-sm">
+                    ({carYear})
                   </span>
-                  <span className="text-white font-extrabold text-base lg:text-lg tracking-tight drop-shadow-sm px-1">
+                )}
+                <span className="text-white/75 text-[15px] font-normal tracking-wide pl-1">
+                  to our showroom!
+                </span>
+                {latestCar.price && (
+                  <span className="ml-2.5 inline-flex items-center px-4 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 text-emerald-400 font-black text-sm lg:text-base shadow-[0_0_15px_rgba(52,211,153,0.35)] drop-shadow">
+                    {formatPrice(latestCar.price)}
+                  </span>
+                )}
+              </div>
+
+              {/* Mobile Layout */}
+              <div className="flex sm:hidden flex-col items-center justify-center gap-1.5 py-0.5 text-center">
+                <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                  <span className="text-white/70 text-xs font-medium">We&apos;ve just added a</span>
+                  <span className="text-white font-black text-sm tracking-tight drop-shadow-sm">
                     {latestCar.make} {latestCar.model}
                   </span>
                   {carYear && (
-                    <span className="px-2 py-0.5 rounded-md bg-white/10 text-white/90 text-xs font-semibold tracking-wide border border-white/10">
+                    <span className="text-purple-300/90 text-xs font-bold">
                       ({carYear})
                     </span>
                   )}
-                  <span className="text-white/70 text-sm font-medium pl-1">
-                    to our showroom!
-                  </span>
-                  {latestCar.price && (
-                    <span className="ml-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-black text-sm lg:text-base drop-shadow-[0_0_8px_rgba(52,211,153,0.35)]">
-                      {formatPrice(latestCar.price)}
-                    </span>
-                  )}
                 </div>
-              </div>
-
-              {/* Mobile Layout (Clean & Balanced) */}
-              <div className="flex sm:hidden flex-col items-center justify-center text-center px-1 truncate">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-white to-purple-200 font-extrabold text-[13px] leading-tight truncate max-w-[210px] drop-shadow-[0_0_10px_rgba(168,85,247,0.7)] animate-text-shimmer">
-                  {latestCar.make} {latestCar.model} {carYear ? `(${carYear})` : ''}
-                </span>
                 {latestCar.price && (
-                  <span className="text-emerald-400 font-black text-[12px] leading-tight mt-0.5 drop-shadow-[0_0_6px_rgba(52,211,153,0.4)]">
+                  <span className="inline-flex items-center px-3.5 py-0.5 rounded-full bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-400/40 text-emerald-400 font-black text-xs shadow-[0_0_12px_rgba(52,211,153,0.3)]">
                     {formatPrice(latestCar.price)}
                   </span>
                 )}
               </div>
             </div>
 
-            {/* Right: Verified Showroom Status Badge (Informational - No Link) */}
-            <div className="flex items-center gap-2 z-10 flex-shrink-0 pl-1">
-              <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-[10px] sm:text-xs font-semibold backdrop-blur-sm">
-                <IconCircleCheck size={14} className="text-emerald-400" />
-                <span className="hidden sm:inline">Available in Showroom</span>
-                <span className="sm:hidden">Available</span>
-              </div>
+            {/* Right: Subtle Automotive Glowing Pulse Bars (Telemetry Balance) */}
+            <div className="hidden lg:flex items-center gap-1.5 z-10 flex-shrink-0 opacity-70">
+              <span className="w-1 h-3.5 rounded-full bg-purple-400/50 animate-pulse"></span>
+              <span className="w-1 h-5 rounded-full bg-purple-400/80 animate-pulse delay-75"></span>
+              <span className="w-1 h-6 rounded-full bg-fuchsia-400 animate-pulse delay-150"></span>
+              <span className="w-1 h-5 rounded-full bg-purple-400/80 animate-pulse delay-75"></span>
+              <span className="w-1 h-3.5 rounded-full bg-purple-400/50 animate-pulse"></span>
             </div>
 
           </div>
